@@ -1,0 +1,20 @@
+<h1>Team Members for <%= @manager.name %></h1>
+
+<table border="1" cellpadding="10">
+  <tr>
+    <th>Name</th>
+    <th>Current Projects</th>
+    <th>Other</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @manager.subordinates.each do |user| %>
+  <tr>
+    <td><%= user.name %></td>
+    <td><%= if user.projects.length > 0 then current_project(user) end %></td>
+    <td><%= "TBD" %></td>
+    <td><%= link_to 'Details', user_path(user) %></td>
+  </tr>
+<% end %>
+</table>

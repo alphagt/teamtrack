@@ -1,0 +1,8 @@
+<h3>User List</h3>
+<% @users.each do |user| %>
+  <p>User: <%= user.name %>,  Is Admin:   <%= user.admin %>, Manager:  <%= user.manager.name if user.manager %>p>
+<% end %>
+
+<br/>
+<br/>
+<%= link_to 'New User', new_user_path %>

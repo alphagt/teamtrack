@@ -1,0 +1,16 @@
+<%= simple_form_for(@assignment) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :is_fixed %>
+    <%= f.label "Period" %>
+    <%= f.collection_select :set_period_id, SetPeriod.all, :id, :period_name, :label => "Period"  %>
+    <%= f.input :effort %>
+    <%= if !@assignment.user then f.association :user, collection: @manager.subordinates, :as => :select else f.hidden_field :user_id, :value => @assignment.user.id end %>
+    <%= f.association :project, :as => :select %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

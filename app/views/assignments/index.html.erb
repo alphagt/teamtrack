@@ -1,0 +1,51 @@
+<h1>Listing assignments</h1>
+
+<table border="1" cellpadding="10">
+  <tr>
+    <th>Project</th>
+    <th>User</th>
+    <th>Week of</th>
+    <th>Effort</th>
+    <th>Is fixed</th>
+    <th>Fiscal year</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% if @manager.admin then %>
+<% @assignments.each do |assignment| %>
+  <tr>
+    <td><%= assignment.project.name %></td>
+    <td><%= assignment.user.name %></td>
+    <td><%= to_date(assignment.set_period) %></td>
+    <td><%= assignment.effort %></td>
+	<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
+    <td><%= assignment.set_period.fiscal_year %></td>
+    <td><%= link_to 'Show', assignment %></td>
+    <td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
+    <td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+<% else %>
+	<% @manager.subordinates.each do |subordiate| %>
+		<% subordinate.assignments.each do |assignment| %>
+		  <tr>
+			<td><%= assignment.project.name %></td>
+    		<td><%= assignment.user.name %></td>
+    		<td><%= to_date(assignment.set_period) %></td>
+    		<td><%= assignment.effort %></td>
+			<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
+    		<td><%= assignment.set_period.fiscal_year %></td>
+			<td><%= link_to 'Show', assignment %></td>
+			<td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
+			<td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+		  </tr>
+		<% end %>
+	<% end %>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Assignment', new_assignment_path %>

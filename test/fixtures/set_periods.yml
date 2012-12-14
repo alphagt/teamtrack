@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  fiscal_year: 
+  week_number: 
+  cweek_offset: 
+
+two:
+  fiscal_year: 
+  week_number: 
+  cweek_offset: 

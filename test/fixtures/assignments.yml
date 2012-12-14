@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  is_fixed: false
+  fiscal_year: 1
+  week: 1
+  effort: 
+  user_id: 1
+  project_id: 1
+
+two:
+  is_fixed: false
+  fiscal_year: 1
+  week: 1
+  effort: 
+  user_id: 1
+  project_id: 1

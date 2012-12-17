@@ -9,7 +9,6 @@ gem 'sqlite3', :group => [:development, :test]
 group :production do
   gem 'thin'
   gem 'pg'
-  gem 'activerecord-mysql-adapter'
 end
 
 

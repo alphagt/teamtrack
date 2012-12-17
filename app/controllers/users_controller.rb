@@ -8,6 +8,8 @@ class UsersController < ApplicationController
   end
 
   def show
+  	 puts "Looking Up User Number:"
+  	 #puts params[:id]
      @user = User.find(params[:id])
   end
   

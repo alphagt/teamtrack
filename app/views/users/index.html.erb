@@ -1,8 +1,19 @@
 <h3>User List</h3>
-<% @users.each do |user| %>
-  <p>User: <%= user.name %>,  Is Admin:   <%= user.admin %>, Manager:  <%= user.manager.name if user.manager %>p>
-<% end %>
+<table border="1" cellpadding="10">
+  <tr>
+    <th>Name</th>
+    <th>Admin?</th>
+    <th>Manager</th>
+  </tr>
 
+<% @users.each do |user| %>
+  <tr>
+    <td><%= link_to user.name, user_path(user)  %></td>
+    <td><%= user.admin.to_s %></td>
+    <td><%= user.manager.name if user.manager %></td>
+  </tr>
+<% end %>
+</table>
 <br/>
 <br/>
 <%= link_to 'New User', new_user_path %>

@@ -18,7 +18,7 @@
   <tr>
     <td><%= assignment.project.name %></td>
     <td><%= assignment.user.name %></td>
-    <td><%= to_date(assignment.set_period) %></td>
+    <td><%= period_to_date(assignment.set_period) %></td>
     <td><%= assignment.effort %></td>
 	<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
     <td><%= assignment.set_period.fiscal_year %></td>

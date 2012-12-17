@@ -1,7 +1,9 @@
 <h3>User</h3>
 <p>User: <%= @user.name %></p>
 <p>Email: <%= @user.email if @user.email %></p>
+<p>Manager: <%= @user.manager.name if @user.manager %></p>
 <p>Admin: <%= @user.admin %></p>
+<p> <%= link_to 'Edit account', edit_user_registration_path %></p>
 <br>
 <h3>Assignment History</h3>
 <table border="1" cellpadding="10">
@@ -9,7 +11,7 @@
   	<h5>
   	<th>Project</th>
     <th>Fiscal year</th>
-    <th>Week</th>
+    <th>Week of</th>
     <th>Effort</th>
     <th>Type</th>
     <th/>
@@ -19,7 +21,7 @@
   <tr>
     <td><%= assignment.project.name %></td>
     <td><%= assignment.set_period.fiscal_year %></td>
-    <td><%= assignment.set_period.week_number %></td>
+    <td><%= period_to_date(assignment.set_period) %></td>
     <td><%= assignment.effort %></td>
     <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
     <td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>

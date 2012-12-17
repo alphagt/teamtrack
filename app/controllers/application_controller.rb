@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   def require_admin
     unless current_user.admin
       #flash[:error] = "You must be logged in to access this section" 
-      redirect_to home_url # Prevents the current action from running
+      redirect_to team_user_path(:id => current_user.id) # Prevents the current action from running
     end
   end
 end

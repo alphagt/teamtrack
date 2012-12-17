@@ -31,7 +31,7 @@
   	<h5>
   	<th>User</th>
     <th>Fiscal year</th>
-    <th>Week</th>
+    <th>Week of</th>
     <th>Effort</th>
     <th>Type</th>
     </h5>
@@ -40,7 +40,7 @@
   <tr>
     <td><%= assignment.user.name %></td>
     <td><%= assignment.set_period.fiscal_year %></td>
-    <td><%= assignment.set_period.week_number %></td>
+    <td><%= period_to_date(assignment.set_period) %></td>
     <td><%= assignment.effort %></td>
     <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
   </tr>

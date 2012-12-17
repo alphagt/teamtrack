@@ -6,6 +6,8 @@
     <th>Active</th>
     <th>Owner</th>
     <th>Description</th>
+    <th>Current Allocation</th>
+    <th>YTD Total Allocation</th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,6 +19,8 @@
     <td><%= project.active %></td>
     <td><%= project.owner.name %></td>
     <td><%= project.description %></td>
+    <td><%= current_allocation(project) %></td>
+    <td><%= ytd_allocation(project) %></td>
     <td><%= link_to 'Show', project %></td>
     <td><%= link_to 'Edit', edit_project_path(project) %></td>
     <td><%= link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } %></td>

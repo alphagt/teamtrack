@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 	before_filter :authenticate_user!
 	before_filter :require_admin, :except => [:team, :show]
+	before_filter :require_verified, :except => [:show]
 		
   def index
   	puts "In UserController - Index"
@@ -46,5 +47,13 @@ class UsersController < ApplicationController
   # GET /users/:id/team
   def team
   	@manager = User.find(params[:id])
+  end
+  
+  #GET /users/:id/verify
+  def verify
+  	@u = User.find(params[:user_id])
+  	@u.verified = true
+  	@u.save
+  	redirect_to users_path 
   end
 end

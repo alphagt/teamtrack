@@ -4,6 +4,7 @@
     <th>Name</th>
     <th>Admin?</th>
     <th>Manager</th>
+    <th>Verified</th>
   </tr>
 
 <% @users.each do |user| %>
@@ -11,6 +12,7 @@
     <td><%= link_to user.name, user_path(user)  %></td>
     <td><%= user.admin.to_s %></td>
     <td><%= user.manager.name if user.manager %></td>
+    <td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id) end %></td>
   </tr>
 <% end %>
 </table>

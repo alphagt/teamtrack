@@ -1,8 +1,8 @@
 #Default User
 puts 'SETTING UP DEFAULT USER LOGIN'
-user = User.create! :name => 'Ken Toole', :email => 'ktoole@adobe.com', :admin => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
+user = User.create! :name => 'Ken Toole', :email => 'ktoole@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
 puts 'New user created: ' << user.name
-user = User.create! :name => 'Test User', :email => 'test@adobe.com', :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
+user = User.create! :name => 'Test User', :email => 'test@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
 user['manager_id'] = 1
 puts 'New user created: ' << user.name
 

@@ -13,19 +13,21 @@
     <li>
       <%= link_to('Edit account', edit_user_registration_path) %>
     </li>
-    <li>
-      <%= link_to('Team', team_user_path(:id => current_user.id)) %>
-    </li>
-    <li>
-      <%= link_to('Ass', assignments_path) %>
-    </li>
-    <% if current_user.admin? %>
-      <li>
-      <%= link_to('Users', users_path) %>
-      </li>
-      <li>
-      <%= link_to('Projects', projects_path) %>
-      </li>
+	<% if current_user.verified? %>
+    	<li>
+      		<%= link_to('Team', team_user_path(:id => current_user.id)) %>
+    	</li>
+    	<li>
+      		<%= link_to('Ass', assignments_path) %>
+    	</li>
+    	<% if current_user.admin? %>
+      		<li>
+      			<%= link_to('Users', users_path) %>
+      		</li>
+      		<li>
+      			<%= link_to('Projects', projects_path) %>
+      		</li>
+    	<% end %>
     <% end %>  
   <% else %>
     <li>

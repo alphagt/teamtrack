@@ -11,4 +11,10 @@ class ApplicationController < ActionController::Base
       redirect_to team_user_path(:id => current_user.id) # Prevents the current action from running
     end
   end
+  def require_verified
+    unless current_user and current_user.verified
+      flash[:error] = "Your account has not been validated, contact administrator to access this section" 
+      redirect_to new_user_session_path # Prevents the current action from running
+    end
+  end
 end

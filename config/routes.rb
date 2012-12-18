@@ -15,6 +15,7 @@ TeamTrack::Application.routes.draw do
   resources :users do
   	get 'index'
   	get 'new'
+  	get 'verify'
   	get 'team', :on => :member
   	post 'createemp', :on => :collection
   end

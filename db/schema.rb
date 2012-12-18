@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121126202651) do
+ActiveRecord::Schema.define(:version => 20121217154704) do
 
   create_table "assignments", :force => true do |t|
     t.boolean  "is_fixed"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(:version => 20121126202651) do
     t.boolean  "admin",                  :default => false, :null => false
     t.boolean  "ismanager",              :default => false, :null => false
     t.integer  "manager_id"
+    t.boolean  "verified",               :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -1,4 +1,8 @@
 <h3>TeamTrack Home</h3>
 <p>Welcome to Team Track.  This tool is intended to track effort against projects on a weekly basis.</p>
 <br/>
-<p>Contact your manager if you do not have an account on the system.<p>
+<% if current_user and !current_user.verified %>
+	<p>Your account is pending administrative approval.  Check back later</p>
+<% else %>
+	<p>Contact your manager if you do not have an account on the system.<p>
+<% end %>

@@ -5,7 +5,7 @@
   <%= f.input :email, :required => true %>
   <%= f.input :password, :required => true %>
   <%= f.input :password_confirmation, :required => true %>
-  <%= f.input :ismanager, :required => false %>
+  <%= f.hidden_field :ismanager, :value => true %>
   <%= f.association :manager, :as => :select %>
   <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
 <% end %>

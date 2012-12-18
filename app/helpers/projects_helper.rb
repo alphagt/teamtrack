@@ -2,6 +2,7 @@ module ProjectsHelper
 
 	def current_allocation(proj)
 		@total = 0
+		@output = "Fixed: "
 		@cweek_number = 0
 		@cperiod = 0
 		@fyear = Date.today.year 
@@ -16,13 +17,24 @@ module ProjectsHelper
 		puts 'CURRENT CWEEK Number: '
 		puts  @cweek_number
 		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number)
-		proj.assignments.where(:set_period_id => @cperiod).each do |asn|
+		#get fixed assignments total
+		proj.assignments.where(:set_period_id => @cperiod, :is_fixed => true).each do |asn|
 			@total = @total + asn.effort
 		end
-		@total
+		@output += @total.to_s
+		puts 'FIXED STRING - '
+		puts @output
+		#get nitro assignments total
+		@total = 0
+		proj.assignments.where(:set_period_id => @cperiod, :is_fixed => false).each do |asn|
+			@total = @total + asn.effort
+		end
+		@output += " | Nitro: " + @total.to_s
 	end
 	def ytd_allocation(proj)
-		@total = 0
+		@fixtotal = 0
+		@nitrototal = 0
+		@output = "Fixed: "
 		@cweek_number = 0
 		@cperiod = 0
 		@fyear = Date.today.year 
@@ -39,9 +51,14 @@ module ProjectsHelper
 		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number)
 		SetPeriod.where(:fiscal_year => @fyear).each do |sp|
 			Assignment.where(:project_id => proj.id, :set_period_id => sp.id).each do |asn|
-				@total = @total + asn.effort
+				if asn.is_fixed then
+					@fixtotal += asn.effort
+				else
+					@nitrototal += asn.effort
+				end
 			end
 		end
-		@total
+		@output += @fixtotal.to_s
+		@output += " | Nitro: " + @nitrototal.to_s
 	end
 end

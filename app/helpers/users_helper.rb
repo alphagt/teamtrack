@@ -26,22 +26,4 @@ module UsersHelper
 		end
 		@rStr.chomp(", ")
 	end
-	def all_subs(mid)
-		@manager = User.find(mid)
-		@return = Array.new()
-		puts "MANAGER IS-" + @manager.name
-		if @manager.subordinates.any?
-			# puts "-FOUND SUBORDINATES"
-			@return = @manager.subordinates
-			# puts "Return Length - " 
-# 			puts @return.length
-			@manager.subordinates.each do |s|
-				if s.subordinates.any?
-					# puts "---FOUND SUBORDINATES"	
-					@return |= all_subs(s.id)
-				end
-			end
-		end
-		@return
-	end
 end

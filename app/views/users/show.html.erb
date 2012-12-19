@@ -3,7 +3,7 @@
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Manager: <%= @user.manager.name if @user.manager %></p>
 <p>Admin: <%= @user.admin %></p>
-<p> <%= link_to 'Edit account', edit_user_registration_path %></p>
+<p> <%= link_to 'Edit account', manage_user_path(:id => @user.id) %></p>
 <br>
 <h3>Assignment History</h3>
 <table border="1" cellpadding="10">

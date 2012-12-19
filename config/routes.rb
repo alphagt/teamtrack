@@ -14,8 +14,8 @@ TeamTrack::Application.routes.draw do
   devise_for :users
   resources :users do
   	get 'index'
-  	get 'new'
   	get 'verify'
+  	get 'manage', :on => :member
   	get 'team', :on => :member
   	post 'createemp', :on => :collection
   end

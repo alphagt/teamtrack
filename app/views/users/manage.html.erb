@@ -1,5 +1,6 @@
-<%= simple_form_for @user,
-	:url => url_for(:action => 'createemp', :controller => 'users') do |f| %>
+<h1>Editing User Attributes</h1>
+
+<%= simple_form_for @user do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
@@ -14,3 +15,6 @@
     <%= f.button :submit %>
   </div>
 <% end %>
+
+<%= link_to 'Show', @project %> |
+<%= link_to 'Back', projects_path %>

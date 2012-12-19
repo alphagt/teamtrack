@@ -14,6 +14,10 @@ class UsersController < ApplicationController
      @user = User.find(params[:id])
   end
   
+  # GET /users/:id/manage
+  def manage
+  	@user = User.find(params[:id])
+  end
   # GET /users/new
   # GET /users/new.json
   def new
@@ -55,5 +59,21 @@ class UsersController < ApplicationController
   	@u.verified = true
   	@u.save
   	redirect_to users_path 
+  end
+  
+  # PUT /user/1
+  # PUT /user/1.json
+  def update
+    @user = User.find(params[:id])
+
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
   end
 end

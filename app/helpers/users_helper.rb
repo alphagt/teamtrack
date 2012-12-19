@@ -28,7 +28,7 @@ module UsersHelper
 	end
 	def all_subs(mid)
 		@manager = User.find(mid)
-		#@return = Array.new()
+		@return = Array.new()
 		puts "MANAGER IS-" + @manager.name
 		if @manager.subordinates.any?
 			# puts "-FOUND SUBORDINATES"

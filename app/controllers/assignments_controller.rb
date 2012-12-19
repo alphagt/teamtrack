@@ -6,7 +6,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @assignments = Assignment.order("project_id,set_period_id,user_id")
 	@manager = current_user
     respond_to do |format|
       format.html # index.html.erb

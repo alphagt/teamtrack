@@ -3,20 +3,7 @@ module ProjectsHelper
 	def current_allocation(proj)
 		@total = 0
 		@output = "Fixed: "
-		@cweek_number = 0
-		@cperiod = 0
-		@fyear = Date.today.year 
-		if Date.today.mon == 12 then
-			@fyear = @fyear + 1
-			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
-			@cweek_number = Date.today.cweek + @cfy_offset - 52
-		else
-			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
-			@cweek_number = Date.today.cweek + @cfy_offset
-		end
-		puts 'CURRENT CWEEK Number: '
-		puts  @cweek_number
-		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number)
+		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
 		#get fixed assignments total
 		proj.assignments.where(:set_period_id => @cperiod, :is_fixed => true).each do |asn|
 			@total = @total + asn.effort
@@ -31,12 +18,8 @@ module ProjectsHelper
 		end
 		@output += " | Nitro: " + @total.to_s
 	end
-	def ytd_allocation(proj)
-		@fixtotal = 0
-		@nitrototal = 0
-		@output = "Fixed: "
+	def current_fiscal_week
 		@cweek_number = 0
-		@cperiod = 0
 		@fyear = Date.today.year 
 		if Date.today.mon == 12 then
 			@fyear = @fyear + 1
@@ -48,17 +31,23 @@ module ProjectsHelper
 		end
 		puts 'CURRENT CWEEK Number: '
 		puts  @cweek_number
-		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number)
-		SetPeriod.where(:fiscal_year => @fyear).each do |sp|
+		@cweek_number
+	end
+	def ytd_allocation(proj)
+		@fixtotal = 0
+		@nitrototal = 0
+		@output = "Fixed: "
+		#@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
+		SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
 			Assignment.where(:project_id => proj.id, :set_period_id => sp.id).each do |asn|
 				if asn.is_fixed then
-					@fixtotal += asn.effort
+					@fixtotal = @fixtotal + asn.effort
 				else
-					@nitrototal += asn.effort
+					@nitrototal = @nitrototal + asn.effort
 				end
 			end
 		end
-		@output += @fixtotal.to_s
+		@output = @output + @fixtotal.to_s
 		@output += " | Nitro: " + @nitrototal.to_s
 	end
 end

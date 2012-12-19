@@ -3,6 +3,10 @@ class SetPeriod < ActiveRecord::Base
   attr_accessible :cweek_offset, :fiscal_year, :week_number, :period_name
   
   def period_name
-  	self.fiscal_year.to_s + "-" + self.week_number.to_s
+  	if self.week_number > self.cweek_offset then
+			Date.commercial(self.fiscal_year,self.week_number - self.cweek_offset,1)
+		else
+			Date.commercial(self.fiscal_year - 1,self.week_number - self.cweek_offset - 1,1)
+		end
   end
 end

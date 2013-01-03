@@ -1,4 +1,4 @@
-<%= link_to "Team Track", root_path, :class => 'brand' %>
+<%= link_to "My Team", root_path, :class => 'brand' %>
 <ul class="nav">
   <% if user_signed_in? %>
     <li>
@@ -15,10 +15,7 @@
     </li>
 	<% if current_user.verified? %>
     	<li>
-      		<%= link_to('Team', team_user_path(:id => current_user.id)) %>
-    	</li>
-    	<li>
-      		<%= link_to('Ass', assignments_path) %>
+      		<%= link_to('Assignments', assignments_path) %>
     	</li>
     	<% if current_user.admin? %>
       		<li>

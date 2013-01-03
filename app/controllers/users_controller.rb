@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 		
   def index
   	puts "In UserController - Index"
-  	@users = User.all
+  	@users = User.order("manager_id,name")
   end
 
   def show

@@ -1,5 +1,5 @@
 class SetPeriod < ActiveRecord::Base
-  has_many :assignment
+  has_many :assignment, :order => "set_period_id DESC"
   attr_accessible :cweek_offset, :fiscal_year, :week_number, :period_name
   
   def period_name

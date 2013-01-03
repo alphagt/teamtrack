@@ -23,6 +23,6 @@ module ApplicationHelper
 				end
 			end
 		end
-		@return
+		@return.sort! {|a,b| a.name <=> b.name}
 	end
 end

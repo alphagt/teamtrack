@@ -88,4 +88,13 @@ class AssignmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def extend
+  	@user = User.find(params[:id])
+  	@last = latest(@user)
+  	@last.each do |asn|
+  		#TBD
+  	end
+  end
+  
 end

@@ -1,5 +1,6 @@
 <h1>Team Members for <%= @manager.name %></h1>
-
+<br/>
+<%= link_to 'New Assignment', new_assignment_path %>
 <table border="1" cellpadding="10">
   <tr>
     <th>Name</th>
@@ -15,6 +16,5 @@
   </tr>
 <% end %>
 </table>
-<br/>
-<%= link_to 'New Assignment', new_assignment_path %>
+
 

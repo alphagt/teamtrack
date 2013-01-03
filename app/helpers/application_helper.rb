@@ -25,4 +25,42 @@ module ApplicationHelper
 		end
 		@return.sort! {|a,b| a.name <=> b.name}
 	end
+	
+	def latest(cuser)
+		if cuser.assignments.length > 0
+			@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
+			cuser.assignments.where(:set_period_id => @latest)
+		else
+			Array.new()
+		end
+	end
+	
+	def extend_team(mUser)
+		rcode = 0
+		all_subs(mUser.id).each do |u|
+			latest(u).each do |a|
+				if Assignment.extend_by_week(a) then
+					rcode += 1
+				end
+			end
+		end
+		rcode
+	end
+	
+	def current_period()
+		@cweek_number = 0
+		@fyear = Date.today.year 
+		if Date.today.mon == 12 then
+			@fyear = @fyear + 1
+			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
+			@cweek_number = Date.today.cweek + @cfy_offset - 52
+		else
+			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
+			@cweek_number = Date.today.cweek + @cfy_offset
+		end
+		puts 'CURRENT CWEEK Number: '
+		puts  @cweek_number
+		SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
+	end
+	
 end

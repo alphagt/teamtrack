@@ -51,6 +51,23 @@ class UsersController < ApplicationController
   # GET /users/:id/team
   def team
   	@manager = User.find(params[:id])
+  	puts 'TEAM CONTROLER, CPeriod is:'  	
+  	puts view_context.current_period
+  end
+  
+  # GET /user/:id/extendteam
+  def extendteam
+  	@manager = User.find(params[:id])
+  	puts 'In ExtendTeam Controller Method'
+  	respond_to do |format|
+      if view_context.extend_team(@manager) == 0
+        format.html { redirect_to team_user_path(@manager), notice: 'Assignments were successfully extended.' }
+        format.json { render json: @manager, status: :extended, location: team_user_path(@manager) }
+      else
+        format.html { render action: "team" }
+        format.json { render json: @manager.errors, status: :unprocessable_entity }
+      end
+    end
   end
   
   #GET /users/:id/verify

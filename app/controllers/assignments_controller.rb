@@ -89,12 +89,19 @@ class AssignmentsController < ApplicationController
     end
   end
   
+  # GET /assignments/1
+  # GET /assignments/1.json
   def extend
-  	@user = User.find(params[:id])
-  	@last = latest(@user)
-  	@last.each do |asn|
-  		#TBD
-  	end
+  	@assignment = Assignment.find(params[:id])
+  	puts 'In Extend Controller Method'
+  	respond_to do |format|
+      if Assignment.extend_by_week(@assignment)
+        format.html { redirect_to @assignment.user, notice: 'Assignment was successfully extended.' }
+        format.json { render json: @assignment, status: :extended, location: @assignment.user }
+      else
+        format.html { render action: "extend" }
+        format.json { render json: @assignment.errors, status: :unprocessable_entity }
+      end
+    end
   end
-  
 end

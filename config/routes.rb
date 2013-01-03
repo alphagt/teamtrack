@@ -3,6 +3,7 @@ TeamTrack::Application.routes.draw do
 
   resources :assignments do
   	get 'new', :on => :member
+  	get 'extend', :on => :member
   end
 
   resources :projects
@@ -17,6 +18,7 @@ TeamTrack::Application.routes.draw do
   	get 'verify'
   	get 'manage', :on => :member
   	get 'team', :on => :member
+  	get 'extendteam', :on => :member
   	post 'createemp', :on => :collection
   end
 

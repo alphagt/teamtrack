@@ -1,6 +1,12 @@
 <h1>Team Members for <%= @manager.name %></h1>
 <br/>
-<%= link_to 'New Assignment', new_assignment_path %>
+<table cellpadding="10">
+	<tr>
+		<td><%= link_to 'New Assignment', new_assignment_path %></td>
+		<td><%= link_to 'Extend all one week', extendteam_user_path(@manager) %></td>
+	<tr>
+</table>
+<br/>
 <table border="1" cellpadding="10">
   <tr>
     <th>Name</th>

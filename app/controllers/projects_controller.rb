@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
 	before_filter :authenticate_user!
 	before_filter :require_verified
+	before_filter :require_admin,  :except => [:index, :show] 
 	
   # GET /projects
   # GET /projects.json

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	before_filter :authenticate_user!
-	before_filter :require_admin, :except => [:team, :show]
+	before_filter :require_admin, :except => [:team, :show, :extendteam]
 	before_filter :require_verified, :except => [:show]
 		
   def index

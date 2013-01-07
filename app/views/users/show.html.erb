@@ -26,7 +26,7 @@
     <td><%= assignment.effort %></td>
     <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
     <td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
-    <td><%= if assignment.set_period_id >= current_period.id then link_to 'Extend for one week', extend_assignment_path(assignment) else "Closed" end %></td>
+    <td><%= if assignment.set_period_id >= current_period.id then link_to 'Extend for a week', extend_assignment_path(assignment) else "Closed" end %></td>
   </tr>
 <% end %>
 </table>

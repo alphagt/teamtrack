@@ -16,7 +16,7 @@
 <% @assignments.each do |a| %>
   <tr>
     <td><%= link_to a.project.name, a %></td>
-    <td><%= a.user.name %></td>
+    <td><%= if a.user then a.user.name else "ERROR" end %></td>
     <td><%= period_to_date(a.set_period) %></td>
     <td><%= a.effort %></td>
 	<td><%= if !a.is_fixed then "Nitro" else "Fixed" end %></td>

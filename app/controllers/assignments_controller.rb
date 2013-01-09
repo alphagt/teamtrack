@@ -17,7 +17,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1
   # GET /assignments/1.json
   def show
-    @assignment = Assignment.find(params[:assignment_id])
+    @assignment = Assignment.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb

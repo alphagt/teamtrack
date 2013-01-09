@@ -13,31 +13,31 @@
   </tr>
 
 <% if @manager.admin then %>
-<% @assignments.each do |assignment| %>
+<% @assignments.each do |a| %>
   <tr>
-    <td><%= link_to assignment.project.name, assignment_show_path(assignment.id) %></td>
-    <td><%= assignment.user.name %></td>
-    <td><%= period_to_date(assignment.set_period) %></td>
-    <td><%= assignment.effort %></td>
-	<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
-    <td><%= assignment.set_period.fiscal_year %></td>
-    <td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
-    <td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to a.project.name, a %></td>
+    <td><%= a.user.name %></td>
+    <td><%= period_to_date(a.set_period) %></td>
+    <td><%= a.effort %></td>
+	<td><%= if !a.is_fixed then "Nitro" else "Fixed" end %></td>
+    <td><%= a.set_period.fiscal_year %></td>
+    <td><%= link_to 'Edit', edit_assignment_path(a) %></td>
+    <td><%= link_to 'Destroy', a, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 <% else %>
 	<% @manager.subordinates.each do |subordiate| %>
-		<% subordinate.assignments.each do |assignment| %>
+		<% subordinate.assignments.each do |a| %>
 		  <tr>
-			<td><%= link_to assignment.project.name, assignment_show_path(assignment.id) %></td>
-    		<td><%= assignment.user.name %></td>
-    		<td><%= to_date(assignment.set_period) %></td>
-    		<td><%= assignment.effort %></td>
-			<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
-    		<td><%= assignment.set_period.fiscal_year %></td>
-			<td><%= link_to 'Show', assignment %></td>
-			<td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
-			<td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			<td><%= link_to a.project.name, a %></td>
+    		<td><%= a.user.name %></td>
+    		<td><%= to_date(a.set_period) %></td>
+    		<td><%= a.effort %></td>
+			<td><%= if !a.is_fixed then "Nitro" else "Fixed" end %></td>
+    		<td><%= a.set_period.fiscal_year %></td>
+			<td><%= link_to 'Show', a %></td>
+			<td><%= link_to 'Edit', edit_assignment_path(a) %></td>
+			<td><%= link_to 'Destroy', a, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 		  </tr>
 		<% end %>
 	<% end %>

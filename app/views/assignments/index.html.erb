@@ -10,19 +10,17 @@
     <th>Fiscal year</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% if @manager.admin then %>
 <% @assignments.each do |assignment| %>
   <tr>
-    <td><%= assignment.project.name %></td>
+    <td><%= link_to assignment.project.name, assignment_show_path(assignment.id) %></td>
     <td><%= assignment.user.name %></td>
     <td><%= period_to_date(assignment.set_period) %></td>
     <td><%= assignment.effort %></td>
 	<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
     <td><%= assignment.set_period.fiscal_year %></td>
-    <td><%= link_to 'Show', assignment %></td>
     <td><%= link_to 'Edit', edit_assignment_path(assignment) %></td>
     <td><%= link_to 'Destroy', assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
@@ -31,7 +29,7 @@
 	<% @manager.subordinates.each do |subordiate| %>
 		<% subordinate.assignments.each do |assignment| %>
 		  <tr>
-			<td><%= assignment.project.name %></td>
+			<td><%= link_to assignment.project.name, assignment_show_path(assignment.id) %></td>
     		<td><%= assignment.user.name %></td>
     		<td><%= to_date(assignment.set_period) %></td>
     		<td><%= assignment.effort %></td>
@@ -46,6 +44,5 @@
 <% end %>
 </table>
 
-<br />
 
 

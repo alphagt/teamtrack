@@ -22,12 +22,12 @@
 
 <p>
   <b>User:</b>
-  <%= @assignment.user_id %>
+  <%= User.find(@assignment.user_id).name %>
 </p>
 
 <p>
   <b>Project:</b>
-  <%= @assignment.project_id %>
+  <%= Project.find(@assignment.project_id).name %>
 </p>
 
 

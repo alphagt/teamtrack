@@ -3,6 +3,9 @@ class Assignment < ActiveRecord::Base
   belongs_to :project, :foreign_key => "project_id"
   belongs_to :set_period, :foreign_key => "set_period_id"
   attr_accessible :effort, :set_period, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project
+  validates :project_id, :presence => true
+  validates :user_id, :presence => true
+  validates :effort, :presence => true, :numericality => { :greater_than => 0 }
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
     
@@ -15,7 +18,8 @@ class Assignment < ActiveRecord::Base
   
   def total_effort_max
   	#verify all assignments in this week for this user have total effort < 1
-  		tEffort = effort
+	tEffort = 0
+  	if effort then tEffort = effort end
   	Assignment.where(:user_id => user_id, :set_period_id => set_period_id).each do |a|
   		if a != self
   			tEffort += a.effort

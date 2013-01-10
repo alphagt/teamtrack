@@ -15,10 +15,14 @@ class Assignment < ActiveRecord::Base
   
   def total_effort_max
   	#verify all assignments in this week for this user have total effort < 1
-  	tEffort = effort
+  		tEffort = effort
   	Assignment.where(:user_id => user_id, :set_period_id => set_period_id).each do |a|
-  		tEffort += a.effort
+  		if a != self
+  			tEffort += a.effort
+  		end
   	end
+  	puts "Effort Validator"
+  	puts tEffort
   	errors.add(:effort, "Total effort of all assignments this week > 1") unless tEffort <= 1
   end
   

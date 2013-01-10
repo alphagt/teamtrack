@@ -2,6 +2,7 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
+    <%= if @assignment.user then f.label "Resource: " + @assignment.user.name end %>
     <%= f.input :is_fixed %>
     <%= f.label "Period" %>
     <%= f.collection_select :set_period_id, SetPeriod.all, :id, :period_name, :label => "Period"  %>

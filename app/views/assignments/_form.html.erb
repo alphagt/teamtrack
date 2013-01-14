@@ -7,7 +7,7 @@
     <br/>
     <%= f.input :is_fixed %>
     <%= f.label "Period" %>
-    <%= f.collection_select :set_period_id, SetPeriod.all, :id, :period_name, :label => "Period"  %>
+    <%= f.collection_select :set_period_id, period_list() , :id, :period_name, :label => "Period", :selected => current_period().id  %>
     <%= f.input :effort %>
     <%= if !@assignment.user then f.association :user, collection: all_subs(@manager), :as => :select else f.hidden_field :user_id, :value => @assignment.user.id end %>
     <%= f.association :project, :as => :select %>
@@ -17,3 +17,5 @@
     <%= f.button :submit %>
   </div>
 <% end %>
+
+#if current_user.admin? then SetPeriod.all else SetPeriod.where("id >= " + current_period().id.to_s) end

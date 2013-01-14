@@ -63,4 +63,12 @@ module ApplicationHelper
 		SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
 	
+	def period_list()
+		if current_user.admin? then
+			l = SetPeriod.all
+		else
+			l = SetPeriod.where("id >= " + current_period().id.to_s).all	
+		end
+	end
+	
 end

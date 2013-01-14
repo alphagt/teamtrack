@@ -27,7 +27,7 @@ class Assignment < ActiveRecord::Base
   	end
   	puts "Effort Validator"
   	puts tEffort
-  	errors.add(:effort, "Total effort of all assignments this week > 1") unless tEffort <= 1
+  	errors.add(:effort, "Total effort of all assignments this week for selected resource > 1") unless tEffort <= 1
   end
   
   def one_assg_per_project_week

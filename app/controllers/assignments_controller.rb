@@ -49,7 +49,13 @@ class AssignmentsController < ApplicationController
   # POST /assignments.json
   def create
     @assignment = Assignment.new(params[:assignment])
-
+	if @assignment.project.under_budget(@assignment.set_period_id) then
+		@assignment.is_fixed = true
+		puts 'FIXED - TRUE'
+	else
+		@assignment.is_fixed = false
+		puts 'FIXED - FALSE'
+	end
     respond_to do |format|
       if @assignment.save
         format.html { redirect_to @assignment, notice: 'Assignment was successfully created.' }

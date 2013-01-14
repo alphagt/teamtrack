@@ -17,7 +17,7 @@
 
 <% all_subs(@manager.id).each do |user| %>
   <tr>
-  	<td><%= link_to user.manager.name, team_user_path(user.manager) %></td>
+  	<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
     <td><%= user.name %></td>
     <td><%= if user.projects.length > 0 then current_project(user) end %></td>
     <td><%= link_to 'Details', user_path(user) %></td>

@@ -15,7 +15,7 @@
 <% if @manager.admin then %>
 <% @assignments.each do |a| %>
   <tr>
-    <td><%= link_to a.project.name, a %></td>
+    <td><%= link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} %></td>
     <td><%= if a.user then a.user.name else "ERROR" end %></td>
     <td><%= period_to_date(a.set_period) %></td>
     <td><%= a.effort %></td>
@@ -29,7 +29,7 @@
 	<% @manager.subordinates.each do |subordiate| %>
 		<% subordinate.assignments.each do |a| %>
 		  <tr>
-			<td><%= link_to a.project.name, a %></td>
+			<td><%= link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} %></td>
     		<td><%= a.user.name %></td>
     		<td><%= to_date(a.set_period) %></td>
     		<td><%= a.effort %></td>

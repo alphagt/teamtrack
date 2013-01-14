@@ -1,3 +1,14 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+alink {
+  color: #FF0000;
+  &:visited {
+    color: #00FF00;
+  }
+  &:hover {
+    color: #FF00FF;
+    background-color: #000;
+  }
+}

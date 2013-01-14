@@ -8,22 +8,22 @@ module ApplicationHelper
 	end
 
 	def all_subs(mid)
-		@manager = User.find(mid)
+		@m = User.find(mid)
 		@return = Array.new()
-		puts "MANAGER IS-" + @manager.name
-		if @manager.subordinates.any?
+		puts "MANAGER IS-" + @m.name
+		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
-			@return = @manager.subordinates
+			@return = @m.subordinates
 			# puts "Return Length - " 
 # 			puts @return.length
-			@manager.subordinates.each do |s|
+			@m.subordinates.each do |s|
 				if s.subordinates.any?
 					# puts "---FOUND SUBORDINATES"	
 					@return |= all_subs(s.id)
 				end
 			end
 		end
-		@return.sort! {|a,b| a.name <=> b.name}
+		@return.sort_by! {|a| [a.manager.name, a.name]}
 	end
 	
 	def latest(cuser)

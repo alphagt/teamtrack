@@ -51,8 +51,8 @@ class UsersController < ApplicationController
   # GET /users/:id/team
   def team
   	@manager = User.find(params[:id])
-  	puts 'TEAM CONTROLER, CPeriod is:'  	
-  	puts view_context.current_period
+  	puts 'TEAM CONTROLER, manager is'  	
+  	puts @manager.name
   end
   
   # GET /user/:id/extendteam

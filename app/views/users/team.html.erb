@@ -9,6 +9,7 @@
 <br/>
 <table border="1" cellpadding="10">
   <tr>
+    <th>Manager</th>
     <th>Name</th>
     <th>Current Projects</th>
     <th></th>
@@ -16,11 +17,13 @@
 
 <% all_subs(@manager.id).each do |user| %>
   <tr>
+  	<td><%= link_to user.manager.name, team_user_path(user.manager) %></td>
     <td><%= user.name %></td>
     <td><%= if user.projects.length > 0 then current_project(user) end %></td>
     <td><%= link_to 'Details', user_path(user) %></td>
   </tr>
 <% end %>
 </table>
+<br/>
 
-
+<%= if @manager != current_user then link_to 'Full Team', team_user_path(:id => current_user.id) end %>

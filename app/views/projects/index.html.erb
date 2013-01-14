@@ -10,6 +10,7 @@
     <th>Active</th>
     <th>Owner</th>
     <th>Description</th>
+    <th>Fixed Plan</th>
     <th>Current Allocation</th>
     <th>YTD Total Allocation</th>
     <th></th>
@@ -23,6 +24,7 @@
     <td><%= project.active %></td>
     <td><%= project.owner.name %></td>
     <td><%= project.description %></td>
+    <td><%= project.fixed_resource_budget %></td>
     <td><%= current_allocation(project) %></td>
     <td><%= ytd_allocation(project) %></td>
     <td><%= link_to 'Show', project %></td>

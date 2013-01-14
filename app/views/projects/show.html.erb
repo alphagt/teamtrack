@@ -20,6 +20,11 @@
   <%= @project.description %>
 </p>
 
+<p>
+  <b>Budgeted Fixed Resources:</b>
+  <%= @project.fixed_resource_budget %>
+</p>
+
 
 <%= if current_user.admin then link_to 'Edit', edit_project_path(@project) end %> |
 <%= link_to 'Back', projects_path %>

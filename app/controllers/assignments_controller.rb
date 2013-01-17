@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
 	before_filter :authenticate_user!
-	before_filter :require_admin, :except => [:new, :create, :update, :extend]
+	before_filter :require_admin, :except => [:new, :create, :update, :extend, :edit]
 	before_filter :require_verified
 	
   # GET /assignments
@@ -43,6 +43,9 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find(params[:id])
+    if current_user.admin? then
+    	@showFixedCbox = true
+    end
   end
 
   # POST /assignments
@@ -87,10 +90,11 @@ class AssignmentsController < ApplicationController
   # DELETE /assignments/1.json
   def destroy
     @assignment = Assignment.find(params[:id])
+    u = @assignment.user
     @assignment.destroy
 
     respond_to do |format|
-      format.html { redirect_to assignments_url }
+      format.html { redirect_to user_path(u) }
       format.json { head :no_content }
     end
   end

@@ -31,7 +31,8 @@
 <% end %>
 </table>
 <br>
-<%= link_to 'New Assignment', new_assignment_path(:uid => @user.id) %>
+<%= link_to 'New Assignment', new_assignment_path(:uid => @user.id) %> |
+<%= link_to 'Back to Team', team_user_path(current_user) %>
 
 
 

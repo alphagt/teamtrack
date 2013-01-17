@@ -5,6 +5,7 @@
     <%= if @assignment.user then link_to "Resource: " + @assignment.user.name, user_path(@assignment.user) end %>
     <br/>
     <br/>
+    <%= if @showFixedCbox then f.input :is_fixed end %>
     <%= f.label "Period" %>
     <%= f.collection_select :set_period_id, period_list() , :id, :period_name, :label => "Period", :selected => current_period().id  %>
     <%= f.input :effort %>

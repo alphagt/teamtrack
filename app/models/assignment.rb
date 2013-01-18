@@ -11,9 +11,16 @@ class Assignment < ActiveRecord::Base
     
   def self.extend_by_week(cAssign)
   		n = Assignment.new({:is_fixed => cAssign.is_fixed, :project_id => cAssign.project_id, :user_id => cAssign.user_id, :set_period_id => cAssign.set_period_id + 1, :effort => cAssign.effort})
-  		puts 'CLONE PERIOD:'
-  		puts n.set_period_id
-  		n.save
+  		if n then
+			if n.project.under_budget(n.set_period_id) == false then
+				@assignment.is_fixed = false
+			end
+			puts 'CLONE PERIOD:'
+			puts n.set_period_id
+			n.save
+		else
+			errors.add(:extend, "Unable to copy assignment to next period")
+		end
   end
   
   def total_effort_max

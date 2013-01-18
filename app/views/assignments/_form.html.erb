@@ -7,7 +7,12 @@
     <br/>
     <%= if @showFixedCbox then f.input :is_fixed end %>
     <%= f.label "Period" %>
-    <%= f.collection_select :set_period_id, period_list() , :id, :period_name, :label => "Period", :selected => current_period().id  %>
+    <%= if @usecweek 
+    	then f.collection_select :set_period_id, period_list() , :id, :period_name, :label => "Period", :selected => current_period().id 
+    	else period_to_date(@assignment.set_period)
+    	end %>
+    <br/>
+    <br/>
     <%= f.input :effort %>
     <%= if !@assignment.user then f.association :user, collection: all_subs(@manager), :as => :select else f.hidden_field :user_id, :value => @assignment.user.id end %>
     <%= f.association :project, :as => :select %>

@@ -30,6 +30,7 @@ class AssignmentsController < ApplicationController
   def new
     @manager = current_user
     @assignment = Assignment.new
+    @usecweek = true
     if params[:uid] then
     	@assignment.user = User.find(params[:uid].to_s)
     	puts @assignment.user
@@ -52,6 +53,7 @@ class AssignmentsController < ApplicationController
   # POST /assignments.json
   def create
     @assignment = Assignment.new(params[:assignment])
+    @usecweek = true
 	if @assignment.project.under_budget(@assignment.set_period_id) then
 		@assignment.is_fixed = true
 		puts 'FIXED - TRUE'
@@ -109,7 +111,7 @@ class AssignmentsController < ApplicationController
         format.html { redirect_to @assignment.user, notice: 'Assignment was successfully extended.' }
         format.json { render json: @assignment, status: :extended, location: @assignment.user }
       else
-        format.html { render action: "extend" }
+        format.html { redirect_to @assignment.user, notice: 'Failed to Extend!'}
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end

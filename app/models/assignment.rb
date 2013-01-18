@@ -10,7 +10,7 @@ class Assignment < ActiveRecord::Base
   validate :one_assg_per_project_week, :on => :create
     
   def self.extend_by_week(cAssign)
-  		n = Assignment.new({:project_id => cAssign.project_id, :user_id => cAssign.user_id, :set_period_id => cAssign.set_period_id + 1, :effort => cAssign.effort})
+  		n = Assignment.new({:is_fixed => cAssign.is_fixed, :project_id => cAssign.project_id, :user_id => cAssign.user_id, :set_period_id => cAssign.set_period_id + 1, :effort => cAssign.effort})
   		puts 'CLONE PERIOD:'
   		puts n.set_period_id
   		n.save

@@ -29,6 +29,20 @@ class UsersController < ApplicationController
     end
   end
   
+  #GET /users/:id/reset
+  def reset
+  	@user = User.find(params[:id])
+  	@user.password = 'password'
+  	respond_to do |format|
+		if @user.save then
+			format.html { redirect_to users_path, notice: 'Password was reset' }
+			format.json { render json: User.find(params[:id]), status: :Updated, location: users_path}
+		  else
+			format.html { render action: "index" }
+			format.json { render json: User.errors, status: :unprocessable_entity }
+		end
+  	end
+  end
   # POST /projects
   # POST /projects.json
   def createemp

@@ -16,6 +16,7 @@ TeamTrack::Application.routes.draw do
   resources :users do
   	get 'index'
   	get 'verify'
+  	get 'reset', :on => :member
   	get 'manage', :on => :member
   	get 'team', :on => :member
   	get 'extendteam', :on => :member

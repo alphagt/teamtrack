@@ -13,7 +13,7 @@ class Assignment < ActiveRecord::Base
   		n = Assignment.new({:is_fixed => cAssign.is_fixed, :project_id => cAssign.project_id, :user_id => cAssign.user_id, :set_period_id => cAssign.set_period_id + 1, :effort => cAssign.effort})
   		if n then
 			if n.project.under_budget(n.set_period_id) == false then
-				@assignment.is_fixed = false
+				n.is_fixed = false
 			end
 			puts 'CLONE PERIOD:'
 			puts n.set_period_id

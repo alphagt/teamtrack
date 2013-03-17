@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
 	before_filter :authenticate_user!
-	before_filter :require_admin, :except => [:new, :create, :update, :extend, :edit]
+	before_filter :require_admin, :except => [:new, :create, :update, :extend, :edit, :destroy]
 	before_filter :require_verified
 	
   # GET /assignments

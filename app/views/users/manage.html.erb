@@ -6,9 +6,9 @@
   <div class="form-inputs">
     <%= f.input :name %>
     <%= f.input :email %>
-    <%= f.hidden_field :password, :value => "abc123" %>
     <%= f.association :manager, :as => :select %>
     <%= f.input :admin %>
+    <%= f.input :isstatususer %>
   </div>
 
   <div class="form-actions">
@@ -16,5 +16,6 @@
   </div>
 <% end %>
 
+<%= link_to 'Reset Password', reset_user_path(@user.id) %>
 <%= link_to 'Show', @project %> |
 <%= link_to 'Back', projects_path %>

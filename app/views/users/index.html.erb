@@ -8,6 +8,7 @@
   <tr>
     <th>Name</th>
     <th>Admin?</th>
+    <th>Status User?</th>
     <th>Manager</th>
     <th>Verified</th>
     <th>Reset Pwd</th>
@@ -16,6 +17,7 @@
   <tr>
     <td><%= link_to user.name, user_path(user)  %></td>
     <td><%= user.admin.to_s %></td>
+    <td><%= user.isstatususer.to_s %></td>
     <td><%= user.manager.name if user.manager %></td>
     <td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
     <td><%= link_to 'Reset', reset_user_path(user.id), {:style => "color:blue;text-decoration : underline;"}  %></td>

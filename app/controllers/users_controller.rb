@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   #GET /users/:id/reset
   def reset
   	@user = User.find(params[:id])
-  	@user.password = 'password'
+  	@user.password = 'reset'
   	respond_to do |format|
 		if @user.save then
 			format.html { redirect_to users_path, notice: 'Password was reset' }
@@ -96,7 +96,7 @@ class UsersController < ApplicationController
   # PUT /user/1.json
   def update
     @user = User.find(params[:id])
-
+	puts "IN USER - Update method"
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }

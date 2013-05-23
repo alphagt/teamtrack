@@ -6,17 +6,17 @@ module ProjectsHelper
 		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
 		#get fixed assignments total
 		proj.assignments.where(:set_period_id => @cperiod, :is_fixed => true).each do |asn|
-			@total = @total + asn.effort
+			@total = @total + asn.effort.round(1)
 		end
-		@output += @total.round(1).to_s
+		@output += @total.to_s
 		puts 'FIXED STRING - '
 		puts @output
 		#get nitro assignments total
 		@total = 0
 		proj.assignments.where(:set_period_id => @cperiod, :is_fixed => false).each do |asn|
-			@total = @total + asn.effort
+			@total = @total + asn.effort.round(1)
 		end
-		@output += " | Nitro: " + @total.round(1).to_s
+		@output += " | Nitro: " + @total.to_s
 	end
 	def current_fiscal_week
 		@cweek_number = 0
@@ -41,9 +41,9 @@ module ProjectsHelper
 		SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
 			Assignment.where(:project_id => proj.id, :set_period_id => sp.id).each do |asn|
 				if asn.is_fixed then
-					@fixtotal = @fixtotal + asn.effort
+					@fixtotal = (@fixtotal + asn.effort).round(1)
 				else
-					@nitrototal = @nitrototal + asn.effort
+					@nitrototal = (@nitrototal + asn.effort).round(1)
 				end
 			end
 		end

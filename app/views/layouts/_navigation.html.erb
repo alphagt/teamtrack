@@ -21,10 +21,12 @@
       		<li>
       			<%= link_to('Assignments', assignments_path) %>
     		</li>
-      		<li>
+    	<% end %>
+    	<% if current_user.admin? | current_user.ismanager? %>
+    		      		<li>
       			<%= link_to('Users', users_path) %>
       		</li>
-    	<% end %>
+      	<% end %>
     <% end %>  
   <% else %>
     <li>

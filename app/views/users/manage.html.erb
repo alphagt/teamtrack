@@ -7,8 +7,14 @@
     <%= f.input :name %>
     <%= f.input :email %>
     <%= f.association :manager, :as => :select %>
-    <%= f.input :admin %>
-    <%= f.input :isstatususer %>
+    <% if current_user.admin %>
+    	<%= f.input :admin %>
+    	<%= f.input :ismanager %>
+    	<%= f.input :isstatususer %>
+    	<%= f.association :impersonates, :as => :select %>
+    <% end %>
+    
+
   </div>
 
   <div class="form-actions">

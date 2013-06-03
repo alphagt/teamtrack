@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	before_filter :authenticate_user!
-	before_filter :require_admin, :except => [:team, :show, :extendteam]
+	before_filter :require_manager, :except => [:team, :show, :extendteam]
 	before_filter :require_verified, :except => [:show]
 		
   def index
@@ -71,8 +71,13 @@ class UsersController < ApplicationController
   # GET /users/:id/team
   def team
   	@manager = User.find(params[:id])
+  	@manager_string = 'For ' + @manager.name
+  	if @manager.impersonates then
+  		@manager = @manager.impersonates
+  		@manager_string = '[On Behalf Of] ' + @manager.name	
+  	end
   	puts 'TEAM CONTROLER, manager is'  	
-  	puts @manager.name
+  	puts @manager_string
   end
   
   # GET /user/:id/extendteam

@@ -8,19 +8,25 @@
   <tr>
     <th>Name</th>
     <th>Admin?</th>
-    <th>Status User?</th>
     <th>Manager</th>
-    <th>Verified</th>
+    <th>Works on behalf of</th>
     <th>Reset Pwd</th>
+    <% if current_user.admin %>
+    	<th>Status User?</th>
+    	<th>Verified</th>
+    <% end %>
   </tr>
 <% @users.each do |user| %>
   <tr>
     <td><%= link_to user.name, user_path(user)  %></td>
     <td><%= user.admin.to_s %></td>
-    <td><%= user.isstatususer.to_s %></td>
     <td><%= user.manager.name if user.manager %></td>
-    <td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
+    <td><%= user.impersonates.name if user.impersonates %></td>
     <td><%= link_to 'Reset', reset_user_path(user.id), {:style => "color:blue;text-decoration : underline;"}  %></td>
+    <% if current_user.admin %>
+    	<td><%= user.isstatususer.to_s %></td>
+    	<td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

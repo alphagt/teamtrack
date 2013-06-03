@@ -3,6 +3,10 @@
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Manager: <%= @user.manager.name if @user.manager %></p>
 <p>Admin: <%= @user.admin %></p>
+<p>Manager: <%= @user.ismanager %></p>
+<% if @user.impersonates %>
+	<p>Works on behalf of: <%= @user.impersonates.name %></p>
+<% end %>
 <p>Status User: <%= @user.isstatususer %></p>
 <p> <%= link_to 'Edit account', manage_user_path(:id => @user.id) %></p>
 <br>

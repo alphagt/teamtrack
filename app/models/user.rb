@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
   belongs_to :manager, :class_name => "User"
+  belongs_to :impersonates, :class_name => "User", :foreign_key => "impersonate_manager"
   has_many :assignments
   has_many :projects, :through => :assignments
   # Include default devise modules. Others available are:
@@ -11,7 +12,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :admin, :password_confirmation, :remember_me
-  attr_accessible :ismanager, :manager, :manager_id, :verified, :isstatususer
+  attr_accessible :ismanager, :impersonates, :impersonate_manager, :manager, :manager_id, :verified, :isstatususer
 
   # def initialize(user)
 # 

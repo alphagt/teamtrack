@@ -7,7 +7,17 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.order("name")
-
+	require 'gchart'
+	@cdata = Assignment.where(:set_period_id => 26).sum(:effort, :group => :project_id).to_a
+	puts 'CHART DATA'
+	#puts @cdata.to_s
+	@clabels = []
+	@cvalues = []
+	@cdata.map! {|p,v| 
+		@clabels.push(Project.find(p).name)
+		@cvalues.push(v)}
+	puts @clabels.to_s
+	puts @cvalues.to_s
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

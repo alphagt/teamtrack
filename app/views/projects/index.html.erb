@@ -1,4 +1,8 @@
-<h1>Listing projects</h1>
+<h1>Projects</h1>
+<br />
+<div>
+<%= image_tag(Gchart.pie(:title => 'Current Allocations', :data => @cvalues, :legend => @clabels)) %>
+</div>
 <br />
 <table cellpadding="10">
 	<tr><%= if current_user.admin then link_to 'New Project', new_project_path end %></tr>

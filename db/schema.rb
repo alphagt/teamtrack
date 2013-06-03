@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(:version => 20130411170158) do
     t.boolean  "ismanager",              :default => false, :null => false
     t.integer  "manager_id"
     t.boolean  "verified",               :default => false
-    t.boolean  "isstatususer"			 :default => false
+    t.boolean  "isstatususer"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

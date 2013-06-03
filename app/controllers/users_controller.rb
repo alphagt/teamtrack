@@ -48,7 +48,12 @@ class UsersController < ApplicationController
   def createemp
   	puts 'TRY THIS:'
   	puts params[:user][:name]
-    @user = User.create_new_user(params[:user][:name], params[:user][:email], params[:user][:manager_id], params[:user][:password])
+  	if User.find_by_name(params[:name])
+  		@user = false
+  		redirect_to users_path, notice: 'User Already Exists.'
+  	else
+    	@user = User.create_new_user(params[:user][:name], params[:user][:email], params[:user][:manager_id], params[:user][:password])
+    end
     puts "RESULTS:::"
     puts @user
     respond_to do |format|
@@ -56,7 +61,8 @@ class UsersController < ApplicationController
         format.html { redirect_to users_path, notice: 'User was successfully created.' }
         format.json { render json: User.find_by_name(params[:name]), status: :created, location: User.find_by_name(params[:name]) }
       else
-        format.html { render action: "new" }
+      	@user = User.new
+        format.html { redirect_to users_path, notice: 'FAILED to create user.' }
         format.json { render json: User.errors, status: :unprocessable_entity }
       end
     end

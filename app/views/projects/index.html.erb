@@ -1,7 +1,7 @@
 <h1>Projects</h1>
 <br />
 <div>
-<%= image_tag(Gchart.pie(:title => 'Current Allocations', :data => @cvalues, :labels => @clabels)) %>
+<%= image_tag(Gchart.bar(:title => 'Current Allocations',:bar_colors => '76A4FB,CCCCCC', :data => @cvalues, :legend => @clabels, :size => '1000x200')) %>
 </div>
 <br />
 <table cellpadding="10">

@@ -47,6 +47,19 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
 
+	#Prep Chart Data
+	@clabels = []
+	@cvalues = []
+	@cdata = Assignment.sum(:effort, :conditions => ["project_id = ? AND set_period_id <= ?", @project.id, view_context.current_period()], :group => :set_period_id,
+		:order => ["set_period_id DESC"]).first(12)
+	puts 'Chart Data'
+	puts @cdata.to_s
+	@cdata.reverse!.map {|p,v|
+		@clabels.push(p.to_s)
+		@cvalues.push(v)}
+	puts 'Labels:'
+	puts @clabels.to_s	
+	#End prep chart data
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @project }

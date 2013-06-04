@@ -29,13 +29,16 @@
   <b>Budgeted Fixed Resources:</b>
   <%= @project.fixed_resource_budget %>
 </p>
-
-
+<br>
 <%= if current_user.admin then link_to 'Edit', edit_project_path(@project) end %> |
 <%= link_to 'Back', projects_path %>
+</br>
 
-<br>
 <h3>Assignment History</h3>
+<%= image_tag(Gchart.bar(:title => 'Effort History Past 12 Weeks', 
+	:labels => @clabels, :data => @cvalues, :size => '500x300', :chart_background => 'CCCCCC',
+	:bar_width_and_spacing => {:spacing => 15, :group_spacing => 20}, :bar_colors => '76A4FB'), 
+	:style => "margin:0 auto; border:1px solid blue; float:right;") %>
 <table border="1" cellpadding="10">
   <tr>
   	<h5>
@@ -55,4 +58,6 @@
     <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
   </tr>
 <% end %>
+
+
 </table>

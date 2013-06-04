@@ -7,17 +7,35 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.order("name")
+    @cdata = []
 	require 'gchart'
-	@cdata = Assignment.where(:set_period_id => 26).sum(:effort, :group => :project_id).to_a
-	puts 'CHART DATA'
-	#puts @cdata.to_s
-	@clabels = []
-	@cvalues = []
-	@cdata.map! {|p,v| 
-		@clabels.push(Project.find(p).name)
-		@cvalues.push(v)}
+	#Calculate and group fixed effort totals for chart
+	@cfdata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
+		view_context.current_period(),true,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
+	puts 'Fixed by Cat'
+	puts @cfdata.to_s
+    #Calculate and group Nitro effort totals for chart
+    @cndata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
+		view_context.current_period(),false,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
+	puts 'Nitro by Cat'
+	puts @cndata.to_s
+	@clabels = @cfdata.merge(@cndata).keys
+	@clabels.sort!
+	puts 'Labels Array'
 	puts @clabels.to_s
-	puts @cvalues.to_s
+	@tempfixed = []
+	@clabels.map {|l|
+		@tempfixed.push(@cfdata.fetch(l,0))}
+	#puts @tempfixed.to_s
+	@cdata.push(@tempfixed)
+	@tempnitro = []
+	@clabels.map {|l|
+		@tempnitro.push(@cndata.fetch(l,0))}
+	#puts @tempnitro.to_s
+	@cdata.push(@tempnitro)
+	puts 'Values Array'
+	puts @cdata.to_s
+	
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

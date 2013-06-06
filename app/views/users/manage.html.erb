@@ -16,12 +16,19 @@
     
 
   </div>
-
-  <div class="form-actions">
+<div class="form-actions">
+  <div style="float:left">
     <%= f.button :submit %>
   </div>
 <% end %>
-
-<%= link_to 'Reset Password', reset_user_path(@user.id) %>
+	<div style="float:left">
+	<%= button_to 'Remove User', {:controller => :users, :action => 'exit', :id => @user.id }, {:confirm => "Remove User Completely From TeamTrack?", :class => "btn" }  %>
+	</div>
+	<div style="float:left">
+	<%= button_to 'Reset Password', {:controller => :users, :action => 'reset', :id => @user.id}, {:method => :get, :class => "btn" }  %>
+	</div>
+</div>
+<div style="clear:left">
 <%= link_to 'Show', @project %> |
 <%= link_to 'Back', projects_path %>
+</div>

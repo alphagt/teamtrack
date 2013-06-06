@@ -21,6 +21,7 @@ TeamTrack::Application.routes.draw do
   	get 'team', :on => :member
   	get 'extendteam', :on => :member
   	post 'createemp', :on => :collection
+  	post 'exit', :on => :member
   end
 
   #match 'users/emp/create' => 'users#createemp', :as => :createemp

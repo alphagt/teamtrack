@@ -103,6 +103,39 @@ class UsersController < ApplicationController
   	redirect_to users_path 
   end
   
+  #PUT /user/:id/exit
+  def exit
+  	puts params
+	rcode =1
+	mUser = User.find(params[:id])
+	if mUser.subordinates.length > 0 then
+		rcode = 2
+	else
+		mUser.name += ' Ex'
+		mUser.manager = User.find_by_name("ExEmployeeMgr") #special user for collecting x employees under
+		mUser.admin = false
+		mUser.is_manager = false
+		if mUser.save then
+			rcode = 0
+		end
+	end
+	respond_to do |format|
+      if rcode == 0
+        format.html { redirect_to mUser, notice: 'User was successfully removed.' }
+        format.json { head :no_content }
+      else
+        if rcode == 1
+        	format.html { redirect_to mUser, notice: 'ERROR attempting to remove user' }
+        	format.json { render json: mUser.errors, status: :unprocessable_entity }
+        end
+        if rcode = 2
+        	format.html { redirect_to team_user_path(mUser), notice: 'User has current subordinates! Reassign them before removing this user' }
+        	format.json { render json: mUser.errors, status: :unprocessable_entity }
+        end
+      end
+    end	 
+  end
+  
   # PUT /user/1
   # PUT /user/1.json
   def update

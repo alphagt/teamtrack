@@ -1,3 +1,17 @@
 @import "bootstrap";
 body { padding-top: 60px; }
 @import "bootstrap-responsive";
+
+//custom classes
+input.btn[type="submit"] {
+	float:left;
+	margin:0 10px 10px 0;
+}
+.user_nav div, .user_nav input, .user_nav input[type="submit"] {
+
+  display: inline-block;
+
+}
+.form-actions {
+	float:left;
+}

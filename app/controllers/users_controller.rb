@@ -114,7 +114,7 @@ class UsersController < ApplicationController
 		mUser.name += ' Ex'
 		mUser.manager = User.find_by_name("ExEmployeeMgr") #special user for collecting x employees under
 		mUser.admin = false
-		mUser.is_manager = false
+		mUser.ismanager = false
 		if mUser.save then
 			rcode = 0
 		end

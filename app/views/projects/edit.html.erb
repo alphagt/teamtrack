@@ -2,5 +2,14 @@
 
 <%= render 'form' %>
 
+
+<div style="float:left">
+	<% if @project.active %>
+		<%= button_to 'Archive Project', {:controller => :projects, :action => 'archive', :id => @project.id}, {:method => :get, :class => "btn" }  %>
+	<% end %>
+</div>
+</div>
+<div style="clear:left">
 <%= link_to 'Show', @project %> |
 <%= link_to 'Back', projects_path %>
+</div>

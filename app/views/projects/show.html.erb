@@ -30,11 +30,18 @@
   <%= @project.fixed_resource_budget %>
 </p>
 <br>
-<%= if current_user.admin then link_to 'Edit', edit_project_path(@project) end %> |
+<% if current_user.admin %>
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<% end %>
 <%= link_to 'Back', projects_path %>
 </br>
 
 <h3>Assignment History</h3>
+<% if @project.assignments.where(["set_period_id <= ?", current_period()]).count == 0 %>
+	<br>
+	<h4>No Assignments for this project<h4>
+	</br>
+<% else %>
 <%= image_tag(Gchart.bar(:title => 'Effort History Past 12 Weeks', 
 	:labels => @clabels, :data => @cvalues, :size => '500x300', :chart_background => 'CCCCCC',
 	:bar_width_and_spacing => {:spacing => 15, :group_spacing => 20}, :max_value => @cvalues.max + 5,
@@ -49,7 +56,7 @@
     <th>Type</th>
     </h5>
   </tr>
-<% @project.assignments.each do |assignment| %>
+<% @project.assignments.order("set_period_id DESC").each do |assignment| %>
   <tr>
     <td><%= assignment.user.name %></td>
     <td><%= assignment.set_period.fiscal_year %></td>
@@ -61,3 +68,4 @@
 
 
 </table>
+<% end %>

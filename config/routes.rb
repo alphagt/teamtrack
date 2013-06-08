@@ -6,7 +6,9 @@ TeamTrack::Application.routes.draw do
   	get 'extend', :on => :member
   end
 
-  resources :projects
+  resources :projects do
+  	get 'archive', :on => :member
+  end
 
   authenticated :user do
   	root :to => 'home#index'

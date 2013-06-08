@@ -2,6 +2,8 @@
 
 <%= render 'form' %>
 
+<div style="clear:left">
 <%= link_to 'Show', @assignment %> |
 <%= link_to 'Back', assignments_path %> |
 <%= link_to 'Destroy', @assignment, method: :delete, data: { confirm: 'Are you sure?' } %>
+</div>

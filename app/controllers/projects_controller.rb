@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.order("name")
+    @projects = Project.order("category","name")
     @cdata = []
 	require 'gchart'
 	#Calculate and group fixed effort totals for chart
@@ -70,7 +70,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
-
+	
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @project }
@@ -86,7 +86,8 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = Project.new(params[:project])
-
+	@project.active = true
+	
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
@@ -114,6 +115,22 @@ class ProjectsController < ApplicationController
     end
   end
 
+  # GET /projects/1/archive
+  def archive
+  	@project = Project.find(params[:id])
+  	@project.active = false
+  	@project.fixed_resource_budget = 0
+  	@project.category = "Archived"
+  	respond_to do |format|
+      if @project.save
+        format.html { redirect_to @project, notice: 'Project was successfully archived.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "archive" }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
+  end
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy

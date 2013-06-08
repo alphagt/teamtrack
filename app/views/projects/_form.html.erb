@@ -3,7 +3,11 @@
 
   <div class="form-inputs">
     <%= f.input :name %>
-    <%= f.input :active %>
+    <% if @project.active %>
+    	<h4>Status:  Active<h4>
+    <% else %>
+    	<h4>Status:  In-Active<h4>
+    <% end %>
     <%= f.association :owner, :as => :select %>
     <%= f.input :description %>
     <%= f.input :fixed_resource_budget %>
@@ -11,6 +15,7 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+  	<div style="float:left">
+    	<%= f.button :submit %>
+  	</div>
 <% end %>

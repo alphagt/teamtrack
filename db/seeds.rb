@@ -108,6 +108,9 @@ speriod = SetPeriod.create! :fiscal_year => '2014', :week_number => '52', :cweek
 
 puts 'END DATE PERIOD SETUP'
 
+
+
+
 #Default User
 puts 'SETTING UP DEFAULT USER LOGIN'
 user = User.create! :name => 'Ken Toole', :email => 'ktoole@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'

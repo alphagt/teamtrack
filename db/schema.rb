@@ -66,5 +66,6 @@ ActiveRecord::Schema.define(:version => 20130604073208) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+  add_index "set_periods", ["fiscal_year","week_number"], :name => "index_set_periods_on_week_number", :unique => true
 
 end

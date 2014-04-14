@@ -23,7 +23,7 @@
     <th/>
     </h5>
   </tr>
-<% @user.assignments.each do |assignment| %>
+<% @user.assignmentsorder("set_period_id").each do |assignment| %>
   <tr>
     <td><%= assignment.project.name %></td>
     <td><%= assignment.set_period.fiscal_year %></td>

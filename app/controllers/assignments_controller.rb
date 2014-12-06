@@ -29,8 +29,8 @@ class AssignmentsController < ApplicationController
   # GET /assignments/:uid/new.json
   def new
     @manager = current_user
-    @assignment = Assignment.new
-    @usecweek = true
+    @assignment = Assignment.new  
+    @usecweek = false  #ToReview
     if params[:uid] then
     	@assignment.user = User.find(params[:uid].to_s)
     	puts @assignment.user

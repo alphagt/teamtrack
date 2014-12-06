@@ -1,9 +1,10 @@
 module ProjectsHelper
 
 	def current_allocation(proj)
+	#ToReview
 		@total = 0
 		@output = "Fixed: "
-		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
+		@cperiod = current_period() #SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
 		#get fixed assignments total
 		proj.assignments.where(:set_period_id => @cperiod, :is_fixed => true).each do |asn|
 			@total = @total + asn.effort.round(1)
@@ -19,27 +20,33 @@ module ProjectsHelper
 		@output += " | Nitro: " + @total.to_s
 	end
 	def current_fiscal_week
-		@cweek_number = 0
-		@fyear = Date.today.year 
-		if Date.today.mon == 12 then
-			@fyear = @fyear + 1
-			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
-			@cweek_number = Date.today.cweek + @cfy_offset - 52
-		else
-			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
-			@cweek_number = Date.today.cweek + @cfy_offset
-		end
-		puts 'CURRENT CWEEK Number: '
-		puts  @cweek_number
-		@cweek_number
+		@pFy = current_period.to_i
+		((current_period() - @pFy) * 100).round
+#		@cweek_number = 0
+#		@fyear = Date.today.year 
+#			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
+#			@cweek_number = Date.today.cweek + @cfy_offset - 52
+#		else
+#			@cfy_offset = SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
+#			@cweek_number = Date.today.cweek + @cfy_offset
+#		end
+#		puts 'CURRENT CWEEK Number: '
+#		puts  @cweek_number
+#		@cweek_number
 	end
 	def ytd_allocation(proj)
+	#ToFIX
 		@fixtotal = 0
 		@nitrototal = 0
 		@output = "Fixed: "
-		#@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
-		SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
-			Assignment.where(:project_id => proj.id, :set_period_id => sp.id).each do |asn|
+		@cperiod = current_period() #SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
+		@pFy = @cperiod.to_i
+		@fWeek = ((@cperiod - @pFy) * 100).round
+		#ReDesign The following ....
+		#SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
+		for iWeek in 1..@fWeek
+			@cP = @pFy.to_f + (iWeek.to_f / 100)
+			Assignment.where(:project_id => proj.id, :set_period_id => @cP.round(2)).each do |asn|
 				if asn.is_fixed then
 					@fixtotal = (@fixtotal + asn.effort).round(1)
 				else
@@ -50,4 +57,5 @@ module ProjectsHelper
 		@output = @output + @fixtotal.to_s
 		@output += " | Nitro: " + @nitrototal.to_s
 	end
+
 end

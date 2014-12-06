@@ -7,12 +7,12 @@
 
 <p>
   <b>Fiscal year:</b>
-  <%= @assignment.set_period.fiscal_year %>
+  <%= @assignment.set_period_id.floor %>
 </p>
 
 <p>
   <b>Week:</b>
-  <%= period_to_date(@assignment.set_period) %>
+  <%= period_to_date(@assignment.set_period_id) %>
 </p>
 
 <p>

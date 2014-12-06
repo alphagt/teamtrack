@@ -1,16 +1,12 @@
 <%= simple_form_for(@assignment) do |f| %>
   <%= f.error_notification %>
-
   <div class="form-inputs">
     <%= if @assignment.user then link_to "Resource: " + @assignment.user.name, user_path(@assignment.user) end %>
     <br/>
     <br/>
     <%= if @showFixedCbox then f.input :is_fixed end %>
-    <%= f.label "Period" %>
-    <%= if @usecweek 
-    	then f.collection_select :set_period_id, period_list() , :id, :period_name, :label => "Period", :selected => current_period().id 
-    	else period_to_date(@assignment.set_period)
-    	end %>
+    <%= f.label "Period:" %>
+    <%= f.hidden_field :set_period_id, :value => current_period() %>
     <br/>
     <br/>
     <%= f.input :effort %>

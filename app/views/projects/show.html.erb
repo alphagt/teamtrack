@@ -59,8 +59,8 @@
 <% @project.assignments.order("set_period_id DESC").each do |assignment| %>
   <tr>
     <td><%= assignment.user.name %></td>
-    <td><%= assignment.set_period.fiscal_year %></td>
-    <td><%= period_to_date(assignment.set_period) %></td>
+    <td><%= assignment.set_period_id.floor %></td>
+    <td><%= period_to_date(assignment.set_period_id) %></td>
     <td><%= assignment.effort %></td>
     <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
   </tr>

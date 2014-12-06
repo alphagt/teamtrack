@@ -26,12 +26,12 @@
 <% @user.assignments.order("set_period_id").each do |assignment| %>
   <tr>
     <td><%= assignment.project.name %></td>
-    <td><%= assignment.set_period.fiscal_year %></td>
-    <td><%= period_to_date(assignment.set_period) %></td>
+    <td><%= assignment.set_period_id.floor %></td>
+    <td><%= period_to_date(assignment.set_period_id) %></td>
     <td><%= assignment.effort %></td>
     <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
-    <td><%= if assignment.set_period_id >= current_period.id then link_to 'Edit', edit_assignment_path(assignment) end %></td>
-    <td><%= if assignment.set_period_id >= current_period.id - 1 then link_to 'Extend for a week', extend_assignment_path(assignment) else "Closed" end %></td>
+    <td><%= if assignment.set_period_id >= current_period then link_to 'Edit', edit_assignment_path(assignment) end %></td>
+    <td><%= if assignment.set_period_id >= current_period - 0.01 then link_to 'Extend for a week', extend_assignment_path(assignment) else "Closed" end %></td>
   </tr>
 <% end %>
 </table>

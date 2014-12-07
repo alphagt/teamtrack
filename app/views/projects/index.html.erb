@@ -1,6 +1,8 @@
 <h1>Projects</h1>
 <br />
-
+<div>
+<%= image_tag(Gchart.bar(:title => 'Current Allocations by Category',:bar_colors => '76A4FB,CCCCCC', :bar_width_and_spacing => {:width => 60, :spacing => 40, :group_spacing => 20}, :data => @cdata, :labels => @clabels, :legend => ["Fixed","Nitro"], :size => '1000x200')) %>
+</div>
 <br />
 <table cellpadding="10">
 	<tr><%= if current_user.admin then link_to 'New Project', new_project_path end %></tr>

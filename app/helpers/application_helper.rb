@@ -7,10 +7,10 @@ module ApplicationHelper
 		#	Date.commercial(speriod.fiscal_year - 1,speriod.week_number - speriod.cweek_offset - 1,1)
 		#end
 		@pPeriod = speriod.to_f
-		puts @pPeriod.to_s
+		#puts @pPeriod.to_s
 		@pFy = speriod.to_i
 		@fWeek = ((@pPeriod - @pFy) * 100).round
-		puts @fWeek
+		#puts @fWeek
 		if @fWeek <= 4
 			@pFy -= 1
 			@cWeek = 52 - (4 - @fWeek)
@@ -22,7 +22,7 @@ module ApplicationHelper
 
 	def period_from_parts(iFy, iWeek)
 		@fWeek = iWeek.to_f / 100
-		puts @fWeek
+		#puts @fWeek
 		@fWeek
 	end
 	
@@ -78,8 +78,8 @@ module ApplicationHelper
 			@cfy_offset = 4 #SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
 			@cweek_number = Date.today.cweek + @cfy_offset
 		end
-		puts 'CURRENT CWEEK Number: '
-		puts  @cweek_number
+		#puts 'CURRENT CWEEK Number: '
+		#puts  @cweek_number
 		@fyear + @cweek_number.fdiv(100)
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end

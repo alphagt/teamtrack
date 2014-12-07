@@ -15,7 +15,7 @@
 <% if @manager.admin then %>
 <% @assignments.each do |a| %>
   <tr>
-    <td><%= link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} %></td>
+    <td><%= if a.project then link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} else "ERROR" end %></td>
     <td><%= if a.user then a.user.name else "ERROR" end %></td>
     <td><%= period_to_date(a.set_period_id) %></td>
     <td><%= a.effort %></td>

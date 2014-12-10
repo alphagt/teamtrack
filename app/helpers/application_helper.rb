@@ -32,7 +32,8 @@ module ApplicationHelper
 		puts "MANAGER IS-" + @m.name
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
-			@return = @m.subordinates
+			@exId = User.find_by_name("ExEmployeeMgr").id
+			@return = @m.subordinates.where('id != ?', @exId)
 			# puts "Return Length - " 
 # 			puts @return.length
 			@m.subordinates.each do |s|

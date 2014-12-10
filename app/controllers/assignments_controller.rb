@@ -6,7 +6,8 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.order("project_id,set_period_id DESC,user_id")
+  	#ToDo - limit the list here to current FY?
+  	@assignments = Assignment.where('set_period_id > ?', view_context.current_period().floor).order("project_id,set_period_id DESC,user_id")
 	@manager = current_user
     respond_to do |format|
       format.html # index.html.erb

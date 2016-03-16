@@ -81,7 +81,7 @@ module ApplicationHelper
 		end
 		#puts 'CURRENT CWEEK Number: '
 		#puts  @cweek_number
-		@fyear + @cweek_number.fdiv(100)
+		@fyear + @cweek_number.fdiv(100).round(3)
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
 	

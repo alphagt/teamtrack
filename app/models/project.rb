@@ -6,7 +6,7 @@ class Project < ActiveRecord::Base
 
 	def under_budget(weekid)
 		tEffort = 0
-		assignments.where(:set_period_id => weekid).each do |a|
+		assignments.where(:set_period_id.round(3) => weekid).each do |a|
 			tEffort += a.effort
 		end
 		fixed_resource_budget > tEffort

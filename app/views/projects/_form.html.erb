@@ -1,21 +1,30 @@
 <%= simple_form_for(@project) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <% if @project.active %>
-    	<h4>Status:  Active<h4>
-    <% else %>
-    	<h4>Status:  In-Active<h4>
-    <% end %>
-    <%= f.association :owner, :as => :select %>
-    <%= f.input :description %>
-    <%= f.input :fixed_resource_budget %>
-    <%= f.input :category %>
-  </div>
+  <div class="form-group">
+	<row>
+		<% if !@project.name.nil? %>
+			<% if @project.active %>
+					<h4>Status:  Active</h4>
+			<% else %>
+					<h4>Status:  In-Active</h4>
+			<% end %>
+		<% end %>
+		<br/>
+		<%= f.input :name, :autofocus => true, label: "Name"  %>
+		<%= f.association :owner, :as => :select, label: "Owner" %>	
+		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
+		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget" %>
+		<%= f.input :category, inline_label: 'SLC Category', label: "UPL Category" %>
+		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
+		<br/>	
+		<div class="form-actions">
+  			<div style="float:left">
+    			<%= f.button :submit %>
+  			</div>
+  		</div>
+  	</row>
 
-  <div class="form-actions">
-  	<div style="float:left">
-    	<%= f.button :submit %>
-  	</div>
+  </div>
+  
 <% end %>

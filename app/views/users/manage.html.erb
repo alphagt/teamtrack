@@ -1,34 +1,54 @@
 <h1>Editing User Attributes</h1>
 
-<%= simple_form_for @user do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :email %>
-    <%= f.association :manager, :as => :select %>
-    <% if current_user.admin %>
-    	<%= f.input :admin %>
-    	<%= f.input :ismanager %>
-    	<%= f.input :isstatususer %>
-    	<%= f.association :impersonates, :as => :select %>
-    <% end %>
-    
-
-  </div>
-<div class="form-actions">
-  <div style="float:left">
-    <%= f.button :submit %>
-  </div>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "team"} %>
 <% end %>
-	<div style="float:left">
-	<%= button_to 'Remove User', {:controller => :users, :action => 'exit', :id => @user.id }, {:confirm => "Remove User Completely From TeamTrack?", :class => "btn" }  %>
+
+<% content_for :main1 do %>
+	<%= simple_form_for @user do |f| %>
+	  <%= f.error_notification %>
+
+	  <div class="form-group">
+	  	<row>
+	  	<div class="col-md-4">
+	  		
+			<%= f.input :name %>
+			<%= f.input :email %>
+			<%= f.association :manager, :as => :select %>
+			<%= f.association :default_system, :as => :select %>
+			<br>
+			<div class="form-actions">
+		  		<div style="float:left">
+					<%= f.button :submit %>
+		  		</div>
+		  	</div>
+		</div>
+		<div class="col-md-4">
+			<% if current_user.admin %>
+				<b>Admin Options:</b>
+				<br/>
+				<br/>
+				<%= f.association :impersonates, :as => :select %>
+				<div class="checkbox">
+					<%= f.input :admin, inline_label: 'Is Admin', label: false %>
+					<%= f.input :ismanager,inline_label: 'Is Manager', label: false %>
+					<%= f.input :isstatususer, inline_label: 'Is Status User', label: false %>			
+				</div>
+			<% end %>
+		  </div>
+		</row>
+	  </div>
+	<% end %>
+
 	</div>
-	<div style="float:left">
-	<%= button_to 'Reset Password', {:controller => :users, :action => 'reset', :id => @user.id}, {:method => :get, :class => "btn" }  %>
-	</div>
-</div>
-<div style="clear:left">
-<%= link_to 'Show', @project %> |
-<%= link_to 'Back', projects_path %>
-</div>
+	<% end %>
+<% content_for :sidebarwide do %>
+	<table class="table">
+		<tr>
+			<td class="danger"><%= link_to 'Remove User', {:controller => :users, :action => 'exit', :id => @user.id }, {:confirm => "Remove User Completely From TeamTrack?"}%></td>
+		<tr>
+			<td class="danger"><%= link_to 'Reset Password', {:controller => :users, :action => 'reset', :id => @user.id}, {:method => :get}%></td>
+		<tr>
+			<td class="danger"><%= link_to 'Back', team_user_path(current_user) %></td>
+	</table>
+<% end %>

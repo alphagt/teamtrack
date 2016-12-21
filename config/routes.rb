@@ -1,6 +1,5 @@
 TeamTrack::Application.routes.draw do
 
-
   resources :assignments do
   	#get 'new', :on => :member
   	get 'extend', :on => :member
@@ -9,9 +8,13 @@ TeamTrack::Application.routes.draw do
   resources :projects do
   	get 'archive', :on => :member
   end
-
+  
+  resources :tech_systems do
+  	get 'archive', :on => :member
+  end
+  
   authenticated :user do
-  	root :to => 'home#index'
+  	#root :to => 'home#index'
   end
   root :to => "home#index"
   devise_for :users

@@ -1,17 +1,27 @@
 <h1>Team Members <%= @manager_string %></h1>
 <br/>
-<table cellpadding="10">
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "team"} %>
+<% end %>
+<% content_for :sidebar do %>
+<table class="table" >
 	<tr>
-		<td><%= link_to 'New Assignment', new_assignment_path %></td>
-		<td><%= link_to 'Extend all one week', extendteam_user_path(@manager) %></td>
+		<td class="danger"><%= link_to 'New Assignment', new_assignment_path %></td>
 	<tr>
+		<td class="danger"><%= link_to 'Extend all one week', extendteam_user_path(@manager) %></td>
+	<tr>
+		<td class="danger"><%= if @manager != current_user then link_to 'Full Team', team_user_path(:id => current_user.id) end %></td>
 </table>
+<% end %>
 <br/>
-<table border="1" cellpadding="10">
+<% content_for :main1 do %>
+<table class="table">
   <tr>
     <th>Manager</th>
     <th>Name</th>
+    <th>Primary System</th>
     <th>Current Projects</th>
+    <th></th>
     <th></th>
   </tr>
 
@@ -19,11 +29,14 @@
   <tr>
   	<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
     <td><%= user.name %></td>
+    <td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
     <td><%= if user.projects.length > 0 then current_project(user) end %></td>
-    <td><%= link_to 'Details', user_path(user) %></td>
+    <td class="danger"><%= link_to 'Details', user_path(user) %></td>
+    <% if current_user.admin %>
+    	<td class="danger"><%= link_to 'Edit', manage_user_path(user) %></td>
+    <% end %>
   </tr>
 <% end %>
 </table>
 <br/>
-
-<%= if @manager != current_user then link_to 'Full Team', team_user_path(:id => current_user.id) end %>
+<% end %>

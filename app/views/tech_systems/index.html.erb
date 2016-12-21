@@ -1,0 +1,57 @@
+<h1>TechSystems#index</h1>
+<br />
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "systems"} %>
+<% end %>
+
+<% if current_user.admin %>
+	<% content_for :sidebar do %>
+	<table class="table">
+		<tr>
+		<td class="danger"><%= link_to 'New-System', new_tech_system_path %></td>
+	</table>
+	<% end %>
+<% end %>
+
+<% content_for :main1 do %>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>QoS Group</th>
+    <th>Owner</th>
+    <% if current_user.admin %>
+    	<th></th>
+    	<th></th>
+    <% end %>
+  </tr>
+<% @techsystems.each do |tsystem|  %>
+  <% if tsystem.qos_group != "Archived" %>
+	  <tr>
+		<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
+		<td><%= tsystem.description %></td>
+		<td><%= tsystem.qos_group %></td>
+		<td><%= tsystem.owner.name %></td>
+		<% if current_user.admin %>
+			<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
+			<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
+		<% end %> 
+	  </tr>  
+  <% end %>
+<% end %>
+<% if current_user.admin %>
+	<% @techsystems.where(:qos_group => 'Archived').each do |tsystem| %>
+  		<tr>
+		<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
+		<td><%= tsystem.description %></td>
+		<td><%= tsystem.qos_group %></td>
+		<td><%= tsystem.owner.name %></td>
+		<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
+		<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
+	  	</tr> 
+	<% end %>
+<% end %> 
+
+</table>
+<% end %>
+

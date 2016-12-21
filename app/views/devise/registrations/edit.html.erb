@@ -1,17 +1,31 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
-<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :name, :autofocus => true %>
-  <%= f.input :email, :required => true %>
-  <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
-  <%= f.input :password_confirmation, :required => false %>
-  <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>
-  <%= f.button :submit, 'Update', :class => 'btn-primary' %>
+
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "account"} %>
 <% end %>
-<div style="clear:left">
-<% if current_user.admin %>
-<h3>Cancel my account</h3>
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %>.</p>
+
+<% content_for :main1 do %>
+
+
+
+	<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+	  <%= f.error_notification %>
+	  <%= f.input :name, :autofocus => true %>
+	  <%= f.input :email, :required => true %>
+	  <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
+	  <%= f.input :password_confirmation, :required => false %>
+	  <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>
+	  <%= f.button :submit, 'Update', :class => 'btn-primary' %>
+	<% end %>
 <% end %>
-<%= link_to "Back", :back %>
-</div>
+
+<% content_for :sidebar do %>
+	<table class="table">
+		<% if current_user.admin %>
+			<tr>
+			<td class="danger" ><%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %></td>
+		<% end %>
+		<tr>
+			<td class="danger" ><%= link_to "Back", :back %> </td>
+	</table>
+<% end %>

@@ -2,16 +2,24 @@
 	:url => url_for(:action => 'createemp', :controller => 'users') do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :email %>
-    <%= f.hidden_field :password, :value => "abc123" %>
-    <%= f.association :manager, :as => :select %>
-    <%= f.input :admin %>
-    <%= f.input :isstatususer %>
+  <div class="form-group">
+  	<row>
+  		<div class="col-md-10">
+			<%= f.input :name, :autofocus => true %>
+			<%= f.input :email, :required => true %>
+			<%= f.hidden_field :password, :value => "abc123" %>
+			<%= f.association :manager, :as => :select %>
+			<%= f.association :default_system, :as => :select %>
+			<div class="checkbox">
+				<%= f.input :admin, :type => 'checkbox', :class => 'form-control', :id => 'adminCB' %>
+				<%= f.input :isstatususer %>
+  			</div>
+			<div class="form-actions">
+				<%= f.button :submit %>
+			</div>
+		</div>
+  	</row>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+  
 <% end %>

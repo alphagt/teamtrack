@@ -1,7 +1,18 @@
 <h1>New assignment</h1>
-
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "assignments"} %>
+<% end %>
+<% content_for :main1 do %>
 <%= render 'form' %>
+<% end %>
 
-<div style="clear:left">
-<%= link_to 'Back', team_user_path(current_user) %>
-</div>
+<table class="table" >
+	<tr>
+		<td class="danger"><%= link_to 'Back', team_user_path(current_user) %></td>
+</table>
+<% content_for :sidebar do %>
+<table class="table" >
+	<tr>
+		<td class="danger"><%= link_to 'Back', team_user_path(current_user) %></td>
+</table>
+<% end %>

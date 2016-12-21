@@ -7,7 +7,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments.json
   def index
   	#ToDo - limit the list here to current FY?
-  	@assignments = Assignment.where('set_period_id > ?', view_context.current_period().floor).order("project_id,set_period_id DESC,user_id")
+  	@assignments = Assignment.where('set_period_id > ?', view_context.current_period().to_f().floor).order("project_id,set_period_id DESC,user_id")
 	@manager = current_user
     respond_to do |format|
       format.html # index.html.erb
@@ -30,7 +30,8 @@ class AssignmentsController < ApplicationController
   # GET /assignments/:uid/new.json
   def new
     @manager = current_user
-    @assignment = Assignment.new  
+    @assignment = Assignment.new 
+    @newuser = User.new 
     @usecweek = false  #ToReview
     if params[:uid] then
     	@assignment.user = User.find(params[:uid].to_s)
@@ -45,6 +46,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find(params[:id])
+    @newuser = User.new
     if current_user.admin? then
     	@showFixedCbox = true
     end
@@ -53,6 +55,29 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
+    #convert to set_period_id
+    puts 'create assignment with date:'
+    puts params[:assignment][:set_period_id].to_s
+    @inputDate = Date.parse(params[:assignment][:set_period_id])
+    puts @inputDate.to_s
+    params[:assignment][:set_period_id] = view_context.period_from_date(@inputDate)
+    
+    #handle in-line user creation
+    #puts params[:newuser].length
+    if params[:newuser].length > 0 then
+    	puts 'in-line User Create'
+    	@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@adobe.com'
+    	puts @fakeEmail
+    	@nUser = User.create! :name => params[:newuser][0][:name], 
+    		:email =>  @fakeEmail, :verified => false, 
+    		:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
+    		:default_system_id => params[:assignment][:tech_sys_id], :admin => false
+    	@nUser.save
+    	puts @nUser
+    	params[:assignment][:user_id] = @nUser.id
+    end 
+    puts 'converted to period:'
+    puts params[:assignment][:set_period_id]
     @assignment = Assignment.new(params[:assignment])
     @usecweek = true
 	if @assignment.project.under_budget(@assignment.set_period_id) then
@@ -77,7 +102,7 @@ class AssignmentsController < ApplicationController
   # PUT /assignments/1.json
   def update
     @assignment = Assignment.find(params[:id])
-
+	@newuser = User.new
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }

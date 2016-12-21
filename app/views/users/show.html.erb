@@ -1,14 +1,19 @@
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "user"} %>
+<% end %>
+<% content_for :main1 do %>
 <h3>User</h3>
 <p>User: <%= @user.name %></p>
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Manager: <%= @user.manager.name if @user.manager %></p>
+<p>Default System: <%= @user.default_system.name if @user.default_system %></p>
 <p>Admin: <%= @user.admin %></p>
 <p>Manager: <%= @user.ismanager %></p>
 <% if @user.impersonates %>
 	<p>Works on behalf of: <%= @user.impersonates.name %></p>
 <% end %>
 <p>Status User: <%= @user.isstatususer %></p>
-<p> <%= link_to 'Edit account', manage_user_path(:id => @user.id) %></p>
+
 <br>
 <h3>Assignment History</h3>
 <table border="1" cellpadding="10">
@@ -35,8 +40,19 @@
   </tr>
 <% end %>
 </table>
+<% end %>
 <br>
-<%= link_to 'New Assignment', new_assignment_path(:uid => @user.id) %> |
-<%= link_to 'Back to Team', team_user_path(current_user) %>
+<% content_for :sidebar do %>
+<table class="table" >
+	<tr>
+		<td class="danger"><%= link_to 'New Assignment', new_assignment_path(:uid => @user.id) %></td>
+	<tr>
+		<td class="danger"><%= link_to 'Edit account', manage_user_path(:id => @user.id) %></td>
+	<tr>
+		<td class="danger"><%= link_to 'Back to Team', team_user_path(current_user) %></td>
+</table>
+<% end %>
+
+
 
 

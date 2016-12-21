@@ -1,36 +1,80 @@
-<%= link_to "My Team", root_path, :class => 'brand' %>
-<ul class="nav">
+<nav class="navbar navbar-default" role="navigation">
+	
+
+<ul class="nav nav-pills" role="tablist">
   <% if user_signed_in? %>
     <li>
     <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
     </li>
   <% else %>
-    <li>
+    <% if active == "login" %>
+    	<li class="active">
+    <% end %>
     <%= link_to('Login', new_user_session_path)  %>  
     </li>
   <% end %>
   <% if user_signed_in? %>
-    <li>
+    <% if active == "account" %>
+    	<li class="active" >
+    <% else %>
+    	<li>
+    <% end %>
       <%= link_to('Edit account', edit_user_registration_path) %>
     </li>
 	<% if current_user.verified? %>
-    	<li>
-      		<%= link_to('Projects', projects_path) %>
+    	<% if active == "projects" %>
+    		<li class="active" >
+    	<% else %>
+    		<li>
+    	<% end %>
+      	<%= link_to('Projects', projects_path) %>
       	</li>
+      	
+      	<% if active == "systems" %>
+    		<li class="active" >
+    	<% else %>
+    		<li>
+    	<% end %>
+      	<%= link_to('Systems', tech_systems_path) %>
+      	</li>
+      	
+      	<% if active == "team" %>
+    		<li class="active" >
+    	<% else %>
+    		<li>
+    	<% end %>
+      	<%= link_to('Team', root_path) %>
+      	</li>
+      	
     	<% if current_user.admin? %>
-      		<li>
-      			<%= link_to('Assignments', assignments_path) %>
+      		<% if active == "assignments" %>
+    			<li class="active" >
+    		<% else %>
+    			<li>
+    		<% end %>
+      		<%= link_to('Assignments', assignments_path) %>
     		</li>
     	<% end %>
+    	
     	<% if current_user.admin? | current_user.ismanager? %>
-    		      		<li>
-      			<%= link_to('Users', users_path) %>
+    		<% if active == "users" %>
+    			<li class="active" >
+    		<% else %>
+    			<li>
+    		<% end %>
+      		<%= link_to('Users', users_path) %>
       		</li>
       	<% end %>
     <% end %>  
   <% else %>
-    <li>
-      <%= link_to('Admin', new_user_registration_path)  %>
+  	<% if active == "admin" %>
+    		<li class="active" >
+    <% else %>
+    		<li>
+    <% end %>
+    <%= link_to('Admin', new_user_registration_path)  %>
    	</li>
   <% end %>
 </ul>
+</nav>
+<br/>

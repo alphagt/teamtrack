@@ -1,12 +1,24 @@
 <h3>User List</h3>
+
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "users"} %>
+<% end %>
+
 <br/>
-<table cellpadding="10">
-  <tr><%= link_to 'New User', new_user_path %></tr>
+<% content_for :sidebar do %>
+<table class="table">
+  <tr>
+  <td class="danger"><%= link_to 'New User', new_user_path %></td>
+
 </table>
+<% end %>
+
 <br/>
-<table border="1" cellpadding="10">
+<% content_for :main1 do %>
+<table class="table">
   <tr>
     <th>Name</th>
+    <th>Default System</th>
     <th>Admin?</th>
     <th>Manager</th>
     <th>Works on behalf of</th>
@@ -19,6 +31,7 @@
 <% @users.each do |user| %>
   <tr>
     <td><%= link_to user.name, user_path(user)  %></td>
+    <td><%= if user.default_system_id.nil? then "Undefined" else user.default_system.name end %></td>
     <td><%= user.admin.to_s %></td>
     <td><%= user.manager.name if user.manager %></td>
     <td><%= user.impersonates.name if user.impersonates %></td>
@@ -30,4 +43,5 @@
   </tr>
 <% end %>
 </table>
+<% end %>
 

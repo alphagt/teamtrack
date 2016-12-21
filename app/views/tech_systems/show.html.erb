@@ -1,0 +1,38 @@
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "systems"} %>
+<% end %>
+
+
+<% content_for :sidebar do %>
+	<table class="table">
+	<% if current_user.admin %>
+		<tr>
+			<td class="danger"><%= link_to 'Edit', edit_tech_system_path(@system) %></td> 
+	<% end %>
+	<tr>
+		<td class="danger"><%= link_to 'Back', tech_systems_path %></td>
+	</table>
+<% end %> 
+
+<% content_for :main1 do %>
+	<br/>
+	<p>
+	  <b>Name:</b>
+	  <%= @system.name %>
+	</p>
+
+	<p>
+	  <b>QoS Group</b>
+	  <%= @system.qos_group %>
+	</p>
+
+	<p>
+	  <b>Description:</b>
+	  <%= @system.description %>
+	</p>
+
+	<p>
+	  <b>Owner:</b>
+	  <%= @system.owner.name %>
+	</p>
+<% end %>

@@ -1,5 +1,9 @@
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "assignments"} %>
+<% end %>
 <p id="notice"><%= notice %></p>
 
+<% content_for :main1 do %>
 <p>
   <b>Is fixed:</b>
   <%= @assignment.is_fixed %>
@@ -8,6 +12,11 @@
 <p>
   <b>Fiscal year:</b>
   <%= @assignment.set_period_id.floor %>
+</p>
+
+<p>
+  <b>System:</b>
+  <%= if !@assignment.tech_system.nil? then @assignment.tech_system.name else "TBD" end %>
 </p>
 
 <p>
@@ -29,6 +38,15 @@
   <b>Project Name:</b>
   <%= Project.find(@assignment.project_id).name %>
 </p>
+<% end %>
 
-
-<%= link_to 'Edit', edit_assignment_path(@assignment) %>
+<% content_for :sidebarwide do %>
+<table class="table">
+	<tr>
+		<td class="danger"><%= link_to 'Edit', edit_assignment_path(@assignment) %></td>
+	<tr>
+		<td class="danger"><%= link_to 'Back', team_user_path(current_user) %></td>
+</table>
+<% end %>
+<br>
+<br>

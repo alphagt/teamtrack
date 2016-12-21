@@ -1,8 +1,13 @@
 <h1>Listing assignments</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "assignments"} %>
+<% end %>
 
-<table border="1" cellpadding="10">
+<% content_for :main1 do %>
+<table class="table">
   <tr>
     <th>Project</th>
+    <th>System</th>
     <th>User</th>
     <th>Week of</th>
     <th>Effort</th>
@@ -16,13 +21,14 @@
 <% @assignments.each do |a| %>
   <tr>
     <td><%= if a.project then link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} else "ERROR" end %></td>
-    <td><%= if a.user then a.user.name else "ERROR" end %></td>
+    <td><%= if a.tech_sys_id > 0 then a.tech_system.name else "TBD" end %></td>
+ 	<td><%= if a.user then a.user.name else "ERROR" end %></td>
     <td><%= period_to_date(a.set_period_id) %></td>
     <td><%= a.effort %></td>
 	<td><%= if !a.is_fixed then "Nitro" else "Fixed" end %></td>
-    <td><%= a.set_period_id.floor %></td>
-    <td><%= link_to 'Edit', edit_assignment_path(a) %></td>
-    <td><%= link_to 'Destroy', a, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= a.set_period_id %></td>
+    <td class="danger"><%= link_to 'Edit', edit_assignment_path(a) %></td>
+    <td class="danger"><%= link_to 'Destroy', a, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 <% else %>
@@ -30,19 +36,22 @@
 		<% subordinate.assignments.each do |a| %>
 		  <tr>
 			<td><%= link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} %></td>
+    		<td><%= if a.tech_sys_id > 0 then a.tech_system.name else "TBD" end %></td>
     		<td><%= a.user.name %></td>
     		<td><%= to_date(a.set_period_id) %></td>
     		<td><%= a.effort %></td>
 			<td><%= if !a.is_fixed then "Nitro" else "Fixed" end %></td>
     		<td><%= a.set_period_id.floor%></td>
-			<td><%= link_to 'Show', a %></td>
-			<td><%= link_to 'Edit', edit_assignment_path(a) %></td>
-			<td><%= link_to 'Destroy', a, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			<td class="danger"><%= link_to 'Show', a %></td>
+			<td class="danger"><%= link_to 'Edit', edit_assignment_path(a) %></td>
+			<td class="danger"><%= link_to 'Destroy', a, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 		  </tr>
 		<% end %>
 	<% end %>
 <% end %>
 </table>
+<% end %>
+
 
 
 

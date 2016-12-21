@@ -33,17 +33,28 @@ module ApplicationHelper
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
-			@return = @m.subordinates.where('id != ?', @exId)
+			@return = @m.subordinates.where('id != ?', @exId).order(:name)
 			# puts "Return Length - " 
 # 			puts @return.length
 			@m.subordinates.each do |s|
 				if s.subordinates.any?
-					# puts "---FOUND SUBORDINATES"	
+					puts "---FOUND Sub-SUBORDINATES"	
 					@return |= all_subs(s.id)
+					puts @return
 				end
 			end
+			if @return.respond_to?(:order)
+				puts "--- list is in active record form"
+				@return.order(:manager_id, :name)
+			else
+				@return
+			end
+		else
+			@return
 		end
-		@return.sort_by! {|a| [a.manager.name, a.name]}
+		
+		#@return.sort_by! {|a| [a.manager.name, a.name]}
+		
 	end
 	
 	def latest(cuser)
@@ -67,6 +78,27 @@ module ApplicationHelper
 		rcode
 	end
 	
+	def period_from_date(d)
+		@sPeriod = 0.0
+		@fyear = d.year
+		puts "in period_from_date"
+		puts d.to_s
+		puts @fyear
+		if d.mon == 12 then
+			@fyear = @fyear + 1
+			@sPeriod = d.cweek + 4 - 52
+		else
+			sPeriod = d.cweek + 4
+		end
+		puts "sPeriod is:"
+		puts @sPeriod
+		@out = @fyear + @sPeriod.fdiv(100).round(3)
+		puts "period from date"
+		puts d.to_s
+		puts @out
+		@out
+	end
+	
 	def current_period()
 	# ToFix
 		@cweek_number = 0.0
@@ -81,7 +113,10 @@ module ApplicationHelper
 		end
 		#puts 'CURRENT CWEEK Number: '
 		#puts  @cweek_number
-		@fyear + @cweek_number.fdiv(100).round(3)
+		@out = @fyear + @cweek_number.fdiv(100).round(3)
+		puts 'cPeriod ='
+		puts @out
+		@out
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
 	

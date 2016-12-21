@@ -1,9 +1,19 @@
 <h1>Editing assignment</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "assignmnets"} %>
+<% end %>
 
+<% content_for :main1 do %>
 <%= render 'form' %>
+<% end %>
 
-<div style="clear:left">
-<%= link_to 'Show', @assignment %> |
-<%= link_to 'Back', assignments_path %> |
-<%= link_to 'Destroy', @assignment, method: :delete, data: { confirm: 'Are you sure?' } %>
-</div>
+<% content_for :sidebar do %>
+<table class="table">
+<tr>
+	<td class="danger"><%= link_to 'Show', @assignment %></td>
+<tr>
+	<td class="danger"><%= link_to 'Back', assignments_path %></td>
+<tr>
+	<td class="danger"><%= link_to 'Destroy', @assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+</table>	
+<% end %>

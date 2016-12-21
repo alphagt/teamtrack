@@ -1,12 +1,15 @@
 class Assignment < ActiveRecord::Base
   belongs_to :user, :foreign_key => "user_id"
   belongs_to :project, :foreign_key => "project_id"
-  attr_accessible :effort, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project
+  belongs_to :tech_system, :foreign_key => "tech_sys_id"
+  attr_accessible :effort, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project, :week_number, :tech_system, :tech_sys_id  
   validates :project_id, :presence => true
   validates :user_id, :presence => true
   validates :effort, :presence => true, :numericality => { :greater_than => 0 }
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
+  
+  
     
   def self.extend_by_week(cAssign)
   #ToFix
@@ -31,14 +34,25 @@ class Assignment < ActiveRecord::Base
 		end
   end
   
+  def week_number
+  	@in = self.set_period_id 
+  	@out = (@in*100) - (@in.to_i*100)
+  	#puts "compute week number from period_id"
+  	#puts @out.to_i
+  	@out.to_i
+  end
+  
   def total_effort_max
   	#verify all assignments in this week for this user have total effort < 1
 	tEffort = 0
-  	if effort then tEffort = effort end
+  	#if effort then tEffort = effort end
+  	puts tEffort
   	Assignment.where(:user_id => user_id, :set_period_id => set_period_id).each do |a|
-  		if a != self
+  		#if a.id != self.id
+  			puts "adding effort"
+  			puts a.id
   			tEffort += a.effort
-  		end
+  		#end
   	end
   	puts "Effort Validator"
   	puts tEffort

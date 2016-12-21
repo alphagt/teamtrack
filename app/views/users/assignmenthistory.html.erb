@@ -1,0 +1,11 @@
+<!-- 
+<div>
+<%= image_tag(Gchart.bar(:title => 'Current Allocations by Category',:bar_colors => '76A4FB,CCCCCC', :bar_width_and_spacing => {:width => 60, :spacing => 40, :group_spacing => 20}, :data => @cdata, :labels => @clabels, :legend => ["Fixed","Nitro"], :size => '1000x200')) %>
+</div>
+ -->
+ 
+ Project show
+ <%= image_tag(Gchart.bar(:title => 'Effort History Past 12 Weeks', 
+	:labels => @clabels, :data => @cvalues, :size => '500x300', :chart_background => 'CCCCCC',
+	:bar_width_and_spacing => {:spacing => 15, :group_spacing => 20}, :max_value => @cvalues.max + 5,
+	:bar_colors => '76A4FB'), :style => "margin:0 auto; border:1px solid blue; float:right;") %>

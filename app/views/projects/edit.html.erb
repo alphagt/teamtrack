@@ -1,15 +1,17 @@
 <h1>Editing project</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "projects"} %>
+<% end %>
 
-<%= render 'form' %>
+<% content_for :main1 do %>
+	<%= render 'form' %>
+<% end %>
 
-
-<div style="float:left">
-	<% if @project.active %>
-		<%= button_to 'Archive Project', {:controller => :projects, :action => 'archive', :id => @project.id}, {:method => :get, :class => "btn" }  %>
-	<% end %>
-</div>
-</div>
-<div style="clear:left">
-<%= link_to 'Show', @project %> |
-<%= link_to 'Back', projects_path %>
-</div>
+<% content_for  :sidebarwide do %>
+<table class="table">
+	<tr>
+		<td class="danger"><%= link_to 'Archive Project', {:controller => :projects, :action => 'archive', :id => @project.id}, {:method => :get, :class => "link" } %></td>
+	<tr>
+		<td class="danger"><%= link_to 'Back', projects_path %></td>
+</table>
+<% end %>

@@ -7,34 +7,35 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.order("category","name")
-    @cdata = []
+    # if @projects
+#     @cdata = []
 	require 'gchart'
-	#Calculate and group fixed effort totals for chart
-	@cfdata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
-		view_context.current_period(),true,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
-	puts 'Fixed by Cat'
-	puts @cfdata.to_s
-    #Calculate and group Nitro effort totals for chart
-    @cndata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
-		view_context.current_period(),false,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
-	puts 'Nitro by Cat'
-	puts @cndata.to_s
-	@clabels = @cfdata.merge(@cndata).keys
-	@clabels.sort!
-	puts 'Labels Array'
-	puts @clabels.to_s
-	@tempfixed = []
-	@clabels.map {|l|
-		@tempfixed.push(@cfdata.fetch(l,0))}
-	#puts @tempfixed.to_s
-	@cdata.push(@tempfixed)
-	@tempnitro = []
-	@clabels.map {|l|
-		@tempnitro.push(@cndata.fetch(l,0))}
-	#puts @tempnitro.to_s
-	@cdata.push(@tempnitro)
-	puts 'Values Array'
-	puts @cdata.to_s
+# 	#Calculate and group fixed effort totals for chart
+	# @cfdata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
+# 		view_context.current_period(),true,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
+# 	puts 'Fixed by Cat'
+# 	puts @cfdata.to_s
+#     #Calculate and group Nitro effort totals for chart
+#     @cndata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
+# 		view_context.current_period(),false,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
+# 	puts 'Nitro by Cat'
+# 	puts @cndata.to_s
+# 	@clabels = @cfdata.merge(@cndata).keys
+# 	@clabels.sort!
+# 	puts 'Labels Array'
+# 	puts @clabels.to_s
+# 	@tempfixed = []
+# 	@clabels.map {|l|
+# 		@tempfixed.push(@cfdata.fetch(l,0))}
+# 	#puts @tempfixed.to_s
+# 	@cdata.push(@tempfixed)
+# 	@tempnitro = []
+# 	@clabels.map {|l|
+# 		@tempnitro.push(@cndata.fetch(l,0))}
+# 	#puts @tempnitro.to_s
+# 	@cdata.push(@tempnitro)
+# 	puts 'Values Array'
+# 	puts @cdata.to_s
 	
     respond_to do |format|
       format.html # index.html.erb
@@ -48,17 +49,17 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
 	#Prep Chart Data
-	@clabels = []
-	@cvalues = []
-	@cdata = Assignment.sum(:effort, :conditions => ["project_id = ? AND set_period_id <= ?", @project.id, view_context.current_period()], :group => :set_period_id,
-		:order => ["set_period_id DESC"]).first(12)
-	puts 'Chart Data'
-	puts @cdata.to_s
-	@cdata.reverse!.map {|p,v|
-		@clabels.push(p.to_s)
-		@cvalues.push(v)}
-	puts 'Labels:'
-	puts @clabels.to_s	
+	# @clabels = []
+# 	@cvalues = []
+# 	@cdata = Assignment.sum(:effort, :conditions => ["project_id = ? AND set_period_id <= ?", @project.id, view_context.current_period()], :group => :set_period_id,
+# 		:order => ["set_period_id DESC"]).first(12)
+# 	puts 'Chart Data'
+# 	puts @cdata.to_s
+# 	@cdata.reverse!.map {|p,v|
+# 		@clabels.push(p.to_s)
+# 		@cvalues.push(v)}
+# 	puts 'Labels:'
+# 	puts @clabels.to_s	
 	#End prep chart data
     respond_to do |format|
       format.html # show.html.erb

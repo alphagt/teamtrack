@@ -15,12 +15,13 @@ ActiveRecord::Schema.define(:version => 20130604073208) do
 
   create_table "assignments", :force => true do |t|
     t.boolean  "is_fixed"
-    t.float    "effort"
+    t.decimal(3,1)  "effort"
     t.integer  "user_id"
     t.integer  "project_id"
+    t.decimal(6,2)  "set_period_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.integer  "set_period_id"
+
   end
 
   create_table "projects", :force => true do |t|

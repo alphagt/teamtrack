@@ -1,7 +1,15 @@
 <h1>New User</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "team"} %>
+<% end %>
 
+<% content_for :main1 do %>
 <%= render 'form' %>
+<% end %>
 
-<div style="clear:left">
-<%= link_to 'Back', users_path %>
-</div>
+<% content_for :sidebar do %>
+<table class="table">
+	<tr>
+		<td class="danger"><%= link_to 'Back', users_path %></td>
+</table>
+<% end %>

@@ -1,0 +1,17 @@
+<h1>Editing System</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "systems"} %>
+<% end %>
+
+<% content_for :main1 do %>
+	<%= render 'form' %>
+<% end %>
+
+<% content_for  :sidebarwide do %>
+<table class="table">
+	<tr>
+		<td class="danger"><%= link_to 'Archive System', {:controller => :tech_systems, :action => 'archive', :id => @system.id}, {:method => :get, :class => "link" } %></td>
+	<tr>
+		<td class="danger"><%= link_to 'Back', tech_system_path(@system) %></td>
+</table>
+<% end %>

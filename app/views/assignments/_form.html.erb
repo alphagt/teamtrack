@@ -1,20 +1,30 @@
 <%= simple_form_for(@assignment) do |f| %>
   <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= if @assignment.user then link_to "Resource: " + @assignment.user.name, user_path(@assignment.user) end %>
-    <br/>
-    <br/>
-    <%= if @showFixedCbox then f.input :is_fixed end %>
-    <%= f.label "Period:" %>
-    <%= f.hidden_field :set_period_id, :value => current_period() %>
-    <br/>
-    <br/>
-    <%= f.input :effort %>
-    <%= if !@assignment.user then f.association :user, collection: all_subs(@manager), :as => :select else f.hidden_field :user_id, :value => @assignment.user.id end %>
-    <%= f.association :project, :as => :select %>
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+  	<div class="form-group">
+		<%= if @assignment.user then link_to "Resource: " + @assignment.user.name, user_path(@assignment.user) end %>
+		<row>
+		<div class="col-md-3">
+			<label for="inputWeek">Week Starting On:</label>
+			<%= f.text_field :set_period_id, 'data-behaviour' => 'datepicker', :value => period_to_date(current_period()).to_s,
+				:type => 'text', :class => 'form-control', :id => 'inputWeek' %>
+			<br/>
+			<%= if !@assignment.user then f.association :user, collection: all_subs(@manager), :as => :select, 
+				:html => {:type => 'select', :class => "form-control", :id => "pickUser"} 
+				else f.hidden_field :user_id, :value => @assignment.user.id, :html => {:type => "text", :class => "form-control", 
+					:id => "pickUser"} end %>
+			<%= f.label "[Optional] - Create New User" %>
+			<%=	fields_for "newuser[]" do |user_fields| %> 
+					Name: <%= user_fields.text_field :name %>
+			<% end %> 
+			<br/>
+			<br/>
+			<%= f.input :effort, :autofocus => true %>
+			<%= f.association :tech_system, :as => :select, :required => true %>
+			<%= f.association :project, :as => :select %>
+ 			<br/>
+			<div class="form-actions">
+				<%= f.button :submit %>
+			</div>
+		</div>
+	</div>
 <% end %>

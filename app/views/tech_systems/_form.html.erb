@@ -1,0 +1,15 @@
+<%= simple_form_for(@system) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, :autofocus => true %>
+	<%= f.input :description %>
+	<%= f.input :qos_group %>
+    <%= f.association :owner, :as => :select %>
+  </div>
+  <br/>
+  <div class="form-actions">
+  	<div style="float:left">
+    	<%= f.button :submit %>
+  	</div>
+<% end %>

@@ -16,6 +16,8 @@ module UsersHelper
 # 		puts  @cweek_number
 # 		@cperiod = SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number)
 		@cperiod = current_period
+		puts "current_project funct - C Period is:"
+		puts @cperiod
 		if cuser.projects.length > 0 then
 			@return = cuser.assignments.where(:set_period_id => @cperiod)
 		end

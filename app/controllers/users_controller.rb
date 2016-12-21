@@ -86,11 +86,11 @@ class UsersController < ApplicationController
   	@manager = User.find(params[:id])
   	puts 'In ExtendTeam Controller Method'
   	respond_to do |format|
-      if view_context.extend_team(@manager) == 0
+      if view_context.extend_team(@manager) > 0
         format.html { redirect_to team_user_path(@manager), notice: 'Assignments were successfully extended.' }
         format.json { render json: @manager, status: :extended, location: team_user_path(@manager) }
       else
-        format.html { render action: "team" }
+        format.html { redirect_to team_user_path(@manager), notice: 'No Assignments were extended' }
         format.json { render json: @manager.errors, status: :unprocessable_entity }
       end
     end

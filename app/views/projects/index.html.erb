@@ -1,62 +1,66 @@
 <h1>Projects</h1>
 <br />
-<div>
-<%= image_tag(Gchart.bar(:title => 'Current Allocations by Category',:bar_colors => '76A4FB,CCCCCC', :bar_width_and_spacing => {:width => 60, :spacing => 40, :group_spacing => 20}, :data => @cdata, :labels => @clabels, :legend => ["Fixed","Nitro"], :size => '1000x200')) %>
-</div>
-<br />
-<table cellpadding="10">
-	<tr><%= if current_user.admin then link_to 'New Project', new_project_path end %></tr>
-</table>
-<br/>
-<table border="1" cellpadding="10">
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "projects"} %>
+<% end %>
+
+<% if current_user.admin %>
+	<% content_for :sidebar do %>
+	<table class="table">
+		<tr>
+		<td class="danger"><%= link_to 'New-Project', new_project_path %></td>
+	</table>
+	<% end %>
+<% end %>
+
+
+<% content_for :main1 do %>
+<table class="table">
   <tr>
     <th>Name</th>
     <th>Category</th>
-    <th>Owner</th>
+    <th>Delivery Lead</th>
     <th>Description</th>
     <th>Fixed Plan</th>
     <th>Current Allocation</th>
     <th>YTD Total Allocation</th>
-    <th></th>
     <% if current_user.admin %>
-    	<th></th>
-    	<th></th>
     	<th>Active</th>
+    	<th></th>
     <% end %>
   </tr>
 <% @projects.where(:active => true).each do |project|  %>
   <tr>
-    <td><%= project.name %></td>
+    <td class="link"><u><%= link_to project.name, project %></u></td>
     <td><%= project.category %></td>
     <td><%= project.owner.name %></td>
     <td><%= project.description %></td>
     <td><%= project.fixed_resource_budget %></td>
     <td><%= current_allocation(project) %></td>
     <td><%= ytd_allocation(project) %></td>
-    <td><%= link_to 'Show', project %></td>
-    <td><%= if current_user.admin then link_to 'Edit', edit_project_path(project) end %></td>
-    <td><%= if current_user.admin then link_to 'Destroy', project, method: :delete, data: { confirm: 'Are you sure?' } end %></td>
-    <td><%= if current_user.admin then project.active end %></td>
+    <% if current_user.admin %>
+    	<td><%= if current_user.admin then project.active end %></td>
+    	<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
+  	<% end %>
   </tr>  
 <% end %>
 <% if current_user.admin %>
 	<% @projects.where(:active => false).each do |p| %>
 		<tr>
-			<td><%= p.name %></td>
+			<td><u><%= link_to p.name, p %></u></td>
     		<td><%= p.category %></td>
     		<td><%= p.owner.name %></td>
     		<td><%= p.description %></td>
     		<td><%= p.fixed_resource_budget %></td>
     		<td><%= current_allocation(p) %></td>
     		<td><%= ytd_allocation(p) %></td>
-    		<td><%= link_to 'Show', p %></td>
-    		<td><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>
-    		<td><%= if current_user.admin then link_to 'Destroy', p, method: :delete, data: { confirm: 'Are you sure?' } end %></td>
     		<td><%= p.active %></td>
+    		<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>
     	</tr>
     <% end %>
 <% end %>
 
 </table>
+<% end %>
 
 

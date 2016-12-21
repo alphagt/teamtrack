@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "SET Team Track" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "BPS Team Track" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "App_Name" %>">
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
@@ -10,26 +10,36 @@
     <%= yield(:head) %>
   </head>
   <body>
-    <header class="navbar navbar-fixed-top">
-      <nav class="navbar-inner">
-        <div class="container">
-          <%= render 'layouts/navigation' %>
-        </div>
-      </nav>
-    </header>
-    <div id="main" role="main">
-      <div class="container">
-        <div class="content">
+    <%= yield :nav %>
+    <div id="main-content-area" class="container-fluid">
            <div class="row">
-            <div class="span12">
-              <%= render 'layouts/messages' %>
-              <%= yield %>
-            </div>
-          </div>
-          <footer>
-          </footer>
-        </div>
+           		<% if content_for?(:sidebar) %>
+					<div id="sidebar" class="col-md-1"> 
+						<h3>Actions</h3>
+						<%= yield :sidebar %>
+					</div>
+				<% else %>
+					<% if content_for?(:sidebarwide) %>
+						<div id="sidebarwide" class="col-md-2"> 
+							<h3>Actions</h3>
+							<%= yield :sidebarwide %>
+						</div>
+					<% end %>
+				<% end %>
+            	<% if content_for?(:sidebarwide) %>
+            		<div id="content" class="col-md-10">
+            	<% else %>
+            		<div id="content" class="col-md-11">
+            	<% end %>
+            		<div id="alert-area" class="col-md-12">
+            			<% flash.each do |name, msg| -%>
+            			<%= content_tag :div, msg, class: "alert alert-#{name}" %>
+          				<% end -%>
+            		</div>
+            		<br/>
+            		<%= yield :main1 %>
+            	</div>
+          	</div> <!-- end of row -->
       </div> <!--! end of .container -->
-    </div> <!--! end of #main -->
   </body>
 </html>

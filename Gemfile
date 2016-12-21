@@ -3,6 +3,7 @@ ruby "2.2.5"
 
 gem 'rails', '4.2.6'
 
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -13,10 +14,10 @@ gem 'rails', '4.2.6'
 #end
 
 gem 'mysql2', :group => [:development, :test, :production]
-#group :production do
-#  gem 'thin'
-#  gem 'pg'
-#end
+group :production do
+  gem 'rails_12factor'
+  gem 'pg'
+end
 
 
 # Gems used only for assets and not required

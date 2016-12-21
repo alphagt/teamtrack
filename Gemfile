@@ -16,7 +16,6 @@ gem 'rails', '4.2.6'
 gem 'mysql2', :group => [:development, :test, :production]
 group :production do
   gem 'rails_12factor'
-  gem 'pg'
 end
 
 

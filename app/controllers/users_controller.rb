@@ -129,7 +129,7 @@ class UsersController < ApplicationController
         	format.html { redirect_to mUser, notice: 'ERROR attempting to remove user' }
         	format.json { render json: mUser.errors, status: :unprocessable_entity }
         end
-        if rcode = 2
+        if rcode == 2
         	format.html { redirect_to team_user_path(mUser), notice: 'User has current subordinates! Reassign them before removing this user' }
         	format.json { render json: mUser.errors, status: :unprocessable_entity }
         end

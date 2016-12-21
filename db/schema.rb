@@ -9,64 +9,83 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130604073208) do
+ActiveRecord::Schema.define(version: 20161215033207) do
 
-  create_table "assignments", :force => true do |t|
+  create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
-    t.decimal(3,1)  "effort"
-    t.integer  "user_id"
-    t.integer  "project_id"
-    t.decimal(6,2)  "set_period_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-
+    t.decimal  "effort",                  precision: 2, scale: 1
+    t.integer  "user_id",       limit: 4
+    t.integer  "project_id",    limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "set_period_id",           precision: 6, scale: 2
+    t.integer  "tech_sys_id",   limit: 4,                         default: 0
   end
 
-  create_table "projects", :force => true do |t|
-    t.string   "name"
+  add_index "assignments", ["project_id"], name: "index_assignments_on_project_id", using: :btree
+  add_index "assignments", ["set_period_id"], name: "index_assignments_on_set_period_id", using: :btree
+  add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
+
+  create_table "projects", force: :cascade do |t|
+    t.string   "name",                  limit: 255
     t.boolean  "active"
-    t.integer  "owner_id"
-    t.string   "description"
-    t.datetime "created_at",                                      :null => false
-    t.datetime "updated_at",                                      :null => false
-    t.integer  "fixed_resource_budget"
-    t.string   "category",              :default => "Unassigned"
+    t.integer  "owner_id",              limit: 4
+    t.string   "description",           limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "fixed_resource_budget", limit: 4
+    t.string   "category",              limit: 255, default: "Unassigned"
+    t.integer  "upl_number",            limit: 4,   default: 0
+    t.string   "tribe",                 limit: 255
   end
 
-  create_table "set_periods", :force => true do |t|
-    t.integer  "fiscal_year"
-    t.integer  "week_number"
-    t.integer  "cweek_offset"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+  add_index "projects", ["category"], name: "index_projects_on_category", using: :btree
+
+  create_table "set_periods", force: :cascade do |t|
+    t.integer  "fiscal_year",  limit: 4
+    t.integer  "week_number",  limit: 4
+    t.integer  "cweek_offset", limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "",    :null => false
-    t.string   "encrypted_password",     :default => "",    :null => false
-    t.string   "reset_password_token"
+  create_table "tech_systems", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.string   "description", limit: 255
+    t.string   "qos_group",   limit: 255
+    t.integer  "owner_id",    limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",          limit: 4,   default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.string   "name"
-    t.boolean  "admin",                  :default => false, :null => false
-    t.boolean  "ismanager",              :default => false, :null => false
-    t.integer  "manager_id"
-    t.boolean  "verified",               :default => false
-    t.boolean  "isstatususer"
-    t.integer  "impersonate_manager",    :default => 0
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name",                   limit: 255
+    t.boolean  "admin"
+    t.boolean  "ismanager",                          default: false
+    t.integer  "manager_id",             limit: 4
+    t.boolean  "verified",                           default: false
+    t.boolean  "isstatususer",                       default: false
+    t.integer  "impersonate_manager",    limit: 4,   default: 0
+    t.integer  "default_system_id",      limit: 4
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-  add_index "set_periods", ["fiscal_year","week_number"], :name => "index_set_periods_on_week_number", :unique => true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["ismanager"], name: "index_users_on_ismanager", using: :btree
+  add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

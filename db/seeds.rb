@@ -47,20 +47,20 @@ when "production"
 puts 'SETTING UP DEFAULT USER LOGIN'
 @ken = User.create! :name => 'Ken Toole', :email => 'ktoole@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
 @ken.save
-puts 'New user created: ' << @suser.name
+puts 'New user created: ' << @ken.name
 user = User.create! :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
 user['manager_id'] = 1
 user.save
 puts 'New user created: ' << user.name
 
 #Default Projects
-proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @suser, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15
+proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @ken, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @suser, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Security/Compliance', :fixed_resource_budget => 10
+proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @ken, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Security/Compliance', :fixed_resource_budget => 10
 proj.save
 puts 'added security compliance project'
-proj = Project.create! :name => 'Run the Business', :active => true, :owner => @suser, :description => 'RTB work via CTIR Process', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30
+proj = Project.create! :name => 'Run the Business', :active => true, :owner => @ken, :description => 'RTB work via CTIR Process', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30
 proj.save
 puts 'added RTB Project'
 
@@ -68,46 +68,46 @@ puts 'added RTB Project'
 @adrian = User.create! :name => "Adrian O'Lenskie", :email => 'aolenski@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @adrian.manager = @ken
 @adrian.save
-puts 'New user created: ' << @suser.name
+puts 'New user created: ' << @adrian.name
 
 sys = TechSystem.create! :name => 'JILv2', :description => 'Primary Business Orchestration Layer', 
-	:qos_group => 'Business Platform', :owner => @suser
+	:qos_group => 'Business Platform', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'UM SDK', :description => 'Public API for Ent. User Mgmt.', 
-	:qos_group => 'Business Platform', :owner => @suser
+	:qos_group => 'Business Platform', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Hoolihan', :description => 'Reliable Messaging Infrastructure', 
-	:qos_group => 'Business Platform', :owner => @suser
+	:qos_group => 'Business Platform', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'ERS', :description => 'Endpoint Resolution Service', 
-	:qos_group => 'Business Platform', :owner => @suser
+	:qos_group => 'Business Platform', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'SDS', :description => 'Offer Data Mangagement Service', 
-	:qos_group => 'Offer Management', :owner => @suser
+	:qos_group => 'Offer Management', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Mechandizing Service', :description => 'Localized Product Marketing Content Service', 
-	:qos_group => 'Offer Management', :owner => @suser
+	:qos_group => 'Offer Management', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'SSOCM', :description => 'Self-Service Offer Creation UI', 
-	:qos_group => 'Offer Management', :owner => @suser
+	:qos_group => 'Offer Management', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Products Service', :description => 'Legacy Pre-Purchase Service', 
-	:qos_group => 'Commerce', :owner => @suser
+	:qos_group => 'Commerce', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Subscription Policy Services', :description => 'Various policy definition services (CPS, TPS, etc)', 
-	:qos_group => 'Offer Management', :owner => @suser
+	:qos_group => 'Offer Management', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Available Offers Service', :description => 'Offer catalog provider', 
-	:qos_group => 'Commerce', :owner => @suser
+	:qos_group => 'Commerce', :owner => @adrian
 sys.save
 puts 'added ' << sys.name
 #Olenskie Managers
@@ -212,31 +212,31 @@ puts 'New user created: ' << @bawa.name
 
 
 sys = TechSystem.create! :name => 'AAC', :description => 'Adobe Admin Console - Team', 
-	:qos_group => 'Admin Experiences', :owner => @suser
+	:qos_group => 'Admin Experiences', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Ent-D', :description => 'Enterprise Dashboard- Legacy', 
-	:qos_group => 'Admin Experiences', :owner => @suser
+	:qos_group => 'Admin Experiences', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'OAC', :description => 'One Adobe Console', 
-	:qos_group => 'Admin Experiences', :owner => @suser
+	:qos_group => 'Admin Experiences', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Reseller Console', :description => 'Reseller Admin Console', 
-	:qos_group => 'Admin Experiences', :owner => @suser
+	:qos_group => 'Admin Experiences', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Mercury Invite Service', :description => 'Common inivite tracking and management', 
-	:qos_group => 'Busines Platform', :owner => @suser
+	:qos_group => 'Busines Platform', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'Device Licensing Snap-In', :description => 'Device License Mgmt UI', 
-	:qos_group => 'Admin Experiences', :owner => @suser
+	:qos_group => 'Admin Experiences', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 sys = TechSystem.create! :name => 'AAUI', :description => 'Adobe internal admin tool for contract provisioning', 
-	:qos_group => 'Business Platform', :owner => @suser
+	:qos_group => 'Business Platform', :owner => @bawa
 sys.save
 puts 'added ' << sys.name
 
@@ -260,34 +260,34 @@ puts 'New user created: ' << @suser.name
 @arijit.save
 puts 'New user created: ' << @arijit.name
 sys = TechSystem.create! :name => 'LDS', :description => 'License Delegation Service', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'LM Stack', :description => 'Desktop Licensing Service', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'SNS', :description => 'Legacy Serial Number Server', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'SNS-Next', :description => 'Replacement Technology for SNS', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'TACT', :description => 'Trial Activation Server/OFT Services', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'DBCS Service', :description => 'Device Based Licensing Service', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'SNS-Next', :description => 'Replacement Technology for SNS', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'Device Mgmt Service', :description => 'Device management service for users', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'Desktop Lic Client', :description => 'Client Libraries for DT Licensing', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 sys = TechSystem.create! :name => 'Go-Cart', :description => 'Piracy Remediation Service', 
-	:qos_group => 'Entitlement', :owner => @suser
+	:qos_group => 'Entitlement', :owner => @arijit
 sys.save
 
 #Managers
@@ -303,22 +303,22 @@ puts 'New user created: ' << @suser.name
 @vijayg.save
 puts 'New user created: ' << @vijayg.name
 sys = TechSystem.create! :name => 'JEM', :description => 'Subscription Managment Service', 
-	:qos_group => 'Subscriptions Infrastructure', :owner => @suser
+	:qos_group => 'Subscriptions Infrastructure', :owner => @vijayg
 sys.save
 sys = TechSystem.create! :name => 'JEAP', :description => 'Internal admin service and portal for JEM', 
-	:qos_group => 'Subscriptions Infrastructure', :owner => @suser
+	:qos_group => 'Subscriptions Infrastructure', :owner => @vijayg
 sys.save
 sys = TechSystem.create! :name => 'Contract Cart', :description => 'Order capture and organization service', 
-	:qos_group => 'Commerce', :owner => @suser
+	:qos_group => 'Commerce', :owner => @vijayg
 sys.save
 sys = TechSystem.create! :name => 'WCD', :description => 'Legacy user registration and misc service', 
-	:qos_group => 'Subscriptions Infrastructure', :owner => @suser
+	:qos_group => 'Subscriptions Infrastructure', :owner => @vijayg
 sys.save
 sys = TechSystem.create! :name => 'Subs Life-Cycle Service', :description => 'Subscription life-cycle management Service', 
-	:qos_group => 'Subscriptions Infrastructure', :owner => @suser
+	:qos_group => 'Subscriptions Infrastructure', :owner => @vijayg
 sys.save
 sys = TechSystem.create! :name => 'Renewal Service', :description => 'Renewal Orchestration Service', 
-	:qos_group => 'Subscriptions Infrastructure', :owner => @suser
+	:qos_group => 'Subscriptions Infrastructure', :owner => @vijayg
 sys.save
 
 #Managers

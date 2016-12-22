@@ -42,7 +42,7 @@ sys = TechSystem.create! :name => 'Test System 2', :description => 'Some system 
 sys.save
 puts 'added ' << sys.name
 
-when "prodution"
+when "production"
 #Default User
 puts 'SETTING UP DEFAULT USER LOGIN'
 @ken = User.create! :name => 'Ken Toole', :email => 'ktoole@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'

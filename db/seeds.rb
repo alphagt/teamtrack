@@ -52,12 +52,12 @@ user = User.create! :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :veri
 user['manager_id'] = 1
 user.save
 puts 'New user created: ' << user.name
-user = User.create! :name => 'Jen Sutherland', :email => 'jsutherla@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
+user = User.create! :name => 'Jen Sutherland', :email => 'jsutherla@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 user['manager_id'] = 1
 user.impersonates = @ken
 user.save
 puts 'New user created: ' << user.name
-user = User.create! :name => 'Bridie Saccocio', :email => 'bsaccoci@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
+user = User.create! :name => 'Bridie Saccocio', :email => 'bsaccoci@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 user['manager_id'] = 1
 user.impersonates = @ken
 user.save

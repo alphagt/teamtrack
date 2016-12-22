@@ -9,7 +9,9 @@ class Assignment < ActiveRecord::Base
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
   
-  
+  def self.with_project_info
+  	self.joins(:project).select("assignments.*, projects.category as category, projects.owner as proj_owner")
+  end
     
   def self.extend_by_week(cAssign)
   #ToFix

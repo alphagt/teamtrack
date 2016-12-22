@@ -15,52 +15,63 @@
 
 
 <% content_for :main1 do %>
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Category</th>
-    <th>Delivery Lead</th>
-    <th>Description</th>
-    <th>Fixed Plan</th>
-    <th>Current Allocation</th>
-    <th>YTD Total Allocation</th>
-    <% if current_user.admin %>
-    	<th>Active</th>
-    	<th></th>
-    <% end %>
-  </tr>
-<% @projects.where(:active => true).each do |project|  %>
-  <tr>
-    <td class="link"><u><%= link_to project.name, project %></u></td>
-    <td><%= project.category %></td>
-    <td><%= project.owner.name %></td>
-    <td><%= project.description %></td>
-    <td><%= project.fixed_resource_budget %></td>
-    <td><%= current_allocation(project) %></td>
-    <td><%= ytd_allocation(project) %></td>
-    <% if current_user.admin %>
-    	<td><%= if current_user.admin then project.active end %></td>
-    	<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
-  	<% end %>
-  </tr>  
-<% end %>
-<% if current_user.admin %>
-	<% @projects.where(:active => false).each do |p| %>
-		<tr>
-			<td><u><%= link_to p.name, p %></u></td>
-    		<td><%= p.category %></td>
-    		<td><%= p.owner.name %></td>
-    		<td><%= p.description %></td>
-    		<td><%= p.fixed_resource_budget %></td>
-    		<td><%= current_allocation(p) %></td>
-    		<td><%= ytd_allocation(p) %></td>
-    		<td><%= p.active %></td>
-    		<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>
-    	</tr>
-    <% end %>
-<% end %>
+<div class="row">
+	<div class="col-md-8 col-centered">
+		<%= image_tag(Gchart.pie(:title => 'Current BPS Effort Allocation', 
+		:labels => @clabels, :data => @cvals, :size => '500x300', :chart_background => 'CCCCCC'))%>
+	</div>
+</div>
+<br/>
+<div class="row">
+	<div class="col-md-12">
+	<table class="table">
+	  <tr>
+		<th>Name</th>
+		<th>Category</th>
+		<th>Delivery Lead</th>
+		<th>Description</th>
+		<th>Fixed Plan</th>
+		<th>Current Allocation</th>
+		<th>YTD Total Allocation</th>
+		<% if current_user.admin %>
+			<th>Active</th>
+			<th></th>
+		<% end %>
+	  </tr>
+	<% @projects.where(:active => true).each do |project|  %>
+	  <tr>
+		<td class="link"><u><%= link_to project.name, project %></u></td>
+		<td><%= project.category %></td>
+		<td><%= project.owner.name %></td>
+		<td><%= project.description %></td>
+		<td><%= project.fixed_resource_budget %></td>
+		<td><%= current_allocation(project) %></td>
+		<td><%= ytd_allocation(project) %></td>
+		<% if current_user.admin %>
+			<td><%= if current_user.admin then project.active end %></td>
+			<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
+		<% end %>
+	  </tr>  
+	<% end %>
+	<% if current_user.admin %>
+		<% @projects.where(:active => false).each do |p| %>
+			<tr>
+				<td><u><%= link_to p.name, p %></u></td>
+				<td><%= p.category %></td>
+				<td><%= p.owner.name %></td>
+				<td><%= p.description %></td>
+				<td><%= p.fixed_resource_budget %></td>
+				<td><%= current_allocation(p) %></td>
+				<td><%= ytd_allocation(p) %></td>
+				<td><%= p.active %></td>
+				<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>
+			</tr>
+		<% end %>
+	<% end %>
 
-</table>
+	</table>
+	</div>
+</div>
 <% end %>
 
 

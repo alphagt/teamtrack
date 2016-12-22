@@ -42,9 +42,6 @@ gem 'cancan'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'
-
-
-
 gem 'googlecharts'
 
 # To use ActiveModel has_secure_password

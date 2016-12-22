@@ -10,32 +10,18 @@ class ProjectsController < ApplicationController
     # if @projects
 #     @cdata = []
 	require 'gchart'
-# 	#Calculate and group fixed effort totals for chart
-	# @cfdata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
-# 		view_context.current_period(),true,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
-# 	puts 'Fixed by Cat'
-# 	puts @cfdata.to_s
-#     #Calculate and group Nitro effort totals for chart
-#     @cndata = Assignment.sum(:effort, :conditions => ["set_period_id = ?  AND is_fixed = ? AND projects.active = ? ", 
-# 		view_context.current_period(),false,true],:include => :project, :group => 'projects.category', :order => 'projects.category')
-# 	puts 'Nitro by Cat'
-# 	puts @cndata.to_s
-# 	@clabels = @cfdata.merge(@cndata).keys
-# 	@clabels.sort!
-# 	puts 'Labels Array'
-# 	puts @clabels.to_s
-# 	@tempfixed = []
-# 	@clabels.map {|l|
-# 		@tempfixed.push(@cfdata.fetch(l,0))}
-# 	#puts @tempfixed.to_s
-# 	@cdata.push(@tempfixed)
-# 	@tempnitro = []
-# 	@clabels.map {|l|
-# 		@tempnitro.push(@cndata.fetch(l,0))}
-# 	#puts @tempnitro.to_s
-# 	@cdata.push(@tempnitro)
-# 	puts 'Values Array'
-# 	puts @cdata.to_s
+	#Calculate and group fixed effort totals for chart
+	@cfdata = Assignment.includes(:project).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	puts 'Effort by Cat'
+	puts @cfdata.to_s
+	@clabels = @cfdata.to_h.keys
+	@clabels.sort!
+	puts 'Labels Array'
+	puts @clabels.to_s
+	@cvals = @cfdata.to_h.values
+	puts 'Values Array'
+	puts @cvals.to_s
+
 	
     respond_to do |format|
       format.html # index.html.erb

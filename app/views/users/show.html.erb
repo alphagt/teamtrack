@@ -2,47 +2,54 @@
 	<%  render partial: "layouts/navigation", locals: {active: "user"} %>
 <% end %>
 <% content_for :main1 do %>
-<h3>User</h3>
-<p>User: <%= @user.name %></p>
-<p>Email: <%= @user.email if @user.email %></p>
-<p>Manager: <%= @user.manager.name if @user.manager %></p>
-<p>Default System: <%= @user.default_system.name if @user.default_system %></p>
-<p>Admin: <%= @user.admin %></p>
-<p>Manager: <%= @user.ismanager %></p>
-<% if @user.impersonates %>
-	<p>Works on behalf of: <%= @user.impersonates.name %></p>
-<% end %>
-<p>Status User: <%= @user.isstatususer %></p>
-
+<div class="row">
+	<div class="col-md-10">
+		<h3>User</h3>
+		<p>User: <%= @user.name %></p>
+		<p>Email: <%= @user.email if @user.email %></p>
+		<p>Manager: <%= @user.manager.name if @user.manager %></p>
+		<p>Default System: <%= @user.default_system.name if @user.default_system %></p>
+		<p>Admin: <%= @user.admin %></p>
+		<p>Manager: <%= @user.ismanager %></p>
+		<% if @user.impersonates %>
+			<p>Works on behalf of: <%= @user.impersonates.name %></p>
+		<% end %>
+		<p>Status User: <%= @user.isstatususer %></p>
+	</div>
+</div>
 <br>
-<h3>Assignment History</h3>
-<table border="1" cellpadding="10">
-  <tr>
-  	<h5>
-  	<th>Project</th>
-    <th>Fiscal year</th>
-    <th>Week of</th>
-    <th>Effort</th>
-    <th>Type</th>
-    <th/>
-    <th/>
-    </h5>
-  </tr>
-<% @user.assignments.order("set_period_id").each do |assignment| %>
-  <tr>
-    <td><%= assignment.project.name %></td>
-    <td><%= assignment.set_period_id.floor %></td>
-    <td><%= period_to_date(assignment.set_period_id) %></td>
-    <td><%= assignment.effort %></td>
-    <td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
-    <td><%= if assignment.set_period_id >= current_period then link_to 'Edit', edit_assignment_path(assignment) end %></td>
-    <td><%= if assignment.set_period_id >= current_period - 0.01 then link_to 'Extend for a week', extend_assignment_path(assignment) else "Closed" end %></td>
-  </tr>
-<% end %>
-</table>
+<div class="row">
+	<div class="col-md-12 col-centered">
+		<h3>Assignment History</h3>
+		<table class="table">
+		  <tr>
+			<h5>
+			<th>Project</th>
+			<th>Fiscal year</th>
+			<th>Week of</th>
+			<th>Effort</th>
+			<th>Type</th>
+			<th/>
+			<th/>
+			</h5>
+		  </tr>
+		<% @user.assignments.order("set_period_id").each do |assignment| %>
+		  <tr>
+			<td><%= assignment.project.name %></td>
+			<td><%= assignment.set_period_id.floor %></td>
+			<td><%= period_to_date(assignment.set_period_id) %></td>
+			<td><%= assignment.effort %></td>
+			<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
+			<td><%= if assignment.set_period_id >= current_period then link_to 'Edit', edit_assignment_path(assignment) end %></td>
+			<td><%= if assignment.set_period_id >= current_period - 0.01 then link_to 'Extend for a week', extend_assignment_path(assignment) else "Closed" end %></td>
+		  </tr>
+		<% end %>
+		</table>
+	</div>
+</div>
 <% end %>
 <br>
-<% content_for :sidebar do %>
+<% content_for :sidebarwide do %>
 <table class="table" >
 	<tr>
 		<td class="danger"><%= link_to 'New Assignment', new_assignment_path(:uid => @user.id) %></td>

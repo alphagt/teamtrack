@@ -16,10 +16,16 @@
 
 <% content_for :main1 do %>
 <div class="row">
-	<div class="col-md-8 col-centered">
-		<%= image_tag(Gchart.pie(:title => 'Current BPS Effort Allocation', 
-		:labels => @clabels, :data => @cvals, :size => '500x300', :chart_background => 'CCCCCC'))%>
+  <div class="col-md-12 col-centered">
+	<div class="col-md-6">
+		<%= image_tag(Gchart.pie(:title => 'YTD Effort Allocation', 
+		:labels => @clabels_ytd, :data => @cvals_ytd, :size => '300x175', :chart_background => 'CCCCCC'))%>
 	</div>
+	<div class="col-md-6">
+		<%= image_tag(Gchart.pie(:title => 'QTD Effort Allocation', 
+		:labels => @clabels_qtd, :data => @cvals_qtd, :size => '300x175', :chart_background => 'CCCCCC'))%>
+	</div>
+  </div>
 </div>
 <br/>
 <div class="row">

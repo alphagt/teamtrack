@@ -11,18 +11,47 @@ class ProjectsController < ApplicationController
 #     @cdata = []
 	require 'gchart'
 	#Calculate and group fixed effort totals for chart
-	@cfdata = Assignment.includes(:project).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	#ToDo - Current FY Data
+	@cfdata = Assignment.includes(:project).where('set_period_id > 2017').group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Effort by Cat'
 	puts @cfdata.to_s
-	@clabels = @cfdata.to_h.keys
-	@clabels.sort!
-	puts 'Labels Array'
-	puts @clabels.to_s
-	@cvals = @cfdata.to_h.values
-	puts 'Values Array'
-	puts @cvals.to_s
+	@clabels_ytd = @cfdata.to_h.keys
+	@clabels_ytd.sort!
+	@cvals_ytd = @cfdata.to_h.values
 
-	
+	#ToDo - Current Quarter Data
+	@fy = view_context.current_period().to_i
+	case view_context.current_quarter()
+	when 1
+		@eWeek = view_context.period_from_parts(@fy,13)
+		puts 'max week for period'
+		puts @eWeek
+		@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	when 2
+		@eWeek = view_context.period_from_parts(@fy,25)
+		@sWeek = view_context.period_from_parts(@fy,12)
+		puts 'max week for period'
+		puts @eWeek
+		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	when 3
+		@eWeek = view_context.period_from_parts(@fy,37)
+		@sWeek = view_context.period_from_parts(@fy,24)
+		puts 'max week for period'
+		puts @eWeek
+		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}	
+	when 4
+		@eWeek = view_context.period_from_parts(@fy,53)
+		@sWeek = view_context.period_from_parts(@fy,36)
+		puts 'max week for period'
+		puts @eWeek
+		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}	
+	end
+	puts 'Effort by Cat'
+	puts @cfdata.to_s
+	@clabels_qtd = @cfdata.to_h.keys
+	@clabels_qtd.sort!
+	@cvals_qtd = @cfdata.to_h.values
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

@@ -21,9 +21,34 @@ module ApplicationHelper
 	end
 
 	def period_from_parts(iFy, iWeek)
+ 
+ 		puts 'period_from_parts'
+ 		puts 'iWeek'
+ 		puts iWeek
 		@fWeek = iWeek.to_f / 100
-		#puts @fWeek
-		@fWeek
+		puts @fWeek
+		@return = iFy.to_f + @fWeek.to_f
+	end
+	
+	def current_week()
+		@cp = current_period()
+		@fWeek = ((@cp - @cp.to_i) * 100).round
+	end
+	
+	def current_quarter()
+		@cw = current_week()
+		@q = 0
+		case 
+		when @cw < 13
+			@q = 1
+		when 12 < @cw < 25
+			@q = 2
+		when 24 < @cw < 37
+			@q = 3
+		when @cw > 36
+			@q = 4
+		end
+		@q		
 	end
 	
 	def all_subs(mid)
@@ -119,6 +144,8 @@ module ApplicationHelper
 		@out
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
+	
+	
 	
 	def period_list()
 	#ToReview

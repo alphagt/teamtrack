@@ -52,6 +52,16 @@ user = User.create! :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :veri
 user['manager_id'] = 1
 user.save
 puts 'New user created: ' << user.name
+user = User.create! :name => 'Jen Sutherland', :email => 'jsutherla@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
+user['manager_id'] = 1
+user.impersonates = @ken
+user.save
+puts 'New user created: ' << user.name
+user = User.create! :name => 'Bridie Saccocio', :email => 'bsaccoci@adobe.com', :admin => true, :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz'
+user['manager_id'] = 1
+user.impersonates = @ken
+user.save
+puts 'New user created: ' << user.name
 
 #Default Projects
 proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @ken, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15
@@ -63,6 +73,34 @@ puts 'added security compliance project'
 proj = Project.create! :name => 'Run the Business', :active => true, :owner => @ken, :description => 'RTB work via CTIR Process', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30
 proj.save
 puts 'added RTB Project'
+
+#Valdez and Systems
+@valdez = User.create! :name => "Don Valdez", :email => 'dvaldez@adobe.com', :admin => false, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@valdez.manager = @ken
+@valdez.save
+puts 'New user created: ' << @valdez.name
+user = User.create! :name => 'Josh King', :email => 'jking@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+user.manager = @valdez
+user.save
+puts 'New user created: ' << user.name
+sys = TechSystem.create! :name => 'Tech Planning', :description => 'Used for assignmet of Tech Planning members', 
+	:qos_group => 'Overhead', :owner => @valdez
+sys.save
+puts 'added ' << sys.name
+
+#Ewing and Systems
+@ewing = User.create! :name => "Michael Ewing", :email => 'mewing@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@ewing.manager = @ken
+@ewing.save
+puts 'New user created: ' << @ewing.name
+user = User.create! :name => 'Koji Yoshida', :email => 'kyoshida@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+user.manager = @ewing
+user.save
+puts 'New user created: ' << user.name
+sys = TechSystem.create! :name => 'Product Ops', :description => 'Used for assignmet of ops team members', 
+	:qos_group => 'Offer Management', :owner => @ewing
+sys.save
+puts 'added ' << sys.name
 
 #O'Lenskie and Systems
 @adrian = User.create! :name => "Adrian O'Lenskie", :email => 'aolenski@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
@@ -111,19 +149,19 @@ sys = TechSystem.create! :name => 'Available Offers Service', :description => 'O
 sys.save
 puts 'added ' << sys.name
 #Olenskie Managers
-@suser = User.create! :name => "Nick Goodall", :email => 'goodall@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Nick Goodall", :email => 'goodall@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @adrian
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "David Thomson", :email => 'dthomson@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "David Thomson", :email => 'dthomson@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @adrian
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Guo Wei", :email => 'weiguo@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Guo Wei", :email => 'weiguo@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @adrian
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Harinder Sandhu", :email => 'harinder@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Harinder Sandhu", :email => 'harinder@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @adrian
 @suser.save
 puts 'New user created: ' << @suser.name
@@ -170,42 +208,42 @@ sys = TechSystem.create! :name => 'PTS', :description => 'Payment Tokens Service
 sys.save
 puts 'added ' << sys.name
 #Managers
-@steve = User.create! :name => "Steve Breinberg", :email => 'sbreinbe@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@steve = User.create! :name => "Steve Breinberg", :email => 'sbreinbe@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @steve.manager = @suser
 @steve.save
 puts 'New user created: ' << @steve.name
-@vijays = User.create! :name => "Vijay Shah", :email => 'vshah@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@vijays = User.create! :name => "Vijay Shah", :email => 'vshah@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @vijays.manager = @suser
 @vijays.save
 puts 'New user created: ' << @vijays.name
-@pbs = User.create! :name => "Pankaj Shah", :email => 'pbs@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@pbs = User.create! :name => "Pankaj Shah", :email => 'pbs@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @pbs.manager = @suser
 @pbs.save
 puts 'New user created: ' << @pbs.name
-@suser = User.create! :name => "Elena Lubivy", :email => 'elubivy@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Elena Lubivy", :email => 'elubivy@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @steve
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Manu Gopinath", :email => 'mgopinat@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Manu Gopinath", :email => 'mgopinat@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @vijays
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Gaurav Jain", :email => 'gauravj@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Gaurav Jain", :email => 'gauravj@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @steve
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Rupesh Kumar", :email => 'rukumar@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Rupesh Kumar", :email => 'rukumar@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @vijays
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Sanjeev Kumar", :email => 'sanjkuma@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Sanjeev Kumar", :email => 'sanjkuma@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @vijays
 @suser.save
 puts 'New user created: ' << @suser.name
 
 
 #Bawa and Systems
-@bawa = User.create! :name => "Sumeet Bawa", :email => 'sbawa@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@bawa = User.create! :name => "Sumeet Bawa", :email => 'sbawa@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @bawa.manager = @ken
 @bawa.save
 puts 'New user created: ' << @bawa.name
@@ -241,15 +279,15 @@ sys.save
 puts 'added ' << sys.name
 
 #managers
-@suser = User.create! :name => "James Boag", :email => 'boag@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "James Boag", :email => 'boag@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @bawa
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Demian Godon", :email => 'dgodon@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Demian Godon", :email => 'dgodon@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @bawa
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Nathan Hoover", :email => 'nahoover@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Nathan Hoover", :email => 'nahoover@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @bawa
 @suser.save
 puts 'New user created: ' << @suser.name
@@ -291,7 +329,7 @@ sys = TechSystem.create! :name => 'Go-Cart', :description => 'Piracy Remediation
 sys.save
 
 #Managers
-@suser = User.create! :name => "Sravana K Dindukurti", :email => 'sravanak@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Sravana K Dindukurti", :email => 'sravanak@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @arijit
 @suser.save
 puts 'New user created: ' << @suser.name
@@ -322,15 +360,15 @@ sys = TechSystem.create! :name => 'Renewal Service', :description => 'Renewal Or
 sys.save
 
 #Managers
-@suser = User.create! :name => "Mayank Kumar", :email => 'kumarm@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Mayank Kumar", :email => 'kumarm@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @vijayg
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Wei Cheng", :email => 'wcheng@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Wei Cheng", :email => 'wcheng@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @vijayg
 @suser.save
 puts 'New user created: ' << @suser.name
-@suser = User.create! :name => "Prachi Sonalkar", :email => 'psonalka@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser = User.create! :name => "Prachi Sonalkar", :email => 'psonalka@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
 @suser.manager = @vijayg
 @suser.save
 puts 'New user created: ' << @suser.name

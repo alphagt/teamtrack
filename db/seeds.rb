@@ -333,7 +333,22 @@ sys.save
 @suser.manager = @arijit
 @suser.save
 puts 'New user created: ' << @suser.name
-
+@suser = User.create! :name => "Brijesh Nair", :email => 'bnair@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser.manager = @arijit
+@suser.save
+puts 'New user created: ' << @suser.name
+@suser = User.create! :name => "Dhiraj Sadhwani", :email => 'sadhwani@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser.manager = @arijit
+@suser.save
+puts 'New user created: ' << @suser.name
+@suser = User.create! :name => "Srikanth V", :email => 'srv@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser.manager = @arijit
+@suser.save
+puts 'New user created: ' << @suser.name
+@suser = User.create! :name => "Vikalp Gupta", :email => 'vikgupta@adobe.com', :verified => true, :password => 'abc123', :password_confirmation => 'abc123'
+@suser.manager = @arijit
+@suser.save
+puts 'New user created: ' << @suser.name
 
 #Vijay G and Systems
 @vijayg = User.create! :name => "Vijay Ghaskadvi", :email => 'vghaskad@adobe.com', :admin => true, :verified => true, :password => 'abc123', :password_confirmation => 'abc123'

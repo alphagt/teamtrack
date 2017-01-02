@@ -45,7 +45,7 @@
 <% content_for :sidebarwide do %>
 	<table class="table">
 		<tr>
-			<td class="danger"><%= link_to 'Remove User', {:controller => :users, :action => 'exit', :id => @user.id }, {:confirm => "Remove User Completely From TeamTrack?"}%></td>
+			<td class="danger"><%= link_to 'Remove User', {:controller => :users, :action => 'exit', :id => @user.id }, {:method => :post, :confirm => "Remove User Completely From TeamTrack?"}  %></td>
 		<tr>
 			<td class="danger"><%= link_to 'Reset Password', {:controller => :users, :action => 'reset', :id => @user.id}, {:method => :get}%></td>
 		<tr>

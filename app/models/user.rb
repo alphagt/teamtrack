@@ -30,6 +30,6 @@ class User < ActiveRecord::Base
     xuser = User.new({ :email => email, :password => "abc123", :password_confirmation => "abc123", :name => name, :manager_id => manager_id })
    	pFail = xuser.save
    	puts xuser.name
-   	return pFail
+   	return xuser
   end
 end

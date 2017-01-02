@@ -64,7 +64,7 @@ class AssignmentsController < ApplicationController
     
     #handle in-line user creation
     #puts params[:newuser].length
-    if params[:newuser].length > 0 then
+    if params[:newuser][0][:name].length > 0 then
     	puts 'in-line User Create'
     	@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@adobe.com'
     	puts @fakeEmail
@@ -92,6 +92,7 @@ class AssignmentsController < ApplicationController
         format.html { redirect_to @assignment, notice: 'Assignment was successfully created.' }
         format.json { render json: @assignment, status: :created, location: @assignment }
       else
+      	puts 'ERROR SAVING NEW ASSIGNMENT'
         format.html { render action: "new" }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end

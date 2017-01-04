@@ -82,6 +82,31 @@ module ApplicationHelper
 		
 	end
 	
+	def all_subs_by_id(mid)
+		@m = User.find(mid)
+		@return = Array.new()
+		puts "MANAGER IS-" + @m.name
+		if @m.subordinates.any?
+			# puts "-FOUND SUBORDINATES"
+			@exId = User.find_by_name("ExEmployeeMgr").id
+			@subs = @m.subordinates.select(:id).where('id != ?', @exId)
+			@return = @subs.to_a
+			# puts "Return Length - " 
+# 			puts @return.length
+			@m.subordinates.each do |s|
+				if s.subordinates.any?
+					puts "---FOUND Sub-SUBORDINATES"	
+					@return |= all_subs_by_id(s.id)
+					#puts @return.to_s
+				end
+			end
+			@return
+		else
+			#puts @return.to_s
+			@return
+		end
+	end
+	
 	def latest(cuser)
 		if cuser.assignments.length > 0
 			@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	

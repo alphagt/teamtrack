@@ -6,9 +6,15 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.order("category","name")
-    # if @projects
-#     @cdata = []
+    #@projects = Project.order("category","name")
+	if params[:scope] == 'all'
+		@projects = Project.order("category","name")
+	else
+		@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).order("category","name")
+	end
+	puts 'response from projectsformgr'
+	puts @projects
+	#BREAK BREAK BREAK
 	require 'gchart'
 	#Calculate and group fixed effort totals for chart
 	#ToDo - Current FY Data
@@ -136,7 +142,7 @@ class ProjectsController < ApplicationController
   	@project = Project.find(params[:id])
   	@project.active = false
   	@project.fixed_resource_budget = 0
-  	@project.category = "Archived"
+  	@project.category += "-Archived"
   	respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully archived.' }

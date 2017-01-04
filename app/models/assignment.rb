@@ -9,6 +9,8 @@ class Assignment < ActiveRecord::Base
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
   
+  scope :by_user, -> (emp){where(:user_id => emp.id)}
+  
   def self.with_project_info
   	self.joins(:project).select("assignments.*, projects.category as category, projects.owner as proj_owner")
   end

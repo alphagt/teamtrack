@@ -9,6 +9,8 @@
 	<table class="table">
 		<tr>
 		<td class="danger"><%= link_to 'New-Project', new_project_path %></td>
+		<tr>
+		<td class="danger"><%= link_to 'Show-All', projects_path(:scope => "all") %></td>
 	</table>
 	<% end %>
 <% end %>

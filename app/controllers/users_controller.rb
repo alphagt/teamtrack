@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def index
   	puts "In UserController - Index"
   	@exId = User.find_by_name("ExEmployeeMgr").id
-  	@users = User.where('manager_id != ?', @exId).order("manager_id,name")
+  	@users = User.where('users.manager_id != ?', @exId).ordered_by_manager
   end
 
   def show

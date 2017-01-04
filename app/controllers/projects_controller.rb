@@ -6,33 +6,33 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    #@projects = Project.order("category","name")
-	if params[:scope] == 'all'
-		@projects = Project.order("category","name")
-	else
-		@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).order("category","name")
-	end
-	puts 'response from projectsformgr'
-	puts @projects
-	#BREAK BREAK BREAK
+	
 	require 'gchart'
+	
+	if params[:scope] == 'all'
+		@projects = Project.order("projects.category","projects.name")
+	else
+		@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).order("projects.category","projects.name")
+	end
+	
 	#Calculate and group fixed effort totals for chart
-	#ToDo - Current FY Data
-	@cfdata = Assignment.includes(:project).where('set_period_id > 2017').group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	#Current FY Data
+	@cfdata = Assignment.includes(:project).where('set_period_id > 2017 AND projects.id IN (?)', @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Effort by Cat'
 	puts @cfdata.to_s
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
 
-	#ToDo - Current Quarter Data
+	#Current Quarter Data
 	@fy = view_context.current_period().to_i
 	case view_context.current_quarter()
 	when 1
 		@eWeek = view_context.period_from_parts(@fy,13)
 		puts 'max week for period'
 		puts @eWeek
-		@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		#@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		@cfdata = Assignment.includes(:project).where('? < set_period_id < ? AND projects.id IN (?)', @fy.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	when 2
 		@eWeek = view_context.period_from_parts(@fy,25)
 		@sWeek = view_context.period_from_parts(@fy,12)

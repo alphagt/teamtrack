@@ -102,6 +102,10 @@ class AssignmentsController < ApplicationController
   # PUT /assignments/1
   # PUT /assignments/1.json
   def update
+    #covert date to setperiod id
+    @inputDate = Date.parse(params[:assignment][:set_period_id])
+    params[:assignment][:set_period_id] = view_context.period_from_date(@inputDate)
+    #update assignment
     @assignment = Assignment.find(params[:id])
 	@newuser = User.new
     respond_to do |format|

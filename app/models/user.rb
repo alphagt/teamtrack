@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :impersonates, :class_name => "User", :foreign_key => "impersonate_manager"
   has_many :assignments
   has_many :projects, :through => :assignments
-  default_scope {order("name")}
+  default_scope {order("manager_id,name")}
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,

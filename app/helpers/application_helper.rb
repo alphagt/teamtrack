@@ -132,16 +132,15 @@ module ApplicationHelper
 		@sPeriod = 0.0
 		@fyear = d.year
 		puts "in period_from_date"
-		puts d.to_s
-		puts @fyear
 		if d.mon == 12 then
 			@fyear = @fyear + 1
 			@sPeriod = d.cweek + 4 - 52
 		else
-			sPeriod = d.cweek + 4
+			#puts 'IN ELSE'
+			@sPeriod += d.cweek + 4.0
 		end
-		puts "sPeriod is:"
-		puts @sPeriod
+		# puts "sPeriod is:"
+# 		puts @sPeriod
 		@out = @fyear + @sPeriod.fdiv(100).round(3)
 		puts "period from date"
 		puts d.to_s

@@ -38,7 +38,7 @@
 			<td><%= link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} %></td>
     		<td><%= if a.tech_sys_id > 0 then a.tech_system.name else "TBD" end %></td>
     		<td><%= a.user.name %></td>
-    		<td><%= to_date(a.set_period_id) %></td>
+    		<td><%= period_to_date(a.set_period_id) %></td>
     		<td><%= a.effort %></td>
 			<td><%= if !a.is_fixed then "Nitro" else "Fixed" end %></td>
     		<td><%= a.set_period_id.floor%></td>

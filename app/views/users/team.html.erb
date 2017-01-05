@@ -33,10 +33,12 @@
 	<% if user.manager != @currentmgr %>
 		<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
 		<% @currentmgr = user.manager %>
-		<td/>
-		<td/>
-		<td/>
-		<td/>
+		<td><%= if !@currentmgr.default_system.nil? then @currentmgr.default_system.name else "NA" end %></td>
+		<td><%= if @currentmgr.projects.length > 0 then current_system(@currentmgr) end %></td>
+		<td><%= if @currentmgr.projects.length > 0 then current_project(@currentmgr) end %>
+		<% if current_user.admin %>
+				<td class="danger"><%= link_to 'Edit', manage_user_path(@currentmgr) %></td>
+			<% end %>
 	<% else %>
 		<% if !user.ismanager %>
 			<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>

@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :impersonates, :class_name => "User", :foreign_key => "impersonate_manager"
   has_many :assignments
   has_many :projects, :through => :assignments
+  has_many :tech_systems, :through => :assignments
   #default_scope {order("manager_id,name")}
   
   scope :ordered_by_manager, -> do

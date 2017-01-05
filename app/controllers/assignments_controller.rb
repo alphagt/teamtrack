@@ -152,6 +152,8 @@ class AssignmentsController < ApplicationController
     #update assignment
     @assignment = Assignment.find(params[:id])
 	@newuser = User.new
+	puts 'update assignment'
+	puts params.to_s
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }

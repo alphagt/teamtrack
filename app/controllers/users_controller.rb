@@ -80,6 +80,7 @@ class UsersController < ApplicationController
   		@manager = @manager.impersonates
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
+  	@currentmgr = ""
   	puts 'TEAM CONTROLER, manager is'  	
   	puts @manager_string
   end

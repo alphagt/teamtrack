@@ -17,24 +17,36 @@
 <% content_for :main1 do %>
 <table class="table">
   <tr>
-    <th>Manager</th>
-    <th>Name</th>
-    <th>Primary System</th>
+    <th>Name/Details</th>
+    <th>Default System</th>
+    <th>Current System</th>
     <th>Current Projects</th>
-    <th></th>
-    <th></th>
+<!--    <th></th>  -->
+    <% if current_user.admin %> 
+    	<th>Admin Actions</th>
+    <% end %>
   </tr>
 
 <% all_subs(@manager.id).each do |user| %>
   <tr>
-  	<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
-    <td><%= user.name %></td>
-    <td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
-    <td><%= if user.projects.length > 0 then current_project(user) end %></td>
-    <td class="danger"><%= link_to 'Details', user_path(user) %></td>
-    <% if current_user.admin %>
-    	<td class="danger"><%= link_to 'Edit', manage_user_path(user) %></td>
-    <% end %>
+<!-- <td class="warning"><%= link_to user.manager.name, team_user_path(user.manager) %></td> 	 -->
+	<% if user.manager != @currentmgr %>
+		<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
+		<% @currentmgr = user.manager %>
+		<td/>
+		<td/>
+		<td/>
+		<td/>
+	<% else %>
+		<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+    	<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+    	<td><%= if user.projects.length > 0 then current_system(user) end %></td>
+    	<td><%= if user.projects.length > 0 then current_project(user) end %></td>
+    	<% if current_user.admin %>
+    		<td class="danger"><%= link_to 'Edit', manage_user_path(user) %></td>
+    	<% end %>
+	<% end %>
+<!--   <td class="danger"><%= link_to 'Details', user_path(user) %></td> -->
   </tr>
 <% end %>
 </table>

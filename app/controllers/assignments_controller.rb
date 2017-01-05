@@ -30,7 +30,14 @@ class AssignmentsController < ApplicationController
   # GET /assignments/:uid/new.json
   def new
     @manager = current_user
-    @assignment = Assignment.new 
+    puts 'IN NEW CONTROLER'
+    #puts params.to_s
+    if params.has_key?(:assignment)
+    	@assignment = Assignment.new
+    	@assignment.assign_attributes(params[:assignment])
+    else
+    	@assignment = Assignment.new 
+    end
     @newuser = User.new 
     @usecweek = false  #ToReview
     if params[:uid] then
@@ -55,45 +62,82 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
+  	@error = nil
     #convert to set_period_id
     puts 'create assignment with date:'
     puts params[:assignment][:set_period_id].to_s
     @inputDate = Date.parse(params[:assignment][:set_period_id])
     puts @inputDate.to_s
     params[:assignment][:set_period_id] = view_context.period_from_date(@inputDate)
+    puts 'converted to period:'
+    puts params[:assignment][:set_period_id]
     
     #handle in-line user creation
     #puts params[:newuser].length
-    if params[:newuser][0][:name].length > 0 then
+    if params[:newuser][0][:name].length > 0 
     	puts 'in-line User Create'
-    	@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@adobe.com'
-    	puts @fakeEmail
-    	@nUser = User.create! :name => params[:newuser][0][:name], 
-    		:email =>  @fakeEmail, :verified => false, 
-    		:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
-    		:default_system_id => params[:assignment][:tech_sys_id], :admin => false
-    	@nUser.save
-    	puts @nUser
-    	params[:assignment][:user_id] = @nUser.id
+    	if params[:assignment][:tech_sys_id].blank?
+    		#Try to use managers default system
+    		if !current_user.default_system_id.blank? 
+    			puts 'Using managers default system'
+    			params[:assignment][:tech_sys_id] = current_user.default_system_id
+    		else
+    			puts 'cant set system id from any defaults'
+    			@error = 'No Default System Defined'
+    		end
+    	end
+    	if @error.nil?
+			puts 'No Errors, Creating User'
+			@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@adobe.com'
+			puts @fakeEmail
+ 
+			@nUser = User.create! :name => params[:newuser][0][:name], 
+				:email =>  @fakeEmail, :verified => false, 
+				:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
+				:default_system_id => params[:assignment][:tech_sys_id], :admin => false
+			@nUser.save
+			puts @nUser
+			params[:assignment][:user_id] = @nUser.id
+		end
     end 
-    puts 'converted to period:'
-    puts params[:assignment][:set_period_id]
+
+    #Apply default system
+    puts 'CHECK tech system'
+    #puts params[:assignment]
+    if params[:assignment][:tech_sys_id].blank?
+    	puts 'FOUNTD NIL SYSTEM'
+    	#puts 'DEFAUL SYSTEM ID --'
+    	dsysid = ""
+    	if !params[:assignment][:user_id].blank?
+    		dsysid = User.find_by_id(params[:assignment][:user_id]).default_system_id
+    	end
+    	#puts dsysid
+    	if !dsysid.nil?
+    		params[:assignment][:tech_sys_id] = dsysid
+    	else
+    		#Fail Update
+    		puts 'ERROR SAVING NEW ASSIGNMENT - No Default System Defined for User'
+    		@error = "No Default System Defined"
+    	end
+    end
+    
     @assignment = Assignment.new(params[:assignment])
     @usecweek = true
 	if @assignment.project.under_budget(@assignment.set_period_id) then
 		@assignment.is_fixed = true
-		puts 'FIXED - TRUE'
+		#puts 'FIXED - TRUE'
 	else
 		@assignment.is_fixed = false
-		puts 'FIXED - FALSE'
+		#puts 'FIXED - FALSE'
 	end
     respond_to do |format|
-      if @assignment.save
+      if @error.nil? && @assignment.save
         format.html { redirect_to @assignment, notice: 'Assignment was successfully created.' }
         format.json { render json: @assignment, status: :created, location: @assignment }
       else
       	puts 'ERROR SAVING NEW ASSIGNMENT'
-        format.html { render action: "new" }
+      	if @error.nil? then @error = @assignment.errors.to_s end
+        format.html { redirect_to new_assignment_path(:assignment => params[:assignment]),  alert: 'Assignment Failed ' + @error  }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end

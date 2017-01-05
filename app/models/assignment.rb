@@ -5,6 +5,7 @@ class Assignment < ActiveRecord::Base
   attr_accessible :effort, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project, :week_number, :tech_system, :tech_sys_id  
   validates :project_id, :presence => true
   validates :user_id, :presence => true
+  validates :tech_sys_id, :presence => true
   validates :effort, :presence => true, :numericality => { :greater_than => 0 }
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create

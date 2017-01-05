@@ -21,7 +21,7 @@
 <% @assignments.each do |a| %>
   <tr>
     <td><%= if a.project then link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} else "ERROR" end %></td>
-    <td><%= if a.tech_sys_id > 0 then a.tech_system.name else "TBD" end %></td>
+    <td><%= if !a.tech_system.nil? then a.tech_system.name else "TBD" end %></td>
  	<td><%= if a.user then a.user.name else "ERROR" end %></td>
     <td><%= period_to_date(a.set_period_id) %></td>
     <td><%= a.effort %></td>
@@ -36,7 +36,7 @@
 		<% subordinate.assignments.each do |a| %>
 		  <tr>
 			<td><%= link_to a.project.name, a, {:style => "color:blue;text-decoration : underline;"} %></td>
-    		<td><%= if a.tech_sys_id > 0 then a.tech_system.name else "TBD" end %></td>
+    		<td><%= if !a.tech_system.nil? then a.tech_system.name else "TBD" end %></td>
     		<td><%= a.user.name %></td>
     		<td><%= period_to_date(a.set_period_id) %></td>
     		<td><%= a.effort %></td>

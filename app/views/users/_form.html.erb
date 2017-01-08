@@ -8,8 +8,8 @@
 			<%= f.input :name, :autofocus => true %>
 			<%= f.input :email, :required => true %>
 			<%= f.hidden_field :password, :value => "abc123" %>
-			<%= f.association :manager, :as => :select %>
-			<%= f.association :default_system, :as => :select %>
+			<%= f.association :manager, :as => :select, :collection => User.managers_only, :label_method => :name %>
+			<%= f.association :default_system, :as => :select  %>
 			<div class="checkbox">
 				<%= f.input :ismanager, :type => 'checkbox', :class => 'form-control', :id => 'mgrCB' %>
 				<%= f.input :admin, :type => 'checkbox', :class => 'form-control', :id => 'adminCB' %>

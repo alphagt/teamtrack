@@ -27,9 +27,9 @@
 			<th>Project</th>
 			<th>Fiscal year</th>
 			<th>Week of</th>
+			<th>System</th>
 			<th>Effort</th>
-			<th>Type</th>
-			<th/>
+			<th>Actions</th>
 			<th/>
 			</h5>
 		  </tr>
@@ -38,10 +38,14 @@
 			<td><%= assignment.project.name %></td>
 			<td><%= assignment.set_period_id.floor %></td>
 			<td><%= period_to_date(assignment.set_period_id) %></td>
+			<td><%= if !assignment.tech_system.nil? then assignment.tech_system.name else "ERROR" end %></td>
 			<td><%= assignment.effort %></td>
-			<td><%= if !assignment.is_fixed then "Nitro" else "Fixed" end %></td>
-			<td><%= if assignment.set_period_id >= current_period || current_user.admin then link_to 'Edit', edit_assignment_path(assignment) end %></td>
-			<td><%= if assignment.set_period_id >= current_period - 0.01 then link_to 'Extend for a week', extend_assignment_path(assignment) else "Closed" end %></td>
+			<td class="danger"><%= if assignment.set_period_id >= current_period || current_user.admin then link_to 'Edit', edit_assignment_path(assignment) end %></td>
+			<% if assignment.set_period_id >= current_period - 0.01 then %>
+				<td class="danger"><%= link_to 'Extend for a week', extend_assignment_path(assignment)%></td>
+			<% else %>
+				<td><%= "Closed" %></td>
+			<% end %>
 		  </tr>
 		<% end %>
 		</table>

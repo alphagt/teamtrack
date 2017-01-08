@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   has_many :assignments, -> { order "set_period_id" }
   has_many :users, -> { order "users.name" }, :through => :assignments
   attr_accessible :owner, :active, :description, :category, :name, :owner_id, :fixed_resource_budget, :upl_number
-	
+  default_scope {order("projects.name")}
 
 	scope :for_users, -> (uList){joins(:users).where('assignments.user_id IN (?)', uList).distinct}
 	scope :active, -> {where('active = true')}

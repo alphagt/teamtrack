@@ -8,9 +8,15 @@ class User < ActiveRecord::Base
   has_many :tech_systems, :through => :assignments
   #default_scope {order("manager_id,name")}
   
-  scope :ordered_by_manager, -> do
-  	joins('INNER Join users as mgrs on mgrs.id = users.manager_id').order('mgrs.name').order('users.name')
-  end
+  scope :ordered_by_manager, -> {joins('INNER Join users as mgrs on mgrs.id = users.manager_id or users.id = 1')
+  	.distinct.order('mgrs.name').order('users.name')}
+
+  
+  scope :ordered_by_name, -> {order('users.name')}
+  
+  scope :managers_only, -> {where('ismanager = true').order('users.name')}
+
+  
   
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,

@@ -14,7 +14,8 @@
 	  		
 			<%= f.input :name %>
 			<%= f.input :email %>
-			<%= f.association :manager, :as => :select %>
+			<%= f.association :manager, :as => :select, :collection => User.managers_only, 
+				:label_method => :name %>
 			<%= f.association :default_system, :as => :select %>
 			<br>
 			<div class="form-actions">
@@ -28,7 +29,8 @@
 				<b>Admin Options:</b>
 				<br/>
 				<br/>
-				<%= f.association :impersonates, :as => :select %>
+				<%= f.association :impersonates, :as => :select, :collection => User.managers_only, 
+					:label_method => :name %>
 				<div class="checkbox">
 					<%= f.input :admin, inline_label: 'Is Admin', label: false %>
 					<%= f.input :ismanager,inline_label: 'Is Manager', label: false %>

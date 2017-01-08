@@ -12,7 +12,8 @@
 		<% end %>
 		<br/>
 		<%= f.input :name, :autofocus => true, label: "Name"  %>
-		<%= f.association :owner, :as => :select, label: "Owner" %>	
+		<%= f.association :owner, :as => :select, :collection => User.managers_only, 
+		 	:label_method => :name, label: "Owner" %>	
 		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
 		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget" %>
 		<%= f.input :category, inline_label: 'SLC Category', label: "UPL Category" %>

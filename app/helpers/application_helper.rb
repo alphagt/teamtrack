@@ -35,6 +35,10 @@ module ApplicationHelper
 		@fWeek = ((@cp - @cp.to_i) * 100).round
 	end
 	
+	def week_from_period(p)
+		((p - p.to_i)*100).round
+	end
+	
 	def current_quarter()
 		@cw = current_week()
 		@q = 0

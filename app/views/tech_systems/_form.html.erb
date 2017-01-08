@@ -5,7 +5,8 @@
     <%= f.input :name, :autofocus => true %>
 	<%= f.input :description %>
 	<%= f.input :qos_group %>
-    <%= f.association :owner, :as => :select %>
+    <%= f.association :owner, :as => :select, :collection => User.managers_only, 
+    	:label_method => :name %>
   </div>
   <br/>
   <div class="form-actions">

@@ -67,20 +67,27 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    require 'gchart'
     @project = Project.find(params[:id])
 
 	#Prep Chart Data
-	# @clabels = []
-# 	@cvalues = []
-# 	@cdata = Assignment.sum(:effort, :conditions => ["project_id = ? AND set_period_id <= ?", @project.id, view_context.current_period()], :group => :set_period_id,
-# 		:order => ["set_period_id DESC"]).first(12)
-# 	puts 'Chart Data'
-# 	puts @cdata.to_s
-# 	@cdata.reverse!.map {|p,v|
-# 		@clabels.push(p.to_s)
-# 		@cvalues.push(v)}
-# 	puts 'Labels:'
-# 	puts @clabels.to_s	
+	@clabels = []
+	@cvalues = []
+	@cdata = Assignment.where('set_period_id <= ? AND project_id = ?', 
+		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	puts 'Chart Data'
+	puts @cdata
+	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
+	@clabels.sort!
+	@cvalues = @cdata.to_h.values
+	puts 'Labels:'
+	puts @clabels.to_s	
+	#Data for systems pie chart
+	@cdata = Assignment.where('set_period_id <= ? AND project_id = ? AND tech_sys_id > 0', 
+		view_context.current_period, params[:id]).group(:tech_system).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
+	@svalues = @cdata.to_h.values	
+		
 	#End prep chart data
     respond_to do |format|
       format.html # show.html.erb

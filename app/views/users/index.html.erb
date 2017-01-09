@@ -30,7 +30,11 @@
   </tr>
 <% @users.each do |user| %>
   <tr>
-    <td><%= link_to user.name, user_path(user)  %></td>
+    <% if current_user.admin or user.manager == current_user %>
+    	<td><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"}  %></td>
+    <% else %>
+    	<td><%= user.name %></td>
+    <% end %>
     <td><%= if user.default_system_id.nil? then "Undefined" else user.default_system.name end %></td>
     <td><%= user.admin.to_s %></td>
     <td><%= user.manager.name if user.manager %></td>

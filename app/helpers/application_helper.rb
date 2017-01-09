@@ -62,19 +62,22 @@ module ApplicationHelper
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
-			@return = @m.subordinates.where('id != ?', @exId).order(:name)
+			@return = @m.subordinates.where('users.id != ?', @exId).order(:name)
 			# puts "Return Length - " 
 # 			puts @return.length
 			@m.subordinates.each do |s|
 				if s.subordinates.any?
-					puts "---FOUND Sub-SUBORDINATES"	
+					puts "---FOUND Sub-SUBORDINATES"
+					puts s.name	
 					@return |= all_subs(s.id)
-					puts @return
+					#puts @return
 				end
 			end
 			if @return.respond_to?(:order)
 				puts "--- list is in active record form"
-				@return.order(:manager_id, :name)
+				puts @return.pluck(:name)
+				#@return.order(:manager_id, :name)
+				@return.ordered_by_manager
 			else
 				@return
 			end

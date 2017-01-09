@@ -136,8 +136,9 @@ class AssignmentsController < ApplicationController
         format.json { render json: @assignment, status: :created, location: @assignment }
       else
       	puts 'ERROR SAVING NEW ASSIGNMENT'
-      	if @error.nil? then @error = @assignment.errors.to_s end
-        format.html { redirect_to new_assignment_path(:assignment => params[:assignment]),  alert: 'Assignment Failed ' + @error  }
+      	puts @assignment.errors.to_h[:project_id]
+      	if @error.nil? then @error = @assignment.errors.to_h[:project_id] end
+        format.html { redirect_to new_assignment_path(:assignment => params[:assignment]),  alert: 'Assignment Failed: ' + @error  }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end

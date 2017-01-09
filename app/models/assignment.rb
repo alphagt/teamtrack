@@ -22,9 +22,19 @@ class Assignment < ActiveRecord::Base
 		@fWeek = ((cAssign.set_period_id - @pFy) * 100).round 
 		puts @fWeek
 		if @fWeek < 52
-  			n = Assignment.new({:is_fixed => cAssign.is_fixed, :project_id => cAssign.project_id, :user_id => cAssign.user_id, :set_period_id => cAssign.set_period_id + 0.01, :effort => cAssign.effort})
+  			n = Assignment.new({:is_fixed => cAssign.is_fixed, 
+  				:project_id => cAssign.project_id, 
+  				:user_id => cAssign.user_id, 
+  				:set_period_id => cAssign.set_period_id + 0.01, 
+  				:effort => cAssign.effort,
+  				:tech_sys_id => cAssign.tech_sys_id})
   		else
-  			n = Assignment.new({:is_fixed => cAssign.is_fixed, :project_id => cAssign.project_id, :user_id => cAssign.user_id, :set_period_id => cAssign.set_period_id + 0.49, :effort => cAssign.effort})
+  			n = Assignment.new({:is_fixed => cAssign.is_fixed, 
+  			:project_id => cAssign.project_id, 
+  			:user_id => cAssign.user_id, 
+  			:set_period_id => cAssign.set_period_id + 0.49, 
+  			:effort => cAssign.effort,
+  			:tech_sys_id => cAssign.tech_sys_id})
   		end
   		if n then
 			if n.project.under_budget(n.set_period_id) == false then
@@ -65,7 +75,7 @@ class Assignment < ActiveRecord::Base
   end
   
   def one_assg_per_project_week
-  	errors.add(:project_id, "Assignment to this project for this week already exists, modify existing assignment") unless 
-  		Assignment.where(:user_id => user_id, :set_period_id => set_period_id, :project_id => project_id).count == 0
+  	errors.add(:project_id, "Assignment to this project and system for this week already exists, modify existing assignment") unless 
+  		Assignment.where(:user_id => user_id, :set_period_id => set_period_id, :project_id => project_id, :tech_sys_id => tech_sys_id).count == 0
   end
 end

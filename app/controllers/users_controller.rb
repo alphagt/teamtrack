@@ -71,12 +71,19 @@ class UsersController < ApplicationController
   
   # GET /users/:id/team
   def team
+  	puts 'showEx =' + params[:showEx].to_s
   	@manager = User.find(params[:id])
   	@manager_string = 'For ' + @manager.name
   	if @manager.impersonates then
   		@manager = @manager.impersonates
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
+  	if params[:showEx] == 'true' then
+  		puts 'Foud ShowEx Param'
+		@user_list = view_context.all_subs(@manager.id, true)
+	else
+		@user_list = view_context.all_subs(@manager.id)
+	end
   	@currentmgr = ""
   	puts 'TEAM CONTROLER, manager is'  	
   	puts @manager_string

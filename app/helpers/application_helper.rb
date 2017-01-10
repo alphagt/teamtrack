@@ -55,23 +55,33 @@ module ApplicationHelper
 		@q		
 	end
 	
-	def all_subs(mid)
+	def all_subs(mid, showEx = false, subCall = false)
 		@m = User.find(mid)
 		@return = Array.new()
 		puts "MANAGER IS-" + @m.name
+		puts "showEx is-" + showEx.to_s
+		puts "subCall is-" + subCall.to_s
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
-			@return = @m.subordinates.where('users.id != ?', @exId).order(:name)
+			if showEx
+				@return = @m.subordinates
+			else
+				@return = @m.subordinates.where('users.id != ? AND users.manager_id != ?', @exId, @exId).order(:name)
+			end
 			# puts "Return Length - " 
 # 			puts @return.length
 			@m.subordinates.each do |s|
 				if s.subordinates.any?
 					puts "---FOUND Sub-SUBORDINATES"
 					puts s.name	
-					@return |= all_subs(s.id)
+					@return |= all_subs(s.id, false, true)
 					#puts @return
 				end
+			end
+			# add exManager reports if indicated
+			if showEx && !subCall then
+				@return |= all_subs(@exId, true, true)
 			end
 			if @return.respond_to?(:order)
 				puts "--- list is in active record form"

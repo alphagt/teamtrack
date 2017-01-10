@@ -10,7 +10,11 @@
 	<tr>
 		<td class="danger"><%= link_to 'Extend all one week', extendteam_user_path(@manager) %></td>
 	<tr>
-		<td class="danger"><%= if @manager != current_user then link_to 'Full Team', team_user_path(:id => current_user.id) end %></td>
+		<td class="danger"><%= if @manager != current_user then link_to 'Full Team', 
+			team_user_path(:id => current_user.id) end %></td>
+	<tr>
+		<td class="danger"><%= if @manager.admin then link_to 'Show Ex Employees', 
+			team_user_path(:id => @manager.id, :showEx => 'true') end %></dt>
 </table>
 <% end %>
 <br/>
@@ -27,7 +31,7 @@
     <% end %>
   </tr>
 
-<% all_subs(@manager.id).each do |user| %>
+<% @user_list.each do |user| %>
   <tr>
 <!-- <td class="warning"><%= link_to user.manager.name, team_user_path(user.manager) %></td> 	 -->
 	<% if user.manager != @currentmgr %>

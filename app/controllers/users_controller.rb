@@ -49,24 +49,21 @@ class UsersController < ApplicationController
   def createemp
   	puts 'TRY THIS:'
   	puts params[:user][:name]
-  	if User.find_by_name(params[:name])
-  		@user = false
-  		redirect_to users_path, notice: 'User Already Exists.'
-  	else
-    	@user = User.create_new_user(params[:user][:name], params[:user][:email], params[:user][:manager_id], params[:user][:password])
-    end
-    @user.ismanager = params[:user][:ismanager]
-    @user.default_system_id = params[:user][:default_system_id]
-    @user.admin = params[:user][:admin]
-    puts "RESULTS:::"
-    puts @user
+  	
+	@user = User.create_new_user(params[:user][:name], params[:user][:email], 
+		params[:user][:manager_id], params[:user][:password])
+	@user.ismanager = params[:user][:ismanager]
+	@user.default_system_id = params[:user][:default_system_id]
+	@user.admin = params[:user][:admin]
+	puts "RESULTS:::"
+	puts @user
+	
     respond_to do |format|
       if @user.save
         format.html { redirect_to users_path, notice: 'User was successfully created.' }
         format.json { render json: User.find_by_name(params[:name]), status: :created, location: User.find_by_name(params[:name]) }
       else
-      	@user = User.new
-        format.html { redirect_to users_path, notice: 'FAILED to create user.' }
+        format.html { redirect_to users_path, notice: 'FAILED to create user: ' + @user.errors.to_h[:notice] }
         format.json { render json: User.errors, status: :unprocessable_entity }
       end
     end

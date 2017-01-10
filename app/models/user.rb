@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   has_many :assignments
   has_many :projects, :through => :assignments
   has_many :tech_systems, :through => :assignments
+  
+  validate :unique_name, :on => :create
   #default_scope {order("manager_id,name")}
   
   scope :ordered_by_manager, -> {joins('INNER Join users as mgrs on mgrs.id = users.manager_id or users.id = 1')
@@ -43,4 +45,11 @@ class User < ActiveRecord::Base
    	puts xuser.name
    	return xuser
   end
+  
+  def unique_name
+  	dupCount = User.where(:name => name).count
+  	puts dupCount
+  	errors.add(:notice, "User already exists!") unless
+  	dupCount == 0
+  end	
 end

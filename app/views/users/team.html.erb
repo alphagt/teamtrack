@@ -38,16 +38,18 @@
 		<td><%= if @currentmgr.projects.length > 0 then current_project(@currentmgr) end %>
 		<% if current_user.admin %>
 				<td class="danger"><%= link_to 'Edit', manage_user_path(@currentmgr) %></td>
-			<% end %>
-		<tr>
-			<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
-			<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
-			<td><%= if user.projects.length > 0 then current_system(user) end %></td>
-			<td><%= if user.projects.length > 0 then current_project(user) end %></td>
-			<% if current_user.admin %>
-				<td class="danger"><%= link_to 'Edit', manage_user_path(user) %></td>
-			<% end %>
-		</tr>
+		<% end %>
+		<% if user.subordinates.count == 0 then %>
+			<tr>
+				<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+				<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+				<td><%= if user.projects.length > 0 then current_system(user) end %></td>
+				<td><%= if user.projects.length > 0 then current_project(user) end %></td>
+				<% if current_user.admin %>
+					<td class="danger"><%= link_to 'Edit', manage_user_path(user) %></td>
+				<% end %>
+			</tr>
+		<% end %>
 	<% else %>
 		  <% if user.subordinates.count == 0 then %>
 			<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>

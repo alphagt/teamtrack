@@ -73,7 +73,7 @@ class ProjectsController < ApplicationController
 	#Prep Chart Data
 	@clabels = []
 	@cvalues = []
-	@cdata = Assignment.where('set_period_id <= ? AND project_id = ?', 
+	@cdata = Assignment.where('set_period_id <= ? AND project_id = ?',  
 		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Chart Data'
 	puts @cdata

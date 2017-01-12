@@ -36,6 +36,27 @@ class TechSystemsController < ApplicationController
 
   def show
   	@system = TechSystem.find(params[:id])
+  	
+  	#Prep Chart Data
+	@clabels = []
+	@cvalues = []
+	@cdata = Assignment.where('? < set_period_id <= ? AND tech_sys_id = ?', view_context.current_fy, 
+		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	puts 'Chart Data'
+	puts @cdata
+	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
+	@clabels.sort!
+	@cvalues = @cdata.to_h.values
+	puts 'Labels:'
+	puts @clabels.to_s	
+	#Data for projects pie chart
+	@cdata = Assignment.where('set_period_id = ? AND tech_sys_id = ? AND tech_sys_id > 0', 
+		view_context.current_period, params[:id]).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
+	@svalues = @cdata.to_h.values	
+		
+	#End prep chart data
+  	
   	respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @system }

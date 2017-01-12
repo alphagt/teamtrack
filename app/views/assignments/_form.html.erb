@@ -10,7 +10,7 @@
 					period_to_date(@assignment.set_period_id).to_s end, :type => 'text', :class => 'form-control', 
 					:id => 'inputWeek' %>
 			<br/>
-			<%= if !@assignment.user then f.association :user, collection: all_subs(@manager), :as => :select, 
+			<%= if !@assignment.user then f.association :user, collection: all_subs(@manager, false, false, false), :as => :select, 
 				:html => {:type => 'select', :class => "form-control", :id => "pickUser"} 
 				else f.hidden_field :user_id, :value => @assignment.user.id, :html => {:type => "text", 
 					:class => "form-control", :id => "pickUser"} end %>

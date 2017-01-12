@@ -62,7 +62,7 @@ module ApplicationHelper
 		@q		
 	end
 	
-	def all_subs(mid, showEx = false, subCall = false)
+	def all_subs(mid, showEx = false, subCall = false, by_mgr = true)
 		@m = User.find(mid)
 		@return = Array.new()
 		puts "MANAGER IS-" + @m.name
@@ -88,20 +88,33 @@ module ApplicationHelper
 			end
 			# add exManager reports if indicated
 			if showEx && !subCall then
-				@return |= all_subs(@exId, true, true)
+				@return |= all_subs(@exId, true, true, by_mgr)
 			end
 			if @return.respond_to?(:order)
 				puts "--- list is in active record form"
-				puts @return.pluck(:name)
-				#@return.order(:manager_id, :name)
-				@return.ordered_by_manager
+				#puts @return.pluck(:name)
+				if by_mgr
+					@return.ordered_by_manager
+				else
+					@return
+				end
+				
 			else
 				@return
 			end
 		else
 			@return
 		end
-		
+		if @return.respond_to?(:sort_by) && !subCall
+			puts 'SORT All Subs End Result'
+			if !by_mgr
+				@return.sort!{|a,b| a.name.downcase <=> b.name.downcase}
+			else
+				@return
+			end
+		end
+		puts @return.map{|m| m.name}
+		@return
 		#@return.sort_by! {|a| [a.manager.name, a.name]}
 		
 	end

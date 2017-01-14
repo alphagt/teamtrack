@@ -40,7 +40,7 @@
 			<td><%= period_to_date(assignment.set_period_id) %></td>
 			<td><%= if !assignment.tech_system.nil? then assignment.tech_system.name else "ERROR" end %></td>
 			<td><%= assignment.effort %></td>
-			<td class="danger"><%= if assignment.set_period_id >= current_period || current_user.admin then link_to 'Edit', edit_assignment_path(assignment) end %></td>
+			<td class="danger"><%= if assignment.set_period_id >= current_period || current_user.admin then link_to 'Edit Assignment', edit_assignment_path(assignment) end %></td>
 			<% if assignment.set_period_id >= current_period - 0.01 then %>
 				<td class="danger"><%= link_to 'Extend for a week', extend_assignment_path(assignment)%></td>
 			<% else %>

@@ -25,6 +25,7 @@ TeamTrack::Application.routes.draw do
   	get 'manage', :on => :member
   	get 'team', :on => :member
   	get 'extendteam', :on => :member
+  	get 'extendCurrentAssignment', :on => :member
   	post 'createemp', :on => :collection
   	post 'exit', :on => :member
   end

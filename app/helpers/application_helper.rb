@@ -22,8 +22,8 @@ module ApplicationHelper
 
 	def period_from_parts(iFy, iWeek)
  
- 		puts 'period_from_parts'
- 		puts 'iWeek'
+ 		#puts 'period_from_parts'
+ 		#puts 'iWeek'
  		puts iWeek
 		@fWeek = iWeek.to_f / 100
 		puts @fWeek
@@ -65,9 +65,9 @@ module ApplicationHelper
 	def all_subs(mid, showEx = false, subCall = false, by_mgr = true)
 		@m = User.find(mid)
 		@return = Array.new()
-		puts "MANAGER IS-" + @m.name
-		puts "showEx is-" + showEx.to_s
-		puts "subCall is-" + subCall.to_s
+		#puts "MANAGER IS-" + @m.name
+		#puts "showEx is-" + showEx.to_s
+		#puts "subCall is-" + subCall.to_s
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
@@ -80,8 +80,8 @@ module ApplicationHelper
 # 			puts @return.length
 			@m.subordinates.each do |s|
 				if s.subordinates.any?
-					puts "---FOUND Sub-SUBORDINATES"
-					puts s.name	
+		#			puts "---FOUND Sub-SUBORDINATES"
+		#			puts s.name	
 					@return |= all_subs(s.id, false, true)
 					#puts @return
 				end
@@ -91,7 +91,7 @@ module ApplicationHelper
 				@return |= all_subs(@exId, true, true, by_mgr)
 			end
 			if @return.respond_to?(:order)
-				puts "--- list is in active record form"
+		#		puts "--- list is in active record form"
 				#puts @return.pluck(:name)
 				if by_mgr
 					@return.ordered_by_manager
@@ -122,7 +122,7 @@ module ApplicationHelper
 	def all_subs_by_id(mid)
 		@m = User.find(mid)
 		@return = Array.new()
-		puts "MANAGER IS-" + @m.name
+		#puts "MANAGER IS-" + @m.name
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
@@ -132,7 +132,7 @@ module ApplicationHelper
 # 			puts @return.length
 			@m.subordinates.each do |s|
 				if s.subordinates.any?
-					puts "---FOUND Sub-SUBORDINATES"	
+		#			puts "---FOUND Sub-SUBORDINATES"	
 					@return |= all_subs_by_id(s.id)
 					#puts @return.to_s
 				end
@@ -144,19 +144,24 @@ module ApplicationHelper
 		end
 	end
 	
-	def latest(cuser)
+	
+	
+	def free_next_week(cuser)
+		rcode = true
 		if cuser.assignments.length > 0
-			@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
-			cuser.assignments.where(:set_period_id => @latest)
-		else
-			Array.new()
+			foo = current_period + 0.01
+			puts "TEST PERIOD: " + foo.to_s
+			if cuser.assignments.where(:set_period_id => foo).count > 0
+				rcode = false
+			end
 		end
+		rcode
 	end
 	
-	def extend_team(mUser)
+	def extend_team(mUser, floor = 0)
 		rcode = 0
-		all_subs(mUser.id).each do |u|
-			latest(u).each do |a|
+		mUser.subordinates.each do |u|
+			latest(u,floor).each do |a|
 				if Assignment.extend_by_week(a) then
 					rcode += 1
 				end
@@ -168,7 +173,7 @@ module ApplicationHelper
 	def period_from_date(d)
 		@sPeriod = 0.0
 		@fyear = d.year
-		puts "in period_from_date"
+		#puts "in period_from_date"
 		if d.mon == 12 then
 			@fyear = @fyear + 1
 			@sPeriod = d.cweek + 4 - 52
@@ -179,9 +184,9 @@ module ApplicationHelper
 		# puts "sPeriod is:"
 # 		puts @sPeriod
 		@out = @fyear + @sPeriod.fdiv(100).round(3)
-		puts "period from date"
-		puts d.to_s
-		puts @out
+		#puts "period from date"
+		#puts d.to_s
+		#puts @out
 		@out
 	end
 	
@@ -200,8 +205,8 @@ module ApplicationHelper
 		#puts 'CURRENT CWEEK Number: '
 		#puts  @cweek_number
 		@out = @fyear + @cweek_number.fdiv(100).round(3)
-		puts 'cPeriod ='
-		puts @out
+		#puts 'cPeriod ='
+		#puts @out
 		@out
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end

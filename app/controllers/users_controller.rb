@@ -71,7 +71,6 @@ class UsersController < ApplicationController
   
   # GET /users/:id/team
   def team
-  	puts 'showEx =' + params[:showEx].to_s
   	@manager = User.find(params[:id])
   	@manager_string = 'For ' + @manager.name
   	if @manager.impersonates then
@@ -79,22 +78,45 @@ class UsersController < ApplicationController
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
   	if params[:showEx] == 'true' then
-  		puts 'Foud ShowEx Param'
+  	#	puts 'Foud ShowEx Param'
 		@user_list = view_context.all_subs(@manager.id, true)
 	else
 		@user_list = view_context.all_subs(@manager.id)
 	end
   	@currentmgr = ""
-  	puts 'TEAM CONTROLER, manager is'  	
-  	puts @manager_string
+  	#puts 'TEAM CONTROLER, manager is'  	
+  	#puts @manager_string
+  end
+  
+  # GET /user/:id/extendcurrent
+  def extendCurrentAssignment
+  	puts 'IN Extend Current Assignment '
+  	rcode = true
+  	view_context.latest(User.find(params[:id])).each do |a|
+  		tmp = Assignment.extend_by_week(a)
+  		puts "Extend " + a.id.to_s + " Result: " + tmp.to_s
+  	end
+  	respond_to do |format|
+      if rcode
+        format.html { redirect_to team_user_path(@current_user), notice: 'Assignments were successfully extended.' }
+        format.json { render json: @current_user, status: :extended, location: team_user_path(@current_user) }
+      else
+        format.html { redirect_to team_user_path(@current_user), notice: 'No Assignments were extended' }
+        format.json { render json: @current_user.errors, status: :unprocessable_entity }
+      end
+    end
   end
   
   # GET /user/:id/extendteam
   def extendteam
   	@manager = User.find(params[:id])
-  	puts 'In ExtendTeam Controller Method'
+  	floor = 0
+		if !params[:floor].nil?
+			floor = params[:floor]
+		end
+  	puts "In ExtendTeam Controller Method - Floor = " + floor.to_s
   	respond_to do |format|
-      if view_context.extend_team(@manager) > 0
+      if view_context.extend_team(@manager, floor) > 0
         format.html { redirect_to team_user_path(@manager), notice: 'Assignments were successfully extended.' }
         format.json { render json: @manager, status: :extended, location: team_user_path(@manager) }
       else

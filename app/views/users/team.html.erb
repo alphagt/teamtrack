@@ -3,17 +3,28 @@
 <% content_for :nav do %>
 	<%  render partial: "layouts/navigation", locals: {active: "team"} %>
 <% end %>
-<% content_for :sidebar do %>
+<% content_for :sidebarwide do %>
 <table class="table" >
 	<tr>
 		<td class="danger"><%= link_to 'New Assignment', new_assignment_path %></td>
-	<tr>
-		<td class="danger"><%= if @manager != current_user then link_to 'Full Team', 
-			team_user_path(:id => current_user.id) end %></td>
-	<tr>
-		<td class="danger"><%= if @manager.admin then link_to 'Show Ex Employees', 
-			team_user_path(:id => @manager.id, :showEx => 'true') end %></dt>
+	<% if @manager != current_user then %>
+		<tr>
+			<td class="danger"><%= link_to 'Full Team', team_user_path(:id => current_user.id) %></td>
+	<% end %>
+	<% if @manager.admin then %>
+		<tr>
+			<td class="danger"><%= link_to 'Show Ex Employees', team_user_path(:id => @manager.id, 
+				:showEx => 'true')  %></dt>
+	<% end %>
 </table>
+<h4><%= "Week " + current_week.to_s + " Stats:" %></h4>
+<h5>Person Weeks Available: <small><%= @user_list.count.to_s%></small></h5>
+<h5>Person Weeks Assigned: <small><%= @total_effort.to_s + " of " + @user_list.count.to_s%></small></h5>
+<h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
+<br/>
+<%= image_tag(Gchart.pie(:title => 'Effort Allocation', 
+		:legend => @clabels, :legend_position => 'bottom', :data => @cvals, 
+		:size => '140x200', :chart_background => 'CCCCCC', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 <% end %>
 <br/>
 <% content_for :main1 do %>

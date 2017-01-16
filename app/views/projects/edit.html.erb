@@ -10,7 +10,8 @@
 <% content_for  :sidebarwide do %>
 <table class="table">
 	<tr>
-		<td class="danger"><%= link_to 'Archive Project', {:controller => :projects, :action => 'archive', :id => @project.id}, {:method => :get, :class => "link" } %></td>
+		<td class="danger"><%= if @project.active then link_to 'Archive Project', {:controller => :projects, :action => 'archive', 
+		:id => @project.id}, {:method => :get, :class => "link" } end %></td>
 	<tr>
 		<td class="danger"><%= link_to 'Back', projects_path %></td>
 </table>

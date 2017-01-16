@@ -28,12 +28,14 @@
 		<%= image_tag(Gchart.bar(:title => "Effort History", 
 		:labels => @clabels, :data => @cvalues, :chart_background => 'CCCCCC', :max_value => 25, 
 		:min_value => 0, :stacked => false, :size => '400x225', :axis_with_labels => [['x'], ['y']],
-		:bar_width_and_spacing => ['40','4'], :axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
+		:bar_width_and_spacing => ['40','4'], :bar_colors => "3DB1FF,0061D7,FF148A,FF8A14", 
+		:axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
 	</div>
 	<div class="col-md-3">
 		<%= image_tag(Gchart.pie(:title => "Current Project Effort", 
-		:data => @svalues, :chart_background => 'CCCCCC', :size => '300x250',
-		:legend => @slabels, :legend_position => 'bottom'), class: "img-responsive")%>
+		:data => @svalues, :chart_background => 'CCCCCC', :size => '300x300',
+		:legend => @slabels, :legend_position => 'bottom', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"), 
+		class: "img-responsive")%>
 	</div>
 	</div>
 </div>	

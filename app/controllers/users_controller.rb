@@ -71,6 +71,9 @@ class UsersController < ApplicationController
   
   # GET /users/:id/team
   def team
+  
+  	require 'gchart'
+  	
   	@manager = User.find(params[:id])
   	@manager_string = 'For ' + @manager.name
   	if @manager.impersonates then
@@ -78,11 +81,45 @@ class UsersController < ApplicationController
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
   	if params[:showEx] == 'true' then
-  	#	puts 'Foud ShowEx Param'
+#   		puts 'Foud ShowEx Param'
 		@user_list = view_context.all_subs(@manager.id, true)
 	else
 		@user_list = view_context.all_subs(@manager.id)
 	end
+	
+	@tm_count = @user_list.count
+	puts "Team-Ctrlr: User Count: " + @tm_count.to_s
+	
+	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",
+		view_context.current_period, @user_list.map{|u| u.id}).references(:project).where("projects.active = true") 
+	puts "AggAssignments -- " + c_assignments.count.to_s
+	#Calulations for week summary
+	## Total Effort & Overhead
+	@overhead_effort = 0
+	@total_effort = 0
+	c_assignments.each do |a|
+			@total_effort += a.effort
+# 			puts "Calc AssignDetails for: " + u.name + "-" + a.id.to_s
+# 			puts "Calc AssignDetails period: " + a.set_period_id.to_s
+# 			puts "Calc AssignDetails Cat: " + a.project.category
+# 			puts "Calc AssignDetails Eff: " + a.effort.to_s
+			if a.project.category == "Overhead"
+				@overhead_effort += a.effort
+			end	
+	end
+# 	puts "OH Percent"
+# 	puts @overhead_effort.to_s + "/" + @tm_count.to_s
+	@oh_pct = ((@overhead_effort/@tm_count) * 100).round.to_s
+	
+	#Calc for allocation table
+	@cfdata = c_assignments.group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	puts 'Effort by Cat'
+	puts @cfdata.to_s
+	@clabels = @cfdata.to_h.keys
+	@clabels.sort!
+	@cvals = @cfdata.to_h.values
+	
+	
   	@currentmgr = ""
   	#puts 'TEAM CONTROLER, manager is'  	
   	#puts @manager_string

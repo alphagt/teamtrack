@@ -9,6 +9,7 @@ class Assignment < ActiveRecord::Base
   validates :effort, :presence => true, :numericality => { :greater_than => 0 }
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
+  validate :project_active, :on => [:create, :update]
   
   scope :by_user, -> (emp){where(:user_id => emp.id)}
   
@@ -77,5 +78,10 @@ class Assignment < ActiveRecord::Base
   def one_assg_per_project_week
   	errors.add(:project_id, "Assignment to this project and system for this week already exists, modify existing assignment") unless 
   		Assignment.where(:user_id => user_id, :set_period_id => set_period_id, :project_id => project_id, :tech_sys_id => tech_sys_id).count == 0
+  end
+  
+  def project_active
+  	errors.add(:project_id, "Attempt to assign user to Closed Project") unless
+  		Project.find(project_id).active
   end
 end

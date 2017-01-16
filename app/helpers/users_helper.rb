@@ -29,6 +29,14 @@ module UsersHelper
 		@rStr.chomp(", ")
 	end
 	
+	def current_assignment(cuser)
+		if cuser.assignments.where("set_period_id = ?", current_period).length > 0
+			cuser.assignments.where(:set_period_id => current_period)
+		else
+			Array.new()
+		end
+	end
+	
 	def latest(cuser, floor = 0)
 		if cuser.assignments.where("set_period_id >= ?", floor).length > 0
 			@latest = cuser.assignments.where("set_period_id >= ?", floor).order("set_period_id DESC").first.set_period_id	

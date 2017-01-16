@@ -21,11 +21,13 @@
   <div class="col-md-12 col-centered">
 	<div class="col-md-6">
 		<%= image_tag(Gchart.pie(:title => 'YTD Effort Allocation', 
-		:labels => @clabels_ytd, :data => @cvals_ytd, :size => '300x175', :chart_background => 'CCCCCC'))%>
+		:labels => @clabels_ytd, :data => @cvals_ytd, :size => '300x175', :chart_background => 'CCCCCC',
+		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 	</div>
 	<div class="col-md-6">
 		<%= image_tag(Gchart.pie(:title => 'QTD Effort Allocation', 
-		:labels => @clabels_qtd, :data => @cvals_qtd, :size => '300x175', :chart_background => 'CCCCCC'))%>
+		:labels => @clabels_qtd, :data => @cvals_qtd, :size => '300x175', :chart_background => 'CCCCCC',
+		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 	</div>
   </div>
 </div>

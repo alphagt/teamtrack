@@ -1,5 +1,5 @@
 class Assignment < ActiveRecord::Base
-  belongs_to :user, :foreign_key => "user_id"
+  belongs_to :user, :foreign_key => "user_id", :touch => true
   belongs_to :project, :foreign_key => "project_id"
   belongs_to :tech_system, :foreign_key => "tech_sys_id"
   attr_accessible :effort, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project, :week_number, :tech_system, :tech_sys_id  

@@ -42,13 +42,13 @@ class TechSystemsController < ApplicationController
 	@cvalues = []
 	@cdata = Assignment.where('? < set_period_id <= ? AND tech_sys_id = ?', view_context.current_fy, 
 		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
-	puts 'Chart Data'
-	puts @cdata
+# 	puts 'Chart Data'
+# 	puts @cdata
 	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
-	puts 'Labels:'
-	puts @clabels.to_s	
+# 	puts 'Labels:'
+# 	puts @clabels.to_s	
 	#Data for projects pie chart
 	@cdata = Assignment.where('set_period_id = ? AND tech_sys_id = ? AND tech_sys_id > 0', 
 		view_context.current_period, params[:id]).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
@@ -67,7 +67,7 @@ class TechSystemsController < ApplicationController
   # PUT /tech_system/1.json
   def update
     @system = TechSystem.find(params[:id])
-	puts 'In Update Controler Method'
+	puts "In TechSystem Update Controler Method - " + @system.name
     respond_to do |format|
       if @system.update_attributes(params[:tech_system])
         format.html { redirect_to @system, notice: 'System was successfully updated.' }

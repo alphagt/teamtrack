@@ -18,8 +18,8 @@ class ProjectsController < ApplicationController
 	#Calculate and group fixed effort totals for chart
 	#Current FY Data
 	@cfdata = Assignment.includes(:project).where('set_period_id > 2017 AND projects.id IN (?)', @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
-	puts 'Effort by Cat'
-	puts @cfdata.to_s
+# 	puts 'Effort by Cat'
+# 	puts @cfdata.to_s
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
@@ -29,8 +29,8 @@ class ProjectsController < ApplicationController
 	case view_context.current_quarter()
 	when 1
 		@eWeek = view_context.period_from_parts(@fy,13)
-		puts 'max week for period'
-		puts @eWeek
+# 		puts 'max week for period'
+# 		puts @eWeek
 		#@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 		@cfdata = Assignment.includes(:project).where('? < set_period_id < ? AND projects.id IN (?)', @fy.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	when 2
@@ -42,18 +42,18 @@ class ProjectsController < ApplicationController
 	when 3
 		@eWeek = view_context.period_from_parts(@fy,37)
 		@sWeek = view_context.period_from_parts(@fy,24)
-		puts 'max week for period'
-		puts @eWeek
+# 		puts 'max week for period'
+# 		puts @eWeek
 		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}	
 	when 4
 		@eWeek = view_context.period_from_parts(@fy,53)
 		@sWeek = view_context.period_from_parts(@fy,36)
-		puts 'max week for period'
-		puts @eWeek
+# 		puts 'max week for period'
+# 		puts @eWeek
 		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}	
 	end
-	puts 'Effort by Cat'
-	puts @cfdata.to_s
+# 	puts 'Effort by Cat'
+# 	puts @cfdata.to_s
 	@clabels_qtd = @cfdata.to_h.keys
 	@clabels_qtd.sort!
 	@cvals_qtd = @cfdata.to_h.values
@@ -75,13 +75,13 @@ class ProjectsController < ApplicationController
 	@cvalues = []
 	@cdata = Assignment.where('set_period_id <= ? AND project_id = ?',  
 		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
-	puts 'Chart Data'
-	puts @cdata
+# 	puts 'Chart Data'
+# 	puts @cdata
 	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
-	puts 'Labels:'
-	puts @clabels.to_s	
+# 	puts 'Labels:'
+# 	puts @clabels.to_s	
 	#Data for systems pie chart
 	@cdata = Assignment.where('set_period_id <= ? AND project_id = ? AND tech_sys_id > 0', 
 		view_context.current_period, params[:id]).group(:tech_system).sum(:effort).map{|a|[a[0],a[1].to_i]}

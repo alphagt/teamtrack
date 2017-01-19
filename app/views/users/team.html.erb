@@ -25,8 +25,12 @@
 <%= image_tag(Gchart.pie(:title => 'Effort Allocation', 
 		:legend => @clabels, :legend_position => 'bottom', :data => @cvals, 
 		:size => '140x200', :chart_background => 'CCCCCC', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
-<% end %>
+
 <br/>
+<br/>
+<h5><%= link_to 'Refresh Stats', team_user_path(:id => @manager.id, :nocache => 'true'), 
+	{:style => "color:blue;text-decoration : underline;"} %></h5>
+<% end %>
 <% content_for :main1 do %>
 <table class="table">
   <tr>

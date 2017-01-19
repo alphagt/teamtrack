@@ -67,29 +67,27 @@ class AssignmentsController < ApplicationController
     puts 'create assignment with date:'
     puts params[:assignment][:set_period_id].to_s
     @inputDate = Date.parse(params[:assignment][:set_period_id])
-    puts @inputDate.to_s
+#     puts @inputDate.to_s
     params[:assignment][:set_period_id] = view_context.period_from_date(@inputDate)
-    puts 'converted to period:'
-    puts params[:assignment][:set_period_id]
     
     #handle in-line user creation
     #puts params[:newuser].length
     if params[:newuser][0][:name].length > 0 
-    	puts 'in-line User Create'
+    	puts "in-line User Create - " + params[:newuser][0][:name]
     	if params[:assignment][:tech_sys_id].blank?
     		#Try to use managers default system
     		if !current_user.default_system_id.blank? 
-    			puts 'Using managers default system'
+#     			puts 'Using managers default system'
     			params[:assignment][:tech_sys_id] = current_user.default_system_id
     		else
-    			puts 'cant set system id from any defaults'
+#     			puts 'cant set system id from any defaults'
     			@error = 'No Default System Defined'
     		end
     	end
     	if @error.nil?
-			puts 'No Errors, Creating User'
+# 			puts 'No Errors, Creating User'
 			@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@adobe.com'
-			puts @fakeEmail
+# 			puts @fakeEmail
  
 			@nUser = User.create! :name => params[:newuser][0][:name], 
 				:email =>  @fakeEmail, :verified => false, 
@@ -102,7 +100,7 @@ class AssignmentsController < ApplicationController
     end 
 
     #Apply default system
-    puts 'CHECK tech system'
+#     puts 'CHECK tech system'
     #puts params[:assignment]
     if params[:assignment][:tech_sys_id].blank?
     	puts 'FOUNTD NIL SYSTEM'
@@ -153,8 +151,8 @@ class AssignmentsController < ApplicationController
     #update assignment
     @assignment = Assignment.find(params[:id])
 	@newuser = User.new
-	puts 'update assignment'
-	puts params.to_s
+# 	puts 'update assignment'
+# 	puts params.to_s
     respond_to do |format|
       if @assignment.update_attributes(params[:assignment])
         format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }
@@ -183,7 +181,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1.json
   def extend
   	@assignment = Assignment.find(params[:id])
-  	puts 'In Extend Controller Method'
+#   	puts 'In Extend Controller Method'
   	respond_to do |format|
       if Assignment.extend_by_week(@assignment)
         format.html { redirect_to @assignment.user, notice: 'Assignment was successfully extended.' }

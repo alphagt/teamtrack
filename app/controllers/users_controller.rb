@@ -80,13 +80,36 @@ class UsersController < ApplicationController
   		@manager = @manager.impersonates
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
+  	ckey = @manager.id.to_s + "-" + view_context.current_week.to_s
+  	ctime_stamp = User.find(@manager.id).updated_at
+  	if params[:nocache] == 'true' then
+		use_cache = false
+	else
+		use_cache = true
+	end
+	cache_hit = true
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
 		@user_list = view_context.all_subs(@manager.id, true)
 	else
-		@user_list = view_context.all_subs(@manager.id)
+		@user_list = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/ulist", expires_in: 24.hours, force: !use_cache) do 
+			puts "Write ulist to cache: " + ckey
+			cache_hit = false
+			Rails.cache.delete_matched("#{ckey}:*:/ulist")
+			view_context.all_subs(@manager.id)
+		end
+	end
+	if cache_hit
+		puts "Found User List in Cache for - " + ckey
 	end
 	
+	@mgrs_count = 1
+	@user_list.each do |u|
+		if u.ismanager && view_context.current_assignment(u).count < 1 then
+			@mgrs_count += 1
+		end
+	end
+	puts "Team-Ctrlr: Mgr Count: " + @mgrs_count.to_s
 	@tm_count = @user_list.count
 	puts "Team-Ctrlr: User Count: " + @tm_count.to_s
 	
@@ -94,19 +117,46 @@ class UsersController < ApplicationController
 		view_context.current_period, @user_list.map{|u| u.id}).references(:project).where("projects.active = true") 
 	puts "AggAssignments -- " + c_assignments.count.to_s
 	#Calulations for week summary
-	## Total Effort & Overhead
+	
 	@overhead_effort = 0
 	@total_effort = 0
-	c_assignments.each do |a|
-			@total_effort += a.effort
-# 			puts "Calc AssignDetails for: " + u.name + "-" + a.id.to_s
-# 			puts "Calc AssignDetails period: " + a.set_period_id.to_s
-# 			puts "Calc AssignDetails Cat: " + a.project.category
-# 			puts "Calc AssignDetails Eff: " + a.effort.to_s
-			if a.project.category == "Overhead"
-				@overhead_effort += a.effort
-			end	
+	cache_hit = true	
+	## Total Effort & Overhead
+
+	if @tm_count > 10 
+		#lets use cach for the calcs
+		cVal = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/teamstats", expires_in: 24.hours, force: !use_cache) do
+			puts "Write teamstats to Cache - " + ckey
+			Rails.cache.delete_matched("#{ckey}:*:/teamstats")
+			cache_hit = false
+			c_assignments.each do |a|
+					@total_effort += a.effort
+					if a.project.category == "Overhead"
+						@overhead_effort += a.effort
+					end	
+			end
+			[@total_effort, @overhead_effort]
+		end
+	else
+		cache_hit = false
+		c_assignments.each do |a|
+				@total_effort += a.effort
+	# 			puts "Calc AssignDetails for: " + u.name + "-" + a.id.to_s
+	# 			puts "Calc AssignDetails period: " + a.set_period_id.to_s
+	# 			puts "Calc AssignDetails Cat: " + a.project.category
+	# 			puts "Calc AssignDetails Eff: " + a.effort.to_s
+				if a.project.category == "Overhead"
+					@overhead_effort += a.effort
+				end	
+		end
 	end
+	if cache_hit
+		puts "Found teamstats in cache - " + ckey
+		@total_effort = cVal[0]
+		@overhead_effort = cVal[1]
+	end
+	
+	@overhead_effort += @mgrs_count
 # 	puts "OH Percent"
 # 	puts @overhead_effort.to_s + "/" + @tm_count.to_s
 	@oh_pct = ((@overhead_effort/@tm_count) * 100).round.to_s
@@ -173,7 +223,7 @@ class UsersController < ApplicationController
   
   #PUT /user/:id/exit
   def exit
-  	puts params
+#   	puts params
 	rcode =1
 	mUser = User.find(params[:id])
 	if mUser.subordinates.length > 0 then
@@ -208,7 +258,21 @@ class UsersController < ApplicationController
   # PUT /user/1.json
   def update
     @user = User.find(params[:id])
-	puts "IN USER - Update method"
+    #Update the user list cache for this user's manager
+    
+    # if @user.manager_id.to_s != params[:user][:manager_id]
+#     	#update user list cache for both old and new manager
+#     	puts "Wack the Cache - Manager Change"
+#     	cKey = params[:user][:manager_id] + "-" + view_context.current_week.to_s
+#     	if !Rails.cache.delete(cKey + "/ulist")
+#     		puts "FAILED TO DELETE CACHE -" + cKey + "/ulist"
+#     	end
+# 		cKey = @user.manager_id.to_s + "-" + view_context.current_week.to_s
+# 		if !Rails.cache.fetch(cKey + "/ulist")
+# 			puts "FAILED TO DELETE CACHE -" + cKey + "/ulist"
+# 		end
+# 	end
+	puts "IN USER - Update method - " + @user.name
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }

@@ -65,9 +65,11 @@ module ApplicationHelper
 	def all_subs(mid, showEx = false, subCall = false, by_mgr = true)
 		@m = User.find(mid)
 		@return = Array.new()
-		#puts "MANAGER IS-" + @m.name
-		#puts "showEx is-" + showEx.to_s
-		#puts "subCall is-" + subCall.to_s
+		puts 'all_subs helper'
+		puts "MANAGER IS-" + @m.name
+		puts "showEx is-" + showEx.to_s
+		puts "subCall is-" + subCall.to_s
+		puts "by_mgr is-" + by_mgr.to_s
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
@@ -107,13 +109,13 @@ module ApplicationHelper
 		end
 		if @return.respond_to?(:sort_by) && !subCall
 			puts 'SORT All Subs End Result'
-			if !by_mgr
+			if !by_mgr && @return.respond_to?(:sort!)
 				@return.sort!{|a,b| a.name.downcase <=> b.name.downcase}
 			else
 				@return
 			end
 		end
-		puts @return.map{|m| m.name}
+# 		puts @return.map{|m| m.name}
 		@return
 		#@return.sort_by! {|a| [a.manager.name, a.name]}
 		
@@ -150,7 +152,7 @@ module ApplicationHelper
 		rcode = true
 		if cuser.assignments.length > 0
 			foo = current_period + 0.01
-			puts "TEST PERIOD: " + foo.to_s
+# 				puts "TEST PERIOD: " + foo.to_s
 			if cuser.assignments.where(:set_period_id => foo).count > 0
 				rcode = false
 			end

@@ -15,7 +15,8 @@
 		<%= f.association :owner, :as => :select, :collection => User.managers_only, 
 		 	:label_method => :name, label: "Owner" %>	
 		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
-		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget" %>
+		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
+			input_html: {value: @project.fixed_resource_budget || '0'} %>
 		<%= f.input :category, inline_label: 'SLC Category', label: "UPL Category" %>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<br/>	

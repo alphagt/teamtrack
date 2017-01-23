@@ -65,11 +65,11 @@ module ApplicationHelper
 	def all_subs(mid, showEx = false, subCall = false, by_mgr = true)
 		@m = User.find(mid)
 		@return = Array.new()
-		puts 'all_subs helper'
-		puts "MANAGER IS-" + @m.name
-		puts "showEx is-" + showEx.to_s
-		puts "subCall is-" + subCall.to_s
-		puts "by_mgr is-" + by_mgr.to_s
+# 		puts 'all_subs helper'
+# 		puts "MANAGER IS-" + @m.name
+# 		puts "showEx is-" + showEx.to_s
+# 		puts "subCall is-" + subCall.to_s
+# 		puts "by_mgr is-" + by_mgr.to_s
 		if @m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
@@ -108,7 +108,7 @@ module ApplicationHelper
 			@return
 		end
 		if @return.respond_to?(:sort_by) && !subCall
-			puts 'SORT All Subs End Result'
+# 			puts 'SORT All Subs End Result'
 			if !by_mgr && @return.respond_to?(:sort!)
 				@return.sort!{|a,b| a.name.downcase <=> b.name.downcase}
 			else
@@ -122,27 +122,28 @@ module ApplicationHelper
 	end
 	
 	def all_subs_by_id(mid)
-		@m = User.find(mid)
-		@return = Array.new()
+		m = User.find(mid)
+		a_return = Array.new()
 		#puts "MANAGER IS-" + @m.name
-		if @m.subordinates.any?
+		if m.subordinates.any?
 			# puts "-FOUND SUBORDINATES"
-			@exId = User.find_by_name("ExEmployeeMgr").id
-			@subs = @m.subordinates.select(:id).where('id != ?', @exId)
-			@return = @subs.to_a
+			exId = User.find_by_name("ExEmployeeMgr").id
+			subs = m.subordinates.select(:id).where('id != ?', exId)
+			a_return = subs.to_a
 			# puts "Return Length - " 
 # 			puts @return.length
-			@m.subordinates.each do |s|
+			m.subordinates.each do |s|
 				if s.subordinates.any?
 		#			puts "---FOUND Sub-SUBORDINATES"	
-					@return |= all_subs_by_id(s.id)
+					a_return |= all_subs_by_id(s.id)
 					#puts @return.to_s
 				end
 			end
-			@return
+			puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
+			a_return
 		else
-			#puts @return.to_s
-			@return
+# 			puts @return.to_s
+			a_return
 		end
 	end
 	

@@ -27,7 +27,11 @@
     	<% else %>
     		<li>
     	<% end %>
-      	<%= link_to('Projects', projects_path) %>
+      	<% if current_user.isstatususer? %> 
+      		<%= link_to('Projects', projects_path(:scope => "active")) %>
+      	<% else %>
+      		<%= link_to('Projects', projects_path) %>
+      	<% end %>
       	</li>
       	
       	<% if active == "systems" %>

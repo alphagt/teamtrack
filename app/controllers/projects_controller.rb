@@ -10,9 +10,13 @@ class ProjectsController < ApplicationController
 	require 'gchart'
 	
 	if params[:scope] == 'all'
-		@projects = Project.order("projects.category","projects.name")
+		@projects = Project.by_category
 	else
-		@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).order("projects.category","projects.name")
+		if params[:scope] == 'active'
+			@projects = Project.active.by_category
+		else
+			@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).by_category
+		end
 	end
 	
 	#Calculate and group fixed effort totals for chart

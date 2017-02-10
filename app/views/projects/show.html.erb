@@ -10,7 +10,11 @@
 			<td class="danger"><%= link_to 'Edit', edit_project_path(@project) %></td> 
 	<% end %>
 	<tr>
-		<td class="danger"><%= link_to 'Back', projects_path %></td>
+		<% if current_user.isstatususer? %>
+			<td class="danger"><%= link_to 'Back', projects_path(:scope => "active") %></td>
+		<% else %>
+			<td class="danger"><%= link_to 'Back', projects_path %></td>
+		<% end %>
 	</table>
 <% end %> 
 

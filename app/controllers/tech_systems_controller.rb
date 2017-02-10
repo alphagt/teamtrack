@@ -4,7 +4,8 @@ class TechSystemsController < ApplicationController
 	before_filter :require_admin,  :except => [:index, :show]
   
   def index
-  	@techsystems = TechSystem.order("qos_group", "name")
+  	#@techsystems = TechSystem.order("qos_group", "name")
+  	@techsystems = TechSystem.by_qos
   	respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

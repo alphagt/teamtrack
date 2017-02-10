@@ -80,6 +80,7 @@ class UsersController < ApplicationController
   		@manager = @manager.impersonates
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
+  
   	ckey = @manager.id.to_s + "-" + view_context.current_week.to_s
   	ctime_stamp = User.find(@manager.id).updated_at
   	if params[:nocache] == 'true' then

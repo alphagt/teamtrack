@@ -35,16 +35,18 @@
     	<% else %>
     		<li>
     	<% end %>
-      	<%= link_to('Systems', tech_systems_path) %>
+      	<%= link_to('Services', tech_systems_path) %>
       	</li>
       	
-      	<% if active == "team" %>
-    		<li class="active" >
-    	<% else %>
-    		<li>
-    	<% end %>
-      	<%= link_to('Team', root_path) %>
-      	</li>
+      	<% if current_user.admin? | current_user.ismanager? %>
+			<% if active == "team" %>
+				<li class="active" >
+			<% else %>
+				<li>
+			<% end %>
+			<%= link_to('Team', root_path) %>
+			</li>
+		<% end %>
       	
     	<% if current_user.admin? %>
       		<% if active == "assignments" %>

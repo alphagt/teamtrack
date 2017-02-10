@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
   belongs_to  :default_system, :class_name => "TechSystem", :foreign_key => "default_system_id"
-  belongs_to :manager, :class_name => "User", :touch => true
+  belongs_to :manager, :class_name => "User", :foreign_key => "manager_id",  :touch => true
   belongs_to :impersonates, :class_name => "User", :foreign_key => "impersonate_manager"
   has_many :assignments
   has_many :projects, :through => :assignments
@@ -10,9 +10,10 @@ class User < ActiveRecord::Base
   validate :unique_name, :on => :create
   #default_scope {order("manager_id,name")}
   
-  scope :ordered_by_manager, -> {joins('INNER Join users as mgrs on mgrs.id = users.manager_id or users.id = 1')
-  	.distinct.order('mgrs.name').order('users.name')}
-
+  # scope :ordered_by_manager, -> {joins('INNER Join users as mgrs on mgrs.id = users.manager_id or 
+#   	mgrs.manager_id = 0').distinct.order('mgrs.name')}
+#   	#.order('users.name')}
+ scope :ordered_by_manager, -> {includes(:manager).order('managers_users.name')}
   
   scope :ordered_by_name, -> {order('users.name')}
   

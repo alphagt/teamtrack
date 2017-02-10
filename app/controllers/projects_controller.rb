@@ -21,7 +21,8 @@ class ProjectsController < ApplicationController
 	
 	#Calculate and group fixed effort totals for chart
 	#Current FY Data
-	@cfdata = Assignment.includes(:project).where('set_period_id > 2017 AND projects.id IN (?)', @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	@cfdata = Assignment.includes(:project).where('set_period_id > 2017 AND projects.id IN (?)', 
+		@projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 # 	puts 'Effort by Cat'
 # 	puts @cfdata.to_s
 	@clabels_ytd = @cfdata.to_h.keys
@@ -36,7 +37,8 @@ class ProjectsController < ApplicationController
 # 		puts 'max week for period'
 # 		puts @eWeek
 		#@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
-		@cfdata = Assignment.includes(:project).where('? < set_period_id < ? AND projects.id IN (?)', @fy.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		@cfdata = Assignment.includes(:project).where('? < set_period_id < ? AND projects.id IN (?)', 
+			@fy.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	when 2
 		@eWeek = view_context.period_from_parts(@fy,25)
 		@sWeek = view_context.period_from_parts(@fy,12)

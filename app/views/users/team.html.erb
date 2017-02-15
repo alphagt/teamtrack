@@ -53,8 +53,12 @@
 		<td><%= if @currentmgr.projects.length > 0 then current_system(@currentmgr) end %></td>
 		<td><%= if @currentmgr.projects.length > 0 then current_project(@currentmgr) end %>
 		<% if current_user.ismanager %>
-				<td class="danger"><%= link_to 'Extend All', extendteam_user_path(@currentmgr, :floor => current_period.to_s), 
-					:title => "Extend all team members' current (displayed) Assignments for 1 week" %></td>
+				<td class="danger">
+					<%= link_to 'Extend All', extendteam_user_path(@currentmgr, :floor => current_period.to_s), 
+					:title => "Extend all team members' current (displayed) Assignments for 1 week" %>
+					|
+					<%= link_to 'View', user_path(@currentmgr), 
+					:title => "View details and assignment history for this manager" %></td>
 		<% end %>
 		<% if user.subordinates.count == 0 then %>
 			<tr>

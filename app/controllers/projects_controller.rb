@@ -21,8 +21,9 @@ class ProjectsController < ApplicationController
 	
 	#Calculate and group fixed effort totals for chart
 	#Current FY Data
-	@cfdata = Assignment.includes(:project).where('set_period_id > 2017 AND projects.id IN (?)', 
-		@projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	@fy = view_context.current_period().to_i
+	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
+		'Overhead', @fy.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 # 	puts 'Effort by Cat'
 # 	puts @cfdata.to_s
 	@clabels_ytd = @cfdata.to_h.keys
@@ -30,34 +31,33 @@ class ProjectsController < ApplicationController
 	@cvals_ytd = @cfdata.to_h.values
 
 	#Current Quarter Data
-	@fy = view_context.current_period().to_i
-	case view_context.current_quarter()
+	case view_context.current_quarter() #determin start end week number for each quarter
 	when 1
 		@eWeek = view_context.period_from_parts(@fy,13)
+		@sWeek = @fy.to_s
 # 		puts 'max week for period'
 # 		puts @eWeek
 		#@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
-		@cfdata = Assignment.includes(:project).where('? < set_period_id < ? AND projects.id IN (?)', 
-			@fy.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	when 2
 		@eWeek = view_context.period_from_parts(@fy,25)
 		@sWeek = view_context.period_from_parts(@fy,12)
 		puts 'max week for period'
 		puts @eWeek
-		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	when 3
 		@eWeek = view_context.period_from_parts(@fy,37)
 		@sWeek = view_context.period_from_parts(@fy,24)
 # 		puts 'max week for period'
 # 		puts @eWeek
-		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}	
 	when 4
 		@eWeek = view_context.period_from_parts(@fy,53)
 		@sWeek = view_context.period_from_parts(@fy,36)
 # 		puts 'max week for period'
 # 		puts @eWeek
-		@cfdata = Assignment.includes(:project).where(@sWeek.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}	
 	end
+	#Select assignments for the quarter  date range that are not 'Overhead' grouped by category to display in pie chart
+	@cfdata = Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
+			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+
 # 	puts 'Effort by Cat'
 # 	puts @cfdata.to_s
 	@clabels_qtd = @cfdata.to_h.keys

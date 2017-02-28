@@ -5,4 +5,6 @@ class TechSystem < ActiveRecord::Base
 	#default_scope {order("name")}
 	
 	scope :by_qos, -> {order('qos_group, name')}
+	scope :by_name, -> {order('name')}
+	
 end

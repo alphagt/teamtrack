@@ -21,8 +21,8 @@
 			<br/>
 			<br/>
 			<%= f.input :effort, :autofocus => true %>
-			<%= f.association :tech_system, :as => :select, :required => true %>
-			<%= f.association :project, :as => :select %>
+			<%= f.association :tech_system, :as => :select, :collection => TechSystem.by_name, :required => true %>
+			<%= f.association :project, :as => :select, :collection => Project.active.by_name, :required => true %>
  			<br/>
 			<div class="form-actions">
 				<%= f.button :submit %>

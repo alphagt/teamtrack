@@ -80,8 +80,17 @@ class UsersController < ApplicationController
   		@manager = @manager.impersonates
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
-  
-  	ckey = @manager.id.to_s + "-" + view_context.current_week.to_s
+  	
+  	if params.has_key?(:period) then
+  		pparts = params[:period].split(".")
+  		puts "Passed in Period Parts " + pparts.to_s
+  		@target_period = view_context.period_from_parts(pparts[0],pparts[1])
+  	else
+  		@target_period = view_context.current_period
+  	end
+  	puts "target period: " + @target_period.to_s
+  	
+  	ckey = @manager.id.to_s + "-" + view_context.week_from_period(@target_period).to_s
   	ctime_stamp = User.find(@manager.id).updated_at
   	if params[:nocache] == 'true' then
 		use_cache = false
@@ -104,9 +113,10 @@ class UsersController < ApplicationController
 		puts "Found User List in Cache for - " + ckey
 	end
 	
+	#capture number of managers with no assignments to add to 'overhead' total
 	@mgrs_count = 1
 	@user_list.each do |u|
-		if u.ismanager && view_context.current_assignment(u).count < 1 then
+		if u.ismanager && view_context.current_assignment(u, @target_period).count < 1 then
 			@mgrs_count += 1
 		end
 	end
@@ -115,7 +125,7 @@ class UsersController < ApplicationController
 	puts "Team-Ctrlr: User Count: " + @tm_count.to_s
 	
 	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",
-		view_context.current_period, @user_list.map{|u| u.id}).references(:project).where("projects.active = true") 
+		@target_period, @user_list.map{|u| u.id}).references(:project).where("projects.active = true") 
 	puts "AggAssignments -- " + c_assignments.count.to_s
 	#Calulations for week summary
 	

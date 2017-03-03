@@ -1,7 +1,7 @@
 module UsersHelper
 
-	def current_project(cuser)
-		@cperiod = current_period
+	def current_project(cuser, tperiod = current_period)
+		@cperiod = tperiod
 # 		puts "current_project funct - C Period is:"
 # 		puts @cperiod
 		if cuser.projects.length > 0 then
@@ -16,10 +16,10 @@ module UsersHelper
 		@rStr.chomp(", ")
 	end
 	
-	def current_system(cuser)
+	def current_system(cuser, tperiod = current_period)
 		@rStr = ""
 		if cuser.tech_systems.length > 0 then
-			@return = cuser.assignments.where(:set_period_id => current_period)
+			@return = cuser.assignments.where(:set_period_id => tperiod)
 			@return.each do |a|
 				if !a.tech_system.blank?
 					@rStr += a.tech_system.name + ', '
@@ -29,9 +29,9 @@ module UsersHelper
 		@rStr.chomp(", ")
 	end
 	
-	def current_assignment(cuser)
-		if cuser.assignments.where("set_period_id = ?", current_period).length > 0
-			cuser.assignments.where(:set_period_id => current_period)
+	def current_assignment(cuser, speriod = current_period)
+		if cuser.assignments.where("set_period_id = ?", speriod).length > 0
+			cuser.assignments.where(:set_period_id => speriod)
 		else
 			Array.new()
 		end

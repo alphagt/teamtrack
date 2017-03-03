@@ -21,13 +21,14 @@ module ApplicationHelper
 	end
 
 	def period_from_parts(iFy, iWeek)
- 
+
  		#puts 'period_from_parts'
  		#puts 'iWeek'
+ 		# @fWeek = 0.0
  		puts iWeek
-		@fWeek = iWeek.to_f / 100
-		puts @fWeek
-		@return = iFy.to_f + @fWeek.to_f
+		@fWeek = iWeek.to_i
+		puts @fWeek.to_s
+		@return = iFy.to_i + @fWeek.fdiv(100).round(3)
 	end
 	
 	def current_week()

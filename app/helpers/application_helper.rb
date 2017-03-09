@@ -53,9 +53,9 @@ module ApplicationHelper
 		case 
 		when @cw < 13
 			@q = 1
-		when 12 < @cw < 25
+		when 12 < @cw && @cw < 25
 			@q = 2
-		when 24 < @cw < 37
+		when 24 < @cw && @cw < 37
 			@q = 3
 		when @cw > 36
 			@q = 4

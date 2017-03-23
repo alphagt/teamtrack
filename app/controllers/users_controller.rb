@@ -289,7 +289,7 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
-      	puts "failed to update USER " + @user.errors.messages()
+      	puts "failed to update USER " + @user.errors.messages().to_s()
         format.html {redirect_to @user, notice: "Failed to update user!!" + @user.errors }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end

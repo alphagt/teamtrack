@@ -9,7 +9,10 @@
 <table class="table">
   <tr>
   <td class="danger"><%= link_to 'New User', new_user_path %></td>
-
+  <% if current_user.admin? then %>
+  	<tr>
+  	<td class="danger"><%= link_to 'Show All', users_path(:scope => "all") %></td>
+  <% end %>
 </table>
 <% end %>
 

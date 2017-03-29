@@ -12,6 +12,7 @@ class Assignment < ActiveRecord::Base
   validate :project_active, :on => [:create, :update]
   
   scope :by_user, -> (emp){where(:user_id => emp.id)}
+  scope :recent, -> (min_period) {where("set_period_id > ?", min_period)}
   
   def self.with_project_info
   	self.joins(:project).select("assignments.*, projects.category as category, projects.owner as proj_owner")

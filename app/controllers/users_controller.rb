@@ -18,6 +18,14 @@ class UsersController < ApplicationController
   	 puts "Looking Up User Number:"
   	 #puts params[:id]
      @user = User.find(params[:id])
+     #scope the assignment history per params
+     if params[:history_scope] == 'all'
+     	@ahistory = @user.assignments.order("set_period_id DESC")
+     else
+     	@ahistory = @user.assignments.recent(view_context.current_period - 0.04)
+     	puts "TEST TEST"
+     	puts (view_context.current_period - 0.04).to_s
+     end
   end
   
   # GET /users/:id/manage

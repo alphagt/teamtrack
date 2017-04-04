@@ -65,7 +65,7 @@
 					<th>Type</th>
 					</h5>
 				</tr>
-				<% @project.assignments.order("set_period_id DESC").each do |assignment| %>
+				<% @ahistory.order("set_period_id desc").each do |assignment| %>
 					<tr>
 						<td><%= assignment.user.name %></td>
 						<td><%= assignment.set_period_id.floor %></td>

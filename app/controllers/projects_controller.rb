@@ -79,7 +79,7 @@ class ProjectsController < ApplicationController
 	#Prep Chart Data
 	@clabels = []
 	@cvalues = []
-	@cdata = Assignment.where('set_period_id <= ? AND project_id = ?',  
+	@cdata = Assignment.recent(view_context.current_period - 0.10).where('set_period_id <= ? AND project_id = ?',  
 		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
 # 	puts 'Chart Data'
 # 	puts @cdata
@@ -93,7 +93,16 @@ class ProjectsController < ApplicationController
 		view_context.current_period, params[:id]).group(:tech_system).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
 	@svalues = @cdata.to_h.values	
-		
+	
+	#scope the assignment history per params
+     if params[:history_scope] == 'all'
+     	@ahistory = @project.assignments.order("set_period_id DESC")
+     else
+     	@ahistory = @project.assignments.recent(view_context.current_period - 0.06)
+#      	puts "TEST TEST"
+#      	puts (view_context.current_period - 0.06).to_s
+     end
+     
 	#End prep chart data
     respond_to do |format|
       format.html # show.html.erb

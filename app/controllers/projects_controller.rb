@@ -24,8 +24,8 @@ class ProjectsController < ApplicationController
 	@fy = view_context.current_period().to_i
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
 		'Overhead', @fy.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
-# 	puts 'Effort by Cat'
-# 	puts @cfdata.to_s
+	puts 'YTD Effort by Cat'
+	puts @cfdata.to_s
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
@@ -54,12 +54,15 @@ class ProjectsController < ApplicationController
 # 		puts 'max week for period'
 # 		puts @eWeek
 	end
+		puts 'max week for current quarter'
+		puts @eWeek
+
 	#Select assignments for the quarter  date range that are not 'Overhead' grouped by category to display in pie chart
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 
-# 	puts 'Effort by Cat'
-# 	puts @cfdata.to_s
+	puts 'Current Quarter Effort by Cat'
+	puts @cfdata.to_s
 	@clabels_qtd = @cfdata.to_h.keys
 	@clabels_qtd.sort!
 	@cvals_qtd = @cfdata.to_h.values

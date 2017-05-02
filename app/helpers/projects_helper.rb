@@ -11,8 +11,8 @@ module ProjectsHelper
 				@total = @total + asn.effort.round(1)
 			end
 			@output += @total.to_s
-			puts 'FIXED STRING - '
-			puts @output
+# 			puts 'FIXED STRING - '
+# 			puts @output
 			#get nitro assignments total
 			@total = 0
 			proj.assignments.where(:set_period_id => @cperiod, :is_fixed => false).each do |asn|

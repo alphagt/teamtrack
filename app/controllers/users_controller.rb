@@ -195,8 +195,8 @@ class UsersController < ApplicationController
 	
 	
   	@currentmgr = ""
-  	#puts 'TEAM CONTROLER, manager is'  	
-  	#puts @manager_string
+  	puts 'TEAM CONTROLER, manager is'  	
+  	puts @manager_string
   end
   
   # GET /user/:id/extendcurrent

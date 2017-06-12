@@ -26,8 +26,8 @@ class ProjectsController < ApplicationController
 		'Overhead', @fy.to_s, @allProjects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
-	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, @allProjects.pluck(:id)).to_sql
+# 	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
+# 		'Overhead', @fy.to_s, @allProjects.pluck(:id)).to_sql
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
@@ -65,8 +65,8 @@ class ProjectsController < ApplicationController
 
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata.to_s
-	puts Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
-			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
+# 	puts Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
+# 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
 	@clabels_qtd = @cfdata.to_h.keys
 	@clabels_qtd.sort!
 	@cvals_qtd = @cfdata.to_h.values
@@ -171,7 +171,6 @@ class ProjectsController < ApplicationController
   	@project = Project.find(params[:id])
   	@project.active = false
   	@project.fixed_resource_budget = 0
-  	@project.category += "-Archived"
   	respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully archived.' }

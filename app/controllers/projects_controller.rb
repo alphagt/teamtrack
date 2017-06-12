@@ -18,6 +18,11 @@ class ProjectsController < ApplicationController
 			@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).by_category
 		end
 	end
+	if params[:showvals] == '1'
+		@showVals = true
+	else
+		@showVals = false
+	end
 	
 	#Calculate and group fixed effort totals for chart
 	#Current FY Data
@@ -59,16 +64,16 @@ class ProjectsController < ApplicationController
 		puts @eWeek
 
 	#Select assignments for the quarter  date range that are not 'Overhead' grouped by category to display in pie chart
-	@cfdata = Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 
+	@cfdata_qtd = Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 
 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 
 	puts 'Current Quarter Effort by Cat'
-	puts @cfdata.to_s
+	puts @cfdata_qtd.to_s
 	puts Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 
 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
-	@clabels_qtd = @cfdata.to_h.keys
+	@clabels_qtd = @cfdata_qtd.to_h.keys
 	@clabels_qtd.sort!
-	@cvals_qtd = @cfdata.to_h.values
+	@cvals_qtd = @cfdata_qtd.to_h.values
 
     respond_to do |format|
       format.html # index.html.erb

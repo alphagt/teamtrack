@@ -26,8 +26,8 @@ class ProjectsController < ApplicationController
 		'Overhead', @fy.to_s, @allProjects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
-# 	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-# 		'Overhead', @fy.to_s, @allProjects.pluck(:id)).to_sql
+	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
+		'Overhead', @fy.to_s, @allProjects.pluck(:id)).to_sql
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
@@ -39,22 +39,21 @@ class ProjectsController < ApplicationController
 		@sWeek = @fy.to_s
 # 		puts 'max week for period'
 # 		puts @eWeek
-		#@cfdata = Assignment.includes(:project).where(@fy.to_s + '< set_period_id <' + @eWeek.to_s).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	when 2
 		@eWeek = view_context.period_from_parts(@fy,25)
 		@sWeek = view_context.period_from_parts(@fy,12)
 		puts 'start week for period'
-		puts @eWeek.to_s
+		puts @sWeek.to_s
 	when 3
 		@eWeek = view_context.period_from_parts(@fy,37)
 		@sWeek = view_context.period_from_parts(@fy,24)
 		puts 'start week for period'
-		puts @eWeek.to_s
+		puts @sWeek.to_s
 	when 4
 		@eWeek = view_context.period_from_parts(@fy,53)
 		@sWeek = view_context.period_from_parts(@fy,36)
 		puts 'start week for period'
-		puts @eWeek.to_s
+		puts @sWeek.to_s
 	end
 		puts 'max week for current quarter'
 		puts @eWeek
@@ -65,8 +64,8 @@ class ProjectsController < ApplicationController
 
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata.to_s
-# 	puts Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
-# 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
+	puts Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
+			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
 	@clabels_qtd = @cfdata.to_h.keys
 	@clabels_qtd.sort!
 	@cvals_qtd = @cfdata.to_h.values

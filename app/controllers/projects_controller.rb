@@ -8,9 +8,9 @@ class ProjectsController < ApplicationController
   def index
 	
 	require 'gchart'
-	
+	@allProjects = Project.by_category
 	if params[:scope] == 'all'
-		@projects = Project.by_category
+		@projects = @allProjects
 	else
 		if params[:scope] == 'active'
 			@projects = Project.active.by_category
@@ -23,9 +23,11 @@ class ProjectsController < ApplicationController
 	#Current FY Data
 	@fy = view_context.current_period().to_i
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		'Overhead', @fy.to_s, @allProjects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
+	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
+		'Overhead', @fy.to_s, @allProjects.pluck(:id)).to_sql
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
@@ -41,18 +43,18 @@ class ProjectsController < ApplicationController
 	when 2
 		@eWeek = view_context.period_from_parts(@fy,25)
 		@sWeek = view_context.period_from_parts(@fy,12)
-		puts 'max week for period'
-		puts @eWeek
+		puts 'start week for period'
+		puts @eWeek.to_s
 	when 3
 		@eWeek = view_context.period_from_parts(@fy,37)
 		@sWeek = view_context.period_from_parts(@fy,24)
-# 		puts 'max week for period'
-# 		puts @eWeek
+		puts 'start week for period'
+		puts @eWeek.to_s
 	when 4
 		@eWeek = view_context.period_from_parts(@fy,53)
 		@sWeek = view_context.period_from_parts(@fy,36)
-# 		puts 'max week for period'
-# 		puts @eWeek
+		puts 'start week for period'
+		puts @eWeek.to_s
 	end
 		puts 'max week for current quarter'
 		puts @eWeek
@@ -63,6 +65,8 @@ class ProjectsController < ApplicationController
 
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata.to_s
+	puts Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
+			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
 	@clabels_qtd = @cfdata.to_h.keys
 	@clabels_qtd.sort!
 	@cvals_qtd = @cfdata.to_h.values

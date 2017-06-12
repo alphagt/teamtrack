@@ -59,12 +59,12 @@ class ProjectsController < ApplicationController
 		puts @eWeek
 
 	#Select assignments for the quarter  date range that are not 'Overhead' grouped by category to display in pie chart
-	@cfdata = Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
+	@cfdata = Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 
 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata.to_s
-	puts Assignment.includes(:project).where('projects.category != ? AND ? < set_period_id < ? AND projects.id IN (?)', 
+	puts Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 
 			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
 	@clabels_qtd = @cfdata.to_h.keys
 	@clabels_qtd.sort!

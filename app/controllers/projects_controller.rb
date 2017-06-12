@@ -18,12 +18,19 @@ class ProjectsController < ApplicationController
 			@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).by_category
 		end
 	end
+	
 	if params[:showvals] == '1'
 		@showVals = true
 	else
 		@showVals = false
 	end
 	
+	if params[:setq].present?
+		@setq = params[:setq].to_i
+	else
+		@setq = view_context.current_quarter()
+	end
+	puts @setq
 	#Calculate and group fixed effort totals for chart
 	#Current FY Data
 	@fy = view_context.current_period().to_i
@@ -38,7 +45,7 @@ class ProjectsController < ApplicationController
 	@cvals_ytd = @cfdata.to_h.values
 
 	#Current Quarter Data
-	case view_context.current_quarter() #determin start end week number for each quarter
+	case @setq #determin start end week number for each quarter
 	when 1
 		@eWeek = view_context.period_from_parts(@fy,13)
 		@sWeek = @fy.to_s

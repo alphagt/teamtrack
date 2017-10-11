@@ -8,7 +8,7 @@ class TechSystemsController < ApplicationController
   	@techsystems = TechSystem.by_qos
   	respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @projects }
+      format.json { render json: @techsystems }
     end
   end
 
@@ -17,7 +17,7 @@ class TechSystemsController < ApplicationController
 	
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @project }
+      format.json { render json: @system }
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161215033207) do
+ActiveRecord::Schema.define(version: 20171008201642) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(version: 20161215033207) do
   add_index "assignments", ["set_period_id"], name: "index_assignments_on_set_period_id", using: :btree
   add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
 
+  create_table "initiatives", force: :cascade do |t|
+    t.integer  "fiscal",      limit: 4
+    t.string   "name",        limit: 255
+    t.string   "description", limit: 255
+    t.boolean  "active",                  default: true
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string   "name",                  limit: 255
     t.boolean  "active"
@@ -39,9 +48,11 @@ ActiveRecord::Schema.define(version: 20161215033207) do
     t.string   "category",              limit: 255, default: "Unassigned"
     t.integer  "upl_number",            limit: 4,   default: 0
     t.string   "tribe",                 limit: 255
+    t.integer  "initiative_id",         limit: 4
   end
 
   add_index "projects", ["category"], name: "index_projects_on_category", using: :btree
+  add_index "projects", ["initiative_id"], name: "index_projects_on_initiative_id", using: :btree
 
   create_table "set_periods", force: :cascade do |t|
     t.integer  "fiscal_year",  limit: 4
@@ -88,4 +99,5 @@ ActiveRecord::Schema.define(version: 20161215033207) do
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "projects", "initiatives"
 end

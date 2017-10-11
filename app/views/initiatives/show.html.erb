@@ -1,0 +1,65 @@
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "initiatives"} %>
+<% end %>
+
+
+<% content_for :sidebar do %>
+	<table class="table">
+		<tr>
+		<td class="danger"><%= link_to 'Edit', edit_initiative_path(@initiative) %></td> 
+
+	<tr>
+		
+			<td class="danger"><%= link_to 'Back', initiatives_path %></td>
+
+	</table>
+<% end %> 
+
+<% content_for :main1 do %>
+<div class="row">
+	<div class="col-md-12 col-centered">
+		<p><b>Name:</b><%= @initiative.name %></p>
+		<p><b>Fiscal Year:</b><%= @initiative.fiscal %></p>
+		<p><b>Description:</b><%= @initiative.description %></p>
+		<p><b>Active:</b><%= @initiative.active %></p>
+	</div>
+</div>	
+<div class="row">
+	<div class="col-md-12 col-centered">	
+		<h3>Project List</h3>
+
+		<% if @projects.count == 0 %>
+			<h4>No Projects for this Initiative</h4>
+	
+		<% else %>
+			<table class="table">
+			  <tr>
+				<th>Name</th>
+				<th>UPL-Id</th>
+				<th>Category</th>
+				<th>Delivery Lead</th>
+				<th>Description</th>
+				<th>Current Week Effort</th>
+				<th>YTD Total Effort</th>
+				<% if current_user.admin %>
+					<th>Status</th>
+				<% end %>
+			  </tr>
+			<% @projects.each do |project|  %>
+			  <tr>
+				<td class="link"><u><%= link_to project.name, project %></u></td>
+				<td><%= project.upl_number %></td>
+				<td><%= project.category %></td>
+				<td><%= project.owner.name %></td>
+				<td><%= project.description %></td>
+				<td><%= current_allocation(project, 1) %></td>
+				<td><%= ytd_allocation(project, 1) + " Person Weeks" %></td>
+				<% if current_user.admin %>
+					<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
+				<% end %>
+			  </tr>  
+			<% end %>
+		<% end %>
+	</div>
+</div>
+<% end %>

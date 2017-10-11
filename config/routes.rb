@@ -1,5 +1,9 @@
 TeamTrack::Application.routes.draw do
 
+  resources :initiatives do
+  	get 'archive', :on => :member
+  end
+  
   resources :assignments do
   	#get 'new', :on => :member
   	get 'extend', :on => :member

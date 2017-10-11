@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fiscal: 1
+  name: MyString
+  description: MyString
+  active: false
+
+two:
+  fiscal: 1
+  name: MyString
+  description: MyString
+  active: false

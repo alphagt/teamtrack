@@ -19,6 +19,8 @@
 			input_html: {value: @project.fixed_resource_budget || '0'} %>
 		<%= f.input :category, inline_label: 'SLC Category', label: "UPL Category" %>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
+		<%= f.association :initiative, :as => :select, :collection => Initiative.all,
+			:label_method => :name, label: "Initiative" %>
 		<br/>	
 		<div class="form-actions">
   			<div style="float:left">

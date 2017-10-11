@@ -1,0 +1,28 @@
+<%= simple_form_for(@initiative) do |f| %>
+  <%= f.error_notification %>
+
+
+	<div class="form-group">
+	<row>
+		<% if !@initiative.name.nil? %>
+			<% if @initiative.active %>
+					<h4>Status:  Active</h4>
+			<% else %>
+					<h4>Status:  In-Active</h4>
+			<% end %>
+		<% end %>
+		<br/>
+		<%= f.input :name, :autofocus => true, label: "Name"  %>	
+		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
+		<%= f.input :fiscal, inline_label: 'Fiscal Year', label: "Fiscal Year" %>
+		<br/>	
+		<div class="form-actions">
+  			<div style="float:left">
+    			<%= f.button :submit %>
+  			</div>
+  		</div>
+  	</row>
+
+  </div>
+  
+<% end %>

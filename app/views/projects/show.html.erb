@@ -28,6 +28,7 @@
 		<p><b>Owner:</b><%= @project.owner.name %></p>
 		<p><b>Description:</b><%= @project.description %></p>
 		<p><b>Category:</b><%= @project.category %></p>
+		<p><b>Initiative:</b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>	
 		<p><b>Resource Plan:</b><%= @project.fixed_resource_budget %></p>
 	</div>
 	<div class="col-md-6">

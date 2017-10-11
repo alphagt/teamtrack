@@ -1,27 +1,31 @@
 module ProjectsHelper
 
-	def current_allocation(proj)
+	def current_allocation(proj, sum = 0)
 	#ToReview
-		@total = 0
+		@fixed = 0
+		@nitro = 0
 		@output = "Fixed: "
 		@cperiod = current_period() #SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
 		#get fixed assignments total
 		if proj.assignments.exists? then
 			proj.assignments.where(:set_period_id => @cperiod, :is_fixed => true).each do |asn|
-				@total = @total + asn.effort.round(1)
+				@fixed = @fixed + asn.effort.round(1)
 			end
-			@output += @total.to_s
+			@output += @fixed.to_s
 # 			puts 'FIXED STRING - '
 # 			puts @output
 			#get nitro assignments total
-			@total = 0
 			proj.assignments.where(:set_period_id => @cperiod, :is_fixed => false).each do |asn|
-				@total = @total + asn.effort.round(1)
+				@nitro = @nitro + asn.effort.round(1)
 			end
 		else
 			@output += "0"
 		end	
-		@output += " | Nitro: " + @total.to_s
+		if sum == 1 then
+			@output = (@fixed + @nitro).round(1).to_s
+		else
+			@output += " | Nitro: " + @nitro.to_s
+		end
 	end
 	def current_fiscal_week
 		@pFy = current_period.to_i
@@ -38,7 +42,7 @@ module ProjectsHelper
 #		puts  @cweek_number
 #		@cweek_number
 	end
-	def ytd_allocation(proj)
+	def ytd_allocation(proj, sum = 0)
 	#ToFIX
 		@fixtotal = 0
 		@nitrototal = 0
@@ -59,8 +63,11 @@ module ProjectsHelper
 				end
 			end
 		end
-		@output = @output + @fixtotal.to_s
-		@output += " | Nitro: " + @nitrototal.to_s
+		if sum == 1 then
+			@output = (@fixtotal + @nitrototal).round(1).to_s
+		else
+			@output += @fixtotal.to_s + " | Nitro: " + @nitrototal.to_s
+		end
 	end
 
 end

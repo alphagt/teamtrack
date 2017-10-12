@@ -41,6 +41,7 @@
 				<th>Description</th>
 				<th>Current Week Effort</th>
 				<th>YTD Total Effort</th>
+				<th>FTE Equivalents</th>
 				<% if current_user.admin %>
 					<th>Status</th>
 				<% end %>
@@ -54,6 +55,7 @@
 				<td><%= project.description %></td>
 				<td><%= current_allocation(project, 1) %></td>
 				<td><%= ytd_allocation(project, 1) + " Person Weeks" %></td>
+				<td><%= (ytd_allocation(project, 1).to_d/current_week()).round(1) %></td>
 				<% if current_user.admin %>
 					<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
 				<% end %>

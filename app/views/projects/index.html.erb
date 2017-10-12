@@ -59,8 +59,8 @@
 		<td><%= project.category %></td>
 		<td><%= project.owner.name %></td>
 		<td><%= project.description %></td>
-		<td><%= current_allocation(project) %></td>
-		<td><%= ytd_allocation(project) %></td>
+		<td><%= current_allocation(project, 1) %></td>
+		<td><%= ytd_allocation(project, 1) %></td>
 		<% if current_user.admin %>
 			<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
 			<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>

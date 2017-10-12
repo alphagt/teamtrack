@@ -48,6 +48,7 @@
 		<th>Current Allocation</th>
 		<th>YTD FTE Equivalent</th>
 		<% if current_user.admin %>
+			<th>Initiative</th>
 			<th>Status</th>
 			<th></th>
 		<% end %>
@@ -62,6 +63,7 @@
 		<td><%= current_allocation(project, 1) %></td>
 		<td><%= (ytd_allocation(project, 1).to_d/current_week()).round(1) %></td>
 		<% if current_user.admin %>
+			<td><%= project.initiative_id %></td>
 			<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
 			<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
 		<% end %>
@@ -77,6 +79,7 @@
 				<td><%= p.description %></td>
 				<td><%= current_allocation(p) %></td>
 				<td><%= ytd_allocation(p) %></td>
+				<td><%= p.initiative_id %></td>
 				<td><%= if p.active then "Active" else "Closed" end %></td>
 				<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>
 			</tr>

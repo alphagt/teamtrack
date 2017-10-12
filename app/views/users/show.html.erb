@@ -8,6 +8,7 @@
 		<p>User: <%= @user.name %></p>
 		<p>Email: <%= @user.email if @user.email %></p>
 		<p>Manager: <%= @user.manager.name if @user.manager %></p>
+		<p>Organization: <%= @user.org if @user.org %></p>
 		<p>Default System: <%= @user.default_system.name if @user.default_system %></p>
 		<p>Admin: <%= @user.admin %></p>
 		<p>Manager: <%= @user.ismanager %></p>

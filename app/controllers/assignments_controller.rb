@@ -92,7 +92,8 @@ class AssignmentsController < ApplicationController
 			@nUser = User.create! :name => params[:newuser][0][:name], 
 				:email =>  @fakeEmail, :verified => false, 
 				:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
-				:default_system_id => params[:assignment][:tech_sys_id], :admin => false
+				:default_system_id => params[:assignment][:tech_sys_id], :admin => false,
+				:org => current_user.org
 			@nUser.save
 			puts @nUser
 			params[:assignment][:user_id] = @nUser.id

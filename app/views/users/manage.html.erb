@@ -14,6 +14,7 @@
 	  		
 			<%= f.input :name %>
 			<%= f.input :email %>
+			<%= f.input :org %>
 			<%= f.association :manager, :as => :select, :collection => User.managers_only, 
 				:label_method => :name %>
 			<%= f.association :default_system, :as => :select %>

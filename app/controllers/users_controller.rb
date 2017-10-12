@@ -68,6 +68,7 @@ class UsersController < ApplicationController
 	@user.ismanager = params[:user][:ismanager]
 	@user.default_system_id = params[:user][:default_system_id]
 	@user.admin = params[:user][:admin]
+	@user.org = User.find_by_id(params[:user][:manager_id]).org
 	puts "RESULTS:::"
 	puts @user
 	

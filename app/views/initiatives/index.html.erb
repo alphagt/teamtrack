@@ -16,33 +16,35 @@
 <% end %>
 
 <% content_for :main1 do %>
-
-<div class="row">
-	<div class="col-md-12">
-	<table class="table">
-	  <tr>
-		<th>Name</th>
-		<th>Description</th>
-		<th>Fiscal Year</th>
-		<% if current_user.admin %>
-			<th>Status</th>
-			<th></th>
-		<% end %>
-	  </tr>
-	<% @initiatives.where(:active => true).each do |initiative|  %>
-	  <tr>
-		<td class="link"><u><%= link_to initiative.name, initiative %></u></td>
-		<td><%= initiative.description %></td>
-		<td><%= initiative.fiscal %></td>
-		<% if current_user.admin %>
-			<td><%= if current_user.admin then if initiative.active then "Active" else "Closed" end end %></td>
-			<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>
-		<% end %>
-	  </tr>  
-	<% end %>
+	<% if !@initiatives.nil? then %>
+		<div class="row">
+			<div class="col-md-12">
+			<table class="table">
+			  <tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Fiscal Year</th>
+				<% if current_user.admin %>
+					<th>Status</th>
+					<th></th>
+				<% end %>
+			  </tr>  
+			<% @initiatives.where(:active => true).each do |initiative|  %>
+			  <tr>
+				<td class="link"><u><%= link_to initiative.name, initiative %></u></td>
+				<td><%= initiative.description %></td>
+				<td><%= initiative.fiscal %></td>
+				<% if current_user.admin %>
+					<td><%= if current_user.admin then if initiative.active then "Active" else "Closed" end end %></td>
+					<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>
+				<% end %>
+			  </tr>  
+			<% end %>
 	
 
-	</table>
-	</div>
-</div>
+			</table>
+			</div>
+		</div>
+	<% else "NO INITIATIVES DEFINED" %>
+	<% end %>
 <% end %>	

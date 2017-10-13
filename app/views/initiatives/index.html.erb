@@ -24,6 +24,7 @@
 				<th>Name</th>
 				<th>Description</th>
 				<th>Fiscal Year</th>
+				<th>YTD FTE Equivalent</th>
 				<% if current_user.admin %>
 					<th>Status</th>
 					<th></th>
@@ -34,6 +35,7 @@
 				<td class="link"><u><%= link_to initiative.name, initiative %></u></td>
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
+				<td><%= (initiative.total_effort_weeks/current_week()).round(1) %></td>
 				<% if current_user.admin %>
 					<td><%= if current_user.admin then if initiative.active then "Active" else "Closed" end end %></td>
 					<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>

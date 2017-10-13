@@ -1,6 +1,5 @@
 class Initiative < ActiveRecord::Base
 has_many :projects
-attr_accessible :total_effort_weeks
   	
 scope :active, -> {where('active = true')}
 scope :current_year, -> {where('fiscal = 2017')}

@@ -11,4 +11,13 @@ scope :current_year, -> {where('fiscal = 2017')}
 		end
 		@ytd_weeks.round(1)
 	end
+	
+	def current_effort_weeks(pid)
+		@c_weeks = 0
+		puts "current_effort_weeks for initiative for week: ?", pid.to_s
+		self.projects.each do |proj|
+			@c_weeks += proj.assignments.where("set_period_id = ?", pid).sum("effort")
+		end
+		@c_weeks.round(1)
+	end
 end

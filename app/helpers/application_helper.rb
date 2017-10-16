@@ -155,7 +155,7 @@ module ApplicationHelper
 		if cuser.assignments.length > 0
 			foo = cp + 0.01
 # 				puts "TEST PERIOD: " + foo.to_s
-			if cuser.assignments.where(:set_period_id => foo).count > 0
+			if cuser.assignments.where(:set_period_id => foo).sum("effort") == 1
 				rcode = false
 			end
 		end

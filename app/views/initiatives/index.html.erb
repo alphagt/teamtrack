@@ -21,12 +21,12 @@
 			<div class="col-md-12">
 			<table class="table">
 			  <tr>
-				<th>Name</th>
-				<th>Description</th>
+				<th class="col-sm-3">Name</th>
+				<th class="col-sm-3">Description</th>
 				<th>Fiscal Year</th>
 				<th>Current Week Effort</th>
 				<th>YTD Person Weeks</th>
-				<th>YTD FTE Equivalent</th>
+				<th>YTD Effective HC</th>
 				<% if current_user.admin %>
 					<th>Status</th>
 					<th></th>
@@ -38,8 +38,8 @@
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>
-				<td><%= initiative.total_effort_weeks %></td>
-				<td><%= (initiative.total_effort_weeks/current_week()).round(1) %></td>
+				<td><%= initiative.total_effort_weeks.round %></td>
+				<td><%= (initiative.total_effort_weeks/current_week()).round %></td>
 				<% if current_user.admin %>
 					<td><%= if current_user.admin then if initiative.active then "Active" else "Closed" end end %></td>
 					<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>

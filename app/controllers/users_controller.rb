@@ -37,12 +37,13 @@ class UsersController < ApplicationController
   # GET /users/:id/manage
   def manage
   	@user = User.find(params[:id])
+  	@org = @user.org
   end
   # GET /users/new
   # GET /users/new.json
   def new
     @user = User.new
-	puts 'In Users#New controller'
+    @org = current_user.org
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }
@@ -68,7 +69,6 @@ class UsersController < ApplicationController
   def createemp
   	puts 'TRY THIS:'
   	puts params[:user][:name]
-  	
 	@user = User.create_new_user(params[:user][:name], params[:user][:email], 
 		params[:user][:manager_id], params[:user][:password])
 	@user.ismanager = params[:user][:ismanager]
@@ -289,6 +289,7 @@ class UsersController < ApplicationController
   # PUT /user/1.json
   def update
     @user = User.find(params[:id])
+    @org = current_user.org
     #Update the user list cache for this user's manager
     
     # if @user.manager_id.to_s != params[:user][:manager_id]

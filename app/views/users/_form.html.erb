@@ -7,7 +7,7 @@
   		<div class="col-md-10">
 			<%= f.input :name, :autofocus => true %>
 			<%= f.input :email, :required => true %>
-			<%= f.input :org, :required => false %>
+			<%= f.input :org, :required => true, :input_html => {value: @org} %>
 			<%= f.hidden_field :password, :value => "abc123" %>
 			<%= f.association :manager, :as => :select, :collection => User.managers_only, :label_method => :name %>
 			<%= f.association :default_system, :as => :select  %>

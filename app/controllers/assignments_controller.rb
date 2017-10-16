@@ -185,7 +185,7 @@ class AssignmentsController < ApplicationController
 #   	puts 'In Extend Controller Method'
   	respond_to do |format|
       if Assignment.extend_by_week(@assignment)
-        format.html { redirect_to @assignment.user, notice: 'Assignment was successfully extended.' }
+        format.html { redirect_to user_path(@assignment.user, history_scope: 'all'), notice: 'Assignment was successfully extended.' }
         format.json { render json: @assignment, status: :extended, location: @assignment.user }
       else
         format.html { redirect_to @assignment.user, notice: 'Failed to Extend!'}

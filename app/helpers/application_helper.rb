@@ -150,10 +150,10 @@ module ApplicationHelper
 	
 	
 	
-	def free_next_week(cuser)
+	def free_next_week(cuser, cp = current_period)
 		rcode = true
 		if cuser.assignments.length > 0
-			foo = current_period + 0.01
+			foo = cp + 0.01
 # 				puts "TEST PERIOD: " + foo.to_s
 			if cuser.assignments.where(:set_period_id => foo).count > 0
 				rcode = false

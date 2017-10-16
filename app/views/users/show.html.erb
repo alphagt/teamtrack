@@ -27,6 +27,7 @@
 			<h5>
 			<th>Project</th>
 			<th>Fiscal year</th>
+			<th>Week #</th>
 			<th>Week of</th>
 			<th>System</th>
 			<th>Effort</th>
@@ -38,6 +39,7 @@
 		  <tr>
 			<td><%= assignment.project.name %></td>
 			<td><%= assignment.set_period_id.floor %></td>
+			<td><%= week_from_period(assignment.set_period_id) %></td>
 			<td><%= period_to_date(assignment.set_period_id) %></td>
 			<td><%= if !assignment.tech_system.nil? then assignment.tech_system.name else "ERROR" end %></td>
 			<td><%= assignment.effort %></td>

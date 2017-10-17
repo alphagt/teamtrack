@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171012013043) do
+ActiveRecord::Schema.define(version: 20171017021722) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"

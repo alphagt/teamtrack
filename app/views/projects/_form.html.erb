@@ -24,7 +24,7 @@
 			:label_method => :name, label: "Initiative" %>
 		<% if current_user.admin %>
 			<div class="checkbox">
-				<%= f.input :keyproj, inline_label: 'Key Project', label: false %>
+				<%= f.input :keyproj,  :type => 'checkbox', inline_label: 'Key Project', label: false %>
 			</div>
 					
   		<% end %> 

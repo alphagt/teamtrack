@@ -3,6 +3,7 @@
 
   <div class="form-group">
 	<row>
+	   <div class="col-md-10">
 		<% if !@project.name.nil? %>
 			<% if @project.active %>
 					<h4>Status:  Active</h4>
@@ -21,12 +22,18 @@
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.all,
 			:label_method => :name, label: "Initiative" %>
+		<% if current_user.admin %>
+			<div class="checkbox">
+				<%= f.input :keyproj, inline_label: 'Key Project', label: false %>
+			</div>		
+  		<% end %> 
 		<br/>	
 		<div class="form-actions">
   			<div style="float:left">
     			<%= f.button :submit %>
   			</div>
   		</div>
+  	  </div>
   	</row>
 
   </div>

@@ -63,10 +63,24 @@
 				<td><%= initiative.total_effort_weeks.round %></td>
 				<td><%= (initiative.total_effort_weeks/current_week()).round %></td>
 				<% if current_user.admin %>
-					<td><%= if current_user.admin then if initiative.active then "Active" else "Closed" end end %></td>
+					<td><%= if initiative.active then "Active" else "Closed" end %></td>
 					<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>
 				<% end %>
-			  </tr>  
+			  </tr> 
+			  <% initiative.projects.keyproj.each do |p| %>
+			  	<tr>
+			  		<td class="link" style="text-align: right"><u><%= link_to p.name, p %></u></td>
+			  		<td><%= p.description %></td>
+			  		<td></td>
+			  		<td><%= current_allocation(p,1) %></td>
+			  		<td><%= ytd_allocation(p,1) %></td>
+			  		<td></td>
+			  		<% if current_user.admin %>
+						<td><%= if p.active then "Active" else "Closed" end %></td>
+						<td></td>
+					<% end %>
+			  	</tr>
+			  <% end %> 
 			<% end %>
 	
 

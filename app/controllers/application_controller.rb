@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 #   end
   
   def require_admin
-    unless current_user.admin
+    unless current_user.admin | current_user.isstatususer?
       #flash[:error] = "You must be an admin in to access that section" 
       redirect_to team_user_path(:id => current_user.id) # Prevents the current action from running
     end

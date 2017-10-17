@@ -16,6 +16,28 @@
 <% end %>
 
 <% content_for :main1 do %>
+
+<div class="row">
+  <div class="col-md-12 col-centered">
+	<div class="col-md-6">
+		<%= image_tag(Gchart.pie(:title => 'Current Effort', 
+		:labels => @clabels, :data => @wvals, :size => '400x200', :chart_background => 'CCCCCC',
+		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
+		</br>
+		<p><%= if @showVals then 'Data:  ' + @cdata.to_s end %></p>
+	</div>
+	<div class="col-md-6">
+		<%= image_tag(Gchart.pie(:title => 'YTD Effort', 
+		:labels => @clabels, :data => @cvals, :size => '400x200', :chart_background => 'CCCCCC',
+		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
+		</br>
+		<p><%= if @showVals then 'Data:  ' + @cdata.to_s end %></p>
+	</div>
+  </div>
+</div>
+<br>
+<div class="row">
+	<div class="col-md-12 col-centered">
 	<% if !@initiatives.nil? then %>
 		<div class="row">
 			<div class="col-md-12">
@@ -53,4 +75,6 @@
 		</div>
 	<% else "NO INITIATIVES DEFINED" %>
 	<% end %>
+	</div>
+</div>
 <% end %>	

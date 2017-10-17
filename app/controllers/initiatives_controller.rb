@@ -9,6 +9,13 @@ class InitiativesController < ApplicationController
     @initiatives = Initiative.all
     puts 'Initiatives#Index - count'
     puts @initiatives.count
+    
+    @cdata = Initiative.all.map {|e| [e.name,e.total_effort_weeks.to_d.round, 
+    	e.current_effort_weeks(view_context.current_period).to_d.round]}
+    puts @cdata
+    @clabels = @cdata.map {|i| i[0]}
+    @cvals= @cdata.map {|i| i[1]}
+    @wvals = @cdata.map {|i| i[2]}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @initiatives }

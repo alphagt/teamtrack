@@ -33,7 +33,6 @@
       		<%= link_to('Projects', projects_path) %>
       	<% end %>
       	</li>
-      	
       	<% if active == "systems" %>
     		<li class="active" >
     	<% else %>
@@ -62,7 +61,7 @@
     		</li>
     	<% end %>
     	
-    	<% if current_user.admin? %>
+    	<% if current_user.admin? || current_user.isstatususer? %>
       		<% if active == "initiatives" %>
     			<li class="active" >
     		<% else %>

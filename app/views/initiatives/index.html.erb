@@ -12,6 +12,7 @@
 		<tr>
 		<td class="danger"><%= link_to 'Show-All', initiatives_path %></td>
 	</table>
+	<h5><%= "Effective HC: " + (@sumEffort/current_week()).round.to_s %></h5>
 	<% end %>
 <% end %>
 
@@ -56,7 +57,7 @@
 			  </tr>  
 			<% @initiatives.where(:active => true).each do |initiative|  %>
 			  <tr>
-				<td class="link"><u><%= link_to initiative.name, initiative %></u></td>
+				<td class="link"><u><b><%= link_to initiative.name, initiative %></b></u></td>
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>

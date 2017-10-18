@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171017150342) do
+ActiveRecord::Schema.define(version: 20171018180830) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20171017150342) do
     t.datetime "updated_at",                             null: false
   end
 
+  add_index "initiatives", ["active"], name: "index_initiatives_on_active", using: :btree
+
   create_table "projects", force: :cascade do |t|
     t.string   "name",                  limit: 255
     t.boolean  "active"
@@ -52,8 +54,10 @@ ActiveRecord::Schema.define(version: 20171017150342) do
     t.boolean  "keyproj"
   end
 
+  add_index "projects", ["active"], name: "index_projects_on_active", using: :btree
   add_index "projects", ["category"], name: "index_projects_on_category", using: :btree
   add_index "projects", ["initiative_id"], name: "index_projects_on_initiative_id", using: :btree
+  add_index "projects", ["name"], name: "index_projects_on_name", using: :btree
 
   create_table "set_periods", force: :cascade do |t|
     t.integer  "fiscal_year",  limit: 4
@@ -100,6 +104,7 @@ ActiveRecord::Schema.define(version: 20171017150342) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["ismanager"], name: "index_users_on_ismanager", using: :btree
   add_index "users", ["manager_id"], name: "index_users_on_manager_id", using: :btree
+  add_index "users", ["org"], name: "index_users_on_org", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "projects", "initiatives"

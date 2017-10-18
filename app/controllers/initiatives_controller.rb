@@ -16,6 +16,12 @@ class InitiativesController < ApplicationController
     @clabels = @cdata.map {|i| i[0]}
     @cvals= @cdata.map {|i| i[1]}
     @wvals = @cdata.map {|i| i[2]}
+    
+    #Get Summary Data Ready
+    @sumEffort = 0
+    Initiative.current_year.each do |i|
+    	@sumEffort += i.total_effort_weeks()
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @initiatives }

@@ -9,13 +9,18 @@ class ProjectsController < ApplicationController
 	
 	require 'gchart'
 	@allProjects = Project.by_category
+	@mgr_id = current_user.id
+	if params[:mgr] then @mgr_id = params[:mgr].to_i end
+	
 	if params[:scope] == 'all'
+		@mgr_id = current_user.id
 		@projects = @allProjects
 	else
 		if params[:scope] == 'active'
+			@mgr_id = current_user.id
 			@projects = Project.active.by_category
 		else
-			@projects = Project.active.for_users(view_context.all_subs_by_id(current_user)).by_category
+			@projects = Project.active.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
 		end
 	end
 	
@@ -35,11 +40,11 @@ class ProjectsController < ApplicationController
 	#Current FY Data
 	@fy = view_context.current_period().to_i
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, @allProjects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		'Overhead', @fy.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
 	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, @allProjects.pluck(:id)).to_sql
+		'Overhead', @fy.to_s, @projects.pluck(:id)).to_sql
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values

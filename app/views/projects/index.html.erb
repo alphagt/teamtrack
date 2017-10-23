@@ -6,6 +6,7 @@
 
 <% if current_user.admin %>
 	<% content_for :sidebar do %>
+	<b><%= "For Org: " + User.find_by_id(@mgr_id).name %></b>
 	<table class="table">
 		<tr>
 		<td class="danger"><%= link_to 'New-Project', new_project_path %></td>

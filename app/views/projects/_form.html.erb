@@ -18,7 +18,12 @@
 		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
 		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
 			input_html: {value: @project.fixed_resource_budget || '0'} %>
-		<%= f.input :category, inline_label: 'SLC Category', label: "UPL Category"  %>
+		<div class="control-group select optional project_category">
+			<label class="select optional control-labe" for="projeect_category">Category:</label>
+				<div class="controls">
+					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Security/Compliance"], @project.category))  %>
+				</div>
+		</div>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.all,
 			:label_method => :name, label: "Initiative" %>

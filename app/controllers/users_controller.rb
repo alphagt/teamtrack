@@ -129,6 +129,17 @@ class UsersController < ApplicationController
 			view_context.all_subs(@manager.id)
 		end
 	end
+	@mgr_count = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/mgrcount", expires_in: 72.hours, force: !use_cache) do
+		puts "write mgr count to cache: " + ckey
+		Rails.cache.delete_matched("#{ckey}:*:/mgrcount")
+		@c = 0
+		@user_list.each do |u| 
+			if u.ismanager then 
+				@c += 1
+			end 
+		end
+		@c
+	end
 	if cache_hit
 		puts "Found User List in Cache for - " + ckey
 	end

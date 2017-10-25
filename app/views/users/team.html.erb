@@ -20,8 +20,9 @@
 	<% end %>
 </table>
 <h4><%= "Week " + week_from_period(@target_period).to_s + " Stats:" %></h4>
-<h5>Person Weeks Available: <small><%= @user_list.count.to_s%></small></h5>
-<h5>Person Weeks Assigned: <small><%= @total_effort.to_s + " of " + @user_list.count.to_s%></small></h5>
+<h5>Available: <small><%= @user_list.count.to_s%></small></h5>
+<h5>Assigned: <small><%= @total_effort.to_s + " of " + @user_list.count.to_s%></small></h5>
+<h5>People Managers:  <small><%= @mgr_count %></small></h5>
 <h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
 <br/>
 <%= image_tag(Gchart.pie(:title => 'Effort Allocation', 

@@ -5,9 +5,9 @@ class Project < ActiveRecord::Base
   has_many :users, -> { order "users.name" }, :through => :assignments
   attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
   	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj
-  #default_scope {order("projects.name")}
 
   validates :fixed_resource_budget, :presence => true
+  
    
 	scope :for_users, -> (uList){joins(:users).where('assignments.user_id IN (?)', uList).distinct}
 	scope :active, -> {where('active = true')}

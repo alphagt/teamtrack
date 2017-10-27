@@ -5,7 +5,7 @@
 <% end %>
 
 <% if current_user.admin %>
-	<% content_for :sidebar do %>
+	<% content_for :sidebarwide do %>
 	<table class="table">
 		<tr>
 		<td class="danger"><%= link_to 'New-Initiative', new_initiative_path %></td>

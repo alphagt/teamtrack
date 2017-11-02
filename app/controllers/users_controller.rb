@@ -202,7 +202,7 @@ class UsersController < ApplicationController
 # 	puts "OH Percent"
 # 	puts @overhead_effort.to_s + "/" + @tm_count.to_s
 	if @tm_count == 0 then
-		@oh_pct = 0
+		@oh_pct = "0"
 	else
 		@oh_pct = ((@overhead_effort/@tm_count) * 100).round.to_s
 	end

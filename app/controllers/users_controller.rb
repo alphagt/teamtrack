@@ -201,7 +201,11 @@ class UsersController < ApplicationController
 	@overhead_effort += @mgrs_count
 # 	puts "OH Percent"
 # 	puts @overhead_effort.to_s + "/" + @tm_count.to_s
-	@oh_pct = ((@overhead_effort/@tm_count) * 100).round.to_s
+	if @tm_count == 0 then
+		@oh_pct = 0
+	else
+		@oh_pct = ((@overhead_effort/@tm_count) * 100).round.to_s
+	end
 	
 	#Calc for allocation table
 	@cfdata = c_assignments.group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}

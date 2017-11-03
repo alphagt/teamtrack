@@ -20,35 +20,35 @@ class Assignment < ActiveRecord::Base
     
   def self.extend_by_week(cAssign)
   #ToFix
-  		@pFy = cAssign.set_period_id.to_i
-		@fWeek = ((cAssign.set_period_id - @pFy) * 100).round 
-		puts @fWeek
-		if @fWeek < 52
-  			n = Assignment.new({:is_fixed => cAssign.is_fixed, 
-  				:project_id => cAssign.project_id, 
-  				:user_id => cAssign.user_id, 
-  				:set_period_id => cAssign.set_period_id + 0.01, 
-  				:effort => cAssign.effort,
-  				:tech_sys_id => cAssign.tech_sys_id})
-  		else
-  			n = Assignment.new({:is_fixed => cAssign.is_fixed, 
-  			:project_id => cAssign.project_id, 
-  			:user_id => cAssign.user_id, 
-  			:set_period_id => cAssign.set_period_id + 0.49, 
-  			:effort => cAssign.effort,
-  			:tech_sys_id => cAssign.tech_sys_id})
-  		end
-  		if n then
-			if n.project.under_budget(n.set_period_id) == false then
-				n.is_fixed = false
+			@pFy = cAssign.set_period_id.to_i
+			@fWeek = ((cAssign.set_period_id - @pFy) * 100).round 
+			puts @fWeek
+			if @fWeek < 52
+				n = Assignment.new({:is_fixed => cAssign.is_fixed, 
+					:project_id => cAssign.project_id, 
+					:user_id => cAssign.user_id, 
+					:set_period_id => cAssign.set_period_id + 0.01, 
+					:effort => cAssign.effort,
+					:tech_sys_id => cAssign.tech_sys_id})
+			else
+				n = Assignment.new({:is_fixed => cAssign.is_fixed, 
+				:project_id => cAssign.project_id, 
+				:user_id => cAssign.user_id, 
+				:set_period_id => cAssign.set_period_id + 0.49, 
+				:effort => cAssign.effort,
+				:tech_sys_id => cAssign.tech_sys_id})
 			end
-			puts 'CLONE PERIOD:'
-			n.set_period_id = n.set_period_id.round(2)
-			puts n.set_period_id
-			n.save
-		else
-			errors.add(:extend, "Unable to copy assignment to next period")
-		end
+			if n then
+				if n.project.under_budget(n.set_period_id) == false then
+					n.is_fixed = false
+				end
+				puts 'CLONE PERIOD:'
+				n.set_period_id = n.set_period_id.round(2)
+				puts n.set_period_id
+				n.save
+			else
+				errors.add(:extend, "Unable to copy assignment to next period")
+			end
   end
   
   def week_number

@@ -82,7 +82,10 @@ class ProjectsController < ApplicationController
 		ind_effort += all_effort/3
 		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
 		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
-		@slabels = ["Individual", "Mid-Market", "Enterprise"]
+		sum_effort = ind_effort + mid_effort + ent_effort
+		@slabels = [(ind_effort/sum_effort * 100).round().to_s + "% Individual", 
+					(mid_effort/sum_effort * 100).round().to_s + "% Mid-Market", 
+					(ent_effort/sum_effort * 100).round().to_s + "% Enterprise"]
 		@sVals = [ind_effort, mid_effort, ent_effort]
 	end
 	

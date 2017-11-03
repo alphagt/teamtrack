@@ -22,7 +22,7 @@
   <div class="col-md-12 col-centered">
 	<div class="col-md-6">
 		<%= image_tag(Gchart.pie(:title => 'YTD Effort Allocation', 
-		:labels => @clabels_ytd, :data => @cvals_ytd, :pieSliceText => 'value', :size => '400x200', :chart_background => 'CCCCCC',
+		:labels => @clabels_ytd, :data => @cvals_ytd, :text => 'value', :size => '400x200', :chart_background => 'CCCCCC',
 		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cfdata.to_s end %></p>

@@ -56,7 +56,7 @@
 				<% end %>
 			  </tr>  
 			<% @initiatives.where(:active => true).each do |initiative|  %>
-			  <tr>
+			  <tr class="warning">
 				<td class="link"><u><b><%= link_to initiative.name, initiative %></b></u></td>
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>

@@ -30,6 +30,12 @@ class ProjectsController < ApplicationController
 		@showVals = false
 	end
 	
+	if params[:statsview] == '1' || current_user.isstatususer?
+		@statsView = true
+	else
+		@statsView = false
+	end
+	
 	if params[:setq].present?
 		@setq = params[:setq].to_i
 	else
@@ -38,17 +44,48 @@ class ProjectsController < ApplicationController
 	puts @setq
 	#Calculate and group fixed effort totals for chart
 	#Current FY Data
-	@fy = view_context.current_period().to_i
-	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	
+	if params[:fy].present?
+		@fy = params[:fy].to_i
+	else
+		@fy = view_context.current_period().to_i
+	end
+	puts "Projects for FY: "
+	puts @fy
+	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
+		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
-	puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, @projects.pluck(:id)).to_sql
+	#puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 'Overhead', @fy.to_s, @projects.pluck(:id)).to_sql
 	@clabels_ytd = @cfdata.to_h.keys
 	@clabels_ytd.sort!
 	@cvals_ytd = @cfdata.to_h.values
 
+	#Calculate and group RTM summary data for charts
+	if @statsView then
+		puts "in StatsView block"
+		all_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+		puts all_effort.to_s
+		b2b_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("B2B").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+		puts b2b_effort.to_s
+		ind_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+		puts ind_effort
+		mid_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+		puts mid_effort
+		ent_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+		puts ent_effort
+		ind_effort += all_effort/3
+		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
+		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
+		@slabels = ["Individual", "Mid-Market", "Enterprise"]
+		@sVals = [ind_effort, mid_effort, ent_effort]
+	end
+	
 	#Current Quarter Data
 	case @setq #determin start end week number for each quarter
 	when 1
@@ -81,8 +118,7 @@ class ProjectsController < ApplicationController
 
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata_qtd.to_s
-	puts Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 
-			'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
+	#puts Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
 	@clabels_qtd = @cfdata_qtd.to_h.keys
 	@clabels_qtd.sort!
 	@cvals_qtd = @cfdata_qtd.to_h.values

@@ -22,14 +22,15 @@
 <div class="row">
 	<div class="col-md-12 col-centered">
 	<div class="col-md-3">
-		<p><b>Name:</b><%= @project.name %></p>
-		<p><b>UPL:</b><%= @project.upl_number %></p>
-		<p><b>Active:</b><%= @project.active %></p>
-		<p><b>Owner:</b><%= @project.owner.name %></p>
-		<p><b>Description:</b><%= @project.description %></p>
-		<p><b>Category:</b><%= @project.category %></p>
-		<p><b>Initiative:</b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>	
-		<p><b>Resource Plan:</b><%= @project.fixed_resource_budget %></p>
+		<p><b>Name: </b><%= @project.name %></p>
+		<p><b>UPL: </b><%= @project.upl_number %></p>
+		<p><b>Active:  </b><%= @project.active %></p>
+		<p><b>Owner: </b><%= @project.owner.name %></p>
+		<p><b>Description: </b><%= @project.description %></p>
+		<p><b>Category: </b><%= @project.category %></p>
+		<p><b>RTM: </b><%= @project.rtm %></p>
+		<p><b>Initiative: </b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>	
+		<p><b>Resource Plan: </b><%= @project.fixed_resource_budget %></p>
 	</div>
 	<div class="col-md-6">
 		<%= image_tag(Gchart.bar(:title => "Effort History", 

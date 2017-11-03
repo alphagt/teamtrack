@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   has_many :assignments
   has_many :users, -> { order "users.name" }, :through => :assignments
   attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
-  	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj
+  	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm
 
   validates :fixed_resource_budget, :presence => true
   
@@ -16,6 +16,8 @@ class Project < ActiveRecord::Base
 	scope :by_category, -> {order('projects.category','projects.name')}
 	scope :by_initiative, -> {order('projects.initiative', 'projects.name')}
 	scope :for_initiative, -> (iId){where('initiative_id = ?', iId).order('projects.name')}
+	scope :by_rtm, -> {order('projects.rtm', 'projects.name')}
+	scope :for_rtm, -> (rStr){where('rtm = ?', rStr).order('projects.name')}
 	
 	def under_budget(pId)
 		tEffort = 0

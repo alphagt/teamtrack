@@ -42,14 +42,23 @@ module ProjectsHelper
 #		puts  @cweek_number
 #		@cweek_number
 	end
-	def ytd_allocation(proj, sum = 0)
+	def ytd_allocation(proj, sum = 0, fiscaly = current_fy())
 	#ToFIX
+		puts "ytd_allocation Call"
+		puts fiscaly
 		@fixtotal = 0
 		@nitrototal = 0
 		@output = "Fixed: "
 		@cperiod = current_period().to_f() #SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
-		@pFy = @cperiod.to_i
-		@fWeek = ((@cperiod - @pFy) * 100).round
+		@pFy = fiscaly.to_i
+		#puts "pFY - "
+		#puts @pFy
+		if @pFy == current_fy().to_i then
+			@fWeek = ((@cperiod - @pFy) * 100).round
+		else
+			#puts "In Else Clause"
+			@fWeek = 52
+		end
 		puts "fweek = " + @fWeek.to_s
 		#ReDesign The following ....
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|

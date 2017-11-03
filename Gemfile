@@ -59,5 +59,9 @@ gem 'googlecharts'
 # To use debugger
 # gem 'debugger'
 
+gem 'derailed_benchmarks', group: :development
+gem 'stackprof', group: :development
+
+
 #backward compat for attribute protection in Rails 4
 gem 'protected_attributes'

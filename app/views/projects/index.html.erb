@@ -5,7 +5,7 @@
 <% end %>
 
 <% if current_user.admin %>
-	<% content_for :sidebar do %>
+	<% content_for :sidebarwide do %>
 	<b><%= "For Org: " + User.find_by_id(@mgr_id).name %></b>
 	<table class="table">
 		<tr>
@@ -27,6 +27,7 @@
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cfdata.to_s end %></p>
 	</div>
+	<% if @cfdata_qtd.to_h.length > 0 then %>
 	<div class="col-md-6">
 		<%= image_tag(Gchart.pie(:title => 'QTD Effort Allocation', 
 		:labels => @clabels_qtd, :data => @cvals_qtd, :size => '400x200', :chart_background => 'CCCCCC',
@@ -34,6 +35,16 @@
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cfdata_qtd.to_s end %></p>
 	</div>
+	<% end %>
+	<% if @statsView then %>
+	<div class="col-md-6">
+		<%= image_tag(Gchart.pie(:title => 'YTD RTM Allocation', 
+		:labels => @slabels, :data => @sVals, :size => '400x200', :chart_background => 'CCCCCC',
+		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
+		</br>
+		<p><%= if @showVals then 'Data:  ' + @sVals.to_s end %></p>
+	</div>
+	<% end %>
   </div>
 </div>
 <br/>
@@ -62,7 +73,7 @@
 		<td><%= project.owner.name %></td>
 		<td><%= project.description %></td>
 		<td><%= current_allocation(project, 1) %></td>
-		<td><%= (ytd_allocation(project, 1).to_d/current_week()).round(1) %></td>
+		<td><%= (ytd_allocation(project, 1, @fy).to_d/current_week()).round(1) %></td>
 		<% if current_user.admin %>
 			<td><%= project.initiative_id %></td>
 			<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>

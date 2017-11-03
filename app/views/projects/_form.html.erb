@@ -24,6 +24,12 @@
 					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Security/Compliance"], @project.category))  %>
 				</div>
 		</div>
+		<div class="control-group select optional project_category">
+			<label class="select optional control-labe" for="projeect_category">Primary RTM:</label>
+				<div class="controls">
+					<%= f.select(:rtm, options_for_select(["", "Individual", "Mid-Market", "Enterprise", "All", "B2B"], @project.rtm))  %>
+				</div>
+		</div>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.all,
 			:label_method => :name, label: "Initiative" %>

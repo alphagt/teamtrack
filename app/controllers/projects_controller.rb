@@ -57,10 +57,19 @@ class ProjectsController < ApplicationController
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
 	#puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 'Overhead', @fy.to_s, @projects.pluck(:id)).to_sql
-	@clabels_ytd = @cfdata.to_h.keys
-	@clabels_ytd.sort!
+	@clabels_ytd = []
 	@cvals_ytd = @cfdata.to_h.values
+	puts "YTD Total"
+	ytd_total = @cvals_ytd.sum
+	puts ytd_total
+	@cfdata.to_h.each do |key, val|
+		@clabels_ytd << key + "-" + (val.to_f/ytd_total * 100).round().to_s + "%"
+	end	
+	puts @clabels_ytd.to_s
+	@clabels_ytd.sort!
 
+	
+	
 	#Calculate and group RTM summary data for charts
 	if @statsView then
 		puts "in StatsView block"
@@ -83,9 +92,9 @@ class ProjectsController < ApplicationController
 		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
 		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
 		sum_effort = ind_effort + mid_effort + ent_effort
-		@slabels = [(ind_effort/sum_effort * 100).round().to_s + "% Individual", 
-					(mid_effort/sum_effort * 100).round().to_s + "% Mid-Market", 
-					(ent_effort/sum_effort * 100).round().to_s + "% Enterprise"]
+		@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
+					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
+					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
 		@sVals = [ind_effort, mid_effort, ent_effort]
 	end
 	
@@ -122,10 +131,17 @@ class ProjectsController < ApplicationController
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata_qtd.to_s
 	#puts Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
-	@clabels_qtd = @cfdata_qtd.to_h.keys
-	@clabels_qtd.sort!
+	@clabels_qtd = []
 	@cvals_qtd = @cfdata_qtd.to_h.values
-
+	puts "QTD Total"
+	qtd_total = @cvals_qtd.sum
+	puts qtd_total
+	@cfdata_qtd.to_h.each do |key, val|
+		@clabels_qtd << key + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
+	end	
+	puts @clabels_qtd.to_s
+	@clabels_qtd.sort!
+	
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

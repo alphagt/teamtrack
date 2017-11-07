@@ -61,8 +61,8 @@
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>
-				<td><%= initiative.total_effort_weeks.round %></td>
-				<td><%= (initiative.total_effort_weeks/current_week()).round %></td>
+				<td><%= initiative.total_effort_weeks(current_week()).round %></td>
+				<td><%= (initiative.total_effort_weeks(current_week())/current_week()).round %></td>
 				<% if current_user.admin %>
 					<td><%= if initiative.active then "Active" else "Closed" end %></td>
 					<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>

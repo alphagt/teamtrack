@@ -4,10 +4,11 @@ has_many :projects
 scope :active, -> {where('active = true')}
 scope :current_year, -> {where('fiscal = 2017')}
 
-	def total_effort_weeks
+	def total_effort_weeks(cWeek)
 		@ytd_weeks = 0
+		fy = self.fiscal
 		self.projects.each do |proj|
-			@ytd_weeks += proj.ytd_allocation
+			@ytd_weeks += proj.ytd_allocation(fy, cWeek)
 		end
 		@ytd_weeks.round(1)
 	end

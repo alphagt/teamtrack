@@ -27,29 +27,30 @@ class Project < ActiveRecord::Base
 		fixed_resource_budget > tEffort
 	end
 	
-	def ytd_allocation
+	def ytd_allocation(fy = 0, maxWeek = 0)
 		@ytd = 0
-		@cperiod = 0.0
+		if fy > 0 then
+			@fyear = fy
+		else
+			@fyear = Date.today.year
+		end
 		#calc current period code
 		@cweek_number = 0.0
-		@fyear = Date.today.year 
-		if Date.today.mon == 12 then
-			@fyear = @fyear + 1
-			@cfy_offset = 4 #SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
-			@cweek_number = Date.today.cweek + @cfy_offset - 52
+		if maxWeek > 0 then
+			@cweek_number = maxWeek.to_d
 		else
-			@cfy_offset = 4 #SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
-			@cweek_number = Date.today.cweek + @cfy_offset
+			if Date.today.mon == 12 then
+				if fy = 0 then @fyear = @fyear + 1 end
+				@cweek_number = (Date.today.cweek + 4) - 52
+			else
+				@cweek_number = Date.today.cweek + 4
+			end
 		end
 		#puts 'CURRENT CWEEK Number: '
 		#puts  @cweek_number
-		@cperiod = @fyear + @cweek_number.fdiv(100).round(3)
-		#end cperiod
-		@pFy = @cperiod.to_i
-		@fWeek = ((@cperiod - @pFy) * 100).round
-		#puts "fweek = " + @fWeek.to_s
-		for iWeek in 1..@fWeek
-			@cP = @pFy.to_f + (iWeek.to_f / 100)
+		#to fix - need to do a range query then sum effort instead of interating
+		for iWeek in 1..@cweek_number
+			@cP = @fyear.to_f + (iWeek.to_f / 100)
 			assignments.where(:set_period_id => @cP.round(2)).each do |asn|
 				puts asn.effort.to_s
 				@ytd += asn.effort

@@ -9,8 +9,9 @@ class InitiativesController < ApplicationController
     @initiatives = Initiative.all
     puts 'Initiatives#Index - count'
     puts @initiatives.count
+    cweek = view_context.current_week()
     
-    @cdata = Initiative.active.all.map {|e| [e.name,e.total_effort_weeks.to_d.round, 
+    @cdata = Initiative.active.all.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
     	e.current_effort_weeks(view_context.current_period).to_d.round]}
     puts @cdata
     @clabels = @cdata.map {|i| i[0]}
@@ -18,10 +19,9 @@ class InitiativesController < ApplicationController
     @wvals = @cdata.map {|i| i[2]}
     
     #Get Summary Data Ready
-    @sumEffort = 0
-    Initiative.current_year.each do |i|
-    	@sumEffort += i.total_effort_weeks()
-    end
+    @sumEffort = @cvals.sum
+    
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @initiatives }

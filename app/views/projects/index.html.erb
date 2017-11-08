@@ -6,7 +6,7 @@
 
 <% if current_user.admin %>
 	<% content_for :sidebarwide do %>
-	<b><%= "For Org: " + User.find_by_id(@mgr_id).name %></b>
+	<b><%= "For Mgr: " + User.find_by_id(@mgr_id).name %></b>
 	<table class="table">
 		<tr>
 		<td class="danger"><%= link_to 'New-Project', new_project_path %></td>
@@ -16,8 +16,12 @@
 	<% end %>
 <% end %>
 
-
 <% content_for :main1 do %>
+<div class="row">
+	<div class="col-md-12 col-centered">
+		<h4><b><%= "Projects for Org: " + User.find_by_id(@mgr_id).org %></b></h4>
+	</div>
+</div>
 <div class="row">
   <div class="col-md-12 col-centered">
 	<div class="col-md-6">

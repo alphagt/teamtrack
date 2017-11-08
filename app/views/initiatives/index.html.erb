@@ -17,7 +17,12 @@
 <% end %>
 
 <% content_for :main1 do %>
-
+<div class="row">
+	<div class="col-md-12 col-centered">
+		<h5><b><%= "Stats for Org: " + current_user.org %></b></h5>
+		<h5><b><%= "Total HC Assigned: " + (@sumEffort/current_week()).round.to_s %></b></h5>
+	</div>
+</div>
 <div class="row">
   <div class="col-md-12 col-centered">
 	<div class="col-md-6">

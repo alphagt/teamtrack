@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
   scope :ordered_by_name, -> {order('users.name')}
   
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
-
+  
+  scope :for_org, -> (org){where('org = ?', org).order('users.id')}
   
   
   # Include default devise modules. Others available are:

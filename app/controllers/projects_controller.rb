@@ -68,25 +68,29 @@ class ProjectsController < ApplicationController
 	puts @clabels_ytd.to_s
 	@clabels_ytd.sort!
 
+	uList = view_context.all_subs_by_id(@mgr_id)
 	
+	if uList.count == 0  then
+		uList = User.all.pluck(:ID)
+	end
 	
 	#Calculate and group RTM summary data for charts
 	if @statsView then
 		puts "in StatsView block"
 		all_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
 		puts all_effort.to_s
 		b2b_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("B2B").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("B2B").for_users(uList).pluck(:id)).sum(:effort)
 		puts b2b_effort.to_s
 		ind_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
 		puts ind_effort
 		mid_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
 		puts mid_effort
 		ent_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(view_context.all_subs_by_id(@mgr_id)).pluck(:id)).sum(:effort)
+			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
 		puts ent_effort
 		ind_effort += all_effort/3
 		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)

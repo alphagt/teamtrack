@@ -30,7 +30,7 @@ class ProjectsController < ApplicationController
 		@showVals = false
 	end
 	
-	if params[:statsview] == '1' || current_user.isstatususer?
+	if params[:statsview] == '1' || current_user.isstatususer? || current_user.admin?
 		@statsView = true
 	else
 		@statsView = false

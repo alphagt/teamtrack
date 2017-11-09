@@ -10,7 +10,7 @@ puts 'New user created: ' << @suser.name
 proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @suser, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :name => 'Security-Compliance Maintenance', :active => true, :owner => @suser, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Security/Compliance', :fixed_resource_budget => 10
+proj = Project.create! :name => 'Security-Compliance Maintenance', :active => true, :owner => @suser, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', :fixed_resource_budget => 10
 proj.save
 puts 'added security compliance project'
 proj = Project.create! :name => 'Run the Business', :active => true, :owner => @suser, :description => 'RTB work via CTIR Process', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30
@@ -67,7 +67,7 @@ puts 'New user created: ' << user.name
 proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @ken, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @ken, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Security/Compliance', :fixed_resource_budget => 10
+proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @ken, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', :fixed_resource_budget => 10
 proj.save
 puts 'added security compliance project'
 proj = Project.create! :name => 'Run the Business', :active => true, :owner => @ken, :description => 'RTB work via CTIR Process', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30

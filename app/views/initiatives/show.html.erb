@@ -22,7 +22,7 @@
 		<p><b>Fiscal Year: </b><%= @initiative.fiscal %></p>
 		<p><b>Description: </b><%= @initiative.description %></p>
 		<p><b>Active: </b><%= @initiative.active %></p>
-		<p><b>Effective HC:  </b><%= (@initiative.total_effort_weeks/current_week()).round %></p>
+		<p><b>Effective HC:  </b><%= (@initiative.total_effort_weeks(current_week())/current_week()).round %></p>
 	</div>
 </div>	
 <div class="row">

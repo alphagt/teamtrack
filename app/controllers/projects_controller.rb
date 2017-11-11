@@ -162,6 +162,7 @@ class ProjectsController < ApplicationController
 		@sVals = [ind_effort, mid_effort, ent_effort]
 		
 		#Stakeholder Calcs
+		# Get sum of effort grouped by stakeholder values
 		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
 			Project.for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
@@ -169,7 +170,12 @@ class ProjectsController < ApplicationController
 		puts psheffort.to_s
 		combinedpsh = psheffort.to_h
 		
-		if combinedpsh.key?("Adobe") then adobe_effort = combinedpsh["Adobe"].to_d else adobe_effort = 0 end
+		# determine portion of effort tagged as 'Adobe' that came from projects in the Individual RTM
+		ind_psh_effort = Assignment.includes(:project).where('rtm = ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', "Individual",
+ 			@fy.to_s, (@fy + 1).to_s, Project.for_psh("Adobe").for_users(uList).pluck(:id)).sum(:effort)
+		
+		# Set adobe_effort to portion applicable to all stakeholders but subtracting out the Individual RTM portion
+		if combinedpsh.key?("Adobe") then adobe_effort = (combinedpsh["Adobe"].to_d - ind_psh_effort) else adobe_effort = 0 end
 		if combinedpsh.key?("SG&A") then sga_effort = combinedpsh["SG&A"].to_d else sga_effort = 0 end
 		if combinedpsh.key?("DME") then dme_effort = combinedpsh["DME"].to_d else dme_effort = 0 end
 		if combinedpsh.key?("DMA") then dma_effort = combinedpsh["DMA"].to_d else dma_effort = 0 end
@@ -177,10 +183,11 @@ class ProjectsController < ApplicationController
 		
 		totalpsh_effort = combinedpsh.values.sum
 		sga_effort += (adobe_effort * 0.1)
-		dme_effort += (adobe_effort * 0.5)
-		dma_effort += (adobe_effort * 0.3)
-		dc_effort += (adobe_effort * 0.1)
+		dme_effort += (adobe_effort * 0.5) + (ind_psh_effort * 0.7) # Add 50% of non-individual Adobe and 70% indivdiual adobe effort
+		dma_effort += (adobe_effort * 0.3) 
+		dc_effort += (adobe_effort * 0.1) + (ind_psh_effort * 0.3)  # Add 10% non-individual Adobe and 30% indvidual Adobe effort
 		
+		# Format labels with % values appended since gchart gem doesn't support percent on label feature
 		@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
 					  "DME-" + (dme_effort/totalpsh_effort * 100).round().to_s + "%",
 					  "DMA-" + (dma_effort/totalpsh_effort * 100).round().to_s + "%",

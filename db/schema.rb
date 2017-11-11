@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026193245) do
+ActiveRecord::Schema.define(version: 20171111164442) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20171026193245) do
     t.integer  "initiative_id",         limit: 4
     t.boolean  "keyproj"
     t.string   "rtm",                   limit: 255
+    t.string   "psh",                   limit: 255
   end
 
   add_index "projects", ["active"], name: "index_projects_on_active", using: :btree

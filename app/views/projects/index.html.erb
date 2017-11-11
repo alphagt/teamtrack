@@ -48,6 +48,13 @@
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @sVals.to_s end %></p>
 	</div>
+	<div class="col-md-6">
+		<%= image_tag(Gchart.pie(:title => 'YTD BU Allocation', 
+		:labels => @pshlabels, :data => @pshVals, :size => '400x200', :chart_background => 'CCCCCC',
+		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
+		</br>
+		<p><%= if @showVals then 'Data:  ' + @sVals.to_s end %></p>
+	</div>
 	<% end %>
   </div>
 </div>
@@ -64,7 +71,7 @@
 		<th>Current Allocation</th>
 		<th>YTD FTE Equivalent</th>
 		<% if current_user.admin %>
-			<th>Initiative</th>
+			<th>CT Priority</th>
 			<th>Status</th>
 			<th></th>
 		<% end %>

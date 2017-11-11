@@ -16,23 +16,29 @@
 		<%= f.association :owner, :as => :select, :collection => User.managers_only, 
 		 	:label_method => :name, label: "Owner" %>	
 		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
-		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
-			input_html: {value: @project.fixed_resource_budget || '0'} %>
+		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<div class="control-group select optional project_category">
-			<label class="select optional control-labe" for="projeect_category">Category:</label>
+			<label class="select optional control-label" for="projeect_category">Category:</label>
 				<div class="controls">
 					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Sec/Comp"], @project.category))  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_category">
-			<label class="select optional control-labe" for="projeect_category">Primary RTM:</label>
+			<label class="select optional control-label" for="projeect_category">Primary RTM:</label>
 				<div class="controls">
 					<%= f.select(:rtm, options_for_select(["", "Individual", "Mid-Market", "Enterprise", "All", "B2B"], @project.rtm))  %>
 				</div>
 		</div>
-		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
+		<div class="control-group select optional project_psh">
+			<label class="select optional control-label" for="projeect_psh">Primary Stakeholder:</label>
+				<div class="controls">
+					<%= f.select(:psh, options_for_select(["", "DME", "DMA", "DC", "Adobe", "SG&A"], @project.psh))  %>
+				</div>
+		</div>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.all,
-			:label_method => :name, label: "Initiative" %>
+			:label_method => :name, label: "CT Priority" %>
+		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
+			input_html: {value: @project.fixed_resource_budget || '0'} %>
 		<% if current_user.admin %>
 			<div class="checkbox">
 				<%= f.input :keyproj,  :type => 'checkbox', inline_label: 'Key Project', label: false %>

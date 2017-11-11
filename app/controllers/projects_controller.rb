@@ -74,34 +74,6 @@ class ProjectsController < ApplicationController
 		uList = User.all.pluck(:ID)
 	end
 	
-	#Calculate and group RTM summary data for charts
-	if @statsView then
-		puts "in StatsView block"
-		all_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
-		puts all_effort.to_s
-		b2b_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("B2B").for_users(uList).pluck(:id)).sum(:effort)
-		puts b2b_effort.to_s
-		ind_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
-		puts ind_effort
-		mid_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
-		puts mid_effort
-		ent_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
-		puts ent_effort
-		ind_effort += all_effort/3
-		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
-		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
-		sum_effort = ind_effort + mid_effort + ent_effort
-		@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
-					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
-					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
-		@sVals = [ind_effort, mid_effort, ent_effort]
-	end
-	
 	#Current Quarter Data
 	case @setq #determin start end week number for each quarter
 	when 1
@@ -145,6 +117,77 @@ class ProjectsController < ApplicationController
 	end	
 	puts @clabels_qtd.to_s
 	@clabels_qtd.sort!
+	
+	#Calculate and group RTM and Stakeholder summary data for charts
+	if @statsView then
+		puts "in StatsView block"
+		#RTM Calcs
+		# all_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
+# 		puts all_effort.to_s
+# 		b2b_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("B2B").for_users(uList).pluck(:id)).sum(:effort)
+# 		puts b2b_effort.to_s
+# 		ind_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Individual").for_users(uList).pluck(:id)).sum(:effort)
+# 		puts ind_effort
+# 		mid_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Mid-Market").for_users(uList).pluck(:id)).sum(:effort)
+# 		puts mid_effort
+# 		ent_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Enterprise").for_users(uList).pluck(:id)).sum(:effort)
+# 		puts ent_effort
+		
+		rtmeffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, 
+			Project.for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		puts "combined in hash"
+		puts rtmeffort.to_s
+		combinedrtm = rtmeffort.to_h
+		
+		if combinedrtm.key?("All") then all_effort = combinedrtm["All"].to_d else all_effort = 0 end
+		if combinedrtm.key?("B2B") then b2b_effort = combinedrtm["B2B"].to_d else b2b_effort = 0 end
+		if combinedrtm.key?("Individual") then ind_effort = combinedrtm["Individual"].to_d else ind_effort = 0 end
+		if combinedrtm.key?("Mid-Market") then mid_effort = combinedrtm["Mid-Market"].to_d else mid_effort = 0 end
+		if combinedrtm.key?("Enterprise") then ent_effort = combinedrtm["Enterprise"].to_d else ent_effort = 0 end
+		
+		ind_effort += all_effort/3
+		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
+		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
+		#sum_effort = ind_effort + mid_effort + ent_effort
+		sum_effort = combinedrtm.values.sum
+		@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
+					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
+					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
+		@sVals = [ind_effort, mid_effort, ent_effort]
+		
+		#Stakeholder Calcs
+		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
+			@fy.to_s, (@fy + 1).to_s, 
+			Project.for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+		puts "combined in hash"
+		puts psheffort.to_s
+		combinedpsh = psheffort.to_h
+		
+		if combinedpsh.key?("Adobe") then adobe_effort = combinedpsh["Adobe"].to_d else adobe_effort = 0 end
+		if combinedpsh.key?("SG&A") then sga_effort = combinedpsh["SG&A"].to_d else sga_effort = 0 end
+		if combinedpsh.key?("DME") then dme_effort = combinedpsh["DME"].to_d else dme_effort = 0 end
+		if combinedpsh.key?("DMA") then dma_effort = combinedpsh["DMA"].to_d else dma_effort = 0 end
+		if combinedpsh.key?("DC") then dc_effort = combinedpsh["DC"].to_d else dc_effort = 0 end
+		
+		totalpsh_effort = combinedpsh.values.sum
+		sga_effort += (adobe_effort * 0.1)
+		dme_effort += (adobe_effort * 0.5)
+		dma_effort += (adobe_effort * 0.3)
+		dc_effort += (adobe_effort * 0.1)
+		
+		@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
+					  "DME-" + (dme_effort/totalpsh_effort * 100).round().to_s + "%",
+					  "DMA-" + (dma_effort/totalpsh_effort * 100).round().to_s + "%",
+					  "DC-" + (dc_effort/totalpsh_effort * 100).round().to_s + "%"]
+		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
+		
+	end
 	
     respond_to do |format|
       format.html # index.html.erb

@@ -168,7 +168,7 @@ class ProjectsController < ApplicationController
 			Project.for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 		puts "combined in hash"
 		puts psheffort.to_s
-		combinedpsh = psheffort.to_h
+		combinedpsh = psheffort.to_h.except("NA")
 		
 		# determine portion of effort tagged as 'Adobe' that came from projects in the Individual RTM
 		ind_psh_effort = Assignment.includes(:project).where('rtm = ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', "Individual",
@@ -182,6 +182,8 @@ class ProjectsController < ApplicationController
 		if combinedpsh.key?("DC") then dc_effort = combinedpsh["DC"].to_d else dc_effort = 0 end
 		
 		totalpsh_effort = combinedpsh.values.sum
+		puts totalpsh_effort
+		
 		sga_effort += (adobe_effort * 0.1)
 		dme_effort += (adobe_effort * 0.5) + (ind_psh_effort * 0.7) # Add 50% of non-individual Adobe and 70% indivdiual adobe effort
 		dma_effort += (adobe_effort * 0.3) 

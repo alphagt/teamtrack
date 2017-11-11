@@ -32,7 +32,7 @@
 		<div class="control-group select optional project_psh">
 			<label class="select optional control-label" for="projeect_psh">Primary Stakeholder:</label>
 				<div class="controls">
-					<%= f.select(:psh, options_for_select(["", "DME", "DMA", "DC", "Adobe", "SG&A"], @project.psh))  %>
+					<%= f.select(:psh, options_for_select(["", "DME", "DMA", "DC", "Adobe", "SG&A", "NA"], @project.psh))  %>
 				</div>
 		</div>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.all,

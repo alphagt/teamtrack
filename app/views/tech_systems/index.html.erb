@@ -20,6 +20,7 @@
     <th>Description</th>
     <th>QoS Group</th>
     <th>Owner</th>
+    <th>Average HC</th>
     <% if current_user.admin %>
     	<th></th>
     	<th></th>
@@ -32,6 +33,7 @@
 		<td><%= tsystem.description %></td>
 		<td><%= tsystem.qos_group %></td>
 		<td><%= tsystem.owner.name %></td>
+		<td><%= tsystem.average_assigned(current_fy, current_week)%></td>
 		<% if current_user.admin %>
 			<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
 			<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
@@ -46,6 +48,7 @@
 		<td><%= tsystem.description %></td>
 		<td><%= tsystem.qos_group %></td>
 		<td><%= tsystem.owner.name %></td>
+		<td><%= tsystem.average_assigned(current_fy, current_week)%></td>
 		<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
 		<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
 	  	</tr> 

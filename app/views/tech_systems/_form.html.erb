@@ -4,7 +4,7 @@
   <div class="form-inputs">
     <%= f.input :name, :autofocus => true %>
 	<%= f.input :description %>
-	<%= f.input :qos_group %>
+	<%= f.input :qos_group, label: "Capability Group" %>
     <%= f.association :owner, :as => :select, :collection => User.managers_only, 
     	:label_method => :name %>
   </div>

@@ -6,6 +6,7 @@ class TechSystemsController < ApplicationController
   def index
   	#@techsystems = TechSystem.order("qos_group", "name")
   	@techsystems = TechSystem.by_qos
+  	@current_qos = @techsystems.first().qos_group
   	respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @techsystems }
@@ -38,13 +39,13 @@ class TechSystemsController < ApplicationController
   def show
   	@system = TechSystem.find(params[:id])
   	
-  	#Prep Chart Data
+  	#Prep Chart Data for past 12 weeks of effort
 	@clabels = []
 	@cvalues = []
-	@cdata = Assignment.where('? < set_period_id <= ? AND tech_sys_id = ?', view_context.current_fy, 
-		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
-# 	puts 'Chart Data'
-# 	puts @cdata
+	@cdata = Assignment.where('set_period_id BETWEEN ? AND ? AND tech_sys_id = ?', (view_context.current_period.to_d - 0.12).round(2).to_s, 
+		view_context.current_period.to_s, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	puts 'Chart Data'
+	puts @cdata
 	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values

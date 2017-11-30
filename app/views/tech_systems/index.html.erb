@@ -18,7 +18,7 @@
   <tr>
     <th>Name</th>
     <th>Description</th>
-    <th>QoS Group</th>
+    <th>Capability Group</th>
     <th>Owner</th>
     <th>Average HC</th>
     <% if current_user.admin %>
@@ -26,8 +26,25 @@
     	<th></th>
     <% end %>
   </tr>
+  <tr class="warning">
+  	<td><b><%= "Sub-System: " + @current_qos %></b></td>
+  	<td></td>
+  	<td></td>
+  	<td></td>
+  	<td><b><%= qos_average_effort(@current_qos)%></b></td>
+  </tr>
 <% @techsystems.each do |tsystem|  %>
   <% if tsystem.qos_group != "Archived" %>
+  	  <% if tsystem.qos_group != @current_qos %>
+  	  	<% @current_qos = tsystem.qos_group %>
+  	  	<tr class="warning">
+  			<td><b><%= "Sub-System: " + @current_qos %></b></td>
+  			<td></td>
+  			<td></td>
+  			<td></td>
+  			<td><b><%= qos_average_effort(@current_qos)%></b></td>
+  		</tr>
+  	  <% end %>
 	  <tr>
 		<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
 		<td><%= tsystem.description %></td>

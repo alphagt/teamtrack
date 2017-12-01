@@ -27,7 +27,7 @@ class UsersController < ApplicationController
      	if view_context.current_week > 8 then
 	     	@ahistory = @user.assignments.recent(view_context.current_period - 0.08)
 	    else
-	    	@ahistory = @user.assignments.recent(current_period.floor)
+	    	@ahistory = @user.assignments.recent(view_context.current_period.floor)
 	    end
      	puts "TEST TEST"
      	puts (view_context.current_period - 0.04).to_s

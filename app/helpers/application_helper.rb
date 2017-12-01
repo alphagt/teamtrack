@@ -198,7 +198,7 @@ module ApplicationHelper
 	# ToFix
 		@cweek_number = 0.0
 		@fyear = Date.today.year 
-		if Date.today.mon == 12 then
+		if Date.today.cweek > 48 then
 			@fyear = @fyear + 1
 			@cfy_offset = 4 #SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
 			@cweek_number = Date.today.cweek + @cfy_offset - 52
@@ -224,6 +224,20 @@ module ApplicationHelper
 		else
 			l = SetPeriod.where("id >= " + current_period().id.to_s).all	
 		end
+	end
+	
+	def fy_list()
+		@list = []
+		min_y = Assignment.find_by_id(Assignment.all.select("id, min(set_period_id)").first.id).fiscal_year()
+		puts "MIN FY IS:  "
+		puts min_y
+		@list << min_y
+		while min_y < current_fy do
+			min_y++
+			@list << min_y
+		end
+		puts @list
+		@list
 	end
 	
 end

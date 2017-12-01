@@ -54,7 +54,12 @@ module UsersHelper
 			cuser.assignments.where(:set_period_id => @latest).each do |a|
 				@rStr = @rStr + a.project.name + '(' + a.effort.to_s + ')' + ', '
 			end
-			tweek = week_from_period(@latest) + 1
+			w = week_from_period(@latest)
+			if w < 52 then
+				tweek = w + 1
+			else
+				tweek = (w + 1) - 52
+			end
 		end
 		@rStr.chomp(", ") + " to week: " + tweek.to_s
 	end

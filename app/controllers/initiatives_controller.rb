@@ -11,8 +11,8 @@ class InitiativesController < ApplicationController
 			@initiatives = Initiative.all
     		@fy = 'All'
     	else
-			@initiatives = Initiative.for_year(params[:scope])
-    		@fy = params[:scope].to_i
+			@initiatives = Initiative.for_year(params[:fy])
+    		@fy = params[:fy].to_i
     	end
 	else
 		@initiatives = Initiative.for_year(view_context.current_fy)

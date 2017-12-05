@@ -10,6 +10,7 @@ class Project < ActiveRecord::Base
   
    
 	scope :for_users, -> (uList){joins(:users).where('assignments.user_id IN (?)', uList).distinct}
+	scope :for_year, -> (fy){joins(:users).where('assignments.set_period_id between ? and ?', fy, fy + 1).distinct}
 	scope :active, -> {where('active = true')}
 	scope :keyproj, -> {where('keyproj = true')}
 	scope :by_name, -> {order('projects.name')}

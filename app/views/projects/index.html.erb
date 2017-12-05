@@ -12,6 +12,11 @@
 		<td class="danger"><%= link_to 'New-Project', new_project_path %></td>
 		<tr>
 		<td class="danger"><%= link_to 'Show-All', projects_path(:scope => "all") %></td>
+		<tr>
+		<td class="danger">
+			<label for="f_year">Fiscal Year:</label>
+			<%= select_tag "f_year", options_for_select(fy_list(false), @fy.to_s) %>
+		</td>
 	</table>
 	<% end %>
 <% end %>

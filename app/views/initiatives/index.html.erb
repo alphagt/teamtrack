@@ -10,7 +10,12 @@
 		<tr>
 		<td class="danger"><%= link_to 'New-Initiative', new_initiative_path %></td>
 		<tr>
-		<td class="danger"><%= link_to 'Show-All', initiatives_path %></td>
+		<td class="danger"><%= link_to 'Show-All', initiatives_path(:fy => "all") %></td>
+		<tr>
+		<td class="danger">
+			<label for="f_year">Fiscal Year:</label>
+			<%= select_tag "f_year", options_for_select(fy_list(), @fy.to_s) %>
+		</td>
 	</table>
 	<h5><%= "Effective HC: " + (@sumEffort/current_week()).round.to_s %></h5>
 	<% end %>

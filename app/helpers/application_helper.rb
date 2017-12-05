@@ -226,14 +226,17 @@ module ApplicationHelper
 		end
 	end
 	
-	def fy_list()
+	def fy_list(option_all = true)
 		@list = []
+		if option_all
+			@list << "All"
+		end
 		min_y = Assignment.find_by_id(Assignment.all.select("id, min(set_period_id)").first.id).fiscal_year()
 		puts "MIN FY IS:  "
 		puts min_y
 		@list << min_y
 		while min_y < current_fy do
-			min_y++
+			min_y += 1
 			@list << min_y
 		end
 		puts @list

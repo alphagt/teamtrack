@@ -21,6 +21,8 @@ class ProjectsController < ApplicationController
 			@projects = Project.active.by_category
 		else
 			@projects = Project.active.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
+			puts "user scoped project list:"
+			puts @projects.count
 		end
 	end
 	
@@ -156,9 +158,15 @@ class ProjectsController < ApplicationController
 		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
 		#sum_effort = ind_effort + mid_effort + ent_effort
 		sum_effort = combinedrtm.values.sum
-		@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
+		if sum_effort > 0
+			@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
 					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
 					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
+		else
+			@slabels = ["Individual-", 
+					"Mid-Market-", 
+					"Enterprise-"]
+		end
 		@sVals = [ind_effort, mid_effort, ent_effort]
 		
 		#Stakeholder Calcs
@@ -190,10 +198,17 @@ class ProjectsController < ApplicationController
 		dc_effort += (adobe_effort * 0.1) + (ind_psh_effort * 0.3)  # Add 10% non-individual Adobe and 30% indvidual Adobe effort
 		
 		# Format labels with % values appended since gchart gem doesn't support percent on label feature
-		@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
+		if totalpsh_effort > 0
+			@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
 					  "DME-" + (dme_effort/totalpsh_effort * 100).round().to_s + "%",
 					  "DMA-" + (dma_effort/totalpsh_effort * 100).round().to_s + "%",
 					  "DC-" + (dc_effort/totalpsh_effort * 100).round().to_s + "%"]
+		else
+			@pshlabels = ["SG&A-",
+					  "DME-",
+					  "DMA-",
+					  "DC-"]
+		end
 		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
 		
 	end

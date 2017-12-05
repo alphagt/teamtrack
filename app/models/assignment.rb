@@ -59,6 +59,10 @@ class Assignment < ActiveRecord::Base
   	@out.to_i
   end
   
+  def fiscal_year
+  	self.set_period_id.to_i
+  end
+  
   def total_effort_max
   	#verify all assignments in this week for this user have total effort < 1
 	tEffort = 0

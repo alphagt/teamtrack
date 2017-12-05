@@ -6,12 +6,28 @@ class InitiativesController < ApplicationController
 
   # GET /initiatives
   def index
-    @initiatives = Initiative.all
+    if params[:fy].present?
+		if params[:fy].downcase == 'all'
+			@initiatives = Initiative.all
+    		@fy = 'All'
+    	else
+			@initiatives = Initiative.for_year(params[:scope])
+    		@fy = params[:scope].to_i
+    	end
+	else
+		@initiatives = Initiative.for_year(view_context.current_fy)
+    	@fy = view_context.current_fy
+	end
+    
     puts 'Initiatives#Index - count'
     puts @initiatives.count
+    puts @fy
+    
+    @fy_list = view_context.fy_list()
+    
     cweek = view_context.current_week()
     
-    @cdata = Initiative.active.all.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
+    @cdata = @initiatives.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
     	e.current_effort_weeks(view_context.current_period).to_d.round]}
     puts @cdata
     @clabels = @cdata.map {|i| i[0]}

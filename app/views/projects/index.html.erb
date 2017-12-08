@@ -4,27 +4,41 @@
 	<%  render partial: "layouts/navigation", locals: {active: "projects"} %>
 <% end %>
 
-<% if current_user.admin %>
-	<% content_for :sidebarwide do %>
-	<b><%= "For Mgr: " + User.find_by_id(@mgr_id).name %></b>
-	<table class="table">
+
+<% content_for :sidebarwide do %>
+<b><%= if @mgr_id == 0 then "All Orgs" else "For Mgr: " + User.find_by_id(@mgr_id).name end %></b>
+<table class="table">
+	<% if current_user.admin %>
 		<tr>
-		<td class="danger"><%= link_to 'New-Project', new_project_path %></td>
+		<td class="danger"><%= link_to 'New Project', new_project_path %></td>
 		<tr>
-		<td class="danger"><%= link_to 'Show-All', projects_path(:scope => "all") %></td>
+		<td class="danger"><%= link_to 'Include Closed', projects_path(:scope => "all", :org => @mgr_id, :fy => @fy) %></td>
+	<% end %>
+	<b><h4>Filters</h4></b>
+	<% if current_user.isstatususer? || current_user.admin %>
 		<tr>
 		<td class="danger">
-			<label for="f_year">Fiscal Year:</label>
-			<%= select_tag "f_year", options_for_select(fy_list(false), @fy.to_s) %>
+			<label for="p_org">Organization:</label>
+			<%= select_tag "p_org", options_for_select(org_mgrs_list(), @mgr_id.to_s) %>
 		</td>
-	</table>
 	<% end %>
+	<tr>
+	<td class="danger">
+		<label for="f_year">Fiscal Year:</label>
+		<%= select_tag "f_year", options_for_select(fy_list(false), @fy.to_s) %>
+	</td>
+</table>
 <% end %>
+
 
 <% content_for :main1 do %>
 <div class="row">
 	<div class="col-md-12 col-centered">
-		<h4><b><%= "Projects for Org: " + User.find_by_id(@mgr_id).org %></b></h4>
+		<h4><b><%= if @scopeall then "All" else "Active" end %>
+			<%= " Projects for Org: " %>
+			<%= if @mgr_id == 0 then "All Orgs - FY" else User.find_by_id(@mgr_id).org + " - FY" end %>
+			<%= @fy.to_s %></b>
+		</h4>
 	</div>
 </div>
 <div class="row">
@@ -74,7 +88,7 @@
 		<th>Delivery Lead</th>
 		<th>Description</th>
 		<th>Current Allocation</th>
-		<th>YTD FTE Equivalent</th>
+		<th><%= if @fy == current_fy then "YTD FTE Equivalent" else "FY FTE Equivalent" end %></th>
 		<% if current_user.admin %>
 			<th>CT Priority</th>
 			<th>Status</th>

@@ -243,4 +243,15 @@ module ApplicationHelper
 		@list
 	end
 	
+	def org_mgrs_list(option_all = true)
+		@list = []
+		if option_all
+			@list << ["All", 0]
+		end
+		User.managers_only.where("manager_id is null").each do  |u|
+			@list <<  [u.name, u.id]
+		end	
+		@list
+	end
+	
 end

@@ -8,24 +8,75 @@ class ProjectsController < ApplicationController
   def index
 	
 	require 'gchart'
-	@allProjects = Project.by_category
-	@mgr_id = current_user.id
-	if params[:mgr] then @mgr_id = params[:mgr].to_i end
 	
-	if params[:scope] == 'all'
-		@mgr_id = current_user.id
-		@projects = @allProjects
-	else
-		if params[:scope] == 'active'
-			@mgr_id = current_user.id
-			@projects = Project.active.by_category
+	#Full Project list used for aggregate statistics
+	@allProjects = Project.by_category
+	
+	
+	#Param Handling
+	
+	#Optional :org specifies a manager ID, default is current signed in user
+	#     Special case for value set to 0 - will aggregate all projects in the system ('All')
+	if params[:org].present?
+		if params[:org].downcase == 'all'
+			@mgr_id = 0
 		else
-			@projects = Project.active.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
-			puts "user scoped project list:"
-			puts @projects.count
+			@mgr_id = params[:org].to_i 
 		end
+	else
+		@mgr_id = current_user.id
 	end
 	
+	#Current FY Data
+	
+	if params[:fy].present?
+		@fy = params[:fy].to_i
+	else
+		@fy = view_context.current_period().to_i
+	end
+	puts "Projects for FY: "
+	puts @fy
+	
+	#Reset mgr_id to 0 if FY is not current FY to include all active and closed projects in view
+	if @fy != view_context.current_fy() 
+		@mgr_id = 0
+		@scopeall = true
+		puts "SET MGR TO ZERO DUE TO PREVIOUS FY"
+	end
+	
+	#Optional :setq specifies a specific quarter number, defaul it current quarter
+	if params[:setq].present?
+		@setq = params[:setq].to_i
+	else
+		@setq = view_context.current_quarter()
+	end
+	puts @setq
+	
+	#Optional :scope ('all' - Active and Closed projects, 'active' - active projects only [default]
+	#     Sets the @projects variable for use in generating list of in scope projects for the view
+	if (!params[:scope].present? && !@scopeall) || params[:scope] == 'active' 
+		if @mgr_id == 0 || current_user.isstatususer?
+			uList = []
+			@projects = @allProjects.active
+		else
+			uList = view_context.all_subs_by_id(@mgr_id)
+			@projects = Project.active.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
+		end
+	else
+		@scopeall = true	
+		if params[:scope] == 'all' || @fy != view_context.current_fy()
+			if @mgr_id == 0 || current_user.isstatususer?
+				uList = []
+				@projects = @allProjects
+			else
+				uList = view_context.all_subs_by_id(@mgr_id)
+				@projects = Project.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
+			end	
+		end
+	end
+
+	puts "user scoped project list:"
+			puts @projects.count
 	if params[:showvals] == '1'
 		@showVals = true
 	else
@@ -38,22 +89,9 @@ class ProjectsController < ApplicationController
 		@statsView = false
 	end
 	
-	if params[:setq].present?
-		@setq = params[:setq].to_i
-	else
-		@setq = view_context.current_quarter()
-	end
-	puts @setq
-	#Calculate and group fixed effort totals for chart
-	#Current FY Data
 	
-	if params[:fy].present?
-		@fy = params[:fy].to_i
-	else
-		@fy = view_context.current_period().to_i
-	end
-	puts "Projects for FY: "
-	puts @fy
+	#Calculate and group fixed effort totals for chart
+	
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @allProjects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
@@ -70,7 +108,7 @@ class ProjectsController < ApplicationController
 	puts @clabels_ytd.to_s
 	@clabels_ytd.sort!
 
-	uList = view_context.all_subs_by_id(@mgr_id)
+	
 	
 	if uList.count == 0  then
 		uList = User.all.pluck(:ID)

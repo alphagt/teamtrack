@@ -4,27 +4,28 @@
 	<%  render partial: "layouts/navigation", locals: {active: "initiative"} %>
 <% end %>
 
-<% if current_user.admin %>
-	<% content_for :sidebarwide do %>
-	<table class="table">
+<% content_for :sidebarwide do %>
+<table class="table">
+	<% if current_user.admin %>
 		<tr>
 		<td class="danger"><%= link_to 'New-Initiative', new_initiative_path %></td>
 		<tr>
 		<td class="danger"><%= link_to 'Show-All', initiatives_path(:fy => "all") %></td>
-		<tr>
-		<td class="danger">
-			<label for="f_year">Fiscal Year:</label>
-			<%= select_tag "f_year", options_for_select(fy_list(), @fy.to_s) %>
-		</td>
-	</table>
-	<h5><%= "Effective HC: " + (@sumEffort/current_week()).round.to_s %></h5>
 	<% end %>
+	<tr>
+	<td class="danger">
+		<label for="f_year">Fiscal Year:</label>
+		<%= select_tag "f_year", options_for_select(fy_list(), @fy.to_s) %>
+	</td>
+</table>
+
+<h5><%= "Effective HC: " + (@sumEffort/current_week()).round.to_s %></h5>
 <% end %>
 
 <% content_for :main1 do %>
 <div class="row">
 	<div class="col-md-12 col-centered">
-		<h5><b><%= "Stats for Org: " + current_user.org %></b></h5>
+		<h5><b><%= @summary + current_user.org %></b></h5>
 		<h5><b><%= "Total HC Assigned: " + (@sumEffort/current_week()).round.to_s %></b></h5>
 	</div>
 </div>
@@ -58,8 +59,8 @@
 				<th class="col-sm-3">Description</th>
 				<th>Fiscal Year</th>
 				<th>Current Week Effort</th>
-				<th>YTD Person Weeks</th>
-				<th>YTD Effective HC</th>
+				<th><%= if @fy == current_fy then "YTD Person Weeks" else "FY Person Weeks" end %></th>
+				<th><%= if @fy == current_fy then "YTD Effective HC" else "FY Effective HC" end %></th>
 				<% if current_user.admin %>
 					<th>Status</th>
 					<th></th>

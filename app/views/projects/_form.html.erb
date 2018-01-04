@@ -1,4 +1,4 @@
-<%= simple_form_for(@project) do |f| %>
+<%= simple_form_for(@project, inline_errors: true) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-group">
@@ -13,14 +13,14 @@
 		<% end %>
 		<br/>
 		<%= f.input :name, :autofocus => true, label: "Name"  %>
-		<%= f.association :owner, :as => :select, :collection => User.managers_only, 
-		 	:label_method => :name, label: "Owner" %>	
-		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
+		<%= f.association :owner, :as => :select, :collection => User.managers_only, :required => true,  
+		 	:pattern => false, :label_method => :name, label: "Owner" %>	
+		<%= f.input :description, inline_label: 'Description:', label: "Description", :required => true %>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<div class="control-group select optional project_category">
 			<label class="select optional control-label" for="projeect_category">Category:</label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Sec/Comp"], @project.category))  %>
+					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Sec/Comp", "Overhead"], @project.category), :required => true)  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_category">

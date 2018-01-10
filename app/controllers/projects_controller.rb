@@ -75,8 +75,6 @@ class ProjectsController < ApplicationController
 		end
 	end
 
-	puts "user scoped project list:"
-			puts @projects.count
 	if params[:showvals] == '1'
 		@showVals = true
 	else
@@ -250,6 +248,9 @@ class ProjectsController < ApplicationController
 		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
 		
 	end
+	
+	puts "user scoped project list:"
+	puts @projects.count
 	
     respond_to do |format|
       format.html # index.html.erb

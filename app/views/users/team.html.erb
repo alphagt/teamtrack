@@ -48,7 +48,7 @@
 
 <% @user_list.each do |user| %>
   <tr>
-	<% if user != current_user %>
+	<% if user != @manager %>
 		<% if !user.manager.nil? && (user.manager == current_user || user.manager.orgowner || user.manager.org == user.org) && user.manager != @currentmgr %>
 			<% if @indirect %>
 				<td><%= link_to user.manager.name + "*", team_user_path(user.manager), {:title => "Indirect Report", :style => "color:blue;text-decoration : underline;"} %></td>

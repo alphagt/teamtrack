@@ -81,10 +81,10 @@ module UsersHelper
 		b_subs = User.where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
 			xid, org_list, a_subs.map{|u| u.id}).order('manager_id')
 		b_subs.delete(m)
-		puts "Non-Sub Org Members:  #{b_subs.map{|u| u.name}}"
+		#puts "Non-Sub Org Members:  #{b_subs.map{|u| u.name}}"
 		a_out = (a_subs + b_subs).uniq
-		puts "ExtendedSubs Count IS:  #{a_out.count}"
-		puts a_out.map{|u| u.name}
+		#puts "ExtendedSubs Count IS:  #{a_out.count}"
+		#puts a_out.map{|u| u.name}
 		a_out
 	end
 	

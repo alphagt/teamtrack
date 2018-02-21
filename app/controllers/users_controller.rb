@@ -118,6 +118,7 @@ class UsersController < ApplicationController
 		use_cache = true
 	end
 	cache_hit = true
+	
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
 		if @manager.orgowner then
@@ -137,6 +138,7 @@ class UsersController < ApplicationController
 			end
 		end
 	end
+	
 	@mgr_count = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/mgrcount", expires_in: 72.hours, force: !use_cache) do
 		puts "write mgr count to cache: " + ckey
 		Rails.cache.delete_matched("#{ckey}:*:/mgrcount")

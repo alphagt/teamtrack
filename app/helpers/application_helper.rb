@@ -122,29 +122,40 @@ module ApplicationHelper
 		
 	end
 	
-	def all_subs_by_id(mid)
+	def all_subs_by_id(mid, bExtend = false)
 		m = User.find(mid)
 		a_return = Array.new()
-		#puts "MANAGER IS-" + @m.name
-		if m.subordinates.any?
-			# puts "-FOUND SUBORDINATES"
-			exId = User.find_by_name("ExEmployeeMgr").id
-			subs = m.subordinates.select(:id).where('id != ?', exId)
-			a_return = subs.to_a
-			# puts "Return Length - " 
-# 			puts @return.length
-			m.subordinates.each do |s|
-				if s.subordinates.any?
-		#			puts "---FOUND Sub-SUBORDINATES"	
-					a_return |= all_subs_by_id(s.id)
-					#puts @return.to_s
+		if !bExtend 
+			#puts "MANAGER IS-" + @m.name
+			if m.subordinates.any?
+				# puts "-FOUND SUBORDINATES"
+				exId = User.find_by_name("ExEmployeeMgr").id
+				subs = m.subordinates.select(:id).where('id != ?', exId)
+				a_return = subs.to_a
+				# puts "Return Length - " 
+	# 			puts @return.length
+				m.subordinates.each do |s|
+					if s.subordinates.any?
+			#			puts "---FOUND Sub-SUBORDINATES"	
+						a_return |= all_subs_by_id(s.id)
+						#puts @return.to_s
+					end
 				end
+				puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
+				a_return
+			else
+	# 			puts @return.to_s
+				a_return
 			end
-			puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
-			a_return
 		else
-# 			puts @return.to_s
-			a_return
+			ex_subs = extended_subordinates(mid)
+			if ex_subs.any?
+				a_return = ex_subs.map{|u| u.id}.to_a
+				puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
+				a_return 
+			else
+				a_return
+			end
 		end
 	end
 	

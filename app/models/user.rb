@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :admin, :password_confirmation, :remember_me, :is_contractor 
-  attr_accessible :default_system, :default_system_id, :verified, :isstatususer, :org
+  attr_accessible :default_system, :default_system_id, :verified, :isstatususer, :org, :orgowner
   attr_accessible :ismanager, :impersonates, :impersonate_manager, :manager, :manager_id
   # def initialize(user)
 # 

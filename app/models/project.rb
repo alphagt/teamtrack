@@ -4,12 +4,13 @@ class Project < ActiveRecord::Base
   has_many :assignments
   has_many :users, -> { order "users.name" }, :through => :assignments
   attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
-  	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh
+  	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe
 
   validates :fixed_resource_budget, :presence => true
   
    
 	scope :for_users, -> (uList){joins(:users).where('assignments.user_id IN (?)', uList).distinct}
+	scope :for_owners, -> (uList){where('owner_id IN (?)', uList).distinct}
 	scope :for_year, -> (fy){joins(:users).where('assignments.set_period_id between ? and ?', fy, fy + 1).distinct}
 	scope :active, -> {where('active = true')}
 	scope :keyproj, -> {where('keyproj = true')}
@@ -42,7 +43,7 @@ class Project < ActiveRecord::Base
 			@cweek_number = maxWeek.to_d
 		else
 			if Date.today.mon == 12 then
-				if fy = 0 then @fyear = @fyear + 1 end
+				if fy == 0 then @fyear = @fyear + 1 end
 				@cweek_number = (Date.today.cweek + 4) - 52
 			else
 				@cweek_number = Date.today.cweek + 4

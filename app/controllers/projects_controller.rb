@@ -52,6 +52,12 @@ class ProjectsController < ApplicationController
 	end
 	puts @setq
 	
+	if @mgr_id != 0 && User.find(@mgr_id).orgowner
+		@include_indirect = true
+	else
+		@include_indirect = false
+	end
+	
 	#Optional :scope ('all' - Active and Closed projects, 'active' - active projects only [default]
 	#     Sets the @projects variable for use in generating list of in scope projects for the view
 	if (!params[:scope].present? && !@scopeall) || params[:scope] == 'active' 
@@ -59,8 +65,8 @@ class ProjectsController < ApplicationController
 			uList = []
 			@projects = @allProjects.active
 		else
-			uList = view_context.all_subs_by_id(@mgr_id)
-			@projects = Project.active.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
+			uList = view_context.all_subs_by_id(@mgr_id, @include_indirect)
+			@projects = Project.active.for_users(uList).by_category
 		end
 	else
 		@scopeall = true	
@@ -69,8 +75,8 @@ class ProjectsController < ApplicationController
 				uList = []
 				@projects = @allProjects
 			else
-				uList = view_context.all_subs_by_id(@mgr_id)
-				@projects = Project.for_users(view_context.all_subs_by_id(@mgr_id)).by_category
+				uList = view_context.all_subs_by_id(@mgr_id, @include_indirect)
+				@projects = Project.for_users(uList).by_category
 			end	
 		end
 	end

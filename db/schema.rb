@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171111164442) do
+ActiveRecord::Schema.define(version: 20180221000529) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 20171111164442) do
     t.integer  "default_system_id",      limit: 4
     t.boolean  "is_contractor"
     t.string   "org",                    limit: 255
+    t.boolean  "orgowner"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

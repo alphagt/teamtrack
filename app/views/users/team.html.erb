@@ -48,45 +48,60 @@
 
 <% @user_list.each do |user| %>
   <tr>
-<!-- <td class="warning"><%= link_to user.manager.name, team_user_path(user.manager) %></td> 	 -->
-	<% if user.manager != @currentmgr %>
-		<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
-		<% @currentmgr = user.manager %>
-		<td><%= if !@currentmgr.default_system.nil? then @currentmgr.default_system.name else "NA" end %></td>
-		<td><%= if @currentmgr.projects.length > 0 then current_system(@currentmgr, @target_period) end %></td>
-		<td><%= if @currentmgr.projects.length > 0 then current_project(@currentmgr, @target_period) end %>
-		<% if current_user.ismanager %>
-				<td class="danger">
-					<%= link_to 'Extend All', extendteam_user_path(@currentmgr, :floor => @target_period.to_s), 
-					:title => "Extend all team members' current (displayed) Assignments for 1 week" %>
-					|
-					<%= link_to 'View', user_path(@currentmgr), 
-					:title => "View details and assignment history for this manager" %></td>
-		<% end %>
-		<% if user.subordinates.count == 0 then %>
-			<tr>
-				<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
-				<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+	<% if user != current_user %>
+		<% if !user.manager.nil? && (user.manager == current_user || user.manager.org == user.org) && user.manager != @currentmgr %>
+			<% if @indirect %>
+				<td><%= link_to user.manager.name + "*", team_user_path(user.manager), {:title => "Indirect Report", :style => "color:blue;text-decoration : underline;"} %></td>
+			<% else %>
+				<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
+			<% end %>
+			<% @currentmgr = user.manager %>
+			<td><%= if !@currentmgr.default_system.nil? then @currentmgr.default_system.name else "NA" end %></td>
+			<td><%= if @currentmgr.projects.length > 0 then current_system(@currentmgr, @target_period) end %></td>
+			<td><%= if @currentmgr.projects.length > 0 then current_project(@currentmgr, @target_period) end %>
+			<% if current_user.ismanager %>
+					<td class="danger">
+						<%= link_to 'Extend All', extendteam_user_path(@currentmgr, :floor => @target_period.to_s), 
+						:title => "Extend all team members' current (displayed) Assignments for 1 week" %>
+						|
+						<%= link_to 'View', user_path(@currentmgr), 
+						:title => "View details and assignment history for this manager" %></td>
+			<% end %>
+			<% if user.subordinates.count == 0 then %>
+				<tr>
+					<% if @indirect %>
+						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
+					<% else %>
+						<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+					<% end %>
+					<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+					<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
+					<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
+					<% if current_user.admin %>
+						<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
+							extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
+					<% end %>
+				</tr>
+			<% end %>
+		<% else %>
+			  <% if user.subordinates.count == 0 then %>
+				<% if @indirect %>
+						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
+					<% else %>
+						<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+					<% end %><td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
 				<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
 				<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
 				<% if current_user.admin %>
 					<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
 						extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
 				<% end %>
-			</tr>
+			  <% end %>
 		<% end %>
-	<% else %>
-		  <% if user.subordinates.count == 0 then %>
-			<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
-			<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
-			<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
-			<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
-			<% if current_user.admin %>
-				<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
-					extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
-			<% end %>
-		  <% end %>
-	<% end %>
+	  <% else %>
+	  	<!-- Catch Case: throw this row out, following are all 'indirect' resources -->
+		<% @indirect = true %>
+	  <% end %>
 <!--   <td class="danger"><%= link_to 'Details', user_path(user) %></td> -->
   </tr>
 <% end %>

@@ -120,13 +120,21 @@ class UsersController < ApplicationController
 	cache_hit = true
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
-		@user_list = view_context.all_subs(@manager.id, true)
+		if @manager.orgowner then
+			@user_list = view_context.extended_subordinates(@manager.id, true)
+		else
+			@user_list = view_context.all_subs(@manager.id, true)
+		end
 	else
 		@user_list = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/ulist", expires_in: 24.hours, force: !use_cache) do 
 			puts "Write ulist to cache: " + ckey
 			cache_hit = false
 			Rails.cache.delete_matched("#{ckey}:*:/ulist")
-			view_context.all_subs(@manager.id)
+			if @manager.orgowner then
+				@user_list = view_context.extended_subordinates(@manager.id)
+			else
+				@user_list = view_context.all_subs(@manager.id)
+			end
 		end
 	end
 	@mgr_count = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/mgrcount", expires_in: 72.hours, force: !use_cache) do
@@ -154,7 +162,7 @@ class UsersController < ApplicationController
 	puts "Team-Ctrlr: Mgr Count: " + @mgrs_count.to_s
 	@tm_count = @user_list.count
 	puts "Team-Ctrlr: User Count: " + @tm_count.to_s
-	
+	puts @user_list.map{|u| u.name}
 	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",
 		@target_period, @user_list.map{|u| u.id}).references(:project).where("projects.active = true") 
 	puts "AggAssignments -- " + c_assignments.count.to_s

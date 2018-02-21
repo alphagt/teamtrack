@@ -64,4 +64,28 @@ module UsersHelper
 		@rStr.chomp(", ") + " to week: " + tweek.to_s
 	end
 	
+	def extended_subordinates(mid, showEx=false)
+		a_subs = Array.new()
+		m = User.find(mid)
+		xid = 0
+		if !showEx then
+			xid = User.find_by_name("ExEmployeeMgr").id
+		end
+		a_subs = all_subs(mid, showEx)
+		a_subs += [m]
+		puts "AllSubs:  #{a_subs.map{|u| u.name}}"
+		#determin list of orgs to include (any owned by self or subs)
+		org_list = m.subordinates.where("orgowner = true").pluck(:org)
+		org_list += [m.org]
+		puts "Org List" + org_list.to_s
+		b_subs = User.where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
+			xid, org_list, a_subs.map{|u| u.id}).order('manager_id')
+		b_subs.delete(m)
+		puts "Non-Sub Org Members:  #{b_subs.map{|u| u.name}}"
+		a_out = (a_subs + b_subs).uniq
+		puts "ExtendedSubs Count IS:  #{a_out.count}"
+		puts a_out.map{|u| u.name}
+		a_out
+	end
+	
 end

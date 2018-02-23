@@ -72,7 +72,11 @@
 					<% if @indirect %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
 					<% else %>
-						<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+						<% if user.is_contractor then %>
+							<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
+						<% else %>
+							<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+						<% end %>
 					<% end %>
 					<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
 					<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
@@ -89,7 +93,11 @@
 				<% if @indirect %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
 					<% else %>
-						<td class="warning"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+						<% if user.is_contractor then %>
+							<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
+						<% else %>
+							<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+						<% end %>
 					<% end %><td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
 				<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
 				<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>

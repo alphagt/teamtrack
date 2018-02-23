@@ -7,11 +7,23 @@ class UsersController < ApplicationController
   	puts "In UserController - Index"
   	@exId = User.find_by_name("ExEmployeeMgr").id
   	
-  	if params[:scope] == 'all'
+  	if params[:org].present?
+		if params[:org].downcase == 'all'
+			@mgr_id = 0
+		else
+			@mgr_id = params[:org].to_i 
+		end
+	else
+		@mgr_id = current_user.id
+	end
+	
+	if params[:scope] == 'all' || @mgr_id == 0
 		@users = User.ordered_by_name
 	else
-  		@users = User.where('users.id != ?', @exId).ordered_by_manager
+  		#@users = User.where('users.id != ?', @exId).ordered_by_manager
+  		@users = view_context.extended_subordinates(@mgr_id)
   	end
+  	
   end
 
   def show

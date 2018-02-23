@@ -6,13 +6,20 @@
 
 <br/>
 <% if current_user.admin? then %>
-	<% content_for :sidebar do %>
+	<% content_for :sidebarwide do %>
 	<table class="table">
-	  <tr>
-	  <td class="danger"><%= link_to 'New User', new_user_path %></td>
-		<tr>
-		<td class="danger"><%= link_to 'Show All', users_path(:scope => "all") %></td>
-
+	    <tr>
+	    <td class="danger"><%= link_to 'New User', new_user_path %></td>
+	    <tr>
+	    <td class="danger"><%= link_to 'Show All', users_path(:scope => "all") %></td>
+		<b><h4>Filters</h4></b>
+		<% if current_user.isstatususer? || current_user.admin %>
+			<tr>
+			<td class="danger">
+				<label for="p_org">Organization:</label>
+				<%= select_tag "p_org", options_for_select(org_mgrs_list(), @mgr_id.to_s) %>
+			</td>
+		<% end %>
 	</table>
 	<% end %>
 <% end %>

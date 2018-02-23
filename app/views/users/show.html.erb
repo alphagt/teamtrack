@@ -12,6 +12,7 @@
 		<p>Default System: <%= @user.default_system.name if @user.default_system %></p>
 		<p>Admin: <%= @user.admin %></p>
 		<p>Manager: <%= @user.ismanager %></p>
+		<p>Contractor: <%= @user.is_contractor %></p>
 		<% if @user.impersonates %>
 			<p>Works on behalf of: <%= @user.impersonates.name %></p>
 		<% end %>

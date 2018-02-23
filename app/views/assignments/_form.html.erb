@@ -17,6 +17,7 @@
 			<%= f.label "[Optional] - Create New User" %>
 			<%=	fields_for "newuser[]" do |user_fields| %> 
 					Name: <%= user_fields.text_field :name %>
+					Contractor: <%= user_fields.check_box :is_contractor %>
 			<% end %> 
 			<br/>
 			<br/>

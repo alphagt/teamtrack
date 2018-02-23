@@ -74,6 +74,7 @@ class AssignmentsController < ApplicationController
     #puts params[:newuser].length
     if params[:newuser][0][:name].length > 0 
     	puts "in-line User Create - " + params[:newuser][0][:name]
+    	puts params[:newuser][1]
     	if params[:assignment][:tech_sys_id].blank?
     		#Try to use managers default system
     		if !current_user.default_system_id.blank? 
@@ -93,7 +94,8 @@ class AssignmentsController < ApplicationController
 				:email =>  @fakeEmail, :verified => false, 
 				:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
 				:default_system_id => params[:assignment][:tech_sys_id], :admin => false,
-				:org => current_user.org
+				:org => current_user.org,
+				:is_contractor => params[:newuser][1][:is_contractor]
 			@nUser.save
 			puts @nUser
 			params[:assignment][:user_id] = @nUser.id

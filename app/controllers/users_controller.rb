@@ -122,6 +122,13 @@ class UsersController < ApplicationController
   	end
   	puts "target period: " + @target_period.to_s
   	
+  	@condense = false
+  	if params.has_key?(:condense) && params[:condense] == "true" then
+  		@condense = true
+  	end
+  	
+  	puts "Condense Var:  " + @condense.to_s
+  	
   	ckey = @manager.id.to_s + "-" + view_context.week_from_period(@target_period).to_s
   	ctime_stamp = User.find(@manager.id).updated_at
   	if params[:nocache] == 'true' then

@@ -37,6 +37,16 @@ module UsersHelper
 		end
 	end
 	
+	def current_subordinates_assigned(mid, speriod = current_period)
+		iout = 0
+		User.find(mid).subordinates.each do |s|
+			if s.assignments.where("set_period_id =?", speriod).length > 0 
+				iout += 1
+			end
+		end
+		iout
+	end
+	
 	def latest(cuser, floor = 0)
 		if cuser.assignments.where("set_period_id >= ?", floor).length > 0
 			@latest = cuser.assignments.where("set_period_id >= ?", floor).order("set_period_id DESC").first.set_period_id	
@@ -86,6 +96,12 @@ module UsersHelper
 		#puts "ExtendedSubs Count IS:  #{a_out.count}"
 		#puts a_out.map{|u| u.name}
 		a_out
+	end
+	
+	def subs_assignment_stats_string(m)
+		sout = " ("
+		sout +=  current_subordinates_assigned(m.id).to_s + "/" + m.subordinates.length.to_s + ")"
+		sout
 	end
 	
 end

@@ -51,9 +51,9 @@
 	<% if user != @manager %>
 		<% if !user.manager.nil? && (user.manager == current_user || user.manager.orgowner || user.manager.org == user.org) && user.manager != @currentmgr %>
 			<% if @indirect %>
-				<td><%= link_to user.manager.name + "*", team_user_path(user.manager), {:title => "Indirect Report", :style => "color:blue;text-decoration : underline;"} %></td>
+				<td><%= link_to user.manager.name + "*" + subs_assignment_stats_string(user.manager), team_user_path(user.manager), {:title => "Indirect Report", :style => "color:blue;text-decoration : underline;"} %></td>
 			<% else %>
-				<td><%= link_to user.manager.name, team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
+				<td><%= link_to user.manager.name + subs_assignment_stats_string(user.manager), team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
 			<% end %>
 			<% @currentmgr = user.manager %>
 			<td><%= if !@currentmgr.default_system.nil? then @currentmgr.default_system.name else "NA" end %></td>
@@ -67,7 +67,7 @@
 						<%= link_to 'View', user_path(@currentmgr), 
 						:title => "View details and assignment history for this manager" %></td>
 			<% end %>
-			<% if user.subordinates.count == 0 then %>
+			<% if user.subordinates.count == 0 && !@condense then %>
 				<tr>
 					<% if @indirect %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
@@ -89,7 +89,7 @@
 			<% end %>
 			
 		<% else %>
-			  <% if user.subordinates.count == 0 then %>
+			  <% if user.subordinates.count == 0 && !@condense then %>
 				<% if @indirect %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
 					<% else %>

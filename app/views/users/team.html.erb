@@ -67,7 +67,7 @@
 						<%= link_to 'View', user_path(@currentmgr), 
 						:title => "View details and assignment history for this manager" %></td>
 			<% end %>
-			<% if user.subordinates.count == 0 && !@condense then %>
+			<% if user.subordinates.count == 0 && (user.manager == @current_user || !@condense) then %>
 				<tr>
 					<% if @indirect %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
@@ -89,7 +89,7 @@
 			<% end %>
 			
 		<% else %>
-			  <% if user.subordinates.count == 0 && !@condense then %>
+			  <% if user.subordinates.count == 0 && (user.manager == @current_user || !@condense) then %>
 				<% if @indirect %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
 					<% else %>

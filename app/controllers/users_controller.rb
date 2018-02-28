@@ -157,6 +157,10 @@ class UsersController < ApplicationController
 			end
 		end
 	end
+	#condense the detail rows if the total list length is greater than 48 
+	if !params.has_key?(:condense) && @user_list.length > 48 
+		@condense = true
+	end
 	
 	@mgr_count = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/mgrcount", expires_in: 72.hours, force: !use_cache) do
 		puts "write mgr count to cache: " + ckey

@@ -158,7 +158,7 @@ class UsersController < ApplicationController
 		end
 	end
 	#condense the detail rows if the total list length is greater than 48 
-	if !params.has_key?(:condense) && @user_list.length > 48 
+	if !params.has_key?(:condense) && @user_list.length > 60 
 		@condense = true
 	end
 	

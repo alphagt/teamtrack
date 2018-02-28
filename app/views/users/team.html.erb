@@ -7,6 +7,11 @@
 <table class="table" >
 	<tr>
 		<td class="danger"><%= link_to 'New Assignment', new_assignment_path %></td>
+	<% if @condense then %>
+		<tr>
+			<td class="danger"><%= link_to 'Expand All Users', team_user_path(:id => @manager.id, :condense => false, :nocache => true) %></td>
+		</tr>
+	<% end %>
 	<% if @manager != current_user then %>
 		<tr>
 			<td class="danger"><%= link_to 'Full Team', team_user_path(:id => current_user.id) %></td>

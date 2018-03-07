@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 		@users = User.ordered_by_name
 	else
   		#@users = User.where('users.id != ?', @exId).ordered_by_manager
-  		@users = view_context.extended_subordinates(@mgr_id)
+  		@users = view_context.extended_subordinates(@mgr_id, true)
   	end
   	
   end
@@ -122,6 +122,12 @@ class UsersController < ApplicationController
   	end
   	puts "target period: " + @target_period.to_s
   	
+  	@altimpl = false
+  	if params.has_key?(:altimpl) && params[:altimpl] == "true" then
+  		@altimpl = true
+  		puts "ALT IMPLEMENTATION SIGNALED"
+  	end
+  	
   	@condense = false
   	if params.has_key?(:condense) && params[:condense] == "true" then
   		@condense = true
@@ -143,7 +149,7 @@ class UsersController < ApplicationController
 		if @manager.orgowner then
 			@user_list = view_context.extended_subordinates(@manager.id, true)
 		else
-			@user_list = view_context.all_subs(@manager.id, true)
+			@user_list = view_context.view_user_block(view_context.all_subs(@manager.id, true), false)
 		end
 	else
 		@user_list = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/ulist", expires_in: 24.hours, force: !use_cache) do 
@@ -153,7 +159,7 @@ class UsersController < ApplicationController
 			if @manager.orgowner then
 				@user_list = view_context.extended_subordinates(@manager.id)
 			else
-				@user_list = view_context.all_subs(@manager.id)
+				@user_list = view_context.view_user_block(view_context.all_subs(@manager.id), false)
 			end
 		end
 	end
@@ -166,7 +172,8 @@ class UsersController < ApplicationController
 		puts "write mgr count to cache: " + ckey
 		Rails.cache.delete_matched("#{ckey}:*:/mgrcount")
 		@c = 0
-		@user_list.each do |u| 
+		@user_list.each do |ublock|
+			u = ublock[2] 
 			if u.ismanager then 
 				@c += 1
 			end 
@@ -179,7 +186,8 @@ class UsersController < ApplicationController
 	
 	#capture number of managers with no assignments to add to 'overhead' total
 	@mgrs_count = 1
-	@user_list.each do |u|
+	@user_list.each do |ublock|
+		u = ublock[2]
 		if u.ismanager && view_context.current_assignment(u, @target_period).count < 1 then
 			@mgrs_count += 1
 		end
@@ -187,9 +195,9 @@ class UsersController < ApplicationController
 	puts "Team-Ctrlr: Mgr Count: " + @mgrs_count.to_s
 	@tm_count = @user_list.count
 	puts "Team-Ctrlr: User Count: " + @tm_count.to_s
-	puts @user_list.map{|u| u.name}
+	puts @user_list.map{|u| u[1].to_s + "," + u[2].name}
 	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",
-		@target_period, @user_list.map{|u| u.id}).references(:project).where("projects.active = true") 
+		@target_period, @user_list.map{|u| u[2].id}).references(:project).where("projects.active = true") 
 	puts "AggAssignments -- " + c_assignments.count.to_s
 	#Calulations for week summary
 	

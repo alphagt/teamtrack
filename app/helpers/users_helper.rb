@@ -74,15 +74,21 @@ module UsersHelper
 		@rStr.chomp(", ") + " to week: " + tweek.to_s
 	end
 	
-	def extended_subordinates(mid, showEx=false)
+	def extended_subordinates(mid, noBlock=false, showEx=false)
 		a_subs = Array.new()
 		m = User.find(mid)
+		a_subs += [m]
 		xid = 0
 		if !showEx then
 			xid = User.find_by_name("ExEmployeeMgr").id
 		end
-		a_subs = all_subs(mid, showEx)
-		a_subs += [m]
+		a_subs += all_subs(mid, showEx)
+		
+		if !noBlock then 
+			a_subs_block = view_user_block(a_subs, false)
+		else
+			a_subs_block = a_subs
+		end
 		puts "AllSubs:  #{a_subs.map{|u| u.name}}"
 		#determin list of orgs to include (any owned by self or subs)
 		org_list = m.subordinates.where("orgowner = true").pluck(:org)
@@ -91,10 +97,27 @@ module UsersHelper
 		b_subs = User.where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
 			xid, org_list, a_subs.map{|u| u.id}).order('manager_id')
 		b_subs.delete(m)
+		if !noBlock then b_subs = view_user_block(b_subs.uniq, true) end
 		#puts "Non-Sub Org Members:  #{b_subs.map{|u| u.name}}"
-		a_out = (a_subs + b_subs).uniq
+		a_out = (a_subs_block + b_subs).uniq
 		#puts "ExtendedSubs Count IS:  #{a_out.count}"
 		#puts a_out.map{|u| u.name}
+		a_out
+	end
+	
+	def view_user_block(ulist, areIndirect)
+		a_out = Array.new()
+		previous = ulist.first
+		level = 0
+		ulist.each do |u|
+			if u.manager == previous then
+				level += 1
+			end
+			if u.subordinates.length == 0 then
+				a_out << [0, areIndirect, u]
+			end
+		end	
+		puts a_out.to_s
 		a_out
 	end
 	

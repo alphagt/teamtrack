@@ -50,12 +50,59 @@
     	<th>Admin Actions</th>
     <% end %>
   </tr>
+<% if @altimpl %>
+	<p>RUNNING ALTERNATE VIEW GEN<p>
+	<% @user_list.each do |userblock| %>
+	  <tr>
+			<% user = userblock[2] %>
+			<% if user.manager != @currentmgr %>
+				<% @currentmgr = user.manager %>
+				<% if user != current_user && userblock[1]  %>
+					<td><%= link_to user.manager.name + "*" + subs_assignment_stats_string(user.manager), team_user_path(user.manager), {:title => "Indirect Report", :style => "color:blue;text-decoration : underline;"} %></td>
+				<% else %>
+					<td><%= link_to user.manager.name + subs_assignment_stats_string(user.manager), team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
+				<% end %>
+				<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+				<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
+				<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %>
+				<% if current_user.ismanager %>
+						<td class="danger">
+							<%= link_to 'Extend All', extendteam_user_path(user, :floor => @target_period.to_s), 
+							:title => "Extend all team members' current (displayed) Assignments for 1 week" %>
+							|
+							<%= link_to 'View', user_path(user), 
+							:title => "View details and assignment history for this manager" %></td>
+				<% end %>
+			<% else %>
+				  <% if !@condense then %>
+					<% if userblock[1] %>
+							<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
+						<% else %>
+							<% if user.is_contractor then %>
+								<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
+							<% else %>
+								<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+							<% end %>
+						<% end %><td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+					<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
+					<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
+					<% if current_user.admin %>
+						<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
+							extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
+					<% end %>
+				  <% end %>
+			<% end %>
 
-<% @user_list.each do |user| %>
+	<!--   <td class="danger"><%= link_to 'Details', user_path(user) %></td> -->
+	  </tr>
+	<% end %>
+<% else %>
+<% @user_list.each do |userblock| %>
   <tr>
+  	<% user = userblock[2] %>
 	<% if user != @manager %>
 		<% if !user.manager.nil? && (user.manager == current_user || user.manager.orgowner || user.manager.org == user.org) && user.manager != @currentmgr %>
-			<% if @indirect %>
+			<% if userblock[1] %>
 				<td><%= link_to user.manager.name + "*" + subs_assignment_stats_string(user.manager), team_user_path(user.manager), {:title => "Indirect Report", :style => "color:blue;text-decoration : underline;"} %></td>
 			<% else %>
 				<td><%= link_to user.manager.name + subs_assignment_stats_string(user.manager), team_user_path(user.manager), {:style => "color:blue;text-decoration : underline;"} %></td>
@@ -74,7 +121,7 @@
 			<% end %>
 			<% if user.subordinates.count == 0 && (user.manager == @manager || !@condense) then %>
 				<tr>
-					<% if @indirect %>
+					<% if userblock[1] %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
 					<% else %>
 						<% if user.is_contractor then %>
@@ -95,7 +142,7 @@
 			
 		<% else %>
 			  <% if user.subordinates.count == 0 && (user.manager == @manager || !@condense) then %>
-				<% if @indirect %>
+				<% if userblock[1] %>
 						<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
 					<% else %>
 						<% if user.is_contractor then %>
@@ -118,6 +165,7 @@
 	  <% end %>
 <!--   <td class="danger"><%= link_to 'Details', user_path(user) %></td> -->
   </tr>
+<% end %>
 <% end %>
 </table>
 <br/>

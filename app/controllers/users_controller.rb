@@ -147,9 +147,9 @@ class UsersController < ApplicationController
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
 		if @manager.orgowner then
-			@user_list = view_context.extended_subordinates(@manager.id, true)
+			@user_list = view_context.extended_subordinates(@manager.id, true, @target_period)
 		else
-			@user_list = view_context.view_user_block(view_context.all_subs(@manager.id, true), false)
+			@user_list = view_context.view_user_block(view_context.all_subs(@manager.id, true), false, @target_period)
 		end
 	else
 		@user_list = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/ulist", expires_in: 24.hours, force: !use_cache) do 
@@ -157,9 +157,9 @@ class UsersController < ApplicationController
 			cache_hit = false
 			Rails.cache.delete_matched("#{ckey}:*:/ulist")
 			if @manager.orgowner then
-				@user_list = view_context.extended_subordinates(@manager.id)
+				@user_list = view_context.extended_subordinates(@manager.id, false, @target_period)
 			else
-				@user_list = view_context.view_user_block(view_context.all_subs(@manager.id), false)
+				@user_list = view_context.view_user_block(view_context.all_subs(@manager.id), false, @target_period)
 			end
 		end
 	end

@@ -74,7 +74,7 @@ module UsersHelper
 		@rStr.chomp(", ") + " to week: " + tweek.to_s
 	end
 	
-	def extended_subordinates(mid, noBlock=false, showEx=false)
+	def extended_subordinates(mid, noBlock=false, showEx=false, tperiod=current_period())
 		a_subs = Array.new()
 		m = User.find(mid)
 		a_subs += [m]
@@ -85,7 +85,7 @@ module UsersHelper
 		a_subs += all_subs(mid, showEx)
 		
 		if !noBlock then 
-			a_subs_block = view_user_block(a_subs, false)
+			a_subs_block = view_user_block(a_subs, false, tperiod)
 		else
 			a_subs_block = a_subs
 		end
@@ -97,7 +97,7 @@ module UsersHelper
 		b_subs = User.where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
 			xid, org_list, a_subs.map{|u| u.id}).order('manager_id')
 		b_subs.delete(m)
-		if !noBlock then b_subs = view_user_block(b_subs.uniq, true) end
+		if !noBlock then b_subs = view_user_block(b_subs.uniq, true,tperiod) end
 		#puts "Non-Sub Org Members:  #{b_subs.map{|u| u.name}}"
 		a_out = (a_subs_block + b_subs).uniq
 		#puts "ExtendedSubs Count IS:  #{a_out.count}"
@@ -105,16 +105,21 @@ module UsersHelper
 		a_out
 	end
 	
-	def view_user_block(ulist, areIndirect)
+	def view_user_block(ulist, areIndirect, tperiod)
 		a_out = Array.new()
 		previous = ulist.first
 		level = 0
+		csys = ""
+		cproj = ""
 		ulist.each do |u|
 			if u.manager == previous then
 				level += 1
+				previous = u.manager
 			end
 			if u.subordinates.length == 0 then
-				a_out << [0, areIndirect, u]
+				csys = current_system(u, tperiod)
+				cproj = current_project(u, tperiod)
+				a_out << [0, areIndirect, u, csys, cproj]
 			end
 		end	
 		puts a_out.to_s

@@ -150,7 +150,7 @@ module ApplicationHelper
 		else
 			ex_subs = extended_subordinates(mid)
 			if ex_subs.any?
-				a_return = ex_subs.map{|u| u.id}.to_a
+				a_return = ex_subs.map{|u| u[2].id}.to_a
 				puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
 				a_return 
 			else

@@ -76,7 +76,7 @@
 			<% end %>
 			</tr>
 		<% end %>
-		<% if !@condense then %>
+		<% if !@condense || user.manager == @manager then %>
 		 	<tr>
 			<% if userblock[1] %>
 				<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>

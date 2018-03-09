@@ -1,0 +1,11 @@
+<Table>
+	<tr>
+		<th>Manager</th>
+		<th>Default System</th>
+		<th><%= "Current System - wk " + week_from_period(@target_period).to_s%></th>
+		<th><%= "Current Project - wk " + week_from_period(@target_period).to_s%></th>
+		<% if current_user.admin %> 
+			<th>Admin Actions</th>
+		<% end %>
+	  </tr>
+</Table>

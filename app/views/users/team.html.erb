@@ -52,7 +52,9 @@
   </tr>
 <% if @altimpl %>
 	<p>RUNNING ALTERNATE VIEW GEN<p>
-	<% @user_list.each do |userblock| %>
+	
+	<!-- 
+<% @user_list.each do |userblock| %>
 	  
 		<% user = userblock[2] %>
 		<% if user.manager != @currentmgr %>
@@ -96,6 +98,7 @@
 			</tr>
 		<% end %>
 	<% end %>
+ -->
 <% else %>
 <% @user_list.each do |userblock| %>
   <tr>

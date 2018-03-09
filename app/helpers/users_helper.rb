@@ -119,8 +119,8 @@ module UsersHelper
 				previous = u.manager
 			end
 			if u.subordinates.length == 0 then
-				csys =  current_system(u, tperiod)
-				cproj = current_project(u, tperiod)
+				#csys =  current_system(u, tperiod)
+				#cproj = current_project(u, tperiod)
 				a_out << [0, areIndirect, u, csys, cproj]
 			end
 		end	

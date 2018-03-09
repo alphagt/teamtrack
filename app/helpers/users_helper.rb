@@ -4,15 +4,17 @@ module UsersHelper
 		@cperiod = tperiod
 # 		puts "current_project funct - C Period is:"
 # 		puts @cperiod
+		@rStr = ""
 		if cuser.projects.length > 0 then
 			@return = cuser.assignments.where(:set_period_id => @cperiod)
+			@return.each do |proj|
+			 	@rStr = @rStr + proj.project.name + '(' + proj.effort.to_s + ')' + ', '
+			end
 		end
-		@rStr = ""
+		
 # 		puts 'Count of current ASSIGNMENTS:'
 # 		puts @return.length
-		@return.each do |proj|
-			 @rStr = @rStr + proj.project.name + '(' + proj.effort.to_s + ')' + ', '
-		end
+		
 		@rStr.chomp(", ")
 	end
 	
@@ -117,7 +119,7 @@ module UsersHelper
 				previous = u.manager
 			end
 			if u.subordinates.length == 0 then
-				csys = current_system(u, tperiod)
+				csys =  current_system(u, tperiod)
 				cproj = current_project(u, tperiod)
 				a_out << [0, areIndirect, u, csys, cproj]
 			end

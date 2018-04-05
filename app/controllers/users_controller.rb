@@ -143,6 +143,10 @@ class UsersController < ApplicationController
 		use_cache = true
 	end
 	cache_hit = true
+	#TEST TEST
+	#orginfo = view_context.get_org(@manager.id)
+	#puts "TEST TEST - ORG INFO:  "  + orginfo.to_s
+	#END
 	
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
@@ -320,6 +324,9 @@ class UsersController < ApplicationController
 		mUser.manager = User.find_by_name("ExEmployeeMgr") #special user for collecting x employees under
 		mUser.admin = false
 		mUser.ismanager = false
+		mUser.orgowner = false
+		mUser.org = 'ExOrg'
+		
 		if mUser.save then
 			rcode = 0
 		end

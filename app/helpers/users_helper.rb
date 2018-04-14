@@ -151,12 +151,13 @@ module UsersHelper
 			ret += [[mid],0,0]
 		end
 		#add current user data to existing hash
-		ret[0] += subs.managers_only.pluck(:id)
+		#ret[0] += subs.managers_only.pluck(:id)
 		ret[1] += subs.fte_only.count
 		ret[2] += subs.contract_only.count
 		
 		#recurse through subordinate managers
 		subs.managers_only.each do |u|
+			ret[0] += [u.id]
 			ret = get_org(u.id, org, ret)
 		end
 		

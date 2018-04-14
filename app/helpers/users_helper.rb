@@ -134,4 +134,53 @@ module UsersHelper
 		sout
 	end
 	
+	def get_org(mid, org = nil, hold = [])
+		#Generates an org info array in form [[list of manager ids], number of IC FTE, number of IC Contractors]
+		ret = hold
+		m = User.find(mid)
+		puts "Get Org for " + m.name
+		puts "   Start Array " + ret.to_s
+		if org.nil?
+			subs = m.subordinates
+			org = m.org
+		else
+			subs = m.subordinates.for_org(org)
+		end
+		if ret.count == 0
+			#add top level manager to list
+			ret += [[mid],0,0]
+		end
+		#add current user data to existing hash
+		ret[0] += subs.managers_only.pluck(:id)
+		ret[1] += subs.fte_only.count
+		ret[2] += subs.contract_only.count
+		
+		#recurse through subordinate managers
+		subs.managers_only.each do |u|
+			ret = get_org(u.id, org, ret)
+		end
+		
+		#identify indirect managers to add to list
+		if !org.nil? && m.orgowner
+			target_org = m.org
+			puts "   BRANCH FOR INDIRECT ORG:  " + target_org
+			isubs = User.where("users.org = ?", target_org).managers_only
+			#identify just the 'top-level' indirect managers
+			isubs.each do |i|
+				if !ret[0].include? i.id
+					if i.manager.nil? || i.manager.org != target_org
+						#this is a top level indirect mgr
+						#add to mgr list and count
+						ret[0] += [i.id]
+						ret[1] += 1 #to account for the manager themselves
+						#recurse for this manager
+						ret = get_org(i.id, nil, ret)
+					end
+				end
+			end
+		end
+		puts "   END ARRAY " + ret.to_s
+		ret
+	end
+	
 end

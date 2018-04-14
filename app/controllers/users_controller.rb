@@ -143,65 +143,40 @@ class UsersController < ApplicationController
 		use_cache = true
 	end
 	cache_hit = true
-	#TEST TEST
-	#orginfo = view_context.get_org(@manager.id)
-	#puts "TEST TEST - ORG INFO:  "  + orginfo.to_s
-	#END
-	
-  	if params[:showEx] == 'true' then
-#   		puts 'Foud ShowEx Param'
-		if @manager.orgowner then
-			@user_list = view_context.extended_subordinates(@manager.id, true, @target_period)
-		else
-			@user_list = view_context.view_user_block(view_context.all_subs(@manager.id, true), false, @target_period)
-		end
-	else
-		@user_list = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/ulist", expires_in: 24.hours, force: !use_cache) do 
+	#CURRENT IMPL FOR DERIVING ORG MEMBERSHIP
+	@user_list = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/ulist", expires_in: 24.hours, force: !use_cache) do 
 			puts "Write ulist to cache: " + ckey
 			cache_hit = false
 			Rails.cache.delete_matched("#{ckey}:*:/ulist")
-			if @manager.orgowner then
-				@user_list = view_context.extended_subordinates(@manager.id, false, @target_period)
-			else
-				@user_list = view_context.view_user_block(view_context.all_subs(@manager.id), false, @target_period)
-			end
+			@user_list = view_context.get_org(@manager.id)
 		end
+	
+  	if params[:showEx] == 'true' then
+#   		puts 'Foud ShowEx Param'
+		@user_list[0] << User.find_by_name("ExEmployeeMgr").id
+		puts "Added Ex Emp!"
+		puts @user_list.to_s
+
 	end
-	#condense the detail rows if the total list length is greater than 48 
+	#condense the detail rows if the total list length is greater than 48 [DEPRECATED]
 	if !params.has_key?(:condense) && @user_list.length > 60 
 		@condense = true
 	end
 	
-	@mgr_count = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/mgrcount", expires_in: 72.hours, force: !use_cache) do
-		puts "write mgr count to cache: " + ckey
-		Rails.cache.delete_matched("#{ckey}:*:/mgrcount")
-		@c = 0
-		@user_list.each do |ublock|
-			u = ublock[2] 
-			if u.ismanager then 
-				@c += 1
-			end 
-		end
-		@c
-	end
-	if cache_hit
-		puts "Found User List in Cache for - " + ckey
-	end
-	
 	#capture number of managers with no assignments to add to 'overhead' total
-	@mgrs_count = 1
-	@user_list.each do |ublock|
-		u = ublock[2]
-		if u.ismanager && view_context.current_assignment(u, @target_period).count < 1 then
-			@mgrs_count += 1
-		end
-	end
+	@mgrs_count = @user_list[0].count
+
 	puts "Team-Ctrlr: Mgr Count: " + @mgrs_count.to_s
-	@tm_count = @user_list.count
+	@tm_count = @mgrs_count + @user_list[1] + @user_list[2]
 	puts "Team-Ctrlr: User Count: " + @tm_count.to_s
-	puts @user_list.map{|u| u[1].to_s + "," + u[2].name}
+# 	puts @user_list.map{|u| u[1].to_s + "," + u[2].name}
+	puts "IDs List for Assignments Query"
+	fullulist = Array.new()
+	@user_list[0].map{|m| fullulist += User.find(m).subordinates.pluck(:id)}
+	fullulist += @user_list[0]
+	puts fullulist.to_s
 	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",
-		@target_period, @user_list.map{|u| u[2].id}).references(:project).where("projects.active = true") 
+		@target_period, fullulist).references(:project).where("projects.active = true") 
 	puts "AggAssignments -- " + c_assignments.count.to_s
 	#Calulations for week summary
 	
@@ -228,10 +203,6 @@ class UsersController < ApplicationController
 		cache_hit = false
 		c_assignments.each do |a|
 				@total_effort += a.effort
-	# 			puts "Calc AssignDetails for: " + u.name + "-" + a.id.to_s
-	# 			puts "Calc AssignDetails period: " + a.set_period_id.to_s
-	# 			puts "Calc AssignDetails Cat: " + a.project.category
-	# 			puts "Calc AssignDetails Eff: " + a.effort.to_s
 				if a.project.category == "Overhead"
 					@overhead_effort += a.effort
 				end	
@@ -243,7 +214,6 @@ class UsersController < ApplicationController
 		@overhead_effort = cVal[1]
 	end
 	
-	@overhead_effort += @mgrs_count
 # 	puts "OH Percent"
 # 	puts @overhead_effort.to_s + "/" + @tm_count.to_s
 	if @tm_count == 0 then
@@ -259,7 +229,6 @@ class UsersController < ApplicationController
 	@clabels = @cfdata.to_h.keys
 	@clabels.sort!
 	@cvals = @cfdata.to_h.values
-	
 	
   	@currentmgr = ""
   	puts 'TEAM CONTROLER, manager is'  	
@@ -352,7 +321,7 @@ class UsersController < ApplicationController
   # PUT /user/1.json
   def update
     @user = User.find(params[:id])
-    @org = current_user.org
+    #@org = current_user.org
     #Update the user list cache for this user's manager
     
     # if @user.manager_id.to_s != params[:user][:manager_id]

@@ -35,3 +35,10 @@ a {
     background-color: #000;
   }
 }
+
+.collapsed .icon-class:before {
+    content: '>';
+}
+.icon-class:before {
+	content: 'v';
+}

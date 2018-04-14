@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
   
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
   
+  scope :fte_only, -> {where('ismanager = false AND (is_contractor = false or is_contractor is null)').order('users.name')}
+  
+  scope :contract_only, -> {where('ismanager = false AND is_contractor = true').order('users.name')}
+  
   scope :for_org, -> (org){where('org = ?', org).order('users.id')}
   
   

@@ -1,0 +1,24 @@
+
+<% mgr.subordinates.each do |user| %>
+	<% if !user.ismanager %>
+		<%= tag("tr", class: ['collapse', tname]) %>
+			<td></td>
+			<% if mgr.org == baseorg %>
+				<% if user.is_contractor then %>
+					<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
+				<% else %>
+					<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
+				<% end %>	
+			<% else %>
+				<td class="info"><p class="text-right"><%= link_to user.name, user_path(user), {:title => "Indirect Report", :style => "text-decoration : underline;"} %></p></td>
+			<% end %>
+			<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
+			<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
+			<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
+			<% if current_user.admin %>
+				<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
+				extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
+			<% end %>		
+		</tr>
+	<% end %>
+<% end %>

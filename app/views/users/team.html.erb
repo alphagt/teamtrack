@@ -131,7 +131,7 @@
 					<% if !user.ismanager %>
 						<tr>
 							<td></td>
-							<% if thismgr.org == baseorg %>
+							<% if @user_list[3].include? mgrId %>
 								<% if user.is_contractor then %>
 									<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
 								<% else %>
@@ -151,6 +151,7 @@
 					<% end %>
 				<% end %>
 			<% else %>
+				  <% @direct = @user_list[3].include?(mgrId) %>
 				  <% if @currentmgr.nil? || thismgr.manager == @manager %>
 				  	<% @clevel = 0 %>
 				  <% else %>
@@ -178,7 +179,7 @@
 					  <%= tag("td", class: 'icon-class') %>
 					  
 					  
-					  <% if @currentmgr.org == baseorg %>
+					  <% if @direct %>
 							<td class="success"><%= link_to @currentmgr.name + subs_assignment_stats_string(@currentmgr), team_user_path(@currentmgr), {:style => "color:blue;text-decoration : underline;"} %></td> 
 					  <% else %>
 							<td class="info"><%= link_to @currentmgr.name + "*" + subs_assignment_stats_string(@currentmgr), team_user_path(@currentmgr), {:style => "color:blue;text-decoration : underline;"} %></td> 
@@ -193,7 +194,7 @@
 							<%= link_to 'View', user_path(@currentmgr), 
 							:title => "View details and assignment history for this manager" %></td>
 				  </tr>
-				  <%= render partial: 'teamlist', locals: {mgr: @currentmgr, tname: subclass, baseorg: baseorg} %>
+				  <%= render partial: 'teamlist', locals: {mgr: @currentmgr, tname: subclass, baseorg: baseorg, isdirect: @direct} %>
 			  
 			  <% end %>  
 		  <% end %>

@@ -151,6 +151,12 @@ class UsersController < ApplicationController
 			@user_list = view_context.get_org(@manager.id)
 		end
 	
+	#special handling for change in ulist format that might be wrong in cache
+	if cache_hit && @user_list.length < 4 
+		#need to reload it
+		Rails.cache.delete_matched("#{ckey}:*:/ulist")
+		@user_list = view_context.get_org(@manager.id)
+	end
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
 		@user_list[0] << User.find_by_name("ExEmployeeMgr").id

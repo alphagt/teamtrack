@@ -153,7 +153,7 @@
 			<% else %>
 				  <% @direct = @user_list[3].include?(mgrId) %>
 				  <% if @direct %>
-				  	<% oo = @currentmgr %>
+				  	<% oo = [@currentmgr] %>
 				  <% else %>
 				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
 				  <% end %>

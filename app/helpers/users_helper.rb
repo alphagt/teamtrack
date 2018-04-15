@@ -172,7 +172,7 @@ module UsersHelper
 			#identify just the 'top-level' indirect managers
 			isubs.each do |i|
 				if !ret[0].include? i.id
-					if i.manager.nil? || i.manager.org != target_org
+					if i.manager.nil? || !isubs.include?(i.manager)
 						#this is a top level indirect mgr
 						#add to mgr list and count
 						ret[0] += [i.id]

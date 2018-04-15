@@ -152,10 +152,16 @@
 				<% end %>
 			<% else %>
 				  <% @direct = @user_list[3].include?(mgrId) %>
-				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.org != @currentmgr.org %>
+				  <% if @direct %>
+				  	<% oo = @currentmgr %>
+				  <% else %>
+				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
+				  <% end %>
+				  
+				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.orgowner %>
 				  	<% @clevel = 0 %>
 				  <% else %>
-				    <% if thismgr.manager == @currentmgr || thismgr.org == @currentmgr.org then @clevel += 1 end %>
+				    <% if thismgr.manager == @currentmgr || oo.first == @currentmgr then @clevel += 1 end %>
 				  <% end %>
 				  
 
@@ -165,7 +171,6 @@
 				  		<% if thismgr.manager.nil? %>
 				  			<% receiver = @user_list[0][0].to_s + "Content " %>
 				  		<% else %>
-				  			<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
 				  			<% if @user_list[0].include?(oo.first.id) %>
 				  				<% receiver = oo.first.id.to_s + "Content " %>
 				  			<% else %>
@@ -177,6 +182,7 @@
 				  <% @currentmgr = thismgr %>
 				  
 				  <% subclass = mgrId.to_s + "Content" %>
+				  
 				  <% if @currentmgr.manager.nil? %>
 				  		<% rclass = "collapsed" %>
 				  <% else %>

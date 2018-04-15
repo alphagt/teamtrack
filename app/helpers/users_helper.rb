@@ -165,7 +165,7 @@ module UsersHelper
 		end
 		
 		#identify indirect managers to add to list
-		if !org.nil? && !ind && m.orgowner
+		if m.orgowner
 			target_org = m.org
 			puts "   BRANCH FOR INDIRECT ORG:  " + target_org
 			isubs = User.where("users.org = ?", target_org).managers_only

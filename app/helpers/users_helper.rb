@@ -161,7 +161,7 @@ module UsersHelper
 			if !ind
 				ret[3] += [u.id]
 			end
-			ret = get_org(u.id, org, ret)
+			ret = get_org(u.id, org, ret, ind)
 		end
 		
 		#identify indirect managers to add to list

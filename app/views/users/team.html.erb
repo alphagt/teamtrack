@@ -25,9 +25,9 @@
 	<% end %>
 </table>
 <h4><%= "Week " + week_from_period(@target_period).to_s + " Stats:" %></h4>
-<h5>Total Available: <small><%= (@user_list[1] + @user_list[2]).to_s %></small></h5>
+<h5>Total Available: <small><%= @tm_count.to_s %></small></h5>
 <h5>Contractors: <small><%= @user_list[2] %></small></h5>
-<h5><%= "Wk-" + week_from_period(@target_period).to_s + " Allocated:" %><small><%= @total_effort.to_s + " of " + (@user_list[1] + @user_list[2]).to_s %></small></h5>
+<h5><%= "Wk-" + week_from_period(@target_period).to_s + " Allocated:" %><small><%= @total_effort.to_s + " of " + @tm_count.to_s %></small></h5>
 <h5>People Managers:  <small><%= @user_list[0].count %></small></h5>
 <h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
 <br/>

@@ -165,7 +165,12 @@
 				  		<% if thismgr.manager.nil? %>
 				  			<% receiver = @user_list[0][0].to_s + "Content " %>
 				  		<% else %>
-				  			<% receiver = @currentmgr.id.to_s + "Content " %>
+				  			<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
+				  			<% if @user_list[0].include?(oo.first.id) %>
+				  				<% receiver = oo.first.id.to_s + "Content " %>
+				  			<% else %>
+				  				<% receiver = @user_list[0][0].to_s + "Content " %>
+				  			<% end %>
 				  		<% end %>
 				  <% end %>
 				  

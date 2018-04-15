@@ -144,7 +144,7 @@ module UsersHelper
 			subs = m.subordinates
 			org = m.org
 		else
-			subs = m.subordinates.for_org(org)
+			subs = m.subordinates
 		end
 		if ret.count == 0
 			#add top level manager to list

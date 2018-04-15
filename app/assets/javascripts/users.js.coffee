@@ -2,6 +2,13 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+closechildren =(target) ->
+	console.log("closing children for " + target)
+	$(target).each ->
+		$(@).collapse('hide')
+	$(target).not('.collapsed').filter('[data-toggle]').each ->
+		closechildren($(@).data("target"))
+
 $ ->
 	console.log("DOM is Ready") 
 	$(".collapsed").click  -> 
@@ -10,8 +17,6 @@ $ ->
 		console.log(t + " something Clicked")
 		$subs = $(t).not('.collapsed').filter('[data-toggle]')
 		$subs.each ->
-			m = $(@).data("target")
-			console.log("cascade for " + m )
-			
-			$(m).each ->
-				$(@).collapse('hide')
+			closechildren($(@).data("target"))
+				
+				

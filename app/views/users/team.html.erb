@@ -152,20 +152,25 @@
 				<% end %>
 			<% else %>
 				  <% @direct = @user_list[3].include?(mgrId) %>
-				  <% if @currentmgr.nil? || thismgr.manager == @manager %>
+				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.org != @currentmgr.org %>
 				  	<% @clevel = 0 %>
 				  <% else %>
-				    <% if thismgr.manager == @currentmgr then @clevel += 1 end %>
+				    <% if thismgr.manager == @currentmgr || thismgr.org == @currentmgr.org then @clevel += 1 end %>
+				  <% end %>
+				  
+
+				  <% if !thismgr.manager.nil? && @user_list[0].include?(thismgr.manager.id) %>
+				  		<% receiver = thismgr.manager.id.to_s + "Content " %>
+				  <% else %>
+				  		<% if thismgr.manager.nil? %>
+				  			<% receiver = @user_list[0][0].to_s + "Content " %>
+				  		<% else %>
+				  			<% receiver = @currentmgr.id.to_s + "Content " %>
+				  		<% end %>
 				  <% end %>
 				  
 				  <% @currentmgr = thismgr %>
-
-				  <% if !@currentmgr.manager.nil? && @user_list[0].include?(@currentmgr.manager.id) %>
-				  		<% receiver = @currentmgr.manager.id.to_s + "Content " %>
-				  <% else %>
-				  		<% receiver = @user_list[0][0].to_s + "Content " %>
-				  		
-				  <% end %>
+				  
 				  <% subclass = mgrId.to_s + "Content" %>
 				  <% if @currentmgr.manager.nil? %>
 				  		<% rclass = "collapsed" %>

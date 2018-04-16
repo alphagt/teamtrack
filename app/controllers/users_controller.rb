@@ -236,7 +236,7 @@ class UsersController < ApplicationController
 	@clabels.sort!
 	@cvals = @cfdata.to_h.values
 	
-  	@currentmgr = ""
+  	#@currentmgr = ""
   	puts 'TEAM CONTROLER, manager is'  	
   	puts @manager_string
   end

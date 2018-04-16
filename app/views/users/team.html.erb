@@ -151,20 +151,19 @@
 					<% end %>
 				<% end %>
 			<% else %>
-				  <% @direct = @user_list[3].include?(mgrId) %>
+				  <% if !thismgr.manager.nil? then @direct = @user_list[3].include?(thismgr.manager.id) else @direct = false end %>
 				  <% if @direct %>
 				  	<% oo = [@currentmgr] %>
 				  <% else %>
 				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
 				  <% end %>
 				  
-				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.orgowner || !@user_list[0].include?(mgrId) %>
+				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.manager.nil? || oo.first == @manager %>
 				  	<% @clevel = 0 %>
 				  <% else %>
 				    <% if thismgr.manager == @currentmgr || oo.first == @currentmgr then @clevel += 1 end %>
 				  <% end %>
-				  
-
+				  				  
 				  <% if !thismgr.manager.nil? && @user_list[0].include?(thismgr.manager.id) %>
 				  		<% receiver = thismgr.manager.id.to_s + "Content " %>
 				  <% else %>

@@ -130,8 +130,42 @@ module UsersHelper
 	
 	def subs_assignment_stats_string(m)
 		sout = " ("
-		sout +=  current_subordinates_assigned(m.id).to_s + "/" + m.subordinates.length.to_s + ")"
+		counts = get_subs_count(m, true)
+		sout +=  counts["assigned"].to_s + "/" + counts["total"].to_s + ")"
 		sout
+	end
+	
+	def get_subs_count(m, include_indirect = false, speriod = current_period(), org = nil)
+		x = 0
+		y = 0
+		out = Hash.new()
+		cuser = m
+		if org.nil?
+			subs = cuser.subordinates 
+		else
+			subs = cuser.subordinates.for_org(org)
+		end
+		x += subs.count
+		y = subs.has_current_assignments(speriod).count	
+		subs.managers_only.each do |u|
+			z = get_subs_count(u, include_indirect, speriod, org)
+			x += z["total"]
+			y += z["assigned"]
+		end	
+		
+		if include_indirect && cuser.orgowner
+			isubs = User.where("users.org = ?", cuser.org).managers_only
+			isubs.each do |i|
+				if i.manager.nil? || i.org != i.manager.org
+					z = get_subs_count(i, false, speriod, i.org) 
+					x += z["total"]
+					y += z["assigned"]
+				end
+			end
+		end
+		out["total"] = x
+		out["assigned"] = y
+		out
 	end
 	
 	def get_org(mid, org = nil, hold = [], ind = false)

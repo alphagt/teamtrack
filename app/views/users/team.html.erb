@@ -186,7 +186,7 @@
 				  <% if @currentmgr.manager.nil? %>
 				  		<% rclass = "collapsed" %>
 				  <% else %>
-				  			<% if @clevel == 0 then rclass = "collapse in " + receiver + "collapsed " else rclass = "collapse " + receiver + "collapsed " end %> 
+				  			<% if @clevel == 0 then rclass = "collapsed " else rclass = "collapse " + receiver + "collapsed " end %> 
 				  <% end %>
 				  <% ctarget = "." + mgrId.to_s + "Content" %>
 				  

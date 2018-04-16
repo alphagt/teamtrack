@@ -172,6 +172,8 @@ module UsersHelper
 			target_org = m.org
 			puts "   BRANCH FOR INDIRECT ORG:  " + target_org
 			isubs = User.where("users.org = ?", target_org).managers_only
+			puts "   MANAGERS FOR " + target_org
+			puts isubs.pluck(:name)
 			#identify just the 'top-level' indirect managers
 			isubs.each do |i|
 				if !ret[0].include? i.id

@@ -140,12 +140,15 @@ module UsersHelper
 		m = User.find(mid)
 		puts "Get Org for " + m.name
 		puts "   Start Array " + ret.to_s
-		if org.nil? || ind
-			subs = m.subordinates
+		if org.nil?
 			org = m.org
+		end
+		if ind
+			subs = m.subordinates.for_org(org)
 		else
 			subs = m.subordinates
 		end
+		
 		if ret.count == 0
 			#add top level manager to list
 			ret += [[mid],0,0,[mid]]
@@ -174,7 +177,7 @@ module UsersHelper
 				if !ret[0].include? i.id
 					if i.manager.nil? || !isubs.include?(i.manager)
 						#this is a top level indirect mgr
-						puts "ADD INDR TOP LEVEL MGR: " + i.name
+						puts "ADD INDR MGR: " + i.name
 						#add to mgr list and count
 						ret[0] += [i.id]
 						#ret[1] += 1 #to account for the manager themselves

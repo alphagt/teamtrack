@@ -158,7 +158,7 @@
 				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
 				  <% end %>
 				  
-				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.orgowner %>
+				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.orgowner || !@user_list[0].include?(mgrId) %>
 				  	<% @clevel = 0 %>
 				  <% else %>
 				    <% if thismgr.manager == @currentmgr || oo.first == @currentmgr then @clevel += 1 end %>

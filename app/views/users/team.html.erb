@@ -153,7 +153,11 @@
 			<% else %>
 				  <% if !thismgr.manager.nil? then @direct = @user_list[3].include?(thismgr.manager.id) else @direct = false end %>
 				  <% if @direct %>
-				  	<% oo = [@currentmgr] %>
+				  	<% if @currentmgr.nil? %>
+				  		<% oo = [@manager] %>
+				  	<% else %>
+				  		<% oo = [@currentmgr] %>
+				  	<% end %>
 				  <% else %>
 				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
 				  <% end %>

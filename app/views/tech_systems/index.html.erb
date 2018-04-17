@@ -14,64 +14,73 @@
 <% end %>
 
 <% content_for :main1 do %>
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Sub-System</th>
-    <th>Owner</th>
-    <th>Average HC</th>
-    <% if current_user.admin %>
-    	<th></th>
-    	<th></th>
-    <% end %>
-  </tr>
-  <tr class="warning">
-  	<td><b><%= "Sub-System: " + @current_qos %></b></td>
-  	<td></td>
-  	<td></td>
-  	<td></td>
-  	<td><b><%= qos_average_effort(@current_qos)%></b></td>
-  </tr>
-<% @techsystems.each do |tsystem|  %>
-  <% if tsystem.qos_group != "Archived" %>
-  	  <% if tsystem.qos_group != @current_qos %>
-  	  	<% @current_qos = tsystem.qos_group %>
-  	  	<tr class="warning">
-  			<td><b><%= "Sub-System: " + @current_qos %></b></td>
-  			<td></td>
-  			<td></td>
-  			<td></td>
-  			<td><b><%= qos_average_effort(@current_qos)%></b></td>
-  		</tr>
-  	  <% end %>
-	  <tr>
-		<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
-		<td><%= tsystem.description %></td>
-		<td><%= tsystem.qos_group %></td>
-		<td><%= tsystem.owner.name %></td>
-		<td><%= tsystem.average_assigned(current_fy, current_week)%></td>
+		<table class="table">
+		  <thead>
+		  <tr>
+		  	<th></th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Sub-System</th>
+			<th>Owner</th>
+			<th>Average HC</th>
+			<% if current_user.admin %>
+				<th></th>
+				<th></th>
+			<% end %>
+		  </tr>
+		  </thead>
+		  <tbody>
+		 <%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group1"}) %>
+			<td class="icon-class"></td>
+			<td><b><%= "Sub-System: " + @current_qos %></b></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><b><%= qos_average_effort(@current_qos)%></b></td>
+		  </tr>
+		<% @gnum = 1 %>
+		<% @techsystems.each do |tsystem|  %>
+		  <% if tsystem.qos_group != "Archived" %>
+			  <% if tsystem.qos_group != @current_qos %>
+			  	<% @gnum += 1 %>
+				<% @current_qos = tsystem.qos_group %>
+				<%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group" + @gnum.to_s}) %>
+					<td class="icon-class"></td>
+					<td><b><%= "Sub-System: " + @current_qos %></b></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><b><%= qos_average_effort(@current_qos)%></b></td>
+				</tr>
+			  <% end %>
+				<%= tag("tr", class: ['collapse', 'group' + @gnum.to_s]) %>
+				<td></td>
+				<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
+				<td><%= tsystem.description %></td>
+				<td><%= tsystem.qos_group %></td>
+				<td><%= tsystem.owner.name %></td>
+				<td><%= tsystem.average_assigned(current_fy, current_week)%></td>
+				<% if current_user.admin %>
+					<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
+					<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
+				<% end %> 
+			  </tr>  
+		  <% end %>
+		<% end %>
 		<% if current_user.admin %>
-			<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
-			<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
+			<% @techsystems.where(:qos_group => 'Archived').each do |tsystem| %>
+				<tr>
+				<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
+				<td><%= tsystem.description %></td>
+				<td><%= tsystem.qos_group %></td>
+				<td><%= tsystem.owner.name %></td>
+				<td><%= tsystem.average_assigned(current_fy, current_week)%></td>
+				<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
+				<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
+				</tr> 
+			<% end %>
 		<% end %> 
-	  </tr>  
-  <% end %>
-<% end %>
-<% if current_user.admin %>
-	<% @techsystems.where(:qos_group => 'Archived').each do |tsystem| %>
-  		<tr>
-		<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
-		<td><%= tsystem.description %></td>
-		<td><%= tsystem.qos_group %></td>
-		<td><%= tsystem.owner.name %></td>
-		<td><%= tsystem.average_assigned(current_fy, current_week)%></td>
-		<td class="danger"><%= if current_user.admin then link_to 'Show', tech_system_path(tsystem) end %></td>
-		<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_tech_system_path(tsystem) end %></td>
-	  	</tr> 
-	<% end %>
-<% end %> 
-
-</table>
+		</tbody>
+		</table>
 <% end %>
 

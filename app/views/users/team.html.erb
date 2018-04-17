@@ -158,14 +158,15 @@
 				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>
 				  <% end %>
 				  
-				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.manager.nil? || (oo.first == @manager && !@user_list[0].include?(thismgr.manager.id)) %>
+				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.manager.nil? || (oo.first == @manager && thismgr.org != thismgr.manager.org)  %>
 				  	<% @clevel = 0 %>
 				  <% else %>
 				    <% if thismgr.manager == @currentmgr || oo.first == @currentmgr then @clevel += 1 end %>
 				  <% end %>
-<!-- 
-				  <p><%= thismgr.name + ": level= " + @clevel.to_s + " direct= " + @direct.to_s %></p>
- -->
+
+<!--  				  <p><%= thismgr.name + ": level= " + @clevel.to_s + " direct= " + @direct.to_s %></p>  -->
+
+				  
 				  				  
 				  <% if !thismgr.manager.nil? && @user_list[0].include?(thismgr.manager.id) %>
 				  		<% receiver = thismgr.manager.id.to_s + "Content " %>

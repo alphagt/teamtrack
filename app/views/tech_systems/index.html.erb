@@ -70,6 +70,7 @@
 		<% if current_user.admin %>
 			<% @techsystems.where(:qos_group => 'Archived').each do |tsystem| %>
 				<tr>
+				<td></td>
 				<td class="link"><u><%= link_to tsystem.name, tsystem %></u></td>
 				<td><%= tsystem.description %></td>
 				<td><%= tsystem.qos_group %></td>

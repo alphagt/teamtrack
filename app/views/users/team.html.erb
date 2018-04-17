@@ -168,7 +168,7 @@
 
 				  
 				  				  
-				  <% if !thismgr.manager.nil? && @user_list[0].include?(thismgr.manager.id) %>
+				  <% if !thismgr.manager.nil? && @user_list[0].include?(thismgr.manager.id) && thismgr.org == thismgr.manager.org %>
 				  		<% receiver = thismgr.manager.id.to_s + "Content " %>
 				  <% else %>
 				  		<% if thismgr.manager.nil? %>

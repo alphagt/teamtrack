@@ -54,7 +54,9 @@
 		<div class="row">
 			<div class="col-md-12">
 			<table class="table">
+			  <thead>
 			  <tr>
+			  	<th></th>
 				<th class="col-sm-3">Name</th>
 				<th class="col-sm-3">Description</th>
 				<th>Fiscal Year</th>
@@ -63,11 +65,13 @@
 				<th><%= if @fy == current_fy then "YTD Effective HC" else "FY Effective HC" end %></th>
 				<% if current_user.admin %>
 					<th>Status</th>
-					<th></th>
 				<% end %>
 			  </tr>  
+			  </thead>
+			  <tbody>
 			<% @initiatives.where(:active => true).each do |initiative|  %>
-			  <tr class="warning">
+			  <%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group" + initiative.id.to_s}) %>
+				<td class="icon-class"></td>
 				<td class="link"><u><b><%= link_to initiative.name, initiative %></b></u></td>
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
@@ -76,11 +80,15 @@
 				<td><%= (initiative.total_effort_weeks(current_week())/current_week()).round %></td>
 				<% if current_user.admin %>
 					<td><%= if initiative.active then "Active" else "Closed" end %></td>
-					<td class="danger"><%= link_to 'Edit', edit_initiative_path(initiative) %></td>
 				<% end %>
 			  </tr> 
-			  <% initiative.projects.keyproj.each do |p| %>
-			  	<tr>
+			  <% initiative.projects.each do |p| %>
+			  	<% if p.keyproj %>
+			  		<tr>
+			  	<% else %>
+			  		<%= tag("tr", class: ['collapse', 'group' + initiative.id.to_s]) %>			
+			  	<% end %>
+			  		<td></td>
 			  		<td class="link" style="text-align: right"><u><%= link_to p.name, p %></u></td>
 			  		<td><%= p.description %></td>
 			  		<td></td>
@@ -89,13 +97,12 @@
 			  		<td></td>
 			  		<% if current_user.admin %>
 						<td><%= if p.active then "Active" else "Closed" end %></td>
-						<td></td>
 					<% end %>
 			  	</tr>
 			  <% end %> 
 			<% end %>
 	
-
+			</tbody>
 			</table>
 			</div>
 		</div>

@@ -2,7 +2,7 @@
 	
 
 <ul class="nav nav-pills" role="tablist">
-
+	<% if user_signed_in? %>
 	<% if current_user.verified? %>
     	<% if current_user.admin? | current_user.ismanager? %>
 			<% if active == "team" %>
@@ -58,7 +58,7 @@
       		<%= link_to('Users', users_path) %>
       		</li>
       	<% end %>
-      	  <% if user_signed_in? %>
+      	
     <li>
     <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
     </li>

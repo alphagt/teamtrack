@@ -12,12 +12,12 @@ class InitiativesController < ApplicationController
     		@fy = 'All'
     		@summary = 'Initiatives for all Fiscal Years - '
     	else
-			@initiatives = Initiative.for_year(params[:fy])
+			@initiatives = Initiative.active.for_year(params[:fy])
     		@fy = params[:fy].to_i
     		@summary = 'Initiatives for FY ' + @fy.to_s + ' - '
     	end
 	else
-		@initiatives = Initiative.for_year(view_context.current_fy)
+		@initiatives = Initiative.active.for_year(view_context.current_fy)
     	@fy = view_context.current_fy
     	@summary = 'Initiatives for FY ' + @fy.to_s + ' - '
 	end

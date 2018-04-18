@@ -35,7 +35,7 @@
 					<%= f.select(:psh, options_for_select(["", "DME", "DMA", "DC", "Adobe", "SG&A", "NA"], @project.psh))  %>
 				</div>
 		</div>
-		<%= f.association :initiative, :as => :select, :collection => Initiative.all,
+		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),
 			:label_method => :name, label: "CT Priority" %>
 		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
 			input_html: {value: @project.fixed_resource_budget || '0'} %>

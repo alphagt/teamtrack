@@ -52,6 +52,26 @@ class InitiativesController < ApplicationController
   	@initiative = Initiative.find(params[:id])
   	@projects = Project.for_initiative(params[:id])
   	
+  	#Prep Chart Data for past 12 weeks of effort
+	@clabels = []
+	@cvalues = []
+	@cdata = Assignment.where('set_period_id BETWEEN ? AND ? AND project_id IN (?)', (view_context.current_period.to_d - 0.12).round(2).to_s, 
+		view_context.current_period.to_s, @projects.pluck(:id)).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	puts 'Chart Data'
+	puts @cdata
+	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
+	@clabels.sort!
+	@cvalues = @cdata.to_h.values
+# 	puts 'Labels:'
+# 	puts @clabels.to_s	
+	#Data for projects pie chart
+	@cdata = Assignment.where('set_period_id = ? AND project_id IN (?)', 
+		view_context.current_period, @projects.pluck(:id)).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
+	@svalues = @cdata.to_h.values	
+		
+	#End prep chart data
+	
   	 respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @initiative }

@@ -260,6 +260,7 @@ module ApplicationHelper
 			@list << ["All", 0]
 		end
 		User.managers_only.where("orgowner = true").each do  |u|
+			if u.manager.nil? || !u.manager.orgowner
 			@list <<  [u.name, u.id]
 		end	
 		@list

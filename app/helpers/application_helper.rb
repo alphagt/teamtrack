@@ -259,7 +259,7 @@ module ApplicationHelper
 		if option_all
 			@list << ["All", 0]
 		end
-		User.managers_only.where("manager_id is null").each do  |u|
+		User.managers_only.where("orgowner = true").each do  |u|
 			@list <<  [u.name, u.id]
 		end	
 		@list

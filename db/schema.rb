@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221000529) do
+ActiveRecord::Schema.define(version: 20180418224002) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20180221000529) do
   add_index "projects", ["category"], name: "index_projects_on_category", using: :btree
   add_index "projects", ["initiative_id"], name: "index_projects_on_initiative_id", using: :btree
   add_index "projects", ["name"], name: "index_projects_on_name", using: :btree
+  add_index "projects", ["owner_id"], name: "index_projects_on_owner_id", using: :btree
 
   create_table "set_periods", force: :cascade do |t|
     t.integer  "fiscal_year",  limit: 4
@@ -77,6 +78,9 @@ ActiveRecord::Schema.define(version: 20180221000529) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
+
+  add_index "tech_systems", ["owner_id"], name: "index_tech_systems_on_owner_id", using: :btree
+  add_index "tech_systems", ["qos_group"], name: "index_tech_systems_on_qos_group", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "",    null: false
@@ -102,6 +106,7 @@ ActiveRecord::Schema.define(version: 20180221000529) do
     t.boolean  "is_contractor"
     t.string   "org",                    limit: 255
     t.boolean  "orgowner"
+    t.string   "submgrs",                limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

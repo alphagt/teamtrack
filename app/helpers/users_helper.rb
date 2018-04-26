@@ -20,6 +20,8 @@ module UsersHelper
 	
 	def current_system(cuser, tperiod = current_period)
 		@rStr = ""
+# 		puts "current_system " + tperiod.to_s
+
 		if cuser.tech_systems.length > 0 then
 			@return = cuser.assignments.where(:set_period_id => tperiod)
 			@return.each do |a|

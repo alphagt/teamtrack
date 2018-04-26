@@ -367,6 +367,7 @@ class UsersController < ApplicationController
 	@subclass = params[:tname]
 	@baseorg = params[:baseorg]
 	@direct = params[:direct]
+	@period = 2018.21
 	puts "@direct = " + @direct
 	respond_to do |format|
 		#format.html {render 'teamlist', :layout=>false}

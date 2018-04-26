@@ -63,7 +63,8 @@
 		  </tbody>
       </table>
     </div>
-    <div class="collapsed" data-toggle="collapse" data-target="#testlistContent" data-role="expander" data-group-id="test">
+    </div>
+        <div class="collapsed" data-toggle="collapse" data-target="#testlistContent" data-role="expander" data-group-id="test">
     	<ul class="list-inline">
     		<li class="icon-class"></li>
     		<li>Test Layout</li>
@@ -79,8 +80,8 @@
         		<td>End Date</td>
         	</tr>
         </thead>
-        <tbody>	
-		  <tr class="collapsed" id="parent1" data-toggle="collapse" data-target=".parent1Content" >
+        <tbody id="body-1">	
+		  <tr class="collapsed pending" id="parent-1" data-toggle="collapse" data-target=".parent1Content" >
             <td class="icon-class"></td>
             <td>Parent 1</td>
             <td>04/02/2017</td>
@@ -92,35 +93,37 @@
             <td>04/01/2017</td>
             <td>04/05/2017</td>
           </tr>
-          <tr class="collapse parent1Content collapsed" data-toggle="collapse" data-target=".subchild1Content" data-parent="#parent1" data-group-id="p1Group" >
-            <td class="icon-class"></td>
-            <td>Child B</td>
-            <td>04/03/2017</td>
-            <td>04/04/2017</td>
-          </tr>
-          
-          <tr class="collapse subchild1Content" >
-          	<td></td>
-          	<td>Sub Child 1</td>
-          	<td>04/05/2017</td>
-          	<td>04/10/2017</td>
-          </tr>   
-          
-          <tr class="collapse subchild1Content" >
-          	<td></td>
-          	<td>Sub Child 2</td>
-          	<td>04/05/2017</td>
-          	<td>04/10/2017</td>
-          </tr>  
-          
-          <tr class="collapse subchild1Content" >
-          	<td></td>
-          	<td>Sub Child 3</td>
-          	<td>04/05/2017</td>
-          	<td>04/10/2017</td>
-          </tr>                   
-          
-          <tr class="collapsed" data-toggle="collapse" data-target=".parent2Content">
+          <tbody id="body-11">
+			  <tr class="collapse parent1Content collapsed pending" id="subchild-1" data-toggle="collapse" data-target=".subchild1Content" data-parent="#parent1" data-group-id="p1Group" >
+				<td class="icon-class"></td>
+				<td>Child B</td>
+				<td>04/03/2017</td>
+				<td>04/04/2017</td>
+			  </tr>
+			  <tr class="collapse subchild1Content" >
+				<td></td>
+				<td>Sub Child 1</td>
+				<td>04/05/2017</td>
+				<td>04/10/2017</td>
+			  </tr>   
+		  
+			  <tr class="collapse subchild1Content" >
+				<td></td>
+				<td>Sub Child 2</td>
+				<td>04/05/2017</td>
+				<td>04/10/2017</td>
+			  </tr>  
+		  
+			  <tr class="collapse subchild1Content" >
+				<td></td>
+				<td>Sub Child 3</td>
+				<td>04/05/2017</td>
+				<td>04/10/2017</td>
+			  </tr> 
+          </tbody>  
+        </tbody>  
+        <tbody id="parent2body">                
+          <tr class="collapsed pending" data-toggle="collapse" data-target=".parent2Content">
             <td class="icon-class"></td>
             <td>Parent 2</td>
             <td>04/03/2017</td>

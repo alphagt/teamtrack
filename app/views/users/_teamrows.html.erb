@@ -3,7 +3,7 @@
 	<% if !user.ismanager %>
 		<%= tag("tr", {class: [tname, 'collapse', 'in']}, true) %>
 			<td></td>
-			<% if isdirect %>
+			<% if isdirect == true || isdirect == "true" %>
 				<% if user.is_contractor then %>
 					<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
 				<% else %>

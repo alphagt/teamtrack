@@ -367,7 +367,7 @@ class UsersController < ApplicationController
 	@subclass = params[:tname]
 	@baseorg = params[:baseorg]
 	@direct = params[:direct]
-	
+	puts "@direct = " + @direct
 	respond_to do |format|
 		#format.html {render 'teamlist', :layout=>false}
 		format.js {render 'teamlist', :content_type => 'text/html', :layout=>false}

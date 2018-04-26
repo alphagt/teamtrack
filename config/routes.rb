@@ -25,6 +25,7 @@ TeamTrack::Application.routes.draw do
   resources :users do
   	get 'index'
   	get 'verify'
+  	get 'teamlist', :on => :collection
   	get 'reset', :on => :member
   	get 'manage', :on => :member
   	get 'team', :on => :member
@@ -32,8 +33,7 @@ TeamTrack::Application.routes.draw do
   	get 'extendCurrentAssignment', :on => :member
   	post 'createemp', :on => :collection
   	post 'exit', :on => :member
-  end
-
+  end 
   #match 'users/emp/create' => 'users#createemp', :as => :createemp
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -2,21 +2,57 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-closechildren =(target) ->
+checkchildren =(target) ->
 	console.log("closing children for " + target)
-	$(target).each ->
-		$(@).collapse('hide')
-	$(target).not('.collapsed').filter('[data-toggle]').each ->
-		closechildren($(@).data("target"))
+	pname = "parent-" + target.split("C")[0].substring(1)
+	submgrs = $(target).filter('[data-group]')
+	submgrs.each ->
+		if $(@).hasClass('in')
+			checkchildren($(@).data("group"))
+			$(@).collapse('hide')
+			kids = $($(@).data("group"))
+			kids.each ->
+				$(@).collapse('hide')
+
+		
+fetchrows =(rowent) ->
+	mid = $(rowent).attr("id").split("-")
+	m = mid[mid.length - 1]
+	icontd = rowent.firstElementChild
+	sclass = $(icontd).data("target").substring(1)
+	org = $(icontd).data("org")
+	$body = window.$("#body-" + m)
+	u = "/users/teamlist"
+	$.ajax(url: u, data: {id: m, tname: sclass, baseorg: "BPS", direct: false}).done (html) ->
+		console.log(html)
+		$body.prepend(html)
+	
 
 $ ->
 	console.log("DOM is Ready") 
-	$(".collapsed").click  -> 
+	$(".collapsed").on "click", ()  -> 
 		t = $(this).data("target")
 		p = $(this).attr("id")
-		console.log(t + " something Clicked")
-		$subs = $(t).not('.collapsed').filter('[data-toggle]')
-		$subs.each ->
-			closechildren($(@).data("target"))
-				
-				
+
+			
+	$(".icon-class").on "click", () ->
+		console.log("Caught Icon Click")
+		row = $(arguments)[0].target.parentElement
+		t = $(this).data("target")
+		p = $(row).attr("id")
+		if $(row).hasClass('pending')
+			$(row).removeClass('pending')
+			fetchrows(row)
+		else		
+			checkchildren(t)
+
+	$('tr').on "show.bs.collapse", (e) ->
+	#	e.preventDefault()
+		console.log("Catch show event")
+		
+	$('tr').on "hide.bs.collapse", (e) ->
+	#	e.preventDefault()
+		console.log("Catch hide event")
+		
+		
+					

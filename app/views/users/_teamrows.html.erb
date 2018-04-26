@@ -1,7 +1,7 @@
 
 <% mgr.subordinates.each do |user| %>
 	<% if !user.ismanager %>
-		<%= tag("tr", class: ['collapse', tname]) %>
+		<%= tag("tr", {class: [tname, 'collapse', 'in']}, true) %>
 			<td></td>
 			<% if isdirect %>
 				<% if user.is_contractor then %>

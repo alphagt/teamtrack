@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+	respond_to :html, :js
 	before_filter :authenticate_user!
 	before_filter :require_manager, :except => [:team, :show, :extendteam]
 	before_filter :require_verified, :except => [:show]
@@ -87,6 +88,9 @@ class UsersController < ApplicationController
 	@user.default_system_id = params[:user][:default_system_id]
 	@user.admin = params[:user][:admin]
 	@user.org = User.find_by_id(params[:user][:manager_id]).org
+	@user.is_contractor = params[:user][:is_contractor]
+	@user.isstatususer = params[:user][:isstatususer]
+	
 	puts "RESULTS:::"
 	puts @user
 	
@@ -354,4 +358,20 @@ class UsersController < ApplicationController
       end
     end
   end
+  
+  #GET /users/teamlist
+  def teamlist
+  	puts "TEAMLIST CONTROLER METHOD"
+  	puts params.to_s
+  	@mgr = User.find(params[:id])
+	@subclass = params[:tname]
+	@baseorg = params[:baseorg]
+	@direct = params[:direct]
+	
+	respond_to do |format|
+		#format.html {render 'teamlist', :layout=>false}
+		format.js {render 'teamlist', :content_type => 'text/html', :layout=>false}
+	end
+  end
+  
 end

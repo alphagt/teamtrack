@@ -122,11 +122,11 @@
           </tr>
         </thead>
 
-        <tbody>
         <% @clevel = 0 %>
 		<% @user_list[0].each do |mgrId| %>
 			<% thismgr = User.find(mgrId) %>
 			<% if mgrId == @manager.id %>
+				<%= tag("tbody", {id: "body-" + mgrId.to_s}, true) %>
 				<% thismgr.subordinates.each do |user| %>
 					<% if !user.ismanager %>
 						<tr>
@@ -165,41 +165,41 @@
 				  <% if @currentmgr.nil? || thismgr.manager == @manager || thismgr.manager.nil? || (oo.first == @manager && thismgr.org != thismgr.manager.org)  %>
 				  	<% @clevel = 0 %>
 				  <% else %>
-				    <% if thismgr.manager == @currentmgr || oo.first == @currentmgr then @clevel += 1 end %>
-				  <% end %>
-
-<!--  				  <p><%= thismgr.name + ": level= " + @clevel.to_s + " direct= " + @direct.to_s %></p>  -->
-
-				  
+				    <% if thismgr.manager == @currentmgr || oo.first == @currentmgr %>
+				    	<% @clevel += 1 %>
+				    <% end %>
+				  <% end %>			  
 				  				  
 				  <% if !thismgr.manager.nil? && @user_list[0].include?(thismgr.manager.id) && thismgr.org == thismgr.manager.org %>
-				  		<% receiver = thismgr.manager.id.to_s + "Content " %>
+				  		<% pid = thismgr.manager.id.to_s  %>
 				  <% else %>
 				  		<% if thismgr.manager.nil? %>
-				  			<% receiver = @user_list[0][0].to_s + "Content " %>
+				  			<% pid = @user_list[0][0].to_s  %>
 				  		<% else %>
 				  			<% if @user_list[0].include?(oo.first.id) %>
-				  				<% receiver = oo.first.id.to_s + "Content " %>
+				  				<% pid = oo.first.id.to_s %>
 				  			<% else %>
-				  				<% receiver = @user_list[0][0].to_s + "Content " %>
+				  				<% pid = @user_list[0][0].to_s %>
 				  			<% end %>
 				  		<% end %>
 				  <% end %>
+				  <% parent = pid + "Content " %>
 				  
 				  <% @currentmgr = thismgr %>
 				  
 				  <% subclass = mgrId.to_s + "Content" %>
 				  
 				  <% if @currentmgr.manager.nil? %>
-				  		<% rclass = "collapsed" %>
+				  		<% rclass = ['collapsed'] %>
 				  <% else %>
-				  			<% if @clevel == 0 then rclass = "collapsed " else rclass = "collapse " + receiver + "collapsed " end %> 
+				  			<% if @clevel == 0 then rclass = ['collapsed','pending'] else rclass = [parent,'pending','collapse', 'collapsed'] end %> 
 				  <% end %>
 				  <% ctarget = "." + mgrId.to_s + "Content" %>
+				  <% if @clevel == 0 then dataparent = "" else dataparent = "parent-" + pid end %>
 				  
-				  <%= tag("tr", class: rclass, data: {toggle: 'collapse', target: ctarget}) %>
+				  <%= tag("tr", id: "parent-" + mgrId.to_s, class: rclass, data: {group: ctarget}) %>
 					 
-					  <%= tag("td", class: 'icon-class') %>
+					  <%= tag("td", class: ['icon-class', 'collapsed'], data: {toggle: 'collapse', target: ctarget, org: @currentmgr.org} ) %>
 					  
 					  
 					  <% if @direct %>
@@ -217,13 +217,15 @@
 							<%= link_to 'View', user_path(@currentmgr), 
 							:title => "View details and assignment history for this manager" %></td>
 				  </tr>
-				  <%= render partial: 'teamlist', locals: {mgr: @currentmgr, tname: subclass, baseorg: baseorg, isdirect: @direct} %>
+				  </tbody>
+				  <%= tag("tbody", {id: "body-" + thismgr.id.to_s}, true) %>
+
 			  
 			  <% end %>  
 		  <% end %>
 		  </tbody>
+		  </tbody>
       </table>
-    </div>
 </div>
   <% end %>
 <br/>

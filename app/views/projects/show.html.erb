@@ -60,8 +60,9 @@
 			<table class="table">
 				<tr>
 					<h5>
+					<th>Org</th>
+					<th>Manager</th>
 					<th>User</th>
-					<th>Fiscal year</th>
 					<th>Week of</th>
 					<th>System</th>
 					<th>Effort</th>
@@ -70,8 +71,9 @@
 				</tr>
 				<% @ahistory.order("set_period_id desc").each do |assignment| %>
 					<tr>
+						<td><%= assignment.user.org %></td>
+						<td><%= if !assignment.user.manager.nil? then assignment.user.manager.name else "N/A" end %></td>
 						<td><%= assignment.user.name %></td>
-						<td><%= assignment.set_period_id.floor %></td>
 						<td><%= period_to_date(assignment.set_period_id) %></td>
 						<td><%= if !assignment.tech_system.nil? then assignment.tech_system.name else "ERROR" end %></td>
 						<td><%= assignment.effort %></td>

@@ -290,9 +290,9 @@ class ProjectsController < ApplicationController
 	
 	#scope the assignment history per params
      if params[:history_scope] == 'all'
-     	@ahistory = @project.assignments.order("set_period_id DESC")
+     	@ahistory = @project.assignments.by_org
      else
-     	@ahistory = @project.assignments.recent(view_context.current_period - 0.06)
+     	@ahistory = @project.assignments.recent(view_context.current_period - 0.06).by_org
 #      	puts "TEST TEST"
 #      	puts (view_context.current_period - 0.06).to_s
      end

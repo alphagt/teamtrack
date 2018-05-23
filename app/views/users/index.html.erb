@@ -29,12 +29,14 @@
 <table class="table">
   <tr>
     <th>Name</th>
+    <th>Emp Type</th>
+    <th>Category</th>
     <th>Default System</th>
-    <th>Admin?</th>
     <th>Manager</th>
-    <th>Works on behalf of</th>
     <th>Reset Pwd</th>
     <% if current_user.admin %>
+    	<th>Admin?</th>
+    	<th>Works on behalf of</th>
     	<th>Status User?</th>
     	<th>Verified</th>
     <% end %>
@@ -46,12 +48,14 @@
     <% else %>
     	<td><%= user.name %></td>
     <% end %>
+    <td><%= user.etype %></td>
+    <td><%= user.category %></td>
     <td><%= if user.default_system_id.nil? then "Undefined" else user.default_system.name end %></td>
-    <td><%= user.admin.to_s %></td>
     <td><%= user.manager.name if user.manager %></td>
-    <td><%= user.impersonates.name if user.impersonates %></td>
     <td><%= link_to 'Reset', reset_user_path(user.id), {:style => "color:blue;text-decoration : underline;"}  %></td>
     <% if current_user.admin %>
+    	<td><%= user.admin.to_s %></td>    
+    	<td><%= user.impersonates.name if user.impersonates %></td>
     	<td><%= user.isstatususer.to_s %></td>
     	<td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
     <% end %>

@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
 	#Optional :scope ('all' - Active and Closed projects, 'active' - active projects only [default]
 	#     Sets the @projects variable for use in generating list of in scope projects for the view
 	if (!params[:scope].present? && !@scopeall) || params[:scope] == 'active' 
-		if @mgr_id == 0 || current_user.isstatususer?
+		if @mgr_id == 0 || (current_user.isstatususer? && @mgr_id == current_user.id)  #called with no org selected by status user
 			uList = []
 			@projects = @allProjects.active
 		else
@@ -71,7 +71,7 @@ class ProjectsController < ApplicationController
 	else
 		@scopeall = true	
 		if params[:scope] == 'all' || @fy != view_context.current_fy()
-			if @mgr_id == 0 || current_user.isstatususer?
+			if @mgr_id == 0 || (current_user.isstatususer? && @mgr_id == current_user.id)
 				uList = []
 				@projects = @allProjects
 			else

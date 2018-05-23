@@ -19,9 +19,9 @@ class User < ActiveRecord::Base
   
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
   
-  scope :fte_only, -> {where('ismanager = false AND (is_contractor = false or is_contractor is null)').order('users.name')}
+  scope :fte_only, -> {where('ismanager = false AND (etype = "FTE")').order('users.name')}
   
-  scope :contract_only, -> {where('ismanager = false AND is_contractor = true').order('users.name')}
+  scope :contract_only, -> {where('etype = "Contractor"').order('users.name')}
   
   scope :for_org, -> (org){where('org = ?', org).order('users.id')}
   
@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :password, :admin, :password_confirmation, :remember_me, :is_contractor 
   attr_accessible :default_system, :default_system_id, :verified, :isstatususer, :org, :orgowner
-  attr_accessible :ismanager, :impersonates, :impersonate_manager, :manager, :manager_id
+  attr_accessible :ismanager, :impersonates, :impersonate_manager, :manager, :manager_id, :etype, :category
   # def initialize(user)
 # 
 # 	  user ||= User.new # guest user (not logged in)

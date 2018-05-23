@@ -18,6 +18,18 @@
 			<%= f.association :manager, :as => :select, :collection => User.managers_only, 
 				:label_method => :name %>
 			<%= f.association :default_system, :as => :select %>
+			<div class="control-group select optional user_type">
+				<label class="select optional control-label" for="user_type">Employee Type:</label>
+				<div class="controls">
+					<%= f.select(:etype, options_for_select(["FTE", "Contractor", "Intern"], @user.etype), :required => true)  %>
+				</div>
+			</div>
+			<div class="control-group select optional user_category">
+				<label class="select optional control-label" for="user_category">Employee Type:</label>
+				<div class="controls">
+					<%= f.select(:category, options_for_select(["R&D", "Program-Product", "Operations", "Overhead"], @user.category), :required => true)  %>
+				</div>
+			</div>
 			<br>
 			<div class="form-actions">
 		  		<div style="float:left">
@@ -36,9 +48,7 @@
 					<%= f.input :admin, inline_label: 'Is Admin', label: false %>
 					<%= f.input :ismanager,inline_label: 'Is Manager', label: false %>
 					<%= f.input :isstatususer, inline_label: 'Is Status User', label: false %>
-					<%= f.input :orgowner, inline_label: 'Owns this Org', label: false %>
-					<%= f.input :is_contractor, inline_label: 'Is Contractor', label: false %>
-			
+					<%= f.input :orgowner, inline_label: 'Owns this Org', label: false %>	
 				</div>
 			<% end %>
 		  </div>

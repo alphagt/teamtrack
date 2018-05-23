@@ -94,7 +94,8 @@ class AssignmentsController < ApplicationController
 				:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
 				:default_system_id => params[:assignment][:tech_sys_id], :admin => false,
 				:org => current_user.org,
-				:is_contractor => params[:newuser][1][:is_contractor]
+				:etype => params[:newuser][0][:etype],
+				:category => params[:newuser][0][:category]
 			@nUser.save
 			puts "INLINE USER CREATED"
 			puts @nUser.to_s

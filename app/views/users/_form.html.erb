@@ -11,12 +11,23 @@
 			<%= f.hidden_field :password, :value => "abc123" %>
 			<%= f.association :manager, :as => :select, :collection => User.managers_only, :label_method => :name %>
 			<%= f.association :default_system, :as => :select  %>
+			<div class="control-group select optional user_type">
+				<label class="select optional control-label" for="user_type">Employee Type:</label>
+				<div class="controls">
+					<%= f.select(:etype, options_for_select(["FTE", "Contractor", "Intern"], @user.etype), :required => true)  %>
+				</div>
+			</div>
+			<div class="control-group select optional user_category">
+				<label class="select optional control-label" for="user_category">Employee Category:</label>
+				<div class="controls">
+					<%= f.select(:category, options_for_select(["R&D", "Product-Program", "Operations", "Overhead"], @user.category), :required => true)  %>
+				</div>
+			</div>
 			<% if current_user.admin %>
 				<div class="checkbox">
-					<%= f.input :ismanager, :type => 'checkbox', :class => 'form-control', :id => 'mgrCB' %>
-					<%= f.input :admin, :type => 'checkbox', :class => 'form-control', :id => 'adminCB' %>
-					<%= f.input :isstatususer, :type => 'checkbox', :class => 'form-control', :id => 'statusCB' %>
-					<%= f.input :is_contractor, :type => 'checkbox', :class => 'form-control', :id => 'contractorCB' %>
+					<%= f.input :ismanager, inline_label: 'Is Manager', label: false %>
+					<%= f.input :admin, inline_label: 'Is Admin', label: false %>
+					<%= f.input :isstatususer, inline_label: 'Is Status User', label: false %>
 				</div>
   			<% end %>
 			<div class="form-actions">

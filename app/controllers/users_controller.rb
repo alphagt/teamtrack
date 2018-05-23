@@ -88,8 +88,10 @@ class UsersController < ApplicationController
 	@user.default_system_id = params[:user][:default_system_id]
 	@user.admin = params[:user][:admin]
 	@user.org = User.find_by_id(params[:user][:manager_id]).org
-	@user.is_contractor = params[:user][:is_contractor]
+# 	@user.is_contractor = params[:user][:is_contractor]
 	@user.isstatususer = params[:user][:isstatususer]
+	@user.etype = params[:user][:etype]
+	@user.category = params[:user][:category]
 	
 	puts "RESULTS:::"
 	puts @user

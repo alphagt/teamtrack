@@ -4,7 +4,7 @@
 		<%= tag("tr", {class: [tname, 'collapse', 'in']}, true) %>
 			<td></td>
 			<% if isdirect == true || isdirect == "true" %>
-				<% if user.is_contractor then %>
+				<% if user.etype != "FTE" then %>
 					<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
 				<% else %>
 					<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>

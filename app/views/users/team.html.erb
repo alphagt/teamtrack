@@ -78,7 +78,7 @@
 						<% if !user.ismanager %>
 							<tr>
 								<% if @currentmgr.org == baseorg %>
-									<% if user.is_contractor then %>
+									<% if user.etype != "FTE" then %>
 										<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
 									<% else %>
 										<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>
@@ -134,7 +134,7 @@
 						<tr>
 							<td></td>
 							<% if @user_list[3].include? mgrId %>
-								<% if user.is_contractor then %>
+								<% if user.etype != "FTE" then %>
 									<td class="warning"><p class="text-right"><%= link_to user.name + "^", user_path(user), {:title => "Contractor", :style => "text-decoration : underline;"} %></p></td>
 								<% else %>
 									<td class="success"><p class="text-right"><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"} %></p></td>

@@ -23,7 +23,11 @@ class User < ActiveRecord::Base
   
   scope :contract_only, -> {where('etype = "Contractor"').order('users.name')}
   
+  scope :intern_only, -> {where('etype = "Intern"').order('users.name')}
+  
   scope :for_org, -> (org){where('org = ?', org).order('users.id')}
+  
+  scope :for_category, -> (cat){where('category =?', cat).order('users.id')}
   
   scope :has_current_assignments, -> (speriod){includes(:assignments).where(:assignments => {set_period_id: speriod})}
   

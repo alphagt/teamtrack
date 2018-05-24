@@ -25,7 +25,7 @@
 				</div>
 			</div>
 			<div class="control-group select optional user_category">
-				<label class="select optional control-label" for="user_category">Employee Type:</label>
+				<label class="select optional control-label" for="user_category">Employee Category:</label>
 				<div class="controls">
 					<%= f.select(:category, options_for_select(["R&D", "Program-Product", "Operations", "Overhead"], @user.category), :required => true)  %>
 				</div>

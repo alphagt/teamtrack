@@ -24,18 +24,51 @@
 				:showEx => 'true')  %></dt>
 	<% end %>
 </table>
+
 <h4><%= "Week " + week_from_period(@target_period).to_s + " Stats:" %></h4>
 <h5>Total Available: <small><%= @tm_count.to_s %></small></h5>
-<h5>Contractors: <small><%= @user_list[2] %></small></h5>
+<table class="table-bordered table-condensed">
+	<tr>
+		<th/>
+		<th>FTE</th>
+		<th>Temp</th>
+		<th>Intern</th>
+	</tr>
+	<tr>
+		<td>R&D</td>
+		<td><%= @resstats["R&D"]["FTE"] %></td>
+		<td><%=@resstats["R&D"]["Temp"]%></td>
+		<td><%=@resstats["R&D"]["Intern"]%></td>
+	</tr>
+	<tr>
+		<td>PGM</td>
+		<td><%=@resstats["PGM"]["FTE"]%></td>
+		<td><%=@resstats["PGM"]["Temp"]%></td>
+		<td><%=@resstats["PGM"]["Intern"]%></td>
+	</tr>
+	<tr>
+		<td>Ops</td>
+		<td><%=@resstats["Ops"]["FTE"]%></td>
+		<td><%=@resstats["Ops"]["Temp"]%></td>
+		<td><%=@resstats["Ops"]["Intern"]%></td>
+	</tr>
+	<tr>
+		<td>Other</td>
+		<td><%=@resstats["Other"]["FTE"]%></td>
+		<td><%=@resstats["Other"]["Temp"]%></td>
+		<td><%=@resstats["Other"]["Intern"]%></td>
+	</tr>
+</table>
+
+<!-- <h5>Contractors: <small><%= @user_list[2] %></small></h5> -->
 <h5><%= "Wk-" + week_from_period(@target_period).to_s + " Allocated:" %><small><%= @total_effort.to_s + " of " + @tm_count.to_s %></small></h5>
-<h5>People Managers:  <small><%= @user_list[0].count %></small></h5>
+<!-- <h5>People Managers:  <small><%= @user_list[0].count %></small></h5> -->
 <h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
-<br/>
+
 <%= image_tag(Gchart.pie(:title => 'Effort Allocation', 
 		:legend => @clabels, :legend_position => 'bottom', :data => @cvals, 
 		:size => '140x200', :chart_background => 'CCCCCC', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 
-<br/>
 <br/>
 <h5><%= link_to 'Refresh Stats', team_user_path(:id => @manager.id, :nocache => 'true'), 
 	{:style => "color:blue;text-decoration : underline;"} %></h5>

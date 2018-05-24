@@ -192,6 +192,15 @@ class UsersController < ApplicationController
 	puts "AggAssignments -- " + c_assignments.count.to_s
 	#Calulations for week summary
 	
+	#build hash of resource statistics (probably need to cache this later)
+	@resstats = Hash.new()
+	resset = User.where("id IN (?)", fullulist)
+	@resstats["R&D"] = {"Intern" => resset.for_category("R&D").intern_only.count, "FTE" => resset.for_category("R&D").fte_only.count, "Temp" => resset.for_category("R&D").contract_only.count} 
+	@resstats["PGM"] = {"Intern" => resset.for_category("Program-Product").intern_only.count,"FTE" => resset.for_category("Program-Product").fte_only.count, "Temp" => resset.for_category("Program-Product").contract_only.count} 
+	@resstats["Ops"] = {"Intern" => resset.for_category("Operations").intern_only.count,"FTE" => resset.for_category("Operations").fte_only.count, "Temp" => resset.for_category("Operations").contract_only.count} 
+	@resstats["Other"] = {"Intern" => resset.for_category("Overhead").intern_only.count,"FTE" => resset.for_category("Overhead").fte_only.count, "Temp" => resset.for_category("Overhead").contract_only.count} 
+	puts @resstats.to_s
+	
 	@overhead_effort = 0
 	@total_effort = 0
 	cache_hit = true	

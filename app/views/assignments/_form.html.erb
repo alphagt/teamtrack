@@ -16,25 +16,27 @@
 					:class => "form-control", :id => "pickUser"} end %>
 			
 			<br>
-			<%= f.label "OPTIONAL NEW USER ENTRY" %>
-			<br/>
-			<div class="pull-right">
-				<%=	fields_for "newuser[]" do |user_fields| %> 
-					Name: <%= user_fields.text_field :name %>
-					<div class="control-group select optional user_type">
-						<label class="select optional control-label" for="user_type">Employee Type:</label>
-						<div class="controls">
-							<%= user_fields.select :etype, [['FTE'],['Contractor'],['Intern']] %>
+			<% if action_name == "new" then %>
+				<%= f.label "OPTIONAL NEW USER ENTRY" %>
+				<br/>
+				<div class="pull-right">
+					<%=	fields_for "newuser[]" do |user_fields| %> 
+						Name: <%= user_fields.text_field :name %>
+						<div class="control-group select optional user_type">
+							<label class="select optional control-label" for="user_type">Employee Type:</label>
+							<div class="controls">
+								<%= user_fields.select :etype, [['FTE'],['Contractor'],['Intern']] %>
+							</div>
 						</div>
-					</div>
-					<div class="control-group select optional user_category">
-						<label class="select optional control-label" for="user_category">Employee Category:</label>
-						<div class="controls">
-							<%= user_fields.select :category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
+						<div class="control-group select optional user_category">
+							<label class="select optional control-label" for="user_category">Employee Category:</label>
+							<div class="controls">
+								<%= user_fields.select :category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
+							</div>
 						</div>
-					</div>
-				<% end %> 
-			</div>
+					<% end %> 
+				</div>
+			<% end %>
 			<br/>
 			<br/>	
 			<%= f.input :effort, :autofocus => true %>

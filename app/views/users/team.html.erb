@@ -191,7 +191,7 @@
 				  	<% if @currentmgr.nil? %>
 				  		<% oo = [@manager] %>
 				  	<% else %>
-				  		<% oo = [@currentmgr] %>
+				  		<% oo = [thismgr.manager] %>
 				  	<% end %>
 				  <% else %>
 				  	<% oo = User.where("orgowner = true and org = ?", thismgr.org) %>

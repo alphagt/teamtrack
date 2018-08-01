@@ -261,7 +261,13 @@ module ApplicationHelper
 		end
 		User.managers_only.where("orgowner = true").each do  |u|
 			if u.manager.nil? || !u.manager.orgowner
-				@list <<  [u.name + " (" + u.org + ")", u.id]
+				if u.name.length > 18 then
+					puts "TRUNCATING ORG OWNER NAME"
+					tname = u.name.truncate(18)
+				else
+					tname = u.name
+				end
+				@list <<  [tname + " (" + u.org + ")", u.id]
 			end
 		end	
 		@list

@@ -42,10 +42,10 @@
 </div>	
 <div class="row">
 	<div class="col-md-12 col-centered">	
-		<h3>Project List</h3>
+		<h3>Initiatives List</h3>
 
 		<% if @projects.count == 0 %>
-			<h4>No Projects for this Initiative</h4>
+			<h4>No Initiatives for this Theme</h4>
 	
 		<% else %>
 			<table class="table">
@@ -60,7 +60,7 @@
 				<th>FTE Equivalents</th>
 				<% if current_user.admin %>
 					<th>Status</th>
-					<th>Key Project<th>
+					<th>Key Initiative<th>
 				<% end %>
 			  </tr>
 			<% @projects.each do |project|  %>

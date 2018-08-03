@@ -1,4 +1,4 @@
-<h1>Projects</h1>
+<h1>Initiatives</h1>
 <br />
 <% content_for :nav do %>
 	<%  render partial: "layouts/navigation", locals: {active: "projects"} %>
@@ -10,7 +10,7 @@
 <table class="table">
 	<% if current_user.admin %>
 		<tr>
-		<td class="danger"><%= link_to 'New Project', new_project_path %></td>
+		<td class="danger"><%= link_to 'New Initiative', new_project_path %></td>
 		<tr>
 		<td class="danger"><%= link_to 'Include Closed', projects_path(:scope => "all", :org => @mgr_id, :fy => @fy) %></td>
 	<% end %>
@@ -35,7 +35,7 @@
 <div class="row">
 	<div class="col-md-12 col-centered">
 		<h4><b><%= if @scopeall then "All" else "Active" end %>
-			<%= " Projects for Org: " %>
+			<%= " Initiatives for Org: " %>
 			<%= if @mgr_id == 0 then "All Orgs - FY" else User.find_by_id(@mgr_id).org + " - FY" end %>
 			<%= @fy.to_s %></b>
 		</h4>

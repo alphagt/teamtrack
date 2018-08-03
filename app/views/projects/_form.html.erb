@@ -36,12 +36,12 @@
 				</div>
 		</div>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),
-			:label_method => :name, label: "CT Priority" %>
+			:label_method => :name, label: "CT Theme" %>
 		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
 			input_html: {value: @project.fixed_resource_budget || '0'} %>
 		<% if current_user.admin %>
 			<div class="checkbox">
-				<%= f.input :keyproj,  :type => 'checkbox', inline_label: 'Key Project', label: false %>
+				<%= f.input :keyproj,  :type => 'checkbox', inline_label: 'Key Initiative', label: false %>
 			</div>
 					
   		<% end %> 

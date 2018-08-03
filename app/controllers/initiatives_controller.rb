@@ -10,16 +10,16 @@ class InitiativesController < ApplicationController
 		if params[:fy].downcase == 'all'
 			@initiatives = Initiative.all
     		@fy = 'All'
-    		@summary = 'Initiatives for all Fiscal Years - '
+    		@summary = 'Themes for all Fiscal Years - '
     	else
 			@initiatives = Initiative.active.for_year(params[:fy])
     		@fy = params[:fy].to_i
-    		@summary = 'Initiatives for FY ' + @fy.to_s + ' - '
+    		@summary = 'Themes for FY ' + @fy.to_s + ' - '
     	end
 	else
 		@initiatives = Initiative.active.for_year(view_context.current_fy)
     	@fy = view_context.current_fy
-    	@summary = 'Initiatives for FY ' + @fy.to_s + ' - '
+    	@summary = 'Theme for FY ' + @fy.to_s + ' - '
 	end
     
     puts 'Initiatives#Index - count'

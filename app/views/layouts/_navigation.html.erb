@@ -19,9 +19,9 @@
     		<li>
     	<% end %>
       	<% if current_user.isstatususer? %> 
-      		<%= link_to('Projects', projects_path(:scope => "active")) %>
+      		<%= link_to('Initiatives', projects_path(:scope => "active")) %>
       	<% else %>
-      		<%= link_to('Projects', projects_path) %>
+      		<%= link_to('Initiatives', projects_path) %>
       	<% end %>
       	</li>
       	<% if active == "systems" %>
@@ -37,7 +37,7 @@
     		<% else %>
     			<li>
     		<% end %>
-      		<%= link_to('Initiatives', initiatives_path) %>
+      		<%= link_to('Themes', initiatives_path) %>
     		</li>
     	<% end %>
     	<% if current_user.admin? %>

@@ -30,7 +30,7 @@
 		<p><b>Category: </b><%= @project.category %></p>
 		<p><b>Stakeholder: </b><%= @project.psh %></p>
 		<p><b>RTM: </b><%= @project.rtm %></p>
-		<p><b>CT Priority: </b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>	
+		<p><b>CT Theme: </b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>	
 		<p><b>Resource Plan: </b><%= @project.fixed_resource_budget %></p>
 	</div>
 	<div class="col-md-6">

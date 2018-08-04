@@ -2,7 +2,7 @@ class Initiative < ActiveRecord::Base
 has_many :projects
   	
 scope :active, -> {where('active = true')}
-scope :for_year, -> (y){where('fiscal = ?', y)}
+scope :for_year, -> (y){where("fiscal = ? or name IN('Overhead','Basics')", y)}
 
 	def total_effort_weeks(cWeek)
 		@ytd_weeks = 0

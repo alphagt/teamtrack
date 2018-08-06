@@ -75,9 +75,9 @@ module ProjectsHelper
 # 			end
 		#**********
 		@fixtotal = Assignment.where("project_id = ? and is_fixed = true and set_period_id between ? and ?",
-			proj.id, @pFy.to_f + 0.01, @pFy.to_f + (@fWeek.to_f/100)).sum(:effort).round(1)
+			proj.id, @pFy.to_f, @pFy.to_f + ((@fWeek+1).to_f/100)).sum(:effort).round(1)
 		@nitrototal = Assignment.where("project_id = ? and is_fixed = false and set_period_id between ? and ?",
-			proj.id, @pFy.to_f + 0.01, @pFy.to_f + (@fWeek.to_f/100)).sum(:effort).round(1)
+			proj.id, @pFy.to_f, @pFy.to_f + ((@fWeek+1).to_f/100)).sum(:effort).round(1)
 		
 		if sum == 1 then
 			@output = (@fixtotal + @nitrototal).round(1).to_s

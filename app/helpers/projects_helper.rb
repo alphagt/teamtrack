@@ -62,16 +62,23 @@ module ProjectsHelper
 		puts "fweek = " + @fWeek.to_s
 		#ReDesign The following ....
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
-		for iWeek in 1..@fWeek
-			@cP = @pFy.to_f + (iWeek.to_f / 100)
-			Assignment.where(:project_id => proj.id, :set_period_id => @cP.round(2)).each do |asn|
-				if asn.is_fixed then
-					@fixtotal = (@fixtotal + asn.effort).round(1)
-				else
-					@nitrototal = (@nitrototal + asn.effort).round(1)
-				end
-			end
-		end
+		#Deprecated IMPL
+	# 		for iWeek in 1..@fWeek
+# 				@cP = @pFy.to_f + (iWeek.to_f / 100)
+# 				Assignment.where(:project_id => proj.id, :set_period_id => @cP.round(2)).each do |asn|
+# 					if asn.is_fixed then
+# 						@fixtotal = (@fixtotal + asn.effort).round(1)
+# 					else
+# 						@nitrototal = (@nitrototal + asn.effort).round(1)
+# 					end
+# 				end
+# 			end
+		#**********
+		@fixtotal = Assignment.where("project_id = ? and is_fixed = true and set_period_id between ? and ?",
+			proj.id, @pFy.to_f + 0.01, @pFy.to_f + (@fWeek.to_f/100)).sum(:effort).round(1)
+		@nitrototal = Assignment.where("project_id = ? and is_fixed = false and set_period_id between ? and ?",
+			proj.id, @pFy.to_f + 0.01, @pFy.to_f + (@fWeek.to_f/100)).sum(:effort).round(1)
+		
 		if sum == 1 then
 			@output = (@fixtotal + @nitrototal).round(1).to_s
 		else

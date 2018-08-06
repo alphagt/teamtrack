@@ -52,6 +52,12 @@ class Project < ActiveRecord::Base
 		#puts 'CURRENT CWEEK Number: '
 		#puts  @cweek_number
 		#to fix - need to do a range query then sum effort instead of interating
+		
+		@ytd = assignments.where("set_period_id > ? and set_period_id < ?", 
+			@fyear.to_f + 0.01, @fyear.to_f + @cweek_number.to_f/100).sum(:effort)
+		puts "SUM RESULT:  ?", @ytd.to_s
+		
+		#Deprecated IMPL
 		for iWeek in 1..@cweek_number
 			@cP = @fyear.to_f + (iWeek.to_f / 100)
 			assignments.where(:set_period_id => @cP.round(2)).each do |asn|
@@ -59,6 +65,7 @@ class Project < ActiveRecord::Base
 				@ytd += asn.effort
 			end
 		end
+		#**********
 		@ytd.to_d.round(2)
 	end
 end

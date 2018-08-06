@@ -30,8 +30,26 @@ class InitiativesController < ApplicationController
     
     cweek = view_context.current_week()
     
-    @cdata = @initiatives.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
-    	e.current_effort_weeks(view_context.current_period).to_d.round]}
+#     @cdata = @initiatives.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
+#     	e.current_effort_weeks(view_context.current_period).to_d.round]}
+    
+    #Cache Implemenation
+    ckey = "InitativesData-" + cweek.to_s
+  	if params[:nocache] == 'true' then
+		use_cache = false
+	else
+		use_cache = true
+	end
+	cache_hit = true
+
+	@cdata = Rails.cache.fetch("#{ckey}", expires_in: 4.days, force: !use_cache) do 
+			puts "Write initiative data to cache: " + ckey
+			cache_hit = false
+			Rails.cache.delete_matched("#{ckey}")
+			 @cdata = @initiatives.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
+    			e.current_effort_weeks(view_context.current_period).to_d.round]}
+		end
+    #****************
     puts @cdata
     @clabels = @cdata.map {|i| i[0]}
     @cvals= @cdata.map {|i| i[1]}

@@ -25,6 +25,7 @@ scope :for_year, -> (y){where("fiscal = ? or name IN('Overhead','Basics')", y)}
 	
 	def cfiscal
 		if self.fiscal.nil? then
+			
 			Date.today.year
 		else
 			self.fiscal

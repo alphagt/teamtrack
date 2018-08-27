@@ -18,21 +18,30 @@
 		<%= f.input :description, inline_label: 'Description:', label: "Description", :required => true %>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<div class="control-group select optional project_category">
-			<label class="select optional control-label" for="projeect_category">Category:</label>
+			<label class="select optional control-label" for="projeect_category">Resource Category:</label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Sec/Comp", "Overhead"], @project.category), :required => true)  %>
+					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Sec/Comp", "Overhead"], 
+					@project.category), :required => true)  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_category">
 			<label class="select optional control-label" for="projeect_category">Primary RTM:</label>
 				<div class="controls">
-					<%= f.select(:rtm, options_for_select(["", "Individual", "Mid-Market", "Enterprise", "All", "B2B"], @project.rtm))  %>
+					<%= f.select(:rtm, options_for_select(["", "Individual", "Mid-Market", "Enterprise", "All", "B2B"], 
+					@project.rtm))  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_psh">
 			<label class="select optional control-label" for="projeect_psh">Primary Stakeholder:</label>
 				<div class="controls">
 					<%= f.select(:psh, options_for_select(["", "DME", "DMA", "DC", "Adobe", "SG&A", "NA"], @project.psh))  %>
+				</div>
+		</div>
+		<div class="control-group select optional project_ctpriority">
+			<label class="select optional control-label" for="project_ctpriority">CT Priority:</label>
+				<div class="controls">
+					<%= f.select(:ctpriority, options_for_select(["", "CTA-SubPri1", "CTA-SubPri2", "CTB-SubPri1", 
+					"CTB-SubPri2", "CTB-SubPri3"], @project.psh))  %>
 				</div>
 		</div>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),

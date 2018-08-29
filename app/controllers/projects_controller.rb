@@ -182,6 +182,17 @@ class ProjectsController < ApplicationController
 # 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Enterprise").for_users(uList).pluck(:id)).sum(:effort)
 # 		puts ent_effort
 		
+		#CT Priority Chart Data
+		cweek = view_context.current_week
+		puts "Current Week is"
+		puts cweek
+		@ctpdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
+		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group('projects.ctpriority').references(:project).sum(:effort).map{|a|[a[0],(a[1].to_f/cweek).round(2)]}
+
+		puts @ctpdata.to_s
+		#End CT Priority Chart section
+		
+		
 		rtmeffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
 			Project.for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}

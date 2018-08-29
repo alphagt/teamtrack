@@ -40,8 +40,13 @@
 		<div class="control-group select optional project_ctpriority">
 			<label class="select optional control-label" for="project_ctpriority">CT Priority:</label>
 				<div class="controls">
-					<%= f.select(:ctpriority, options_for_select(["", "CTA-SubPri1", "CTA-SubPri2", "CTB-SubPri1", 
-					"CTB-SubPri2", "CTB-SubPri3"], @project.psh))  %>
+					<%= f.select(:ctpriority, options_for_select(["NA", "Commerce-Conversion", "Commerce-Enhancements", "Commerce-GlobalCoverage", 
+						"Commerce-MaintBreakFix", "Commerce-OpsExcellence", "Commerce-PlatformOps", "Commerce-Retention", "Commerce-EnterpriseFeatures",
+						"CustomerExp-Consumer-AdminExp", "CustomerExp-Consumer-SupportExp", "CustomerExp-Consumer-Enhancements", 
+						"CustomerExp-Consumer-MaintBreakFix", "CustomerExp-Core-AdminExp", "CustomerExp-Core-SupportExp", "CusomterExp-Core-Enhancements",
+						"CustomerExp-Core-MaintBreakFix", "CusotmerExp-Ent-AdminExp", "CustomerExp-Ent-SupportExp", "CustomerExp-Ent-Enhancements",
+						"CustomerExp-Ent-MainBreakFix", "Identity-CorePlatform", "Identity-EnterpriseUpAndRunning", "Identity-SecuritySvcs",
+						"Identity-SignUpSignInExp"], @project.ctpriority))  %>
 				</div>
 		</div>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),

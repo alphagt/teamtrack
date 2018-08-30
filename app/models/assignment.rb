@@ -15,6 +15,7 @@ class Assignment < ActiveRecord::Base
   scope :no_overhead, -> {joins(:project).where("projects.category NOT IN ('Overhead')")} 
   scope :recent, -> (min_period) {where("set_period_id > ?", min_period).order("assignments.set_period_id DESC")}
   scope :by_org, -> {joins(:user).order("set_period_id desc, users.org, users.manager_id")}
+  scope :fte_only, -> {joins(:user).where("users.is_contractor != true or users.is_contractor is null")}
   
   def self.with_project_info
   	self.joins(:project).select("assignments.*, projects.category as category, projects.owner as proj_owner")

@@ -186,7 +186,7 @@ class ProjectsController < ApplicationController
 		cweek = view_context.current_week
 		puts "Current Week is"
 		puts cweek
-		@ctpdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
+		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group('projects.ctpriority').references(:project).sum(:effort).map{|a|[a[0],(a[1].to_f/cweek).round(2)]}
 
 		puts @ctpdata.to_s

@@ -7,7 +7,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments.json
   def index
 
-  	@assignments = Assignment.where('set_period_id >= ?', view_context.current_period().to_f().floor).order("project_id,set_period_id DESC,user_id")
+  	@assignments = Assignment.where('set_period_id = ?', view_context.current_period()).order("project_id,set_period_id DESC,user_id")
 	@manager = current_user
     respond_to do |format|
       format.html # index.html.erb

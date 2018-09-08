@@ -11,8 +11,6 @@ class AssignmentsController < ApplicationController
 	else
 		@wk = view_context.current_week().to_i
 	end
-	puts "target week for Assignments"
-	puts @wk
 	
 	@tperiod = view_context.current_fy().to_f + (@wk.fdiv(100).round(3))
 	puts "Target Period for Assignments"

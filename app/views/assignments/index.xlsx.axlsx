@@ -1,0 +1,15 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
+
+	sheet.add_row ["fiscal Yr", "Fiscal Wk", "TeamTrack Org", "Employee", "Employee Type", 
+		"Weeks Effort", "Project", "PRP Theme", "Route To Market", "Stakeholder Org", "Sub-Priority",
+		"Allocation Type"]
+		
+	@assignments.each do |a|
+		sheet.add_row [current_fy, @wk, a.user.org, a.user.name, a.user.etype, a.effort,
+			a.project.name, a.project.initiative.name, a.project.rtm, a.project.psh, 
+			a.project.ctpriority, a.project.category ]
+	end
+
+end

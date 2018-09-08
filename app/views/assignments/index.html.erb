@@ -5,12 +5,16 @@
 
 <% content_for :sidebarwide do %>
 <table class="table">
+	<tr>
 	<td class="danger">
 		<label for="t_week">Target Week:</label>
 		<%= select_tag "t_week", options_for_select(w_list(), @wk) %>
 	</td>
+	<tr>
+		<td class="danger">
+			<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx) %>
+		</td>	
 </table>
-
 <% end %>
 
 <% content_for :main1 do %>

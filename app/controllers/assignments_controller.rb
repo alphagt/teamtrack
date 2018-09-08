@@ -11,6 +11,8 @@ class AssignmentsController < ApplicationController
 	else
 		@wk = view_context.current_week().to_i
 	end
+	@fname = "attachment; filename=\"TTAssignmentsWeek" + @wk.to_s + ".xlsx\""
+	puts @fname
 	
 	@tperiod = view_context.current_fy().to_f + (@wk.fdiv(100).round(3))
 	puts "Target Period for Assignments"
@@ -21,7 +23,7 @@ class AssignmentsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @assignments }
-      format.xlsx
+      format.xlsx {response.headers['Content-Disposition'] = @fname}
     end
   end
 

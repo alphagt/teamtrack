@@ -7,8 +7,13 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 		"Allocation Type"]
 		
 	@assignments.each do |a|
+		if a.project.initiative.present? then
+			iname = a.project.initiative.name
+		else
+			iname = "NA"
+		end
 		sheet.add_row [current_fy, @wk, a.user.org, a.user.name, a.user.etype, a.effort,
-			a.project.name, a.project.initiative.name, a.project.rtm, a.project.psh, 
+			a.project.name, iname, a.project.rtm, a.project.psh, 
 			a.project.ctpriority, a.project.category ]
 	end
 

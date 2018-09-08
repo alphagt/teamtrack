@@ -6,8 +6,19 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-
-  	@assignments = Assignment.where('set_period_id = ?', view_context.current_period()).order("project_id,set_period_id DESC,user_id")
+	if params[:wk].present?
+		@wk = params[:wk].to_i
+	else
+		@wk = view_context.current_week().to_i
+	end
+	puts "target week for Assignments"
+	puts @wk
+	
+	@tperiod = view_context.current_fy().to_f + (@wk.fdiv(100).round(3))
+	puts "Target Period for Assignments"
+	puts @tperiod.to_s
+		
+  	@assignments = Assignment.where('set_period_id = ?', @tperiod).order("project_id,set_period_id DESC,user_id")
 	@manager = current_user
     respond_to do |format|
       format.html # index.html.erb

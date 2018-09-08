@@ -254,6 +254,10 @@ module ApplicationHelper
 		@list
 	end
 	
+	def w_list()
+		@list = ('1' .. '52').to_a
+	end
+	
 	def org_mgrs_list(option_all = true)
 		@list = []
 		if option_all

@@ -6,3 +6,7 @@ $(document).on "focus", "[data-behaviour~='datepicker']", (e) ->
  - format: "dd-mm-yyyy"
  - weekStart: 1
  - autoclose: true
+ 
+$(document).ready ->
+  $("#t_week").change ->
+    window.location.search = 'wk=' + (this).value

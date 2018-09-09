@@ -1,0 +1,18 @@
+<%= simple_form_for(@setting) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-group">
+  	<row>
+  		<div class="col-md-10">
+  			<%= f.input :key %>
+  			<%= if action_name == "edit" then f.input :ordinal end %>
+    		<%= f.input :value %>
+  		</div>
+	  	<div class="form-actions">
+			<div style="float:left">
+				<%= f.button :submit %>
+			</div>
+	  	</div>
+  	</row>
+  </div>
+<% end %>

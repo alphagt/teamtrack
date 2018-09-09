@@ -1,0 +1,15 @@
+<h1>New Setting</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "settings"} %>
+<% end %>
+
+<% content_for :main1 do %>
+<%= render 'form' %>
+<% end %>
+
+<% content_for :sidebar do %>
+<table class="table">
+<tr>
+	<td class="danger"><%= link_to 'Back', settings_path %></td>
+</table>
+<% end %>

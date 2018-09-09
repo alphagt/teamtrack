@@ -1,0 +1,37 @@
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "settings"} %>
+<% end %>
+
+<% content_for :sidebar do %>
+	<table class="table">
+	<% if current_user.admin %>
+		<tr>
+			<td class="danger"><%= link_to 'Edit', edit_setting_path(@setting) %></td> 
+	<% end %>
+	<tr>
+		<% if current_user.isstatususer? %>
+			<td class="danger"><%= link_to 'Back', settings_path(:scope => "active") %></td>
+		<% else %>
+			<td class="danger"><%= link_to 'Back', settings_path %></td>
+		<% end %>
+	</table>
+<% end %> 
+
+<% content_for :main1 do %>
+<div class="row">
+	<div class="col-md-12 col-centered">
+		<p>
+		  <strong>Key:</strong>
+		  <%= @setting.key %>
+		</p>
+		<p>
+		  <strong>Ordinal:</strong>
+		  <%= @setting.ordinal %>
+		</p>
+		<p>
+		  <strong>Value:</strong>
+		  <%= @setting.value %>
+		</p>
+	</div>
+</div>
+<% end %>

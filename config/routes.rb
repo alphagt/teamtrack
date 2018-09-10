@@ -1,5 +1,6 @@
 TeamTrack::Application.routes.draw do
 
+  resources :settings
   resources :initiatives do
   	get 'archive', :on => :member
   end
@@ -33,6 +34,7 @@ TeamTrack::Application.routes.draw do
   	get 'extendCurrentAssignment', :on => :member
   	post 'createemp', :on => :collection
   	post 'exit', :on => :member
+  	put 'update_accts', :on => :member
   end 
   #match 'users/emp/create' => 'users#createemp', :as => :createemp
   # The priority is based upon order of creation:

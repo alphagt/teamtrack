@@ -20,21 +20,21 @@
 		<div class="control-group select optional project_category">
 			<label class="select optional control-label" for="projeect_category">Resource Category:</label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(["HQA", "New Value", "RTB", "Sec/Comp", "Overhead"], 
+					<%= f.select(:category, options_for_select(get_picklist("category"), 
 					@project.category), :required => true)  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_category">
 			<label class="select optional control-label" for="projeect_category">Primary RTM:</label>
 				<div class="controls">
-					<%= f.select(:rtm, options_for_select(["", "Individual", "Mid-Market", "Enterprise", "All", "B2B"], 
+					<%= f.select(:rtm, options_for_select(get_picklist("rtm"), 
 					@project.rtm))  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_psh">
 			<label class="select optional control-label" for="projeect_psh">Primary Stakeholder:</label>
 				<div class="controls">
-					<%= f.select(:psh, options_for_select(["", "DME", "DMA", "DC", "Adobe", "SG&A", "NA"], @project.psh))  %>
+					<%= f.select(:psh, options_for_select(get_picklist("psh"), @project.psh))  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_ctpriority">

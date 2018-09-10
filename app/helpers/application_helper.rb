@@ -258,6 +258,10 @@ module ApplicationHelper
 		@list = ('1' .. '52').to_a
 	end
 	
+	def get_picklist(key)
+		Setting.for_key(key).pluck(:value)
+	end
+	
 	def org_mgrs_list(option_all = true)
 		@list = []
 		if option_all

@@ -2,17 +2,21 @@ wb = xlsx_package.workbook
 
 wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 
-	sheet.add_row ["fiscal Yr", "Fiscal Wk", "TeamTrack Org", "Employee", "Employee Type", 
+	sheet.add_row ["fiscal Yr", "Fiscal Wk", "Manager", "TeamTrack Org", "Org Owner", "Employee", "Employee Type", 
 		"Weeks Effort", "Project", "PRP Theme", "Route To Market", "Stakeholder Org", "Sub-Priority",
 		"Allocation Type"]
 		
+	#get orgs and their owners
+	hOrgOwners = orgs_hash()
+	puts hOrgOwners	
 	@assignments.each do |a|
 		if a.project.initiative.present? then
 			iname = a.project.initiative.name
 		else
 			iname = "NA"
 		end
-		sheet.add_row [current_fy, @wk, a.user.org, a.user.name, a.user.etype, a.effort,
+		orgOwner = hOrgOwners[a.user.org]
+		sheet.add_row [current_fy, @wk, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,
 			a.project.name, iname, a.project.rtm, a.project.psh, 
 			a.project.ctpriority, a.project.category ]
 	end

@@ -281,4 +281,16 @@ module ApplicationHelper
 		@list
 	end
 	
+	def orgs_hash()
+		ohash = Hash.new
+		User.managers_only.where("orgowner = true").each do  |u|
+			if u.manager.nil? || !u.manager.orgowner
+				ohash[u.org] = u.name
+			else
+				ohash[u.org] = u.manager.name
+			end
+		end	
+		ohash
+	end
+	
 end

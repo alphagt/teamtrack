@@ -15,10 +15,15 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 		else
 			iname = "NA"
 		end
+		if a.project.keyproj
+			ctp = a.project.name
+		else
+			ctp = a.project.ctpriority
+		end
 		orgOwner = hOrgOwners[a.user.org]
 		sheet.add_row [current_fy, @wk, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,
 			a.project.name, iname, a.project.rtm, a.project.psh, 
-			a.project.ctpriority, a.project.category ]
+			ctp, a.project.category ]
 	end
 
 end

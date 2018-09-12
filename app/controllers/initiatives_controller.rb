@@ -108,6 +108,12 @@ class InitiativesController < ApplicationController
 
   # GET /initiatives/1/edit
   def edit
+  	@initiative = Initiative.find(params[:id])
+    @subprilist = @initiative.subprilist
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @initiative }
+    end
   end
 
   # POST /initiatives
@@ -128,7 +134,7 @@ class InitiativesController < ApplicationController
   # PATCH/PUT /initiatives/1
   def update
     if @initiative.update(initiative_params)
-      redirect_to @initiative, notice: 'Initiative was successfully updated.'
+      redirect_to @initiative, notice: 'Theme was successfully updated.'
     else
       render :edit
     end
@@ -163,6 +169,6 @@ class InitiativesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def initiative_params
-      params.require(:initiative).permit(:fiscal, :name, :description, :active)
+      params.require(:initiative).permit(:fiscal, :name, :description, :active, :tag, :subprilist)
     end
 end

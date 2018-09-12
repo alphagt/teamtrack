@@ -12,13 +12,15 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 	@assignments.each do |a|
 		if a.project.initiative.present? then
 			iname = a.project.initiative.name
+			ishort = a.project.initiative.tag
 		else
 			iname = "NA"
+			ishort = "NA"
 		end
 		if a.project.keyproj
-			ctp = a.project.name
+			ctp = ishort + "-" + a.project.name
 		else
-			ctp = "*" + a.project.ctpriority
+			ctp = ishort + "-" + "*" + a.project.ctpriority
 		end
 		orgOwner = hOrgOwners[a.user.org]
 		sheet.add_row [current_fy, @wk, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,

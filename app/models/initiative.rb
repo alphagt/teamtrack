@@ -1,5 +1,6 @@
 class Initiative < ActiveRecord::Base
 has_many :projects
+serialize :subprilist
   	
 scope :active, -> {where('active = true')}
 scope :for_year, -> (y){where("fiscal = ? or name IN('Overhead','Basics')", y)}

@@ -37,14 +37,15 @@
 					<%= f.select(:psh, options_for_select(get_picklist("psh"), @project.psh))  %>
 				</div>
 		</div>
+		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),
+			:label_method => :name, label: "CT Theme:" %>
 		<div class="control-group select optional project_ctpriority">
 			<label class="select optional control-label" for="project_ctpriority">CT Priority:</label>
 				<div class="controls">
 					<%= f.select(:ctpriority, options_for_select(get_picklist("ctp"), @project.ctpriority))  %>
 				</div>
 		</div>
-		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),
-			:label_method => :name, label: "CT Theme" %>
+		<br/>
 		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
 			input_html: {value: @project.fixed_resource_budget || '0'} %>
 		<% if current_user.admin %>

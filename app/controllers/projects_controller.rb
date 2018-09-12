@@ -187,7 +187,14 @@ class ProjectsController < ApplicationController
 		puts "Current Week is"
 		puts cweek
 		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group('projects.ctpriority').references(:project).sum(:effort).map{|a|[a[0],(a[1].to_f/cweek).round(2)]}
+		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
+			if !a[0][0].nil? then
+				cat = Initiative.find(a[0][0]).tag + "-" + a[0][1].to_s
+			else 
+				cat = "NA" + "-" + a[0][1].to_s
+			end
+			[cat,(a[1].to_f/cweek).round(2)]
+		end
 
 		puts @ctpdata.to_s
 		#End CT Priority Chart section

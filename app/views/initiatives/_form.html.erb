@@ -16,6 +16,7 @@
 		<%= f.input :tag, :autofocus => true, label: "Abreviation:"  %>	
 		<%= f.input :description, inline_label: 'Description:', label: "Description" %>
 		<%= f.input :fiscal, inline_label: 'Fiscal Year:', label: "Fiscal Year:" %>
+		<%= f.input :subprilist, collection: get_picklist("ctp"), input_html: { multiple: true, selected: :subprilist } %>
 		<br/>	
 		<div class="form-actions">
   			<div style="float:left">

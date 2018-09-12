@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
   	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
 
   validates :fixed_resource_budget, :presence => true
+  validate :ctpriority_supported_by_initiative, if: 'ctpriority.present?'
   
    
 	scope :for_users, -> (uList){joins(:users).where('assignments.user_id IN (?)', uList).distinct}
@@ -22,6 +23,12 @@ class Project < ActiveRecord::Base
 	scope :for_rtm, -> (rStr){where('rtm = ?', rStr).order('projects.name')}
 	scope :for_psh, -> (shStr){where('psh = ?', shStr).order('Projects.name')}
 	
+	def ctpriority_supported_by_initiative
+		i = Initiative.find(initiative_id)
+		if !i.subprilist.include?(ctpriority) then
+			errors.add(:ctpriority, "Sub Priority not supported for selected Initiative")
+		end
+	end
 	def under_budget(pId)
 		tEffort = 0
 		assignments.where(:set_period_id => pId).each do |a|

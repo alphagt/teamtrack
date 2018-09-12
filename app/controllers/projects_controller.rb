@@ -189,9 +189,14 @@ class ProjectsController < ApplicationController
 		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
 			if !a[0][0].nil? then
-				cat = Initiative.find(a[0][0]).tag + "-" + a[0][1].to_s
+				i = Initiative.find(a[0][0])
+				if !i.tag.nil? then
+					cat =i.tag + "-" + a[0][1].to_s
+				else
+					cat = i.name + "-" + a[0][1].to_s
+				end
 			else 
-				cat = "NA" + "-" + a[0][1].to_s
+				cat = "NA" + "-" + a[0][1].to_s  
 			end
 			[cat,(a[1].to_f/cweek).round(2)]
 		end

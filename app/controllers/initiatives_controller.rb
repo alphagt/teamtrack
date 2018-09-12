@@ -134,6 +134,7 @@ class InitiativesController < ApplicationController
   # PATCH/PUT /initiatives/1
   def update
     @initiative.subprilist = params["initiative"]["subprilist"]
+    
     if @initiative.update(initiative_params)
       redirect_to @initiative, notice: 'Theme was successfully updated.'
     else

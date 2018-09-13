@@ -2,7 +2,7 @@
   <row>
   <div class="col-md-10">
   	<p class="text-left"><%= f.error_notification message: "Update Failed: " + 
-  		if !f.error(:ctpriority).nil? then f.error(:ctpriority) end %></p>
+  		if f.error(:ctpriority).present? then f.error(:ctpriority) else "" end %></p>
   </div>
   </row>
   <div class="form-group">

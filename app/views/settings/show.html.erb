@@ -32,6 +32,20 @@
 		  <strong>Value:</strong>
 		  <%= @setting.value %>
 		</p>
+		<% if current_user.admin %>
+			<p>
+			  <strong>Type:</strong>
+			  <%= @setting.stype %>
+			</p>
+			<p>
+			  <strong>Display Name:</strong>
+			  <%= @setting.displayname %>
+			</p>
+			<p>
+			  <strong>Description:</strong>
+			  <%= @setting.description %>
+			</p>
+		<% end %>
 	</div>
 </div>
 <% end %>

@@ -23,7 +23,7 @@
 			<p><b>Abreviation: </b><%= @initiative.tag %></p>
 			<p><b>Fiscal Year: </b><%= @initiative.fiscal %></p>
 			<p><b>Description: </b><%= @initiative.description %></p>
-			<p><b>Supported CT Priorities: </b><%= if !@initiative.subprilist.nil? then 
+			<p><b>CT Sub-Priorities: </b><%= if !@initiative.subprilist.nil? then 
 					@initiative.subprilist.map(&:inspect).join(', ') else "None Defined" end %></p>
 			<p><b>Active: </b><%= @initiative.active %></p>
 			<p><b>Average Weekly HC:  </b><%= (@initiative.total_effort_weeks(current_week())/current_week()).round %></p>

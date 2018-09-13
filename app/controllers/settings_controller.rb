@@ -3,7 +3,11 @@ class SettingsController < ApplicationController
 
   # GET /settings
   def index
-    @settings = Setting.all
+    if params[:sysadmin].present? then
+    	@settings = Setting.all
+    else
+    	@settings = Setting.non_core
+    end
   end
 
   # GET /settings/1
@@ -13,16 +17,27 @@ class SettingsController < ApplicationController
   # GET /settings/new
   def new
     @setting = Setting.new
+    if params[:sysadmin].present? then
+    	@sysadmin
+    end
   end
 
   # GET /settings/1/edit
   def edit
+  	@coresetting = false
+  	if params[:sysadmin].present? then
+  		@sysadmin = true
+  	end
+  	if Setting.find(params[:id]).stype == 0 then
+  		@coresetting = true
+  	end
   end
 
   # POST /settings
   def create
     @setting = Setting.new(setting_params)
 	@setting.ordinal = view_context.next_ordinal_for(@setting.key)
+	@setting.stype = 1
     if @setting.save
       redirect_to @setting, notice: 'Setting was successfully created.'
     else
@@ -32,6 +47,7 @@ class SettingsController < ApplicationController
 
   # PATCH/PUT /settings/1
   def update
+    
     if @setting.update(setting_params)
       redirect_to @setting, notice: 'Setting was successfully updated.'
     else
@@ -53,6 +69,6 @@ class SettingsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def setting_params
-      params.require(:setting).permit(:key, :ordinal, :value)
+      params.require(:setting).permit(:key, :ordinal, :value, :stype, :displayname, :description)
     end
 end

@@ -21,7 +21,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			ctp = ishort + "-" + a.project.name
 		else
 			ctp = ishort + "-" + "*" + a.project.ctpriority
-		end
+		end 
 		orgOwner = hOrgOwners[a.user.org]
 		sheet.add_row [current_fy, @wk, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,
 			a.project.name, iname, a.project.rtm, a.project.psh, 

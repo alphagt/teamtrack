@@ -259,7 +259,11 @@ module ApplicationHelper
 	end
 	
 	def get_picklist(key)
-		Setting.for_key(key).pluck(:value)
+		if key == "core" then
+			Setting.core_only.pluck(:value)
+		else
+			Setting.for_key(key).pluck(:value)
+		end
 	end
 	
 	def org_mgrs_list(option_all = true)

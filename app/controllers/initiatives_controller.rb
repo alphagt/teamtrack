@@ -170,6 +170,7 @@ class InitiativesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def initiative_params
-      params.require(:initiative).permit(:fiscal, :name, :description, :active, :tag, :subprilist)
+      params.require(:initiative).permit(:fiscal, :name, :description, :active, :tag, 
+      :subprilist)
     end
 end

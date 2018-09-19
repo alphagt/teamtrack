@@ -10,12 +10,12 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 	hOrgOwners = orgs_hash()
 	puts hOrgOwners	
 	@assignments.each do |a|
+		iname = "NA"
+		ishort = "NA"
+		
 		if a.project.initiative.present? then
 			iname = a.project.initiative.name
-			ishort = a.project.initiative.tag
-		else
-			iname = "NA"
-			ishort = "NA"
+			if a.project.initiative.tag.present? then ishort = a.project.initiative.tag end
 		end
 		if a.project.keyproj
 			ctp = ishort + "-" + a.project.name

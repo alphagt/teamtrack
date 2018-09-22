@@ -39,6 +39,8 @@ gem 'simple_form'
 
 gem 'cancan'
 
+gem 'gon'
+
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'

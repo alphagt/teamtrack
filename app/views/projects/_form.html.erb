@@ -22,14 +22,14 @@
 		<%= f.input :description, inline_label: 'Description:', label: "Description", :required => true %>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<div class="control-group select optional project_category">
-			<label class="select optional control-label" for="projeect_category">Resource Category:</label>
+			<label class="select optional control-label" for="project_category">Resource Category:</label>
 				<div class="controls">
 					<%= f.select(:category, options_for_select(get_picklist("category"), 
 					@project.category), :required => true)  %>
 				</div>
 		</div>
-		<div class="control-group select optional project_category">
-			<label class="select optional control-label" for="projeect_category">Primary RTM:</label>
+		<div class="control-group select optional project_rtm">
+			<label class="select optional control-label" for="project_rtm">Primary RTM:</label>
 				<div class="controls">
 					<%= f.select(:rtm, options_for_select(get_picklist("rtm"), 
 					@project.rtm))  %>
@@ -42,11 +42,12 @@
 				</div>
 		</div>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.for_year(current_fy),
-			:label_method => :name, label: "CT Theme:" %>
+			:label_method => :name, label: "CT Theme", :input_html => {onchange: "updateprilist(this)", 
+			data: {message: "['o1', 'o2', 'o3']"} } %>
 		<div class="control-group select optional project_ctpriority">
 			<label class="select optional control-label" for="project_ctpriority">CT Priority:</label>
 				<div class="controls">
-					<%= f.select(:ctpriority, options_for_select(get_picklist("ctp"), @project.ctpriority))  %>
+					<%= f.select :ctpriority, options_for_select(get_picklist("ctp",@project), @project.ctpriority)  %>
 				</div>
 		</div>
 		<br/>

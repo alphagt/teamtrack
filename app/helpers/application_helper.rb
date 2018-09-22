@@ -258,13 +258,18 @@ module ApplicationHelper
 		@list = ('1' .. '52').to_a
 	end
 	
-	def get_picklist(key)
+	def get_picklist(key, proj = nil)
 		if key == "core" then
 			Setting.core_only.pluck(:value)
 		else
-			Setting.for_key(key).pluck(:value)
+			if key == 'ctp' && !proj.nil? && proj.initiative.present?
+				#get the list for this key based on the associated initiative's subprilist
+				proj.initiative.subprilist
+			else
+				Setting.for_key(key).pluck(:value)
+			end
 		end
-	end
+	end	
 	
 	def org_mgrs_list(option_all = true)
 		@list = []

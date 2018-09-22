@@ -331,7 +331,8 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
-	
+	@ctplist = ctpLists()
+	gon.ctplists = @ctplist
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @project }
@@ -341,6 +342,9 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
+    @ctplist = ctpLists()
+    puts @ctplist.to_s
+    gon.ctplists = @ctplist
   end
 
   # POST /projects
@@ -403,5 +407,29 @@ class ProjectsController < ApplicationController
       format.html { redirect_to projects_url }
       format.json { head :no_content }
     end
+  end
+  
+  #utility to build array of possible ctp picklists for all active themes
+  def ctpLists
+  	puts "IN CTP UTIL"
+  	out = []
+  	lasti = -1
+  	Initiative.all.each do |i| 
+  		puts "processing an init: " + i.id.to_s
+  		
+  		while((i.id - lasti) > 1) do
+  			#fill the gap in idexes in the array
+  			out << [""]
+  			lasti += 1
+  		end
+  		if i.subprilist.present? then
+  			out << i.subprilist
+  		else
+  			out << [""]
+  		end
+  		lasti += 1
+  	end
+  	puts out.length
+  	out
   end
 end

@@ -182,7 +182,7 @@ class ProjectsController < ApplicationController
 # 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Enterprise").for_users(uList).pluck(:id)).sum(:effort)
 # 		puts ent_effort
 		
-		#CT Priority Chart Data
+		#CT Priority Chart Data (NOTE:  May want to cache this on a weekly basis)
 		cweek = view_context.current_week
 		puts "Current Week is"
 		puts cweek

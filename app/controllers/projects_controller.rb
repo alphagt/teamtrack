@@ -218,6 +218,7 @@ class ProjectsController < ApplicationController
 		puts "PRIORITY KEY PROJECT DATA BLOCK:"
 		puts @keyprojdata.to_s
 		@ctpdata += @keyprojdata
+		@ctpdata.sort!
 		puts "PRIORITY SUMMARY DATA BLOCK:"
 		puts @ctpdata.to_s
 		#End CT Priority Chart section

@@ -186,7 +186,7 @@ class ProjectsController < ApplicationController
 		cweek = view_context.current_week
 		puts "Current Week is"
 		puts cweek
-		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
+		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = false AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
@@ -200,7 +200,25 @@ class ProjectsController < ApplicationController
 			end
 			[cat,(a[1].to_f/cweek).round(2)]
 		end
-
+		#add quasi-priority to array for each keyproj 
+		@keyprojdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = true AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
+		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group(['projects.initiative_id','projects.name']).references(:project).sum(:effort).map do |a|
+			if !a[0][0].nil? then
+				i = Initiative.find(a[0][0])
+				if !i.tag.nil? then
+					cat =i.tag + "-*" + a[0][1].to_s
+				else
+					cat = i.name + "-*" + a[0][1].to_s
+				end
+			else 
+				cat = "NA" + "-*" + a[0][1].to_s  
+			end
+			[cat,(a[1].to_f/cweek).round(2)]
+		end	
+		puts "PRIORITY KEY PROJECT DATA BLOCK:"
+		puts @keyprojdata.to_s
+		@ctpdata += @keyprojdata
+		puts "PRIORITY SUMMARY DATA BLOCK:"
 		puts @ctpdata.to_s
 		#End CT Priority Chart section
 		

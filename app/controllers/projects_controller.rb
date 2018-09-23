@@ -41,7 +41,7 @@ class ProjectsController < ApplicationController
 	if @fy != view_context.current_fy() 
 		@mgr_id = 0
 		@scopeall = true
-		puts "SET MGR TO ZERO DUE TO PREVIOUS FY"
+		#SET MGR TO ZERO DUE TO PREVIOUS FY, for anything other than current FY always show data unfiltered
 	end
 	
 	#Optional :setq specifies a specific quarter number, defaul it current quarter
@@ -186,8 +186,10 @@ class ProjectsController < ApplicationController
 		cweek = view_context.current_week
 		puts "Current Week is"
 		puts cweek
-		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = false AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
+		#get grouped effort for assignments bounded by projects and users relevant to the viewing manager
+		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = false AND 
+			set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
+			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
 				if !i.tag.nil? then
@@ -201,8 +203,9 @@ class ProjectsController < ApplicationController
 			[cat,(a[1].to_f/cweek).round(2)]
 		end
 		#add quasi-priority to array for each keyproj 
-		@keyprojdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = true AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id)).group(['projects.initiative_id','projects.name']).references(:project).sum(:effort).map do |a|
+		@keyprojdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = true AND
+			set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
+			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.name']).references(:project).sum(:effort).map do |a|
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
 				if !i.tag.nil? then

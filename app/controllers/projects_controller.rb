@@ -93,11 +93,14 @@ class ProjectsController < ApplicationController
 		@statsView = false
 	end
 	
+	if uList.count == 0  then
+		uList = User.all.pluck(:ID)
+	end
 	
 	#Calculate and group fixed effort totals for chart
 	
-	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', 
-		'Overhead', @fy.to_s, (@fy + 1).to_s, @allProjects.pluck(:id)).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
+		'Overhead', @fy.to_s, (@fy + 1).to_s, @allProjects.pluck(:id), uList).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
 	#puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 'Overhead', @fy.to_s, @projects.pluck(:id)).to_sql
@@ -111,12 +114,6 @@ class ProjectsController < ApplicationController
 	end	
 	puts @clabels_ytd.to_s
 	@clabels_ytd.sort!
-
-	
-	
-	if uList.count == 0  then
-		uList = User.all.pluck(:ID)
-	end
 	
 	#Current Quarter Data
 	case @setq #determin start end week number for each quarter

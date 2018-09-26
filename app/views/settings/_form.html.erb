@@ -8,7 +8,7 @@
   				<%= f.input :key %>
   				<% else %>
   					<% if @coresetting then %>
-  						<%= f.input :key, input_html: {readonly: :true} %>
+  						<%= f.input :key, input_html: {readonly: true} %>
   					<% else %>
   					<div class="control-group select optional setting_key">
 					<label class="select optional control-label" for="setting_key">Key:</label>
@@ -19,8 +19,8 @@
 					<% end %>
   				<% end %>
   			<%= if action_name == "edit" then f.input :ordinal end %>
-    		<%= f.input :value %>
-    		<%= if @sysadmin then f.input :stype end %>
+    		<%= f.input :value, input_html: {readonly: @coresetting} %>
+    		<%= if @sysadmin then f.input :stype, input_html: {readonly: @coresetting} end %>
     		<%= f.input :displayname %>
     		<%= f.input :description %>
   		</div>

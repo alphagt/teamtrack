@@ -271,6 +271,13 @@ module ApplicationHelper
 		end
 	end	
 	
+	def get_cfield_name(key)
+		s = Setting.find_by_key(key)
+		if s.stype == 0 then
+			s.displayname
+		end
+	end
+	
 	def org_mgrs_list(option_all = true)
 		@list = []
 		if option_all

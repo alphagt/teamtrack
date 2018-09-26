@@ -4,7 +4,7 @@
   <div class="form-inputs">
     <%= f.input :name, :autofocus => true %>
 	<%= f.input :description %>
-	<%= f.input :qos_group, label: "Sub-System" %>
+	<%= f.input :qos_group, label: get_cfield_name("ts_cust_1") %>
     <%= f.association :owner, :as => :select, :collection => User.managers_only, 
     	:label_method => :name %>
   </div>

@@ -10,7 +10,7 @@
 
 	  <div class="form-group">
 	  	<row>
-	  	<div class="col-md-4">
+	  	<div class="col-md-3">
 	  		
 			<%= f.input :name %>
 			<%= f.input :email %>
@@ -19,27 +19,28 @@
 				:label_method => :name %>
 			<%= f.association :default_system, :as => :select %>
 			<div class="control-group select optional user_type">
-				<label class="select optional control-label" for="user_type">Employee Type:</label>
+				<label class="select optional control-label" for="user_type"><%= get_cfield_name("u_cust_1")%></label>
 				<div class="controls">
-					<%= f.select(:etype, options_for_select(["FTE", "Contractor", "Intern"], @user.etype), :required => true)  %>
+					<%= f.select(:etype, options_for_select(get_picklist("etype"), @user.etype), :required => true)  %>
 				</div>
 			</div>
 			<div class="control-group select optional user_category">
-				<label class="select optional control-label" for="user_category">Employee Category:</label>
+				<label class="select optional control-label" for="user_category"><%= get_cfield_name("u_cust_2")%></label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(["R&D", "Program-Product", "Operations", "Overhead"], @user.category), :required => true)  %>
+					<%= f.select(:category, options_for_select(get_picklist("ecat"), @user.category), :required => true)  %>
 				</div>
 			</div>
 			<br>
 			<div class="form-actions">
 		  		<div style="float:left">
-					<%= f.button :submit %>
+					<%= f.button :submit, :class => 'btn btn-primary' %>
 		  		</div>
 		  	</div>
 		</div>
-		<div class="col-md-4">
-			<% if current_user.admin %>
-				<b>Admin Options:</b>
+		
+		<% if current_user.admin %>
+			<div class="col-md-2">
+				<h5><b><u>Admin Options</u></b></h5>
 				<br/>
 				<br/>
 				<%= f.association :impersonates, :as => :select, :collection => User.managers_only, 
@@ -50,13 +51,9 @@
 					<%= f.input :isstatususer, inline_label: 'Is Status User', label: false %>
 					<%= f.input :orgowner, inline_label: 'Owns this Org', label: false %>	
 				</div>
-			<% end %>
-		  </div>
-		</row>
-	  </div>
+			</div>
+		<% end %>
 	<% end %>
-
-	</div>
 	<% end %>
 <% content_for :sidebarwide do %>
 	<table class="table">

@@ -22,21 +22,21 @@
 		<%= f.input :description, inline_label: 'Description:', label: "Description", :required => true %>
 		<%= f.input :upl_number, inline_label: 'UPL Number', label: "UPL #:" %>
 		<div class="control-group select optional project_category">
-			<label class="select optional control-label" for="project_category">Resource Category:</label>
+			<label class="select optional control-label" for="project_category"><%= get_cfield_name("p_cust_1") + ":"%></label>
 				<div class="controls">
 					<%= f.select(:category, options_for_select(get_picklist("category"), 
 					@project.category), :required => true)  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_rtm">
-			<label class="select optional control-label" for="project_rtm">Primary RTM:</label>
+			<label class="select optional control-label" for="project_rtm"><%= get_cfield_name("p_cust_2") + ":"%></label>
 				<div class="controls">
 					<%= f.select(:rtm, options_for_select(get_picklist("rtm"), 
 					@project.rtm))  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_psh">
-			<label class="select optional control-label" for="projeect_psh">Primary Stakeholder:</label>
+			<label class="select optional control-label" for="projeect_psh"><%= get_cfield_name("p_cust_4") + ":"%></label>
 				<div class="controls">
 					<%= f.select(:psh, options_for_select(get_picklist("psh"), @project.psh))  %>
 				</div>
@@ -45,7 +45,7 @@
 			:label_method => :name, label: "CT Theme", :input_html => {onchange: "updateprilist(this)", 
 			data: {message: "['o1', 'o2', 'o3']"} } %>
 		<div class="control-group select optional project_ctpriority">
-			<label class="select optional control-label" for="project_ctpriority">CT Priority:</label>
+			<label class="select optional control-label" for="project_ctpriority"><%= get_cfield_name("p_cust_3") + ":"%></label>
 				<div class="controls">
 					<%= f.select :ctpriority, options_for_select(get_picklist("ctp",@project), @project.ctpriority)  %>
 				</div>

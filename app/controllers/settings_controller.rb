@@ -28,7 +28,7 @@ class SettingsController < ApplicationController
   	if params[:sysadmin].present? then
   		@sysadmin = true
   	end
-  	if Setting.find(params[:id]).stype == 0 then
+  	if Setting.find(params[:id]).stype == 0 || Setting.find(params[:id]).key == "sys_names" then
   		@coresetting = true
   	end
   end

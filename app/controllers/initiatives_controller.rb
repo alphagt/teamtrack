@@ -6,20 +6,21 @@ class InitiativesController < ApplicationController
 
   # GET /initiatives
   def index
+  	sname = view_context.display_name_for('sys_names', 'initiative').pluralize()
     if params[:fy].present?
 		if params[:fy].downcase == 'all'
 			@initiatives = Initiative.all
     		@fy = 'All'
-    		@summary = 'Themes for all Fiscal Years - '
+    		@summary = sname + ' for all Fiscal Years - '
     	else
 			@initiatives = Initiative.active.for_year(params[:fy])
     		@fy = params[:fy].to_i
-    		@summary = 'Themes for FY ' + @fy.to_s + ' - '
+    		@summary = sname + ' for FY ' + @fy.to_s + ' - '
     	end
 	else
 		@initiatives = Initiative.active.for_year(view_context.current_fy)
     	@fy = view_context.current_fy
-    	@summary = 'Theme for FY ' + @fy.to_s + ' - '
+    	@summary = sname + ' for FY ' + @fy.to_s + ' - '
 	end
     
     puts 'Initiatives#Index - count'
@@ -135,7 +136,7 @@ class InitiativesController < ApplicationController
   def update
     @initiative.subprilist = params["initiative"]["subprilist"]
     if @initiative.update(initiative_params)
-      redirect_to @initiative, notice: 'Theme was successfully updated.'
+      redirect_to @initiative, notice: 'Initiative was successfully updated.'
     else
       render :edit
     end

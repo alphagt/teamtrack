@@ -8,7 +8,7 @@
 	<% content_for :sidebar do %>
 	<table class="table">
 		<tr>
-		<td class="danger"><%= link_to 'New-System', new_tech_system_path %></td>
+		<td class="danger"><%= link_to 'New-' + display_name_for('sys_names', 'service'), new_tech_system_path %></td>
 	</table>
 	<% end %>
 <% end %>
@@ -20,7 +20,7 @@
 		  	<th></th>
 			<th>Name</th>
 			<th>Description</th>
-			<th>Sub-System</th>
+			<th><%= display_name_for('sys_names', 'service') + ' Group'%></th>
 			<th>Owner</th>
 			<th>Average HC</th>
 			<% if current_user.admin %>
@@ -32,7 +32,7 @@
 		  <tbody>
 		 <%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group1"}) %>
 			<td class="icon-class"></td>
-			<td><b><%= "Sub-System: " + @current_qos %></b></td>
+			<td><b><%= display_name_for('sys_names', 'service') + ' Group' + ": " + @current_qos %></b></td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -46,7 +46,7 @@
 				<% @current_qos = tsystem.qos_group %>
 				<%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group" + @gnum.to_s}) %>
 					<td class="icon-class"></td>
-					<td><b><%= "Sub-System: " + @current_qos %></b></td>
+					<td><b><%= display_name_for('sys_names', 'service') + ' Group' + ": " + @current_qos %></b></td>
 					<td></td>
 					<td></td>
 					<td></td>

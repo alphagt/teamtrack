@@ -8,7 +8,7 @@
 <table class="table">
 	<% if current_user.admin %>
 		<tr>
-		<td class="danger"><%= link_to 'New-Theme', new_initiative_path %></td>
+		<td class="danger"><%= link_to 'New-' + display_name_for('sys_names', 'initiative'), new_initiative_path %></td>
 		<tr>
 		<td class="danger"><%= link_to 'Show-All', initiatives_path(:fy => "all") %></td>
 	<% end %>
@@ -105,7 +105,7 @@
 			</table>
 			</div>
 		</div>
-	<% else "NO Themes DEFINED YET" %>
+	<% else "NO " + display_name_for('sys_names', 'initiative').pluralize() + " DEFINED YET" %>
 	<% end %>
 	</div>
 </div>

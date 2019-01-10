@@ -19,9 +19,9 @@
     		<li>
     	<% end %>
       	<% if current_user.isstatususer? %> 
-      		<%= link_to('Initiatives', projects_path(:scope => "active")) %>
+      		<%= link_to(display_name_for('sys_names', 'project').pluralize(), projects_path(:scope => "active")) %>
       	<% else %>
-      		<%= link_to('Initiatives', projects_path) %>
+      		<%= link_to(display_name_for('sys_names', 'project').pluralize(), projects_path) %>
       	<% end %>
       	</li>
       	<% if active == "systems" %>
@@ -29,7 +29,7 @@
     	<% else %>
     		<li>
     	<% end %>
-      	<%= link_to('Services', tech_systems_path) %>
+      	<%= link_to(display_name_for('sys_names', 'service').pluralize(), tech_systems_path) %>
       	</li>
       	<% if current_user.admin? || current_user.isstatususer? %>
       		<% if active == "initiatives" %>
@@ -37,7 +37,7 @@
     		<% else %>
     			<li>
     		<% end %>
-      		<%= link_to('Themes', initiatives_path) %>
+      		<%= link_to(display_name_for('sys_names', 'initiative').pluralize(), initiatives_path) %>
     		</li>
     	<% end %>
     	<% if current_user.admin? %>

@@ -10,7 +10,7 @@
 <% content_for  :sidebarwide do %>
 <table class="table">
 	<tr>
-		<td class="danger"><%= link_to 'Archive System', {:controller => :tech_systems, :action => 'archive', :id => @system.id}, {:method => :get, :class => "link" } %></td>
+		<td class="danger"><%= link_to 'Archive ' + display_name_for('sys_names', 'service'), {:controller => :tech_systems, :action => 'archive', :id => @system.id}, {:method => :get, :class => "link" } %></td>
 	<tr>
 		<td class="danger"><%= link_to 'Back', tech_system_path(@system) %></td>
 </table>

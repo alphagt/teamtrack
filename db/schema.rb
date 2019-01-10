@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180522180643) do
+ActiveRecord::Schema.define(version: 20180921185123) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -35,6 +35,8 @@ ActiveRecord::Schema.define(version: 20180522180643) do
     t.boolean  "active",                  default: true
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.string   "tag",         limit: 255
+    t.string   "subprilist",  limit: 255
   end
 
   add_index "initiatives", ["active"], name: "index_initiatives_on_active", using: :btree
@@ -49,11 +51,12 @@ ActiveRecord::Schema.define(version: 20180522180643) do
     t.integer  "fixed_resource_budget", limit: 4
     t.string   "category",              limit: 255, default: "Unassigned"
     t.integer  "upl_number",            limit: 4,   default: 0
-    t.string   "tribe",                 limit: 255
+    t.string   "tribe",                 limit: 255, default: "NA"
     t.integer  "initiative_id",         limit: 4
     t.boolean  "keyproj"
-    t.string   "rtm",                   limit: 255
-    t.string   "psh",                   limit: 255
+    t.string   "rtm",                   limit: 255, default: "NA"
+    t.string   "psh",                   limit: 255, default: "NA"
+    t.string   "ctpriority",            limit: 255, default: "NA"
   end
 
   add_index "projects", ["active"], name: "index_projects_on_active", using: :btree
@@ -68,6 +71,17 @@ ActiveRecord::Schema.define(version: 20180522180643) do
     t.integer  "cweek_offset", limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "key",         limit: 255
+    t.integer  "ordinal",     limit: 4
+    t.string   "value",       limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "displayname", limit: 255
+    t.string   "description", limit: 255
+    t.integer  "stype",       limit: 4
   end
 
   create_table "tech_systems", force: :cascade do |t|

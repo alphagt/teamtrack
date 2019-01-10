@@ -87,7 +87,11 @@ class UsersController < ApplicationController
 	@user.ismanager = params[:user][:ismanager]
 	@user.default_system_id = params[:user][:default_system_id]
 	@user.admin = params[:user][:admin]
-	@user.org = User.find_by_id(params[:user][:manager_id]).org
+	if params[:user][:org].empty?
+		@user.org = User.find_by_id(params[:user][:manager_id]).org
+	else
+		@user.org = params[:user][:org]
+	end
 # 	@user.is_contractor = params[:user][:is_contractor]
 	@user.isstatususer = params[:user][:isstatususer]
 	@user.etype = params[:user][:etype]

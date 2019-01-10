@@ -1,4 +1,4 @@
-<h1>Initiatives</h1>
+<h1><%= display_name_for('sys_names', 'project')%></h1>
 <br />
 <% content_for :nav do %>
 	<%  render partial: "layouts/navigation", locals: {active: "projects"} %>
@@ -10,7 +10,7 @@
 <table class="table">
 	<% if current_user.admin %>
 		<tr>
-		<td class="danger"><%= link_to 'New Initiative', new_project_path %></td>
+		<td class="danger"><%= link_to 'New ' + display_name_for('sys_names', 'project'), new_project_path %></td>
 		<tr>
 		<td class="danger"><%= link_to 'Include Closed', projects_path(:scope => "all", :org => @mgr_id, :fy => @fy) %></td>
 	<% end %>
@@ -29,11 +29,11 @@
 	</td>
 </table>
 	<% if current_user.admin || current_user.isstatususer? %>
-		<h3>CT Priority Summary</h3>
+		<h3><%= get_cfield_name("p_cust_4") + " Summary"%></h3>
 		<table class="table-bordered table-condensed">
 	
 			<tr>
-				<th>CT Priority</th>
+				<th><%= get_cfield_name("p_cust_4") %></th>
 				<th>YTD FTE</th>
 			</tr>
 			<% @ctpdata.each do |ctp|%>
@@ -51,7 +51,7 @@
 <div class="row">
 	<div class="col-md-12 col-centered">
 		<h3><b><%= if @scopeall then "All" else "Active" end %>
-			<%= " Initiatives for Org: " %>
+			<%= " " + display_name_for('sys_names', 'project').pluralize() + " for Org: " %>
 			<%= if @mgr_id == 0 then "All Orgs - FY" else User.find_by_id(@mgr_id).org + " - FY" end %>
 			<%= @fy.to_s %></b>
 		</h3>
@@ -96,7 +96,7 @@
 <br/>
 <div class="row">
 	<div class="col-md-12 col-centered">
-		<h3><b>Initiative List</b>
+		<h3><b><%= display_name_for('sys_names', 'project') + " List"%></b>
 		</h3>
 	</div>
 </div>
@@ -112,7 +112,7 @@
 		<th>Current Allocation</th>
 		<th><%= if @fy == current_fy then "YTD FTE Equivalent" else "FY FTE Equivalent" end %></th>
 		<% if current_user.admin %>
-			<th>CT Theme</th>
+			<th><%= display_name_for('sys_names', 'initiative')%></th>
 			<th>Status</th>
 			<th></th>
 		<% end %>

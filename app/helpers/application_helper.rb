@@ -242,7 +242,11 @@ module ApplicationHelper
 		if option_all
 			@list << "All"
 		end
-		min_y = Assignment.find_by_id(Assignment.all.select("id, min(set_period_id)").first.id).fiscal_year()
+		if Assignment.count > 0 
+			min_y = Assignment.find_by_id(Assignment.all.select("id, min(set_period_id)").first.id).fiscal_year()
+		else
+			min_y = current_fy
+		end
 		puts "MIN FY IS:  "
 		puts min_y
 		@list << min_y
@@ -262,11 +266,12 @@ module ApplicationHelper
 		if key == "core" then
 			Setting.core_only.pluck(:value)
 		else
-			if key == 'ctp' && !proj.nil? && proj.initiative.present?
+			if key == 'priority' && !proj.nil? && proj.initiative.present?
 				#get the list for this key based on the associated initiative's subprilist
 				proj.initiative.subprilist
 			else
-				Setting.for_key(key).pluck(:value)
+				subKey = Setting.for_key(key).first.value
+				Setting.for_key(subKey).pluck(:value)
 			end
 		end
 	end	

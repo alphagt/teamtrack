@@ -20,7 +20,7 @@
 	<div class="col-md-3">
 		<br/>
 		<p><b>Name: </b><%= @system.name %></p>
-		<p><b>Sub-System: </b><%= @system.qos_group %></p>
+		<p><b><%= display_name_for('sys_names', 'service') + ' Group:' %></b><%= @system.qos_group %></p>
 		<p><b>Description: </b><%= @system.description %></p>
 		<p><b>Owner: </b><%= @system.owner.name %></p>
 	</div>

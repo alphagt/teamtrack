@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   
   scope :for_org, -> (org){where('org = ?', org).order('users.id')}
   
+  scope :for_email, -> (eid){where('email like (?)', "%#{eid}%").first}
+  
   scope :for_category, -> (cat){where('category =?', cat).order('users.id')}
   
   scope :has_current_assignments, -> (speriod){includes(:assignments).where(:assignments => {set_period_id: speriod})}

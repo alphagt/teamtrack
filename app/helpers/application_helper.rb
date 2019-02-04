@@ -8,14 +8,17 @@ module ApplicationHelper
 		#end
 		@pPeriod = speriod.to_f
 		#puts @pPeriod.to_s
+		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
+		puts "FY OFFSET FROM C FIELDS"
+		puts @fyOffset
 		@pFy = speriod.to_i
 		@fWeek = ((@pPeriod - @pFy) * 100).round
 		#puts @fWeek
-		if @fWeek <= 4
+		if @fWeek <= @fyOffset
 			@pFy -= 1
-			@cWeek = 52 - (4 - @fWeek)
+			@cWeek = 52 - (@fyOffset - @fWeek)
 		else
-			@cWeek = @fWeek - 4
+			@cWeek = @fWeek - @fyOffset
 		end
 		Date.commercial(@pFy,@cWeek,1)
 	end
@@ -48,7 +51,13 @@ module ApplicationHelper
 	end
 	
 	def current_quarter()
+		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
 		@cw = current_week()
+		if @cw > (52 - @fyOffset) then
+			@cw = @cw + @fyOffset - 52
+		else
+			@cw += @fyOffset
+		end
 		@q = 0
 		case 
 		when @cw < 13
@@ -188,13 +197,14 @@ module ApplicationHelper
 	def period_from_date(d)
 		@sPeriod = 0.0
 		@fyear = d.year
+		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
 		#puts "in period_from_date"
-		if d.mon == 12 then
+		if d.cweek > (52 - @fyOffset) then
 			@fyear = @fyear + 1
-			@sPeriod = d.cweek + 4 - 52
+			@sPeriod = d.cweek + @fyOffset - 52
 		else
 			#puts 'IN ELSE'
-			@sPeriod += d.cweek + 4.0
+			@sPeriod += d.cweek + @fyOffset.to_f
 		end
 		# puts "sPeriod is:"
 # 		puts @sPeriod
@@ -209,12 +219,11 @@ module ApplicationHelper
 	# ToFix
 		@cweek_number = 0.0
 		@fyear = Date.today.year 
-		if Date.today.cweek > 48 then
+		@cfy_offset = display_name_for('sys_names', 'fy offset').to_i
+		if Date.today.cweek > (52 - @cfy_offset) then
 			@fyear = @fyear + 1
-			@cfy_offset = 4 #SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
 			@cweek_number = Date.today.cweek + @cfy_offset - 52
 		else
-			@cfy_offset = 4 #SetPeriod.where(:fiscal_year => @fyear).first!.cweek_offset
 			@cweek_number = Date.today.cweek + @cfy_offset
 		end
 		#puts 'CURRENT CWEEK Number: '
@@ -262,16 +271,26 @@ module ApplicationHelper
 		@list = ('1' .. '52').to_a
 	end
 	
-	def get_picklist(key, proj = nil)
+	def get_picklist(key, proj = nil, showval = false)
 		if key == "core" then
 			Setting.core_only.pluck(:value)
 		else
+			puts "Get_Picklist for key: " + key
 			if key == 'priority' && !proj.nil? && proj.initiative.present?
 				#get the list for this key based on the associated initiative's subprilist
 				proj.initiative.subprilist
 			else
-				subKey = Setting.for_key(key).first.value
-				Setting.for_key(subKey).pluck(:value)
+				s = Setting.for_key(key)
+				if s.length > 0 then
+					subKey = Setting.for_key(key).first.value	
+				else
+					subKey = key
+				end
+				if !showval then
+					Setting.for_key(subKey).pluck(:displayname)
+				else
+					Setting.for_key(subKey).pluck(:value)
+				end
 			end
 		end
 	end	

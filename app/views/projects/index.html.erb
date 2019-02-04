@@ -77,7 +77,7 @@
 	<% end %>
 	<% if @statsView then %>
 		<div class="col-md-6">
-			<%= image_tag(Gchart.pie(:title => 'YTD RTM Allocation', 
+			<%= image_tag(Gchart.pie(:title => 'YTD Deployment Allocation', 
 			:labels => @slabels, :data => @sVals, :size => '360x220', :chart_background => 'CCCCCC',
 			:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
 			</br>

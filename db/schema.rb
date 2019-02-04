@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180921185123) do
+ActiveRecord::Schema.define(version: 20190201043210) do
 
   create_table "assignments", force: :cascade do |t|
     t.boolean  "is_fixed"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20180921185123) do
   add_index "projects", ["initiative_id"], name: "index_projects_on_initiative_id", using: :btree
   add_index "projects", ["name"], name: "index_projects_on_name", using: :btree
   add_index "projects", ["owner_id"], name: "index_projects_on_owner_id", using: :btree
+  add_index "projects", ["upl_number"], name: "index_projects_on_upl_number", unique: true, using: :btree
 
   create_table "set_periods", force: :cascade do |t|
     t.integer  "fiscal_year",  limit: 4

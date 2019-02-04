@@ -41,6 +41,9 @@ gem 'cancan'
 
 gem 'gon'
 
+gem 'smarter_csv'
+gem 'activerecord-import'
+
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'

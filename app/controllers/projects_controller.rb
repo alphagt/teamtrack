@@ -3,6 +3,31 @@ class ProjectsController < ApplicationController
 	before_filter :require_verified
 	before_filter :require_admin,  :except => [:index, :show] 
 	
+
+
+  def dateTest
+  
+    #  USED FOR DEBUGGING DATE TO PERIOD CALCS - TEST ONLY
+  	#*****************************
+	puts "Testing 1 Jan 2019 ...."
+	d = Date.new(2019,1,1)
+	puts d.cweek	
+  	puts view_context.period_from_date(d).to_s
+  	
+  	puts "Testing 2 July 2018 ...."
+	d = Date.new(2018,7,2)
+	puts d.cweek	
+  	puts view_context.period_from_date(d).to_s
+	
+	puts "Testing 27 June 2019 ...."
+	d = Date.new(2019,6,27)
+	puts d.cweek	
+  	puts view_context.period_from_date(d).to_s
+	#*****************************
+  end
+  
+  
+  
   # GET /projects
   # GET /projects.json
   def index
@@ -189,13 +214,21 @@ class ProjectsController < ApplicationController
 			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
+				pri_custname = Setting.for_key("p_cust_4").pluck(:value)
+				pri_custname.freeze
+				pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname
+				puts "##### DISPLAY NAME - "
+				puts pri_display
 				if !i.tag.nil? then
-					cat =i.tag + "-" + a[0][1].to_s
+					#cat = a[0][1].to_s + "-" + i.tag 
+					cat = pri_display + "-" + i.tag
 				else
-					cat = i.name + "-" + a[0][1].to_s
+					#cat = a[0][1].to_s + "-" + i.name 
+					cat = pri_display + "-" + i.name
 				end
 			else 
-				cat = "NA" + "-" + a[0][1].to_s  
+				#cat = a[0][1].to_s + "-" + "NA" 
+				cat = pri_display + "-" + "NA" 
 			end
 			[cat,(a[1].to_f/cweek).round(2)]
 		end
@@ -231,28 +264,74 @@ class ProjectsController < ApplicationController
 		puts rtmeffort.to_s
 		combinedrtm = rtmeffort.to_h
 		
-		if combinedrtm.key?("All") then all_effort = combinedrtm["All"].to_d else all_effort = 0 end
-		if combinedrtm.key?("B2B") then b2b_effort = combinedrtm["B2B"].to_d else b2b_effort = 0 end
-		if combinedrtm.key?("Individual") then ind_effort = combinedrtm["Individual"].to_d else ind_effort = 0 end
-		if combinedrtm.key?("Mid-Market") then mid_effort = combinedrtm["Mid-Market"].to_d else mid_effort = 0 end
-		if combinedrtm.key?("Enterprise") then ent_effort = combinedrtm["Enterprise"].to_d else ent_effort = 0 end
+		############################################
+		#FIX FIX -  Nees to elimiate hard-coded rtm options and support variable list of RTM vie Custom field defnitions
 		
-		ind_effort += all_effort/3
-		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
-		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
-		#sum_effort = ind_effort + mid_effort + ent_effort
-		sum_effort = combinedrtm.values.sum
-		if sum_effort > 0
-			@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
-					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
-					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
+		
+		##### V3 Implementation ####$
+		rtmCount = combinedrtm.count
+		allocateTotal = 0
+		
+		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
+		key2 = Setting.for_key('p_cust_2').first.value
+		puts "RTM CF Key is: ?", key2
+		allocateKeys = Setting.for_key(key2).where('value LIKE ?', "%.%")
+		
+		if allocateKeys.length > 0 then
+			puts "FOUND ALLOCATION RTM VALUE"
+			allocateKeys.each do |k|
+				#find hash item that matches the .allocate key
+				hentry = combinedrtm.assoc(k.displayname)
+				puts "##### ?", hentry.to_s
+				allocateTotal += hentry[1]
+				rtmCount = rtmCount - 1
+			end
+			
+			puts "#####  " + allocateTotal.to_s
 		else
-			@slabels = ["Individual-", 
-					"Mid-Market-", 
-					"Enterprise-"]
+			puts "NO ALLOC KEYS FOUND"
 		end
-		@sVals = [ind_effort, mid_effort, ent_effort]
+		 
+		#### Now iterate the non-allocated keys and allocate to them
+		combinedrtm.map do |k,v|
+			if allocateKeys.where("displayname = ?", k).length == 0 then
+				v += allocateTotal/rtmCount
+			else
+				combinedrtm.delete(k)
+			end
+		end
 		
+		#### set the variables used in the view for charting
+		puts "FINAL RTM HASH"
+		puts combinedrtm.to_s
+		
+		@slabels = combinedrtm.keys
+		@sVals = combinedrtm.values	
+		
+		####
+		
+		# if combinedrtm.key?("All") then all_effort = combinedrtm["All"].to_d else all_effort = 0 end
+# 		if combinedrtm.key?("B2B") then b2b_effort = combinedrtm["B2B"].to_d else b2b_effort = 0 end
+# 		if combinedrtm.key?("Individual") then ind_effort = combinedrtm["Individual"].to_d else ind_effort = 0 end
+# 		if combinedrtm.key?("Mid-Market") then mid_effort = combinedrtm["Mid-Market"].to_d else mid_effort = 0 end
+# 		if combinedrtm.key?("Enterprise") then ent_effort = combinedrtm["Enterprise"].to_d else ent_effort = 0 end
+# 		
+# 		ind_effort += all_effort/3
+# 		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
+# 		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
+# 		#sum_effort = ind_effort + mid_effort + ent_effort
+# 		sum_effort = combinedrtm.values.sum
+# 		if sum_effort > 0
+# 			@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
+# 					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
+# 					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
+# 		else
+# 			@slabels = ["Individual-", 
+# 					"Mid-Market-", 
+# 					"Enterprise-"]
+# 		end
+# 		@sVals = [ind_effort, mid_effort, ent_effort]
+
 		#Stakeholder Calcs
 		# Get sum of effort grouped by stakeholder values
 		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
@@ -294,7 +373,7 @@ class ProjectsController < ApplicationController
 					  "DC-"]
 		end
 		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
-		
+		###############################################		
 	end
 	
 	puts "user scoped project list:"

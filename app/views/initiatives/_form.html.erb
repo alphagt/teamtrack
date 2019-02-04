@@ -16,7 +16,7 @@
 		<%= f.input :tag, :autofocus => true, label: "Abreviation:"  %>	
 		<%= f.input :description, inline_label: 'Description:', label: "Description:" %>
 		<%= f.input :fiscal, inline_label: 'Fiscal Year:', label: "Fiscal Year:" %>
-		<%= f.input :subprilist, label: get_cfield_name("p_cust_4").pluralize() + ':', collection: get_picklist("p_cust_4"), include_hidden: false, input_html: { multiple: true, selected: :subprilist } %>
+		<%= f.input :subprilist, label: get_cfield_name("p_cust_4").pluralize() + ':', collection: get_picklist("p_cust_4",nil,true), include_hidden: false, input_html: { multiple: true, selected: :subprilist } %>
 		<br/>	
 		<div class="form-actions">
   			<div style="float:left">

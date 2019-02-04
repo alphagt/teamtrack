@@ -23,7 +23,7 @@
 	<div class="col-md-12 col-centered">
 	<div class="col-md-3">
 		<p><b>Name: </b><%= @project.name %></p>
-		<p><b>UPL: </b><%= @project.upl_number %></p>
+		<p><b>ID #: </b><%= @project.upl_number %></p>
 		<p><b>Active:  </b><%= @project.active %></p>
 		<p><b>Owner: </b><%= @project.owner.name %></p>
 		<p><b>Description: </b><%= @project.description %></p>
@@ -42,7 +42,7 @@
 		:axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
 	</div>
 	<div class="col-md-3">
-		<%= image_tag(Gchart.pie(:title => "Per-System Effort", 
+		<%= image_tag(Gchart.pie(:title => "Per-" + display_name_for('sys_names', 'service') + " Effort", 
 		:data => @svalues, :chart_background => 'CCCCCC', :size => '300x300',
 		:legend => @slabels, :legend_position => 'bottom', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"), 
 		class: "img-responsive")%>

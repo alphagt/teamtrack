@@ -9,4 +9,6 @@ class HomeController < ApplicationController
   		redirect_to team_user_path(:id => current_user.id) if current_user and current_user.verified
   	end
   end
+  
+  
 end

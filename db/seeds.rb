@@ -43,12 +43,12 @@ set = Setting.create!  :stype => 0, :key => 'ts_cust_2', :value => "",
 		picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 0, :key => 'u_cust_1', :value => "", 
+set = Setting.create!  :stype => 0, :key => 'u_cust_1', :value => 'etype', :displayname => 'Employee Type', 
 	:description => 'Custom field for users.  Admin can define visible name by setting displayname on this setting.  
 		picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 0, :key => 'u_cust_2', :value => "", :description => 'Custom field for users.  Admin can define visible name by setting displayname on this setting.  picklist values can be added to settings with ts_cust_1 as the key for those settings.'
+set = Setting.create!  :stype => 0, :key => 'u_cust_2', :value => 'ecat', :displayname => 'Employee Category', :description => 'Custom field for users.  Admin can define visible name by setting displayname on this setting.  picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 set.save
 puts 'added ' << set.key
 
@@ -112,13 +112,16 @@ user.save
 puts 'New user created: ' << user.name
 
 #Default Projects
-proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @da, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15, :initiative_id => @init.id
+proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @da, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', 
+:fixed_resource_budget => 15, :initiative_id => @init.id, :upl_number => -1
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', :fixed_resource_budget => 10, :initiative_id => @init.id
+proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', 
+:fixed_resource_budget => 10, :initiative_id => @init.id, :upl_number => -2
 proj.save
 puts 'added security compliance project'
-proj = Project.create! :name => 'Run the Business', :active => true, :owner => @da, :description => 'Operations and minor enhancements', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30, :initiative_id => @init.id
+proj = Project.create! :name => 'Run the Business', :active => true, :owner => @da, :description => 'Operations and minor enhancements', :tribe => 'All',  :category => 'RTB', 
+:fixed_resource_budget => 30, :initiative_id => @init.id, :upl_number => -3
 proj.save
 puts 'added RTB Project'
 

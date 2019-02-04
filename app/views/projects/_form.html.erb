@@ -19,12 +19,12 @@
 		<%= f.input :name, :autofocus => true, label: "Name"  %>
 		<%= f.association :owner, :as => :select, :collection => User.managers_only, :required => true,  
 		 	:pattern => false, :label_method => :name, label: "Owner" %>	
-		<%= f.input :description, inline_label: 'Description:', label: "Description", :required => true %>
+		<%= f.input :description, as: :text, inline_label: 'Description:', label: "Description", :required => true, :input_html => {:rows => 5} %>
 		<%= f.input :upl_number, inline_label: 'ID #:', label: display_name_for('sys_names', 'project') + ' ID #' %>
 		<div class="control-group select optional project_category">
 			<label class="select optional control-label" for="project_category"><%= get_cfield_name("p_cust_1") + ":"%></label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(get_picklist("p_cust_1"), 
+					<%= f.select(:category, options_for_select(get_picklist("p_cust_1",nil,true), 
 					@project.category), :required => true)  %>
 				</div>
 		</div>
@@ -47,7 +47,7 @@
 		<div class="control-group select optional project_ctpriority">
 			<label class="select optional control-label" for="project_ctpriority"><%= get_cfield_name("p_cust_4") + ":"%></label>
 				<div class="controls">
-					<%= f.select :ctpriority, options_for_select(get_picklist("p_cust_4",@project), @project.ctpriority)  %>
+					<%= f.select :ctpriority, options_for_select(get_picklist("p_cust_4",@project,true), @project.ctpriority)  %>
 				</div>
 		</div>
 		<br/>

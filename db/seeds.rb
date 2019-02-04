@@ -103,20 +103,16 @@ puts 'added ' << sys.name
 when "production"
 #Default User
 puts 'SETTING UP DEFAULT USER LOGIN'
-@da = User.create! :name => 'Default Admin', :email => 'ttadmin@adobe.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
-@da.save
-puts 'New user created: ' << @da.name
-user = User.create! :name => 'ExEmployeeMgr', :email => 'exempmgr@adobe.com', :verified => true, :password => 'password', :password_confirmation => 'A3kavazz', :org => 'System'
-user['manager_id'] = 1
-user.save
-puts 'New user created: ' << user.name
+@suser = User.create! :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
+@suser.save
+puts 'New user created: ' << @suser.name
 
 #Default Projects
 proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @da, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', 
 :fixed_resource_budget => 15, :initiative_id => @init.id, :upl_number => -1
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :name => 'Security-Compliance General', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', 
+proj = Project.create! :name => 'Security-Compliance Maintenance', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', 
 :fixed_resource_budget => 10, :initiative_id => @init.id, :upl_number => -2
 proj.save
 puts 'added security compliance project'
@@ -135,7 +131,10 @@ sys = TechSystem.create! :name => 'Product Ops', :description => 'Used for assig
 	:qos_group => 'Offer Management', :owner => @da
 sys.save
 puts 'added ' << sys.name
-
+sys = TechSystem.create! :name => 'Management Overhead', :description => 'System for Managers of multiple service teams', 
+	:qos_group => 'NA', :owner_id => 1
+sys.save
+puts 'added default system for managers'
 end
 
 

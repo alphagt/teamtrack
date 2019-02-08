@@ -13,7 +13,7 @@ set = Setting.create!  :stype => 1, :key => 'sys_names', :value => "service", :d
 	:description => 'Custom field for menu name of the System element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 1, :key => 'sys_names', :value => "fy_offset", :displayname => "26", 
+set = Setting.create!  :stype => 1, :key => 'sys_names', :value => "fy offset", :displayname => "26", 
 	:description => 'Defines the number of weeks difference between week 1 of the calendar year and week 1 of the fiscal year'
 set.save
 puts 'added ' << set.key

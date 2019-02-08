@@ -32,10 +32,12 @@ set = Setting.create!  :stype => 0, :key => 'p_cust_3', :value => "division", :d
 		picklist values can be added to settings with p_cust_3 as the key for those settings.'
 set.save
 puts 'added ' << set.key
+
 set = Setting.create!  :stype => 0, :key => 'p_cust_4', :value => "priority", :displayname => 'OKR',
 	:description => 'Custom field for priority.  Admin can define visible name by setting displayname on this setting.  
 		picklist values can be added to settings with p_cust_3 as the key for those settings.'
 set.save
+
 puts 'added ' << set.key
 set = Setting.create!  :stype => 0, :key => 'ctp', :value => "theme", :displayname => 'theme',
 	:description => 'Custom field for projects.  Admin can define visible name by setting displayname on this setting.  

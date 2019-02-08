@@ -106,6 +106,10 @@ puts 'SETTING UP DEFAULT USER LOGIN'
 @suser = User.create! :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
 @suser.save
 puts 'New user created: ' << @suser.name
+user = User.create! :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
+user['manager_id'] = 1
+user.save
+puts 'New user created: ' << user.name
 
 #Default Projects
 proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @da, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', 

@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
 	scope :for_initiative, -> (iId){where('initiative_id = ?', iId).order('projects.name')}
 	scope :by_rtm, -> {order('projects.rtm', 'projects.name')}
 	scope :for_rtm, -> (rStr){where('rtm = ?', rStr).order('projects.name')}
-	scope :for_psh, -> (shStr){where('psh = ?', shStr).order('Projects.name')}
+	scope :for_psh, -> (shStr){where('psh = ?', shStr).order('projects.name')}
 
 	def ctpriority_supported_by_initiative
 		i = Initiative.find(initiative_id)

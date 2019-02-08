@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.2.5"
+ruby "2.3.8"
 
 gem 'rails', '4.2.6'
 
@@ -13,7 +13,7 @@ gem 'rails', '4.2.6'
 #  gem 'pg'
 #end
 
-gem 'mysql2', :group => [:development, :test, :production]
+gem 'mysql2', '~> 0.4.0', :group => [:development, :test, :production]
 group :production do
   gem 'rails_12factor'
 end

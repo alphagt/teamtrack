@@ -6,6 +6,7 @@ class TechSystemsController < ApplicationController
   def index
   	#@techsystems = TechSystem.order("qos_group", "name")
   	@techsystems = TechSystem.by_qos
+  	puts "### TechSystems Index - " + @techsystems.to_s
   	@current_qos = @techsystems.first().qos_group
   	respond_to do |format|
       format.html # index.html.erb

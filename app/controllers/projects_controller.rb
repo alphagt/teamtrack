@@ -274,7 +274,7 @@ class ProjectsController < ApplicationController
 		
 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
 		key2 = Setting.for_key('p_cust_2').first.value
-		puts "RTM CF Key is: ?", key2
+		puts 'RTM CF Key is: ' +  key2
 		allocateKeys = Setting.for_key(key2).where('value LIKE ?', "%.%")
 		
 		if allocateKeys.length > 0 then
@@ -282,9 +282,11 @@ class ProjectsController < ApplicationController
 			allocateKeys.each do |k|
 				#find hash item that matches the .allocate key
 				hentry = combinedrtm.assoc(k.displayname)
-				puts "##### ?", hentry.to_s
-				allocateTotal += hentry[1]
-				rtmCount = rtmCount - 1
+				if hentry.length > 0 then
+					puts '##### ' + hentry.to_s
+					allocateTotal += hentry[1]
+					rtmCount = rtmCount - 1
+				end
 			end
 			
 			puts "#####  " + allocateTotal.to_s

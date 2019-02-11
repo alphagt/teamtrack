@@ -282,7 +282,7 @@ class ProjectsController < ApplicationController
 			allocateKeys.each do |k|
 				#find hash item that matches the .allocate key
 				hentry = combinedrtm.assoc(k.displayname)
-				if hentry.length > 0 then
+				if hentry.count > 0 then
 					puts '##### ' + hentry.to_s
 					allocateTotal += hentry[1]
 					rtmCount = rtmCount - 1

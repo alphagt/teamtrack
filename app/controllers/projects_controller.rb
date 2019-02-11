@@ -281,9 +281,10 @@ class ProjectsController < ApplicationController
 			puts "FOUND ALLOCATION RTM VALUE"
 			allocateKeys.each do |k|
 				#find hash item that matches the .allocate key
-				hentry = combinedrtm.assoc(k.displayname) || Array.new
-				puts '##### ' + hentry.to_s
-				if hentry.count > 0 then
+				hentry = combinedrtm.assoc(k.displayname) 
+				
+				if !hentry.nil? then
+					puts '##### ' + hentry.to_s
 					allocateTotal += hentry[1]
 					rtmCount = rtmCount - 1
 				end

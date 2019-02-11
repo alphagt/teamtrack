@@ -14,7 +14,7 @@
 <% end %>
 
 <% content_for :main1 do %>
-	<% if @techsystems.nil? %>
+	<% if @techsystems.empty? %>
 		<p><b>NO SYSTEMS DEFINED <b><p>
 	<% else %>
 		<table class="table">

@@ -76,13 +76,13 @@ puts 'SETTING UP DEFAULT USER LOGIN'
 @suser = User.create! :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
 @suser.save
 puts 'New user created: ' << @suser.name
-proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner => @suser, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15, :initiative_id => @init.id
+proj = Project.create! :name => 'Maintenance/Tech Debt', :active => true, :owner_id => @suser.id, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', :fixed_resource_budget => 15, :initiative_id => @init.id
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :name => 'Security-Compliance Maintenance', :active => true, :owner => @suser, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', :fixed_resource_budget => 10, :initiative_id => @init.id
+proj = Project.create! :name => 'Security-Compliance Maintenance', :active => true, :owner_id => @suser.id, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', :fixed_resource_budget => 10, :initiative_id => @init.id
 proj.save
 puts 'added security compliance project'
-proj = Project.create! :name => 'Run the Business', :active => true, :owner => @suser, :description => 'Operations and minor enhancements', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30, :initiative_id => @init.id
+proj = Project.create! :name => 'Run the Business', :active => true, :owner_id => @suser.id, :description => 'Operations and minor enhancements', :tribe => 'All',  :category => 'RTB', :fixed_resource_budget => 30, :initiative_id => @init.id
 proj.save
 puts 'added RTB Project'
 

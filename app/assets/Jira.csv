@@ -1,0 +1,152 @@
+Issue Type,Summary,Assignee,Reporter,Priority,Status,Resolution,Created,Updated,Due Date,Original Estimate,Resolved,Custom field (Epic Link),Issue key,Issue id
+Legend,Confluence Atlas1,lgrzyb,cmarriott,Highest,In progress,,29/Mar/19 9:33 AM,02/Apr/19 12:38 AM,,,29/Mar/19 9:33 AM,,SAS-176,980670
+Odyssey,Atlas1 in Server,mduclercq,cmarriott,Highest,In progress,,29/Mar/19 9:32 AM,01/Apr/19 11:11 PM,,,29/Mar/19 9:32 AM,,SAS-170,980664
+Legend,Jira Family Atlas1,zbeisekov,cmarriott,Highest,In progress,,29/Mar/19 9:32 AM,31/Mar/19 10:45 PM,,,29/Mar/19 9:32 AM,,SAS-173,980667
+Legend,Always on plans,rfine,mdelprado,High,Considering,,19/Mar/19 12:08 AM,22/Apr/19 11:36 PM,,,,,SAS-132,973308
+Legend,Designing plans for consumption,rchristian,mdelprado,High,Considering,,18/Mar/19 11:43 PM,22/Apr/19 11:26 PM,,,,,SAS-131,973305
+Legend,API Consolidation,jels,tbarthelemy,High,In progress,,25/Nov/18 11:17 PM,22/Apr/19 11:25 PM,,,25/Nov/18 11:17 PM,,SAS-29,911426
+Legend,Jira GDPR Phase 2,tkanafa,cmarriott,Low,In progress,,29/Mar/19 9:04 AM,26/Apr/19 6:46 AM,,,29/Mar/19 9:04 AM,,SAS-169,980663
+Odyssey,GDPR Phase 2,rjozwiak,cmarriott,Low,In progress,,22/Mar/19 4:33 AM,26/Apr/19 12:35 AM,,,22/Mar/19 4:33 AM,,SAS-147,976120
+Legend,Bitbucket - GDPR,,cmarriott,Low,In progress,,26/Apr/19 12:30 AM,26/Apr/19 12:34 AM,,,26/Apr/19 12:30 AM,,SAS-196,993260
+Legend,Confluence GDPR,mappleton,jmillman,Low,Done,,06/Mar/19 4:30 PM,26/Apr/19 12:27 AM,,,,,SAS-111,968408
+Legend,JPOS - GDPR Phase 2,jels,cmarriott,Low,Considering,,21/Mar/19 10:29 PM,26/Apr/19 12:24 AM,,,21/Mar/19 10:29 PM,,SAS-137,975907
+Legend,Support OpenJDK11 (Jira Family),lvysochyn,cmarriott,Low,In progress,,21/Mar/19 1:00 AM,26/Apr/19 12:11 AM,,,21/Mar/19 1:00 AM,,SAS-135,974924
+Legend,FeCru engineering,,mparfianowicz,Low,In progress,,14/Mar/19 8:03 AM,25/Apr/19 9:59 PM,,,14/Mar/19 8:03 AM,,SAS-130,971103
+Legend,GENERIC - Support a new Public Cloud Platform,,sking,Low,Planned,,05/Mar/19 8:10 AM,24/Apr/19 2:37 AM,,,05/Mar/19 8:10 AM,,SAS-133,967525
+Legend,Performance testing tooling,prichardson,jlazinski,Low,Considering,,26/Mar/19 1:15 PM,24/Apr/19 2:36 AM,,,26/Mar/19 1:15 PM,,SAS-155,979017
+Legend,Support MSSQL 2017 (Jira Family),lvysochyn,cmarriott,Low,In progress,,21/Mar/19 12:55 AM,22/Apr/19 11:25 PM,,,21/Mar/19 12:55 AM,,SAS-134,974923
+Non-Feature Work,Support Oracle 12c R2,,lvysochyn,Low,To Do,,05/Apr/19 6:51 AM,22/Apr/19 11:25 PM,,,05/Apr/19 6:51 AM,,SAS-188,983142
+Non-Feature Work,Bundle AdoptOpenJDK 8,,lvysochyn,Low,To Do,,05/Apr/19 6:51 AM,22/Apr/19 11:25 PM,,,05/Apr/19 6:51 AM,,SAS-187,983141
+Legend,Deprecate support of legacy platforms,tbarthelemy,tbarthelemy,Low,In progress,,26/Nov/18 9:03 PM,22/Apr/19 11:25 PM,,,26/Nov/18 9:03 PM,,SAS-32,911457
+Legend,Jira 8.0 readiness,jels,rchristian,Low,Done,,14/Jun/18 12:04 AM,22/Apr/19 11:25 PM,,,,,SAS-2,835201
+Legend,Post 3.0 GA Consolidation Work,,ddraper,Low,In progress,,13/Mar/19 3:15 AM,22/Apr/19 11:25 PM,,,13/Mar/19 3:15 AM,,SAS-113,970538
+Non-Feature Work,Portfolio Non-Feature Work,tbarthelemy,cmarriott,Low,In progress,,22/Mar/19 4:27 AM,22/Apr/19 11:25 PM,,,22/Mar/19 4:27 AM,,SAS-146,976119
+Odyssey,DC Geo Performance,jlazinski,cmarriott,Low,Considering,,29/Mar/19 9:32 AM,18/Apr/19 8:29 PM,,,29/Mar/19 9:32 AM,,SAS-171,980665
+Legend,Admin permissions,mappleton,rbattaglin,Low,In progress,,12/Dec/18 3:03 AM,17/Apr/19 8:31 PM,,,12/Dec/18 3:03 AM,,SAS-35,917402
+Legend,AWS Quick Start - Vanilla AMI's,abrokes,bmagro,Low,In progress,,26/Mar/19 5:08 AM,17/Apr/19 8:31 PM,,,26/Mar/19 5:08 AM,,SAS-151,978705
+Legend,Prescriptive guidance,jlazinski,mdelprado,Low,In progress,,14/Feb/19 8:43 AM,17/Apr/19 8:31 PM,,,14/Feb/19 8:43 AM,,SAS-74,957026
+Legend,Jira Issue archiving,,jkurcek,Low,In progress,,28/Mar/19 7:32 AM,17/Apr/19 8:31 PM,,,28/Mar/19 7:32 AM,,SAS-166,980335
+Legend,"Support for Aurora (Confluence, Jira, BbS)",varbatti,pscobie,Low,In progress,,13/Mar/19 4:44 AM,17/Apr/19 8:31 PM,,,13/Mar/19 4:44 AM,,SAS-126,970548
+Legend,Portfolio Internal Rollout (TEAM Server),cmarriott,tbarthelemy,Low,In progress,,20/Dec/18 5:17 AM,16/Apr/19 10:55 PM,,,20/Dec/18 5:17 AM,,SAS-51,922913
+Non-Feature Work,Jira ER 8.4.0 - 8.5.0 release process actions,,rjozwiak,Low,To Do,,16/Apr/19 12:44 PM,16/Apr/19 12:47 PM,,,16/Apr/19 12:44 PM,,SAS-195,989806
+Legend,JSD - GDPR Phase 2,vgandhi,noriordan,Low,In progress,,24/Feb/19 11:01 PM,16/Apr/19 12:05 PM,,,24/Feb/19 11:01 PM,,SAS-108,963724
+Legend,Improved Bitbucket Server integration,,kbrazulewicz,Low,Considering,,04/Apr/19 1:19 PM,11/Apr/19 4:15 AM,,,04/Apr/19 1:19 PM,,SAS-185,983125
+Legend,SAML support,,cmarriott,Low,Considering,,04/Apr/19 8:15 AM,11/Apr/19 4:15 AM,,,04/Apr/19 8:15 AM,,SAS-183,983210
+Legend,Self-contained projects,,kbrazulewicz,Low,Considering,,04/Apr/19 1:19 PM,11/Apr/19 4:15 AM,,,04/Apr/19 1:19 PM,,SAS-186,983126
+Legend,Kubernetes agents,,kbrazulewicz,Low,Considering,,04/Apr/19 7:55 AM,11/Apr/19 4:15 AM,,,04/Apr/19 7:55 AM,,SAS-180,983109
+Legend,Build resiliency,,kbrazulewicz,Low,Considering,,10/Apr/19 9:41 AM,11/Apr/19 4:15 AM,,,10/Apr/19 9:41 AM,,SAS-194,985509
+Legend,Parameterised builds,,kbrazulewicz,Low,Considering,,04/Apr/19 1:19 PM,11/Apr/19 4:15 AM,,,04/Apr/19 1:19 PM,,SAS-184,983124
+Legend,Bamboo at scale,,cmarriott,Low,Considering,,04/Apr/19 7:44 AM,11/Apr/19 4:15 AM,,,04/Apr/19 7:44 AM,,SAS-178,983208
+Legend,Divergent Branches,,kbrazulewicz,Low,In progress,,04/Apr/19 7:55 AM,11/Apr/19 4:15 AM,,,04/Apr/19 7:55 AM,,SAS-181,983110
+Legend,Prescriptive Guidance Phase 1,ddomingo,bmagro,Low,In progress,,26/Mar/19 6:00 AM,11/Apr/19 12:27 AM,,,26/Mar/19 6:00 AM,,SAS-153,978801
+Legend,High Availability,,cmarriott,Low,Considering,,04/Apr/19 8:15 AM,10/Apr/19 9:41 AM,,,04/Apr/19 8:15 AM,,SAS-182,983209
+Legend,JSW - JSD Issue Linking,rbarnes,noriordan,Low,Planned,,24/Feb/19 11:00 PM,09/Apr/19 5:54 AM,,,24/Feb/19 11:00 PM,,SAS-106,963722
+Legend,Advanced Approvals,rbarnes,noriordan,Low,Planned,,24/Feb/19 10:41 PM,09/Apr/19 12:33 AM,,,24/Feb/19 10:41 PM,,SAS-87,963703
+Legend,Downloads DR,,mkempa,Low,Considering,,05/Apr/19 8:28 AM,05/Apr/19 8:28 AM,,,05/Apr/19 8:28 AM,,SAS-193,983304
+Legend,Downloads Virus Scanning,,mkempa,Low,Considering,,05/Apr/19 8:28 AM,05/Apr/19 8:28 AM,,,05/Apr/19 8:28 AM,,SAS-192,983303
+Legend,Taking ownership of InstEnv,,mkempa,Low,Considering,,05/Apr/19 8:28 AM,05/Apr/19 8:28 AM,,,05/Apr/19 8:28 AM,,SAS-191,983302
+Legend,Hardening InstEnv,,mkempa,Low,Considering,,05/Apr/19 8:28 AM,05/Apr/19 8:28 AM,,,05/Apr/19 8:28 AM,,SAS-190,983301
+Non-Feature Work,Server Services Non-Feature Work,,mkempa,Low,To Do,,05/Apr/19 8:28 AM,05/Apr/19 8:28 AM,,,05/Apr/19 8:28 AM,,SAS-189,983300
+Non-Feature Work,Bamboo Non-Feature Work,kbrazulewicz,cmarriott,Low,In progress,,22/Mar/19 4:27 AM,04/Apr/19 1:19 PM,,,22/Mar/19 4:27 AM,,SAS-145,976118
+Legend,YAML 2.0,,kbrazulewicz,Low,In progress,,04/Apr/19 7:54 AM,04/Apr/19 8:15 AM,,,04/Apr/19 7:54 AM,,SAS-179,983108
+Legend,Jira Mobile Visualise work (M4),imehta,cmarriott,Low,In progress,,18/Feb/19 4:18 AM,04/Apr/19 4:45 AM,,,18/Feb/19 4:18 AM,,SAS-78,959225
+Legend,Jira Mobile Notifications (M3),imehta,cmarriott,Low,In progress,,18/Feb/19 4:18 AM,04/Apr/19 4:45 AM,,,18/Feb/19 4:18 AM,,SAS-79,959226
+Legend,Prescriptive Guidance Next,,bmagro,Low,Considering,,03/Apr/19 12:00 AM,04/Apr/19 1:26 AM,,,03/Apr/19 12:00 AM,,SAS-177,982840
+Legend,AWS Quick Start - Phase 3,,bmagro,Low,Considering,,26/Mar/19 10:39 PM,02/Apr/19 11:31 PM,,,26/Mar/19 10:39 PM,,SAS-156,979308
+Legend,OpenStack or Kubernetes,,pscobie,Low,Planned,,13/Mar/19 4:44 AM,02/Apr/19 11:31 PM,,,13/Mar/19 4:44 AM,,SAS-122,970544
+Legend,Automated best deployment recipes (Thermomix),,pscobie,Low,Planned,,13/Mar/19 4:44 AM,02/Apr/19 11:31 PM,,,13/Mar/19 4:44 AM,,SAS-123,970545
+Legend,Cookbooks Pt 2,,pscobie,Low,Planned,,13/Mar/19 4:44 AM,02/Apr/19 11:31 PM,,,13/Mar/19 4:44 AM,,SAS-121,970543
+Legend,Delphic Expanse,bmagro,mdelprado,Low,Planned,,04/Feb/19 4:40 AM,02/Apr/19 11:30 PM,,,04/Feb/19 4:40 AM,,SAS-61,950924
+Legend,Approval stabilisation,bmagro,mdelprado,Low,In progress,,04/Feb/19 4:40 AM,02/Apr/19 11:30 PM,,,04/Feb/19 4:40 AM,,SAS-62,950925
+Legend,Docker Official Support,bmagro,pscobie,Low,Planned,,13/Mar/19 4:44 AM,02/Apr/19 11:30 PM,,,13/Mar/19 4:44 AM,,SAS-120,970542
+Legend,Azure Phase 2,abrokes,mdelprado,Low,Considering,,12/Feb/19 4:02 AM,02/Apr/19 11:30 PM,,,12/Feb/19 4:02 AM,,SAS-73,955260
+Legend,AWS Government Cloud Support,prichardson,sking,Low,Planned,,28/Feb/19 6:00 AM,02/Apr/19 11:30 PM,,,28/Feb/19 6:00 AM,,SAS-110,966731
+Legend,Better SSO,,mkempa,Low,In progress,,13/Mar/19 3:41 AM,02/Apr/19 10:18 AM,,,13/Mar/19 3:41 AM,,SAS-117,970630
+Legend,License monitoring,mradochonski,mkempa,Low,Committed,,13/Mar/19 3:30 AM,02/Apr/19 10:18 AM,,,13/Mar/19 3:30 AM,,SAS-115,970628
+Legend,2FA in Crowd,,mkempa,Low,Committed,,13/Mar/19 3:42 AM,02/Apr/19 10:18 AM,,,13/Mar/19 3:42 AM,,SAS-118,970631
+Legend,JSD Pipeline,rbarnes,noriordan,Low,In progress,,24/Feb/19 10:23 PM,02/Apr/19 10:17 AM,,,24/Feb/19 10:23 PM,,SAS-84,963700
+Odyssey,Server Non-Feature Work,ktoole,cmarriott,Low,In progress,,22/Mar/19 4:06 AM,02/Apr/19 6:33 AM,,,22/Mar/19 4:06 AM,,SAS-144,976117
+Legend,Off Roadmap,,ddraper,Low,Rejected,,13/Mar/19 3:15 AM,02/Apr/19 3:19 AM,,,13/Mar/19 3:15 AM,,SAS-112,970537
+Odyssey,DC Deployments - Future,,bmagro,Low,Rejected,,26/Mar/19 6:00 AM,02/Apr/19 2:22 AM,,,26/Mar/19 6:00 AM,,SAS-152,978800
+Legend,Pre Upgrade Planning - Jira (PUP),imehta,cmarriott,Low,In progress,,07/Feb/19 4:18 AM,02/Apr/19 1:05 AM,,,07/Feb/19 4:18 AM,,SAS-66,953702
+Non-Feature Work,DC Deployments - Non-Feature Work,bmagro,cmarriott,Low,In progress,,22/Mar/19 4:04 AM,02/Apr/19 12:00 AM,,,22/Mar/19 4:04 AM,,SAS-143,976116
+Non-Feature Work,CSS Eng Non-Feature Work,imehta,cmarriott,Low,In progress,,21/Feb/19 4:36 AM,02/Apr/19 12:00 AM,,,21/Feb/19 4:36 AM,,SAS-83,961313
+Non-Feature Work,JSD Non-Feature Work,rbarnes,noriordan,Low,In progress,,24/Feb/19 10:42 PM,02/Apr/19 12:00 AM,,,24/Feb/19 10:42 PM,,SAS-90,963706
+Non-Feature Work,Crowd Non-Feature Work,mradochonski,mkempa,Low,In progress,,13/Mar/19 3:50 AM,02/Apr/19 12:00 AM,,,13/Mar/19 3:50 AM,,SAS-119,970632
+Non-Feature Work,Confluence Non-Feature Work,malawrence,cmarriott,Low,In progress,,22/Mar/19 4:03 AM,02/Apr/19 12:00 AM,,,22/Mar/19 4:03 AM,,SAS-138,976111
+Non-Feature Work,DC Apps Non-Feature Work,bmagro,bmagro,Low,In progress,,14/Mar/19 3:29 AM,02/Apr/19 12:00 AM,,,14/Mar/19 3:29 AM,,SAS-129,971006
+Non-Feature Work,DC Performance Non-Feature Work,jlazinski,cmarriott,Low,In progress,,22/Mar/19 4:03 AM,01/Apr/19 11:59 PM,,,22/Mar/19 4:03 AM,,SAS-141,976114
+Non-Feature Work,DC Next Gen Non-Feature Work,jlazinski,cmarriott,Low,In progress,,22/Mar/19 4:04 AM,01/Apr/19 11:59 PM,,,22/Mar/19 4:04 AM,,SAS-142,976115
+Non-Feature Work,FeCru Non-Feature Work,mradochonski,cmarriott,Low,In progress,,22/Mar/19 4:03 AM,01/Apr/19 11:59 PM,,,22/Mar/19 4:03 AM,,SAS-140,976113
+Non-Feature Work,Mobile Non-Feature Work,imehta,cmarriott,Low,In progress,,22/Mar/19 4:03 AM,01/Apr/19 11:59 PM,,,22/Mar/19 4:03 AM,,SAS-139,976112
+Non-Feature Work,Jira Delta Non-Feature Work,gkaszkur,cmarriott,Low,In progress,,28/Mar/19 5:59 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:59 AM,,SAS-162,980323
+Non-Feature Work,Jira Highlanders Non-Feature Work,mkowalska,cmarriott,Low,In progress,,28/Mar/19 5:58 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:58 AM,,SAS-160,980321
+Non-Feature Work,Jira Monsters Non-Feature Work,kderenda,cmarriott,Low,In progress,,28/Mar/19 5:58 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:58 AM,,SAS-159,980320
+Non-Feature Work,Jira Raid Non-Feature Work,kderenda,cmarriott,Low,In progress,,28/Mar/19 5:58 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:58 AM,,SAS-158,980319
+Non-Feature Work,Jira Guardians Non-Feature Work,gkaszkur,cmarriott,Low,In progress,,28/Mar/19 5:59 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:59 AM,,SAS-161,980322
+Non-Feature Work,Jira Pirates Non-Feature Work,,cmarriott,Low,In progress,,28/Mar/19 5:59 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:59 AM,,SAS-163,980324
+Non-Feature Work,Jira Flash Non-Feature Work,jkurcek,cmarriott,Low,In progress,,28/Mar/19 5:58 AM,01/Apr/19 11:59 PM,,,28/Mar/19 5:58 AM,,SAS-157,980318
+Legend,FY20 Big Rocks (to be finalised),tbarthelemy,ddraper,Low,Considering,,13/Mar/19 3:29 AM,01/Apr/19 10:25 PM,,,13/Mar/19 3:29 AM,,SAS-114,970539
+Legend,Reporting,tbarthelemy,tbarthelemy,Low,Considering,,11/Feb/19 2:30 AM,01/Apr/19 10:25 PM,,,11/Feb/19 2:30 AM,,SAS-70,955326
+Legend,Plan Integrity (MVE for 3.0 GA),tbarthelemy,rchristian,Low,Done,,15/Jan/19 11:00 PM,01/Apr/19 10:25 PM,,,15/Jan/19 11:00 PM,,SAS-58,938603
+Legend,Capacity management (MVE for 3.0 GA),tbarthelemy,tbarthelemy,Low,Done,,11/Feb/19 2:30 AM,01/Apr/19 10:25 PM,,,11/Feb/19 2:30 AM,,SAS-69,955325
+Legend,Data driven planning (MVE for 3.0 GA),tbarthelemy,tbarthelemy,Low,Done,,24/Dec/18 3:00 AM,01/Apr/19 10:25 PM,,,24/Dec/18 3:00 AM,,SAS-52,924902
+Legend,Manual Planning (MVE for 3.0 GA),tbarthelemy,tbarthelemy,Low,In progress,,05/Feb/19 11:50 PM,01/Apr/19 10:25 PM,,,05/Feb/19 11:50 PM,,SAS-63,952301
+Legend,Team Management,,rchristian,Low,Done,,14/Mar/18 3:26 AM,01/Apr/19 10:25 PM,,,,,SAS-8,323304
+Legend,CDN for Jira,mrzymski,cmarriott,Low,Considering,,29/Mar/19 9:32 AM,29/Mar/19 9:35 AM,,,29/Mar/19 9:32 AM,,SAS-174,980668
+Legend,CDN for Bitbucket,rbarnes,cmarriott,Low,Considering,,29/Mar/19 9:33 AM,29/Mar/19 9:33 AM,,,29/Mar/19 9:33 AM,,SAS-175,980669
+Legend,CDN for Confluence,mappleton,cmarriott,Low,Considering,,29/Mar/19 9:32 AM,29/Mar/19 9:32 AM,,,29/Mar/19 9:32 AM,,SAS-172,980666
+Legend,FeCru maintenance,mparfianowicz,cmarriott,Low,In progress,,14/Mar/19 12:08 AM,29/Mar/19 8:19 AM,,,14/Mar/19 12:08 AM,,SAS-127,970813
+Legend,FeCru product management,mparfianowicz,cmarriott,Low,In progress,,14/Mar/19 12:08 AM,29/Mar/19 8:19 AM,,,14/Mar/19 12:08 AM,,SAS-128,970814
+Legend,Agent Experience,rbarnes,noriordan,Low,In progress,,24/Feb/19 10:41 PM,29/Mar/19 6:58 AM,,,24/Feb/19 10:41 PM,,SAS-86,963702
+Legend,Enterprise performance,rbattaglin,rbattaglin,Low,In progress,,12/Dec/18 3:03 AM,28/Mar/19 11:30 PM,,,12/Dec/18 3:03 AM,,SAS-36,917403
+Legend,Enterprise stability,rbattaglin,rbattaglin,Low,In progress,,12/Dec/18 3:03 AM,28/Mar/19 11:24 PM,,,12/Dec/18 3:03 AM,,SAS-37,917404
+Legend,Enterprise customer retention,rbattaglin,jmillman,Low,In progress,,12/Dec/18 10:50 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:50 PM,,SAS-42,917803
+Legend,End-users permissions - phase 1,mappleton,rbattaglin,Low,Considering,,12/Dec/18 3:04 AM,28/Mar/19 11:24 PM,,,12/Dec/18 3:04 AM,,SAS-39,917406
+Legend,End-user permissions - phase 2,mappleton,rbattaglin,Low,Planned,,12/Dec/18 3:04 AM,28/Mar/19 11:24 PM,,,12/Dec/18 3:04 AM,,SAS-38,917405
+Legend,Search improvements,mappleton,jmillman,Low,Considering,,12/Dec/18 10:50 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:50 PM,,SAS-46,917807
+Legend,Level-up,mappleton,jmillman,Low,In progress,,12/Dec/18 10:50 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:50 PM,,SAS-45,917806
+Legend,Beautiful content - page view,mappleton,jmillman,Low,Considering,,12/Dec/18 10:50 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:50 PM,,SAS-44,917805
+Legend,Beautiful content - editor,mappleton,jmillman,Low,Planned,,12/Dec/18 10:50 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:50 PM,,SAS-43,917804
+Legend,Builds,bmcnamara,jmillman,Low,Considering,,12/Dec/18 10:49 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:49 PM,,SAS-41,917802
+Legend,7.0: Platform 5 & Java 11 upgrades,bmcnamara,jmillman,Low,In progress,,12/Dec/18 10:49 PM,28/Mar/19 11:24 PM,,,12/Dec/18 10:49 PM,,SAS-40,917801
+Legend,Express Lane Delivery,imehta,cmarriott,Low,In progress,,07/Feb/19 4:17 AM,28/Mar/19 11:23 PM,,,07/Feb/19 4:17 AM,,SAS-65,953701
+Legend,Post Upgrade Landing Page - Confluence (PULP),imehta,cmarriott,Low,In progress,,21/Feb/19 4:36 AM,28/Mar/19 11:23 PM,,,21/Feb/19 4:36 AM,,SAS-82,961312
+Legend,Pre Upgrade Planning - Confluence (PUP),imehta,cmarriott,Low,In progress,,21/Feb/19 4:36 AM,28/Mar/19 11:23 PM,,,21/Feb/19 4:36 AM,,SAS-81,961311
+Legend,Jira manual upgrade improvements (Helium),imehta,cmarriott,Low,In progress,,07/Feb/19 4:18 AM,28/Mar/19 11:23 PM,,,07/Feb/19 4:18 AM,,SAS-67,953703
+Legend,Update user experience in Crowd,,mkempa,Low,In progress,,13/Mar/19 3:41 AM,28/Mar/19 11:23 PM,,,13/Mar/19 3:41 AM,,SAS-116,970629
+Legend,DC Deployments - Update the AWS Quickstart Templates,bmagro,mdelprado,Low,Done,,04/Feb/19 3:03 AM,28/Mar/19 11:23 PM,,,,,SAS-60,950902
+Legend,"DC Deployments - Metrics, Analytics, Research",bmagro,pscobie,Low,Rejected,,13/Mar/19 4:44 AM,28/Mar/19 11:23 PM,,,13/Mar/19 4:44 AM,,SAS-125,970547
+Legend,DC Deployments - Show value and metrics for team,,sking,Low,Rejected,,28/Feb/19 5:36 AM,28/Mar/19 11:23 PM,,,28/Feb/19 5:36 AM,,SAS-109,966726
+Legend,DC Deployments - Remove single point of failure - Phase 1,bmagro,mdelprado,Low,Rejected,,12/Feb/19 4:02 AM,28/Mar/19 11:23 PM,,,12/Feb/19 4:02 AM,,SAS-72,955259
+Legend,DC Deployments - GovCloud,,pscobie,Low,Rejected,,13/Mar/19 4:44 AM,28/Mar/19 11:23 PM,,,13/Mar/19 4:44 AM,,SAS-124,970546
+Legend,Jira Mobile Backlogs (M5),imehta,cmarriott,Low,Planned,,18/Feb/19 4:18 AM,28/Mar/19 11:22 PM,,,18/Feb/19 4:18 AM,,SAS-77,959224
+Legend,Jira Mobile Native mobile functions (M6),imehta,cmarriott,Low,Planned,,18/Feb/19 4:17 AM,28/Mar/19 11:22 PM,,,18/Feb/19 4:17 AM,,SAS-76,959223
+Legend,Jira Mobile GA Readiness,imehta,cmarriott,Low,Planned,,21/Mar/19 6:10 AM,28/Mar/19 11:22 PM,,,21/Mar/19 6:10 AM,,SAS-136,975100
+Legend,Customer Portal Improvements,rbarnes,noriordan,Low,In progress,,24/Feb/19 10:42 PM,28/Mar/19 8:15 AM,,,24/Feb/19 10:42 PM,,SAS-93,963709
+Legend,KCS,rbarnes,noriordan,Low,In progress,,24/Feb/19 10:42 PM,28/Mar/19 8:15 AM,,,24/Feb/19 10:42 PM,,SAS-92,963708
+Legend,Asset Management,rbarnes,noriordan,Low,Considering,,24/Feb/19 10:42 PM,28/Mar/19 8:15 AM,,,24/Feb/19 10:42 PM,,SAS-91,963707
+Legend,SLA Improvements,rbarnes,noriordan,Low,Considering,,24/Feb/19 10:42 PM,28/Mar/19 8:15 AM,,,24/Feb/19 10:42 PM,,SAS-95,963711
+Legend,POM Overhaul,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,28/Mar/19 8:15 AM,,,24/Feb/19 11:00 PM,,SAS-105,963721
+Legend,Jira Service Desk 4.0,rbarnes,noriordan,Low,Considering,,24/Feb/19 10:42 PM,28/Mar/19 8:15 AM,,,24/Feb/19 10:42 PM,,SAS-94,963710
+Legend,Agent Groups,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,28/Mar/19 8:15 AM,,,24/Feb/19 11:00 PM,,SAS-101,963717
+Odyssey,Jira Archiving,,cmarriott,Low,In progress,,28/Mar/19 7:35 AM,28/Mar/19 8:07 AM,,,28/Mar/19 7:35 AM,,SAS-168,980337
+Legend,Jira Performance FY19,,jkurcek,Low,Done,,28/Mar/19 7:32 AM,28/Mar/19 7:47 AM,,,28/Mar/19 7:32 AM,,SAS-167,980336
+Legend,Jira Project archiving,,jkurcek,Low,Done,,28/Mar/19 7:32 AM,28/Mar/19 7:39 AM,,,28/Mar/19 7:32 AM,,SAS-165,980334
+Legend,Custom fields optimizer,,jkurcek,Low,Done,,28/Mar/19 7:32 AM,28/Mar/19 7:39 AM,,,28/Mar/19 7:32 AM,,SAS-164,980333
+Legend,Improve horizontal scalability,jlazinski,pscobie,Low,Considering,,25/Mar/19 10:55 PM,26/Mar/19 1:32 PM,,,25/Mar/19 10:55 PM,,SAS-150,978411
+Legend,DC Deployments - Definition of Done (Project Hygine),bmagro,mdelprado,Low,Rejected,,12/Feb/19 4:02 AM,26/Mar/19 5:33 AM,,,12/Feb/19 4:02 AM,,SAS-71,955258
+Legend,Geo Performance,jlazinski,pscobie,Low,Considering,,25/Mar/19 10:36 PM,25/Mar/19 10:56 PM,,,25/Mar/19 10:36 PM,,SAS-148,978403
+Legend,Determine DC limitations,jlazinski,pscobie,Low,Considering,,25/Mar/19 10:36 PM,25/Mar/19 10:37 PM,,,25/Mar/19 10:36 PM,,SAS-149,978404
+Legend,Source Code Distribution,rbarnes,noriordan,Low,Considering,,24/Feb/19 10:41 PM,13/Mar/19 7:02 AM,,,24/Feb/19 10:41 PM,,SAS-85,963701
+Legend,Supported Environments,rbarnes,noriordan,Low,Considering,,24/Feb/19 10:41 PM,13/Mar/19 7:02 AM,,,24/Feb/19 10:41 PM,,SAS-88,963704
+Legend,Translations,rbarnes,noriordan,Low,Considering,,24/Feb/19 10:41 PM,13/Mar/19 7:02 AM,,,24/Feb/19 10:41 PM,,SAS-89,963705
+Legend,Service Catalog,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-96,963712
+Legend,Board Based View,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-97,963713
+Legend,Smart Request Routing,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-98,963714
+Legend,Change Risk Management,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-99,963715
+Legend,Cross Sell From JSW,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-100,963716
+Legend,Users And Groups Overhaul,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-102,963718
+Legend,Chat,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-103,963719
+Legend,Automation,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-104,963720
+Legend,3.16 ER,rbarnes,noriordan,Low,Considering,,24/Feb/19 11:00 PM,13/Mar/19 7:02 AM,,,24/Feb/19 11:00 PM,,SAS-107,963723

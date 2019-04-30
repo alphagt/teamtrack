@@ -1,9 +1,9 @@
 
 desc "import csv file"
 task :import_projects => :environment do
-    filename = './csv_imports/jira.csv'	
+    filename = './assets/jira.csv'	
 
-    options = {:strip_chars_from_headers => "s/([()])//g", :key_mapping => {:issue_key => :issue_key, :summary => :summary, :owner => :owner}, :remove_unmapped_keys => true}
+    options = {:strip_chars_from_headers => "s/([()])//g", :key_mapping => {:issue_key => :issue_key, :summary => :summary, :reporter => :owner}, :remove_unmapped_keys => true}
     newproj = []
     cols = [:active, :name, :upl_number, :owner_id, :description]
     SmarterCSV.process(filename, options).each do |r|
@@ -24,7 +24,7 @@ task :import_projects => :environment do
 				oid = 1
 			end
 			p[:active] = true
-			p[:name] = "Import-" + pid.to_s
+			p[:name] = i[:issue_key]
 			p[:upl_number] = pid
 			p[:owner_id] = oid
 			p[:description] = i[:summary]

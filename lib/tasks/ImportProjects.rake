@@ -1,7 +1,7 @@
 
 desc "import csv file"
 task :import_projects => :environment do
-    filename = File.expand_path("../app/assets/jira.csv")	
+    filename = File.expand_path("../app/assets/Jira.csv")	
 
     options = {:strip_chars_from_headers => "s/([()])//g", :key_mapping => {:issue_key => :issue_key, :summary => :summary, :reporter => :owner}, :remove_unmapped_keys => true}
     newproj = []

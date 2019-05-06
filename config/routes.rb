@@ -12,10 +12,12 @@ TeamTrack::Application.routes.draw do
 
   resources :projects do
   	get 'archive', :on => :member
+  	post 'import', :on => :collection
   end
   
   resources :tech_systems do
   	get 'archive', :on => :member
+
   end
   
   authenticated :user do

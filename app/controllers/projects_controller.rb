@@ -51,6 +51,8 @@ class ProjectsController < ApplicationController
 	else
 		@mgr_id = current_user.id
 	end
+	puts "INDEX: MGR ID = "
+	puts @mgr_id.to_s
 	
 	#Current FY Data
 	
@@ -388,6 +390,57 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def import
+  	require 'csv'
+  	
+  	#options = {:force_utf8, :strip_chars_from_headers => "s/([()])//g", :key_mapping => {:issue_key => :issue_key, :summary => :summary, :reporter => :owner}, :remove_unmapped_keys => true}
+    
+    tFile = params[:file]
+    newproj = []
+    cols = [:active, :name, :upl_number, :owner_id, :description]
+	CSV.foreach(tFile.path, headers: true) do |r|
+		puts r
+		i = r.to_h
+		puts i
+		pid = i['Issue key'].split("-")[1].to_i || -1
+		puts pid.to_s
+		if Project.find_by_upl_number(pid).nil? then
+			puts i.keys
+			p = Hash.new()
+			oUser = User.for_email(i['Owner'])
+			if oUser.respond_to?(:id) then
+				if oUser.ismanager
+					oid = oUser.id
+				else
+					oid = oUser.manager_id || "1"
+				end
+			else
+				oid = "1"
+			end
+			p[:active] = true
+			p[:name] = i['Issue key']
+			p[:upl_number] = pid
+			p[:owner_id] = oid
+			p[:description] = i['Summary']
+			puts p.to_s
+			newproj << p
+		end
+	end	
+		
+	sval = Project.import(cols,newproj, validate: false)
+	puts newproj.to_s
+		
+	  respond_to do |format|
+		  if sval
+			format.html { redirect_to projects_path, notice: "Projects Imported" and return }
+			format.json { render json: projects_path, status: :imported, location: @projects }
+		  else
+			format.html { render action: "index" }
+			format.json { render json: @projects.errors, status: :unprocessable_entity }
+		  end
+	  end
+  end
+  
   # GET /projects/1
   # GET /projects/1.json
   def show

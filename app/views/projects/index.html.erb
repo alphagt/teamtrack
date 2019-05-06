@@ -13,6 +13,13 @@
 		<td class="danger"><%= link_to 'New ' + display_name_for('sys_names', 'project'), new_project_path %></td>
 		<tr>
 		<td class="danger"><%= link_to 'Include Closed', projects_path(:scope => "all", :org => @mgr_id, :fy => @fy) %></td>
+		<tr>
+		<td class="danger">
+			<%= form_tag import_projects_path, multipart: true do %>
+				<%= file_field_tag :file %>
+				<%= submit_tag "Import " + display_name_for('sys_names', 'project') %>
+			<% end %>
+		</td>
 	<% end %>
 	<b><h4>Filters</h4></b>
 	<% if current_user.isstatususer? || current_user.admin %>

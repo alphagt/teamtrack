@@ -17,28 +17,32 @@
 			
 			<br>
 			<% if action_name == "new" then %>
-				<%= f.label "OPTIONAL NEW USER ENTRY" %>
-				<br/>
-				<div class="pull-right">
+				<div class="panel pull-right">
+					<%= f.label "OPTIONAL NEW USER ENTRY" %>
+					<br/>
 					<%=	fields_for "newuser[]" do |user_fields| %> 
 						Name: <%= user_fields.text_field :name %>
 						<div class="control-group select optional user_type">
 							<label class="select optional control-label" for="user_type">Employee Type:</label>
 							<div class="controls">
-								<%= user_fields.select :etype, [['FTE'],['Contractor'],['Intern']] %>
+								<%= user_fields.select(:etype, options_for_select(get_picklist("u_cust_1",nil)))  %>
 							</div>
 						</div>
 						<div class="control-group select optional user_category">
 							<label class="select optional control-label" for="user_category">Employee Category:</label>
 							<div class="controls">
-								<%= user_fields.select :category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
+								<%= user_fields.select(:category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
 							</div>
 						</div>
 					<% end %> 
 				</div>
 			<% end %>
 			<br/>
-			<br/>	
+			<br/>
+		</div>
+		</row>
+		<row>
+		<div class ='col-md-3'>	
 			<%= f.input :effort, :autofocus => true %>
 			<%= f.association :tech_system, :as => :select, :collection => TechSystem.by_name, :required => true %>
 			<%= f.association :project, :as => :select, :collection => Project.active.by_name, :required => true %>

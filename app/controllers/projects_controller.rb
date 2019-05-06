@@ -418,7 +418,7 @@ class ProjectsController < ApplicationController
 				oid = "1"
 			end
 			p[:active] = true
-			p[:name] = i['Summary'].truncate_words(4)
+			p[:name] = i['Summary']
 			p[:upl_number] = pid
 			p[:owner_id] = oid
 			p[:description] = i['Issue key']

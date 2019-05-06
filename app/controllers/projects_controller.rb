@@ -418,10 +418,10 @@ class ProjectsController < ApplicationController
 				oid = "1"
 			end
 			p[:active] = true
-			p[:name] = i['Issue key']
+			p[:name] = i['Summary'].truncate_words(3)
 			p[:upl_number] = pid
 			p[:owner_id] = oid
-			p[:description] = i['Summary']
+			p[:description] = i['Issue key']
 			puts p.to_s
 			newproj << p
 		end

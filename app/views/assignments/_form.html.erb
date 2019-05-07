@@ -17,7 +17,7 @@
 			
 			<br>
 			<% if action_name == "new" then %>
-				<div class="panel pull-right">
+				<div class="pull-right">
 					<%= f.label "OPTIONAL NEW USER ENTRY" %>
 					<br/>
 					<%=	fields_for "newuser[]" do |user_fields| %> 
@@ -31,9 +31,10 @@
 						<div class="control-group select optional user_category">
 							<label class="select optional control-label" for="user_category">Employee Category:</label>
 							<div class="controls">
-								<%= user_fields.select(:category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
+								<%= user_fields.select :category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
 							</div>
 						</div>
+					
 					<% end %> 
 				</div>
 			<% end %>

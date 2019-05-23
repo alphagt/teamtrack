@@ -34,7 +34,11 @@ class Project < ActiveRecord::Base
 		assignments.where(:set_period_id => pId).each do |a|
 			tEffort += a.effort
 		end
-		fixed_resource_budget > tEffort
+		if !fixed_resource_budget then
+			true
+		else
+			fixed_resource_budget > tEffort
+		end
 	end
 	
 	def ytd_allocation(fy = 0, maxWeek = 0)

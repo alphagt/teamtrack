@@ -1,26 +1,48 @@
 module ApplicationHelper
 	def period_to_date(speriod)
-	#ToFix
-		#if speriod.week_number > speriod.cweek_offset then
-		#	Date.commercial(speriod.fiscal_year,speriod.week_number - speriod.cweek_offset,1)
-		#else
-		#	Date.commercial(speriod.fiscal_year - 1,speriod.week_number - speriod.cweek_offset - 1,1)
-		#end
-		@pPeriod = speriod.to_f
-		#puts @pPeriod.to_s
-		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
-		puts "FY OFFSET FROM C FIELDS"
-		puts @fyOffset
-		@pFy = speriod.to_i
-		@fWeek = ((@pPeriod - @pFy) * 100).round
-		#puts @fWeek
-		if @fWeek <= @fyOffset
-			@pFy -= 1
-			@cWeek = 52 - (@fyOffset - @fWeek)
+		@cweek_number = 0.0
+		
+		@fyear = speriod.to_i
+		@cfy_offset = display_name_for('sys_names', 'fy offset').to_i * -1
+	
+		if @cfy_offset == 0 then
+			@offset_y_adjust = 0
 		else
-			@cWeek = @fWeek - @fyOffset
+			@offset_y_adjust = @cfy_offset/@cfy_offset.abs
 		end
-		Date.commercial(@pFy,@cWeek,1)
+		@cweek_number = ((speriod.to_f - speriod.to_i) * 100).round
+# 		puts 'in period_to_date'
+# 		puts speriod
+# 		puts 'period week number is:'
+# 		puts @cweek_number
+		puts 'Offset is'
+		puts @cfy_offset
+		#handle special case at start or end of calendar year
+		if @cweek_number <= @cfy_offset || @cweek_number > (52 + @cfy_offset) then
+			@fyear = @fyear - @offset_y_adjust
+			@cweek_number = (52 - (@cfy_offset - @cweek_number).abs).abs
+		else
+			@cweek_number = @cweek_number - @cfy_offset
+		end
+# 		puts 'real week num is'
+# 		puts @cweek_number
+		Date.commercial(@fyear, @cweek_number, 1)
+	#ToFix
+# 		@pPeriod = speriod.to_f
+# 		#puts @pPeriod.to_s
+# 		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
+# 		puts "FY OFFSET FROM C FIELDS"
+# 		puts @fyOffset
+# 		@pFy = speriod.to_i
+# 		@fWeek = ((@pPeriod - @pFy) * 100).round
+# 		#puts @fWeek
+# 		if @fWeek <= @fyOffset
+# 			@pFy -= 1
+# 			@cWeek = 52 - (@fyOffset - @fWeek)
+# 		else
+# 			@cWeek = @fWeek - @fyOffset
+# 		end
+# 		Date.commercial(@pFy,@cWeek,1)
 	end
 
 	def period_from_parts(iFy, iWeek)
@@ -51,13 +73,13 @@ module ApplicationHelper
 	end
 	
 	def current_quarter()
-		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
+# 		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
 		@cw = current_week()
-		if @cw > (52 - @fyOffset) then
-			@cw = @cw + @fyOffset - 52
-		else
-			@cw += @fyOffset
-		end
+# 		if @cw > (52 - @fyOffset) then
+# 			@cw = @cw + @fyOffset - 52
+# 		else
+# 			@cw += @fyOffset
+# 		end
 		@q = 0
 		case 
 		when @cw < 13
@@ -194,21 +216,23 @@ module ApplicationHelper
 		rcode
 	end
 	
-	def period_from_date(d)
-		@sPeriod = 0.0
-		@fyear = d.year
-		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
-		#puts "in period_from_date"
-		if d.cweek > (52 - @fyOffset) then
-			@fyear = @fyear + 1
-			@sPeriod = d.cweek + @fyOffset - 52
-		else
-			#puts 'IN ELSE'
-			@sPeriod += d.cweek + @fyOffset.to_f
-		end
-		# puts "sPeriod is:"
-# 		puts @sPeriod
-		@out = @fyear + @sPeriod.fdiv(100).round(3)
+	def period_from_date(d, offset = 53)
+		# @sPeriod = 0.0
+# 		@fyear = d.year
+# 		@fyOffset = display_name_for('sys_names', 'fy offset').to_i
+# 		
+# 		#puts "in period_from_date"
+# 		if d.cweek > (52 - @fyOffset) then
+# 			@fyear = @fyear + 1
+# 			@sPeriod = d.cweek + @fyOffset - 52
+# 		else
+# 			#puts 'IN ELSE'
+# 			@sPeriod += d.cweek + @fyOffset.to_f
+# 		end
+# 		# puts "sPeriod is:"
+# # 		puts @sPeriod
+# 		@out = @fyear + @sPeriod.fdiv(100).round(3)
+		@out = offset_period(d, offset)
 		#puts "period from date"
 		#puts d.to_s
 		#puts @out
@@ -216,26 +240,52 @@ module ApplicationHelper
 	end
 	
 	def current_period()
-	# ToFix
-		@cweek_number = 0.0
-		@fyear = Date.today.year 
-		@cfy_offset = display_name_for('sys_names', 'fy offset').to_i
-		if Date.today.cweek > (52 - @cfy_offset) then
-			@fyear = @fyear + 1
-			@cweek_number = Date.today.cweek + @cfy_offset - 52
-		else
-			@cweek_number = Date.today.cweek + @cfy_offset
-		end
-		#puts 'CURRENT CWEEK Number: '
-		#puts  @cweek_number
-		@out = @fyear + @cweek_number.fdiv(100).round(3)
-		#puts 'cPeriod ='
-		#puts @out
+		# @cweek_number = 0.0
+# 		@fyear = Date.today.year 
+# 		@cfy_offset = display_name_for('sys_names', 'fy offset').to_i
+# 		@offset_y_adjust = @cfy_offset/@cfy_offset.abs
+# 		puts 'Offset is'
+# 		puts @cfy_offset
+# 		if Date.today.cweek <= @cfy_offset || Date.today.cweek > (52 + @cfy_offset) then
+# 			@fyear = @fyear + @offset_y_adjust
+# 			@cweek_number = (52 - (@cfy_offset - Date.today.cweek).abs).abs
+# 		else
+# 			@cweek_number = Date.today.cweek - @cfy_offset
+# 		end
+# 		puts 'CURRENT CWEEK Number: '
+# 		puts  @cweek_number
+# 		@out = @fyear + @cweek_number.fdiv(100).round(3)
+		@out = offset_period(Date.today)
+		puts 'cPeriod ='
+		puts @out
 		@out
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
 	
-	
+	def offset_period(d, hardOffset = 53)
+		@cweek_number = 0.0
+		@fyear = d.year 
+		if hardOffset == 53 then
+			@cfy_offset = display_name_for('sys_names', 'fy offset').to_i
+		else
+			@cfy_offset = hardOffset
+		end
+		if @cfy_offset == 0 then
+			@offset_y_adjust = 0
+		else
+			@offset_y_adjust = @cfy_offset/@cfy_offset.abs
+		end
+		# puts 'Offset is'
+# 		puts @cfy_offset
+		#handle special case at start or end of calendar year
+		if d.cweek <= @cfy_offset || d.cweek > (52 + @cfy_offset) then
+			@fyear = @fyear - @offset_y_adjust
+			@cweek_number = (52 - (@cfy_offset - d.cweek).abs).abs
+		else
+			@cweek_number = d.cweek - @cfy_offset
+		end
+		@out = @fyear + @cweek_number.fdiv(100).round(3)
+	end
 	
 	def period_list()
 	#ToReview

@@ -152,7 +152,7 @@
           	<th></th>
             <th>Name/Details</th>
 			<th>Default System</th>
-			<th><%= "Current " +  display_name_for('sys_names', 'system') + " - wk " + week_from_period(@target_period).to_s%></th>
+			<th><%= "Current " +  display_name_for('sys_names', 'service') + " - wk " + week_from_period(@target_period).to_s%></th>
 			<th><%= "Current " +  display_name_for('sys_names', 'project') + " - wk " + week_from_period(@target_period).to_s%></th>
 			<% if current_user.admin %> 
 				<th>Admin Actions</th>

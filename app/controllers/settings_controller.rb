@@ -47,7 +47,24 @@ class SettingsController < ApplicationController
 
   # PATCH/PUT /settings/1
   def update
-    
+    if Setting.find(params[:id]).value == "fy offset" then
+    	@old_offset = Setting.find(params[:id]).displayname.to_i
+    	@new_offset = (params[:setting][:displayname]).to_i
+#     	puts "new Offset ?", @new_offset
+    	@dif = @old_offset - @new_offset
+    	 #do something to update existing assignments in the current fy
+      	Assignment.all.each do |a|
+#       	puts 'IN Update Assignments Block'
+      		oldP = a.set_period_id
+#       	puts oldP
+      		d = view_context.period_to_date(oldP)
+#       	puts d.to_s
+      		newP = view_context.period_from_date(d,@new_offset)
+#       	puts newP
+      		a.set_period_id = newP
+      		a.save
+      	end
+    end
     if @setting.update(setting_params)
       redirect_to @setting, notice: 'Setting was successfully updated.'
     else

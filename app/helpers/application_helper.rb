@@ -15,8 +15,8 @@ module ApplicationHelper
 # 		puts speriod
 # 		puts 'period week number is:'
 # 		puts @cweek_number
-		puts 'Offset is'
-		puts @cfy_offset
+# 		puts 'Offset is'
+# 		puts @cfy_offset
 		#handle special case at start or end of calendar year
 		if @cweek_number <= @cfy_offset || @cweek_number > (52 + @cfy_offset) then
 			@fyear = @fyear - @offset_y_adjust
@@ -323,7 +323,11 @@ module ApplicationHelper
 	
 	def get_picklist(key, proj = nil, showval = false)
 		if key == "core" then
-			Setting.core_only.pluck(:value)
+			if !showval then
+				Setting.core_only.pluck(:value)
+			else
+				Setting.core_only.pluck(:displayname,:value)
+			end
 		else
 			puts "Get_Picklist for key: " + key
 			if key == 'priority' && !proj.nil? && proj.initiative.present?

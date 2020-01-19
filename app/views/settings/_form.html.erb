@@ -13,7 +13,7 @@
   					<div class="control-group select optional setting_key">
 					<label class="select optional control-label" for="setting_key">Key:</label>
 						<div class="controls">
-  							<%= f.select(:key, options_for_select(get_picklist("core")), :required => true) %>
+  							<%= f.select(:key, options_for_select(get_picklist("core",nil,true)), :required => true) %>
   						</div>
 					</div>
 					<% end %>

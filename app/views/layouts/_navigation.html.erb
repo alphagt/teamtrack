@@ -2,7 +2,7 @@
 	
 
 <ul class="nav nav-pills" role="tablist">
-	<% if user_signed_in? %>
+ <% if user_signed_in? %>
 	<% if current_user.verified? %>
     	<% if current_user.admin? | current_user.ismanager? %>
 			<% if active == "team" %>
@@ -67,37 +67,29 @@
       		<%= link_to('Settings', settings_path) %>
     		</li>
     	<% end %>
-      	
-    <li>
-    <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
-    </li>
-  <% else %>
-    <% if active == "login" %>
-    	<li class="active">
-    <% end %>
-    <%= link_to('Login', new_user_session_path)  %>  
-    </li>
-  <% end %>
-  <% if user_signed_in? %>
-    <% if active == "account" %>
-    	<li class="active" >
+		<li>
+		<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
+		</li>
     <% else %>
-    	<li>
-    <% end %>
-      <%= link_to('Edit account', edit_user_registration_path) %>
-    </li>
-    <li>
-      <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>
-	</li>
-    <% end %>  
-  <% else %>
-  	<% if active == "admin" %>
-    		<li class="active" >
-    <% else %>
+	  <li>
+		  <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>
+	  </li>  
+	<% end %>
+ <% else %>
+		<% if active == "admin" %>
+				<li class="active" >
+		<% else %>
+				<li>
+		<% end %>
+		<%= link_to('Admin', new_user_registration_path)  %>
+		</li>
+		<% if active == "login" %>
+    		<li class="active">
+    	<% else %>
     		<li>
-    <% end %>
-    <%= link_to('Admin', new_user_registration_path)  %>
-   	</li>
+    	<% end %>
+    		<%= link_to('Login', new_user_session_path)  %>  
+    	</li>
   <% end %>
 </ul>
 </nav>

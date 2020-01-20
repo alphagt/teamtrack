@@ -214,13 +214,15 @@ class ProjectsController < ApplicationController
 		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = false AND 
 			set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
+		
+			pri_custname = Setting.for_key("p_cust_4").pluck(:value)
+			pri_custname.freeze
+			pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname
+			puts "##### DISPLAY NAME - "
+			puts pri_display
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
-				pri_custname = Setting.for_key("p_cust_4").pluck(:value)
-				pri_custname.freeze
-				pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname
-				puts "##### DISPLAY NAME - "
-				puts pri_display
+				
 				if !i.tag.nil? then
 					#cat = a[0][1].to_s + "-" + i.tag 
 					cat = pri_display + "-" + i.tag

@@ -53,16 +53,17 @@ class SettingsController < ApplicationController
 #     	puts "new Offset ?", @new_offset
     	@dif = @old_offset - @new_offset
     	 #do something to update existing assignments in the current fy
-      	Assignment.all.each do |a|
+      	asnPerDate = Assignment.select("set_period_id").distinct.pluck(:set_period_id)
+      	puts "Date Correction Update Quant: ?", asnPerDate.count
+      	asnPerDate.each do |a|
 #       	puts 'IN Update Assignments Block'
-      		oldP = a.set_period_id
+#       	oldP = a.set_period_id
 #       	puts oldP
-      		d = view_context.period_to_date(oldP)
+      		d = view_context.period_to_date(a)
 #       	puts d.to_s
       		newP = view_context.period_from_date(d,@new_offset)
 #       	puts newP
-      		a.set_period_id = newP
-      		a.save
+      		Assignment.where("set_period_id = ?", a).update_all(set_period_id: newP)
       	end
     end
     if @setting.update(setting_params)

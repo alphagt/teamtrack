@@ -7,7 +7,8 @@ class Project < ActiveRecord::Base
   	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
 
   validates :fixed_resource_budget, :presence => true
-  validate :ctpriority_supported_by_initiative, if: 'ctpriority.present?'
+  #Disabled initiative-priority correlation check for now - need to hanlde new ctp better
+  #validate :ctpriority_supported_by_initiative, if: 'ctpriority.present?'
   
    
 	scope :for_users, -> (uList){joins(:users).where('assignments.user_id IN (?)', uList).distinct}
@@ -24,9 +25,12 @@ class Project < ActiveRecord::Base
 	scope :for_psh, -> (shStr){where('psh = ?', shStr).order('projects.name')}
 
 	def ctpriority_supported_by_initiative
-		i = Initiative.find(initiative_id)
-		if !i.subprilist.include?(ctpriority) then
-			errors.add(:ctpriority, "Sub Priority not supported for selected Initiative")
+		if initiative_id && initiative_id != 0 then
+			puts "CHECKING INITIATIVE - CTP CORRELATION"
+			i = Initiative.find(initiative_id)
+			if !i.subprilist.include?(ctpriority) then
+				errors.add(:ctpriority, "Sub Priority not supported for selected Initiative")
+			end
 		end
 	end
 	def under_budget(pId)

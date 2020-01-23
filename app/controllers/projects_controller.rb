@@ -217,7 +217,12 @@ class ProjectsController < ApplicationController
 		
 			pri_custname = Setting.for_key("p_cust_4").pluck(:value)
 			pri_custname.freeze
-			pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname
+			pri_setting = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s)
+			if pri_setting.count > 0 then
+				pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname
+			else
+				pri_display = a[0][1].to_s
+			end
 			puts "##### DISPLAY NAME - "
 			puts pri_display
 			if !a[0][0].nil? then

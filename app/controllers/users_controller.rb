@@ -45,6 +45,16 @@ class UsersController < ApplicationController
      	puts "TEST TEST"
      	puts (view_context.current_period - 0.04).to_s
      end
+     #data for project allocation pie chart
+     @clabels = []
+	 @cvalues = []
+	 @cdata = @ahistory.group(:project_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	 puts @cdata.to_s
+	 @clabels = @cdata.to_h.keys.map{|e| Project.find_by_id(e).name}
+	 @clabels.sort!
+	 @cvalues = @cdata.to_h.values
+	puts @clabels.to_s
+	puts @cvalues.to_s
   end
   
   # GET /users/:id/manage

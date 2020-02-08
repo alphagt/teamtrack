@@ -31,7 +31,7 @@
 		<div class="control-group select optional project_rtm">
 			<label class="select optional control-label" for="project_rtm"><%= get_cfield_name("p_cust_2") + ":"%></label>
 				<div class="controls">
-					<%= f.select(:rtm, options_for_select(get_picklist("p_cust_2"), 
+					<%= f.select(:rtm, options_for_select(get_picklist("p_cust_2",nil,true), 
 					@project.rtm))  %>
 				</div>
 		</div>

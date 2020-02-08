@@ -128,7 +128,7 @@
 	  <tr>
 		<td class="link"><u><%= link_to project.name, project %></u></td>
 		<td><%= project.upl_number %></td>
-		<td><%= project.category %></td>
+		<td><%= display_name_for("category",project.category) %></td>
 		<td><%= project.owner.name %></td>
 		<td><%= project.description %></td>
 		<td><%= current_allocation(project, 1) %></td>
@@ -145,7 +145,7 @@
 			<tr>
 				<td class="link"><u><%= link_to p.name, p %></u></td>
 				<td><%= p.upl_number %></td>
-				<td><%= p.category %></td>
+				<td><%= display_name_for("category",p.category) %></td>
 				<td><%= p.owner.name %></td>
 				<td><%= p.description %></td>
 				<td><%= current_allocation(p) %></td>

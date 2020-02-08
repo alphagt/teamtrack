@@ -343,7 +343,7 @@ module ApplicationHelper
 				if !showval then
 					Setting.for_key(subKey).pluck(:displayname)
 				else
-					Setting.for_key(subKey).pluck(:value)
+					Setting.for_key(subKey).pluck(:displayname,:value)
 				end
 			end
 		end

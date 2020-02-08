@@ -27,11 +27,11 @@
 		<p><b>Active:  </b><%= @project.active %></p>
 		<p><b>Owner: </b><%= @project.owner.name %></p>
 		<p><b>Description: </b><%= @project.description %></p>
-		<p><b><%= get_cfield_name("p_cust_1") + ": "%></b><%= @project.category %></p>
-		<p><b><%=get_cfield_name("p_cust_3") + ": "%></b><%= @project.psh %></p>
-		<p><b><%=get_cfield_name("p_cust_2") + ": "%></b><%= @project.rtm %></p>
+		<p><b><%= get_cfield_name("p_cust_1") + ": "%></b><%= display_name_for("category",@project.category) %></p>
+		<p><b><%=get_cfield_name("p_cust_3") + ": "%></b><%= display_name_for("division",@project.psh) %></p>
+		<p><b><%=get_cfield_name("p_cust_2") + ": "%></b><%= display_name_for("rtm",@project.rtm) %></p>
 		<p><b><%=display_name_for('sys_names', 'initiative') + ": "%></b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>
-		<p><b><%=get_cfield_name("p_cust_4") + ": "%></b><%= if !@project.ctpriority.nil? then @project.ctpriority end %></p>	
+		<p><b><%=get_cfield_name("p_cust_4") + ": "%></b><%= if !@project.ctpriority.nil? then display_name_for("priority",@project.ctpriority) end %></p>	
 		<p><b>Resource Plan: </b><%= @project.fixed_resource_budget %></p>
 	</div>
 	<div class="col-md-6">

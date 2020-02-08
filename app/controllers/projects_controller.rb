@@ -335,7 +335,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << k + "-" + v.to_s
+			alabs << view_context.display_name_for("rtm",k) + "-" + v.to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	

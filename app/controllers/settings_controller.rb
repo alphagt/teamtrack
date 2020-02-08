@@ -47,7 +47,9 @@ class SettingsController < ApplicationController
 
   # PATCH/PUT /settings/1
   def update
-    if Setting.find(params[:id]).value == "fy offset" then
+    s = Setting.find(params[:id])
+    
+    if s.value == "fy offset" then
     	@old_offset = Setting.find(params[:id]).displayname.to_i
     	@new_offset = (params[:setting][:displayname]).to_i
 #     	puts "new Offset ?", @new_offset
@@ -66,7 +68,16 @@ class SettingsController < ApplicationController
       		Assignment.where("set_period_id = ?", a).update_all(set_period_id: newP)
       	end
     end
+    
     if @setting.update(setting_params)
+    	if s.key = "rtm" && s.value != params[:setting][:value] then
+    		#value changes so need to update project attributes where appropriate
+    		Project.where("rtm = ?", s.value).update_all(rtm: params[:setting][:value])
+    	end
+    	if s.key = "category" && s.value != params[:setting][:value] then
+    		#value changes so need to update project attributes where appropriate
+    		Project.where("category = ?", s.value).update_all(category: params[:setting][:value])
+    	end
       redirect_to @setting, notice: 'Setting was successfully updated.'
     else
       render :edit

@@ -124,23 +124,83 @@ class ProjectsController < ApplicationController
 		uList = User.all.pluck(:ID)
 	end
 	
-	#Calculate and group fixed effort totals for chart
+#	#################################	
+#	#Calculate and group fixed effort totals for chart
 	
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @allProjects.pluck(:id), uList).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
-	#puts Assignment.includes(:project).where('projects.category != ? AND set_period_id > ? AND projects.id IN (?)', 'Overhead', @fy.to_s, @projects.pluck(:id)).to_sql
+
+	#####  Handle .allocate effort categories for YTD #######
+	combinedytd = @cfdata.to_h
+	
+		##### V3 Implementation ####
+		ecatCount = combinedytd.count 
+		
+		allocateTotal = 0
+		
+		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
+		key1 = Setting.for_key('p_cust_1').first.value
+# 		puts 'Category CF Key is: ' +  key1
+		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
+		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
+		puts 'Exclude Keys ' + exludeKeys.length.to_s
+		ecatCount = ecatCount - exludeKeys.length
+		if allocateKeys.length > 0 then
+			puts "FOUND ALLOCATION Catgory VALUE"
+			allocateKeys.each do |k|
+				#find hash item that matches the .allocate key
+				puts 'PROCESSING - ' + k.displayname
+				hentry = combinedytd.assoc(k.value) 
+				
+				if !hentry.nil? then
+					puts '##### ' + hentry.to_s
+					allocateTotal += hentry[1]
+					ecatCount = ecatCount - 1
+				end
+			end
+			puts 'Number of keys to allocate to is ' + ecatCount.to_s
+			puts "##### Amount to Allocate =  " + allocateTotal.to_s
+		else
+			puts "NO ALLOC KEYS FOUND"
+		end
+		 
+		#### Now iterate the non-allocated and non-exluded keys and allocate to them
+		updateytd ={}
+		combinedytd.map do |k,v|
+			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
+				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
+					puts 'ALLOCATE TO ' + k
+					v += allocateTotal.to_d/ecatCount #add equal proportion of allocate amount to this key
+					updateytd.store(k,v)
+				else
+					combinedytd.delete(k) #delete the .alloc key so it doesn't show up
+				end
+			else
+				puts "FOUND EXDCLUDE KEY"
+			end
+		end
+		puts 'UPDATE Hash - ' + updateytd.to_s
+		if updateytd.length > 0 then
+			combinedytd.merge!(updateytd)
+		end
+	
+	##### Finalize var to support chart creation ######
 	@clabels_ytd = []
-	@cvals_ytd = @cfdata.to_h.values
+	@cvals_ytd = combinedytd.values
 	puts "YTD Total"
 	ytd_total = @cvals_ytd.sum
 	puts ytd_total
-	@cfdata.to_h.each do |key, val|
-		@clabels_ytd << key + "-" + (val.to_f/ytd_total * 100).round().to_s + "%"
+	combinedytd.map do |key, val|
+		@clabels_ytd << view_context.display_name_for("category",key) + "-" + (val.to_f/ytd_total * 100).round().to_s + "%"
 	end	
 	puts @clabels_ytd.to_s
-	@clabels_ytd.sort!
+	
+	
+	
+
+	
 	
 	#Current Quarter Data
 	case @setq #determin start end week number for each quarter
@@ -174,39 +234,77 @@ class ProjectsController < ApplicationController
 
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata_qtd.to_s
-	#puts Assignment.includes(:project).where("projects.category != ? AND set_period_id BETWEEN ? AND ? AND projects.id IN (?)", 'Overhead', @sWeek.to_s, @eWeek.to_s, @projects.pluck(:id)).to_sql
-	@clabels_qtd = []
-	@cvals_qtd = @cfdata_qtd.to_h.values
-	puts "QTD Total"
-	qtd_total = @cvals_qtd.sum
-	puts qtd_total
-	@cfdata_qtd.to_h.each do |key, val|
-		@clabels_qtd << key + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
-	end	
-	puts @clabels_qtd.to_s
-	@clabels_qtd.sort!
+	
+	#####  Handle .allocate effort categories for YTD #######
+	combinedqtd = @cfdata_qtd.to_h
+	
+		##### V3 Implementation ####
+		ecatCount = combinedqtd.count 
+		
+		allocateTotal = 0
+		
+		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
+		key1 = Setting.for_key('p_cust_1').first.value
+# 		puts 'Category CF Key is: ' +  key1
+		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
+		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
+		puts 'Exclude Keys ' + exludeKeys.length.to_s
+		ecatCount = ecatCount - exludeKeys.length
+		if allocateKeys.length > 0 then
+			puts "FOUND ALLOCATION Catgory VALUE"
+			allocateKeys.each do |k|
+				#find hash item that matches the .allocate key
+# 				puts 'PROCESSING - ' + k.displayname
+				hentry = combinedqtd.assoc(k.value) 
+				
+				if !hentry.nil? then
+# 					puts '##### ' + hentry.to_s
+					allocateTotal += hentry[1]
+					ecatCount = ecatCount - 1
+				end
+			end
+			puts 'Number of keys to allocate to is ' + ecatCount.to_s
+			puts "##### Amount to Allocate =  " + allocateTotal.to_s
+		else
+			puts "NO ALLOC KEYS FOUND"
+		end
+		 
+		#### Now iterate the non-allocated and non-exluded keys and allocate to them
+		updateqtd ={}
+		combinedqtd.map do |k,v|
+			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
+				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
+# 					puts 'ALLOCATE TO ' + k
+					v += allocateTotal.to_d/ecatCount #add equal proportion of allocate amount to this key
+					updateqtd.store(k,v)
+				else
+					combinedqtd.delete(k) #delete the .alloc key so it doesn't show up
+				end
+			else
+# 				puts "FOUND EXDCLUDE KEY"
+			end
+		end
+# 		puts 'UPDATE Hash - ' + updateytd.to_s
+		if updateqtd.length > 0 then
+			combinedqtd.merge!(updateqtd)
+		end
+	##### Finalize var to support chart creation ######
+		@clabels_qtd = []
+		@cvals_qtd = combinedqtd.values
+		puts "QTD Total"
+		qtd_total = @cvals_qtd.sum
+		puts qtd_total
+		combinedqtd.map do |key, val|
+			@clabels_qtd << view_context.display_name_for("category",key) + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
+		end	
+		puts @clabels_qtd.to_s
+	
 	
 	#Calculate and group RTM and Stakeholder summary data for charts
 	if @statsView then
 		puts "in StatsView block"
-		#RTM Calcs
-		# all_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("All").for_users(uList).pluck(:id)).sum(:effort)
-# 		puts all_effort.to_s
-# 		b2b_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("B2B").for_users(uList).pluck(:id)).sum(:effort)
-# 		puts b2b_effort.to_s
-# 		ind_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Individual").for_users(uList).pluck(:id)).sum(:effort)
-# 		puts ind_effort
-# 		mid_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Mid-Market").for_users(uList).pluck(:id)).sum(:effort)
-# 		puts mid_effort
-# 		ent_effort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
-# 			@fy.to_s, (@fy + 1).to_s, Project.for_rtm("Enterprise").for_users(uList).pluck(:id)).sum(:effort)
-# 		puts ent_effort
 		
-		#CT Priority Chart Data (NOTE:  May want to cache this on a weekly basis)
+		#Priority Chart Data (NOTE:  May want to cache this on a weekly basis)
 		cweek = view_context.current_week
 		puts "Current Week is"
 		puts cweek
@@ -265,6 +363,8 @@ class ProjectsController < ApplicationController
 		puts @ctpdata.to_s
 		#End CT Priority Chart section
 		
+#		#######################################
+#		#####   RTM Effort Cals ############
 		
 		rtmeffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
@@ -272,12 +372,8 @@ class ProjectsController < ApplicationController
 		puts "combined in hash"
 		puts rtmeffort.to_s
 		combinedrtm = rtmeffort.to_h
-		
-		############################################
-		#FIX FIX -  Nees to elimiate hard-coded rtm options and support variable list of RTM vie Custom field defnitions
-		
-		
-		##### V3 Implementation ####$
+
+		##### V3 Implementation ####
 		rtmCount = combinedrtm.count 
 		
 		allocateTotal = 0
@@ -293,7 +389,7 @@ class ProjectsController < ApplicationController
 			puts "FOUND ALLOCATION RTM VALUE"
 			allocateKeys.each do |k|
 				#find hash item that matches the .allocate key
-				hentry = combinedrtm.assoc(k.displayname) 
+				hentry = combinedrtm.assoc(k.value) 
 				
 				if !hentry.nil? then
 					puts '##### ' + hentry.to_s
@@ -311,8 +407,8 @@ class ProjectsController < ApplicationController
 		#### Now iterate the non-allocated and non-exluded keys and allocate to them
 		updatertm ={}
 		combinedrtm.map do |k,v|
-			if exludeKeys.where("displayname = ?", k).length == 0 then #if not a .exlude key
-				if allocateKeys.where("displayname = ?", k).length == 0 then #if not a .allocate key
+			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
+				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
 					puts 'ALLOCATE TO ' + k
 					v += allocateTotal.to_d/rtmCount #add equal proportion of allocate amount to this key
 					updatertm.store(k,v)
@@ -363,6 +459,9 @@ class ProjectsController < ApplicationController
 # 					"Enterprise-"]
 # 		end
 # 		@sVals = [ind_effort, mid_effort, ent_effort]
+
+#		##################################################
+#		FIX FIX -  Need to rewrite to support arbitrary stakeholder values via settings
 
 		#Stakeholder Calcs
 		# Get sum of effort grouped by stakeholder values

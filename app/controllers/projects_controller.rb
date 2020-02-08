@@ -278,14 +278,17 @@ class ProjectsController < ApplicationController
 		
 		
 		##### V3 Implementation ####$
-		rtmCount = combinedrtm.count
+		rtmCount = combinedrtm.count 
+		
 		allocateTotal = 0
 		
 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
 		key2 = Setting.for_key('p_cust_2').first.value
 		puts 'RTM CF Key is: ' +  key2
-		allocateKeys = Setting.for_key(key2).where('value LIKE ?', "%.%")
-		
+		allocateKeys = Setting.for_key(key2).where('value LIKE ?', "%.all%")
+		exludeKeys = Setting.for_key(key2).where('value LIKE ?', "%.ex%")
+		puts 'Exclude Keys ' + exludeKeys.length.to_s
+		rtmCount = rtmCount - exludeKeys.length
 		if allocateKeys.length > 0 then
 			puts "FOUND ALLOCATION RTM VALUE"
 			allocateKeys.each do |k|
@@ -298,26 +301,43 @@ class ProjectsController < ApplicationController
 					rtmCount = rtmCount - 1
 				end
 			end
-			
+			puts "Number of keys to allocate to is ...."
+			puts "    " + rtmCount.to_s
 			puts "#####  " + allocateTotal.to_s
 		else
 			puts "NO ALLOC KEYS FOUND"
 		end
 		 
-		#### Now iterate the non-allocated keys and allocate to them
+		#### Now iterate the non-allocated and non-exluded keys and allocate to them
+		updatertm ={}
 		combinedrtm.map do |k,v|
-			if allocateKeys.where("displayname = ?", k).length == 0 then
-				v += allocateTotal/rtmCount
+			if exludeKeys.where("displayname = ?", k).length == 0 then #if not a .exlude key
+				if allocateKeys.where("displayname = ?", k).length == 0 then #if not a .allocate key
+					puts 'ALLOCATE TO ' + k
+					v += allocateTotal.to_d/rtmCount #add equal proportion of allocate amount to this key
+					updatertm.store(k,v)
+				else
+					combinedrtm.delete(k) #delete the .alloc key so it doesn't show up
+				end
 			else
-				combinedrtm.delete(k)
+				puts "FOUND EXDCLUDE KEY"
 			end
 		end
+		puts 'UPDATE Hash - ' + updatertm.to_s
+		if updatertm.length > 0 then
+			combinedrtm.merge!(updatertm)
+		end
+		
 		
 		#### set the variables used in the view for charting
 		puts "FINAL RTM HASH"
 		puts combinedrtm.to_s
 		
-		@slabels = combinedrtm.keys
+		alabs = []
+		combinedrtm.map do |k,v|
+			alabs << k + "-" + v.to_s
+		end
+		@slabels = alabs
 		@sVals = combinedrtm.values	
 		
 		####

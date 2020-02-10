@@ -67,7 +67,7 @@
 <div class="row">
   <div class="col-md-10 col-centered">
 	<div class="col-md-5">
-		<%= image_tag(Gchart.pie(:title => 'YTD Effort Allocation', 
+		<%= image_tag(Gchart.pie(:title => 'YTD ' + get_cfield_name('p_cust_1') + ' Allocation', 
 		:labels => @clabels_ytd, :data => @cvals_ytd, :text => 'value', :size => '360x220', :chart_background => 'CCCCCC',
 		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 		</br>
@@ -75,7 +75,7 @@
 	</div>
 	<% if @cfdata_qtd.to_h.length > 0 then %>
 	<div class="col-md-5">
-		<%= image_tag(Gchart.pie(:title => 'QTD Effort Allocation', 
+		<%= image_tag(Gchart.pie(:title => 'QTD ' + get_cfield_name('p_cust_1') + ' Allocation', 
 		:labels => @clabels_qtd, :data => @cvals_qtd, :size => '360x220', :chart_background => 'CCCCCC',
 		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
 		</br>
@@ -84,14 +84,14 @@
 	<% end %>
 	<% if @statsView then %>
 		<div class="col-md-5">
-			<%= image_tag(Gchart.pie(:title => 'YTD Deployment Allocation', 
+			<%= image_tag(Gchart.pie(:title => 'YTD ' + get_cfield_name('p_cust_2') + ' Allocation', 
 			:labels => @slabels, :data => @sVals, :size => '360x220', :chart_background => 'CCCCCC',
 			:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
 			</br>
 			<p><%= if @showVals then 'Data:  ' + @sVals.to_s end %></p>
 		</div>
 		<div class="col-md-5">
-			<%= image_tag(Gchart.pie(:title => 'YTD BU Allocation', 
+			<%= image_tag(Gchart.pie(:title => 'YTD ' + get_cfield_name('p_cust_3') + ' Allocation', 
 			:labels => @pshlabels, :data => @pshVals, :size => '360x220', :chart_background => 'CCCCCC',
 			:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
 			</br>

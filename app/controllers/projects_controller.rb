@@ -193,7 +193,7 @@ class ProjectsController < ApplicationController
 	ytd_total = @cvals_ytd.sum
 	puts ytd_total
 	combinedytd.map do |key, val|
-		@clabels_ytd << view_context.display_name_for("category",key) + "-" + (val.to_f/ytd_total * 100).round().to_s + "%"
+		@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + (val.to_f/ytd_total * 100).round().to_s + "%"
 	end	
 	puts @clabels_ytd.to_s
 	
@@ -295,7 +295,7 @@ class ProjectsController < ApplicationController
 		qtd_total = @cvals_qtd.sum
 		puts qtd_total
 		combinedqtd.map do |key, val|
-			@clabels_qtd << view_context.display_name_for("category",key) + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
+			@clabels_qtd << view_context.display_name_for("category",key).truncate(11) + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
 		end	
 		puts @clabels_qtd.to_s
 	
@@ -431,34 +431,11 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << view_context.display_name_for("rtm",k) + "-" + v.to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for("rtm",k).truncate(11) + "-" + v.to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	
 		
-		####
-		
-		# if combinedrtm.key?("All") then all_effort = combinedrtm["All"].to_d else all_effort = 0 end
-# 		if combinedrtm.key?("B2B") then b2b_effort = combinedrtm["B2B"].to_d else b2b_effort = 0 end
-# 		if combinedrtm.key?("Individual") then ind_effort = combinedrtm["Individual"].to_d else ind_effort = 0 end
-# 		if combinedrtm.key?("Mid-Market") then mid_effort = combinedrtm["Mid-Market"].to_d else mid_effort = 0 end
-# 		if combinedrtm.key?("Enterprise") then ent_effort = combinedrtm["Enterprise"].to_d else ent_effort = 0 end
-# 		
-# 		ind_effort += all_effort/3
-# 		mid_effort = mid_effort + (all_effort/3) + (b2b_effort/2)
-# 		ent_effort = ent_effort + (all_effort/3) + (b2b_effort/2)
-# 		#sum_effort = ind_effort + mid_effort + ent_effort
-# 		sum_effort = combinedrtm.values.sum
-# 		if sum_effort > 0
-# 			@slabels = ["Individual-" + (ind_effort/sum_effort * 100).round().to_s + "%", 
-# 					"Mid-Market-" + (mid_effort/sum_effort * 100).round().to_s + "%", 
-# 					"Enterprise-" + (ent_effort/sum_effort * 100).round().to_s + "%"]
-# 		else
-# 			@slabels = ["Individual-", 
-# 					"Mid-Market-", 
-# 					"Enterprise-"]
-# 		end
-# 		@sVals = [ind_effort, mid_effort, ent_effort]
 
 #		##################################################
 #		FIX FIX -  Need to rewrite to support arbitrary stakeholder values via settings

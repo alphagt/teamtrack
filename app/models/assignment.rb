@@ -6,7 +6,7 @@ class Assignment < ActiveRecord::Base
   validates :project_id, :presence => true
   validates :user_id, :presence => true
   validates :tech_sys_id, :presence => true
-  validates :effort, :presence => true, :numericality => { :greater_than => 0 }
+  validates :effort, :presence => true, :numericality => { :greater_than_or_equal_to => 0 }
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
   validate :project_active, :on => [:create, :update]

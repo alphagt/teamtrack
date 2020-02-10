@@ -295,7 +295,7 @@ class ProjectsController < ApplicationController
 		qtd_total = @cvals_qtd.sum
 		puts qtd_total
 		combinedqtd.map do |key, val|
-			@clabels_qtd << view_context.display_name_for("category",key).truncate(11) + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
+			@clabels_qtd << view_context.display_name_for(Setting.for_key("p_cust_1")[0].value,key).truncate(11) + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
 		end	
 		puts @clabels_qtd.to_s
 	
@@ -431,7 +431,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << view_context.display_name_for("rtm",k).truncate(11) + "-" + v.to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_key("p_cust_2")[0].value,k).truncate(11) + "-" + v.to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	
@@ -445,43 +445,109 @@ class ProjectsController < ApplicationController
 		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
 			Project.for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
-		puts "combined in hash"
+		puts "STAKEHOLDER RAW DATA"
 		puts psheffort.to_s
 		combinedpsh = psheffort.to_h.except("NA")
 		
-		# determine portion of effort tagged as 'Adobe' that came from projects in the Individual RTM
-		ind_psh_effort = Assignment.includes(:project).where('rtm = ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', "Individual",
- 			@fy.to_s, (@fy + 1).to_s, Project.for_psh("Adobe").for_users(uList).pluck(:id)).sum(:effort)
+#		############# V3 IMPLEMENTATION ##############
+		pshCount = combinedpsh.count 
 		
-		# Set adobe_effort to portion applicable to all stakeholders but subtracting out the Individual RTM portion
-		if combinedpsh.key?("Adobe") then adobe_effort = (combinedpsh["Adobe"].to_d - ind_psh_effort) else adobe_effort = 0 end
-		if combinedpsh.key?("SG&A") then sga_effort = combinedpsh["SG&A"].to_d else sga_effort = 0 end
-		if combinedpsh.key?("DME") then dme_effort = combinedpsh["DME"].to_d else dme_effort = 0 end
-		if combinedpsh.key?("DMA") then dma_effort = combinedpsh["DMA"].to_d else dma_effort = 0 end
-		if combinedpsh.key?("DC") then dc_effort = combinedpsh["DC"].to_d else dc_effort = 0 end
+		allocateTotal = 0
 		
-		totalpsh_effort = combinedpsh.values.sum
-		puts totalpsh_effort
-		
-		sga_effort += (adobe_effort * 0.1)
-		dme_effort += (adobe_effort * 0.5) + (ind_psh_effort * 0.7) # Add 50% of non-individual Adobe and 70% indivdiual adobe effort
-		dma_effort += (adobe_effort * 0.3) 
-		dc_effort += (adobe_effort * 0.1) + (ind_psh_effort * 0.3)  # Add 10% non-individual Adobe and 30% indvidual Adobe effort
-		
-		# Format labels with % values appended since gchart gem doesn't support percent on label feature
-		if totalpsh_effort > 0
-			@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
-					  "DME-" + (dme_effort/totalpsh_effort * 100).round().to_s + "%",
-					  "DMA-" + (dma_effort/totalpsh_effort * 100).round().to_s + "%",
-					  "DC-" + (dc_effort/totalpsh_effort * 100).round().to_s + "%"]
+		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
+		key3 = Setting.for_key('p_cust_3').first.value
+		puts 'PSH CF Key is: ' +  key3
+		allocateKeys = Setting.for_key(key3).where('value LIKE ?', "%.all%")
+		exludeKeys = Setting.for_key(key3).where('value LIKE ?', "%.ex%")
+		puts 'Exclude Keys ' + exludeKeys.length.to_s
+		pshCount = pshCount - exludeKeys.length
+		if allocateKeys.length > 0 then
+			puts "FOUND ALLOCATION PSH VALUE"
+			allocateKeys.each do |k|
+				#find hash item that matches the .allocate key
+				hentry = combinedpsh.assoc(k.value) 
+				
+				if !hentry.nil? then
+					puts '##### ' + hentry.to_s
+					allocateTotal += hentry[1]
+					pshCount = pshCount - 1
+				end
+			end
+			puts "Number of keys to allocate to is ...."
+			puts "    " + pshCount.to_s
+			puts "#####  " + allocateTotal.to_s
 		else
-			@pshlabels = ["SG&A-",
-					  "DME-",
-					  "DMA-",
-					  "DC-"]
+			puts "NO ALLOC KEYS FOUND"
 		end
-		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
-		###############################################		
+		 
+		#### Now iterate the non-allocated and non-exluded keys and allocate to them
+		updatepsh ={}
+		combinedpsh.map do |k,v|
+			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
+				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
+					puts 'ALLOCATE TO ' + k
+					v += allocateTotal.to_d/pshCount #add equal proportion of allocate amount to this key
+					updatepsh.store(k,v)
+				else
+					combinedpsh.delete(k) #delete the .alloc key so it doesn't show up
+				end
+			else
+				puts "FOUND EXDCLUDE KEY"
+			end
+		end
+		puts 'UPDATE Hash - ' + updatepsh.to_s
+		if updatepsh.length > 0 then
+			combinedpsh.merge!(updatepsh)
+		end
+		
+		
+		#### set the variables used in the view for charting
+		puts "FINAL PSH HASH"
+		puts combinedpsh.to_s
+		
+		alabs = []
+		combinedpsh.map do |k,v|
+			alabs << view_context.display_name_for(Setting.for_key("p_cust_3")[0].value,k).truncate(11) + "-" + v.to_s #TODO - change to percent of total?
+		end
+		@pshlabels = alabs
+		@pshVals = combinedpsh.values	
+
+#		############# END V3 IMPL #################		
+		
+#      ############### LEGACY IMPLEMENTATION ##################		
+		# determine portion of effort tagged as 'Adobe' that came from projects in the Individual RTM
+# 		ind_psh_effort = Assignment.includes(:project).where('rtm = ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', "Individual",
+#  			@fy.to_s, (@fy + 1).to_s, Project.for_psh("Adobe").for_users(uList).pluck(:id)).sum(:effort)
+# 		
+# 		# Set adobe_effort to portion applicable to all stakeholders but subtracting out the Individual RTM portion
+# 		if combinedpsh.key?("Adobe") then adobe_effort = (combinedpsh["Adobe"].to_d - ind_psh_effort) else adobe_effort = 0 end
+# 		if combinedpsh.key?("SG&A") then sga_effort = combinedpsh["SG&A"].to_d else sga_effort = 0 end
+# 		if combinedpsh.key?("DME") then dme_effort = combinedpsh["DME"].to_d else dme_effort = 0 end
+# 		if combinedpsh.key?("DMA") then dma_effort = combinedpsh["DMA"].to_d else dma_effort = 0 end
+# 		if combinedpsh.key?("DC") then dc_effort = combinedpsh["DC"].to_d else dc_effort = 0 end
+# 		
+# 		totalpsh_effort = combinedpsh.values.sum
+# 		puts totalpsh_effort
+# 		
+# 		sga_effort += (adobe_effort * 0.1)
+# 		dme_effort += (adobe_effort * 0.5) + (ind_psh_effort * 0.7) # Add 50% of non-individual Adobe and 70% indivdiual adobe effort
+# 		dma_effort += (adobe_effort * 0.3) 
+# 		dc_effort += (adobe_effort * 0.1) + (ind_psh_effort * 0.3)  # Add 10% non-individual Adobe and 30% indvidual Adobe effort
+# 		
+# 		# Format labels with % values appended since gchart gem doesn't support percent on label feature
+# 		if totalpsh_effort > 0
+# 			@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
+# 					  "DME-" + (dme_effort/totalpsh_effort * 100).round().to_s + "%",
+# 					  "DMA-" + (dma_effort/totalpsh_effort * 100).round().to_s + "%",
+# 					  "DC-" + (dc_effort/totalpsh_effort * 100).round().to_s + "%"]
+# 		else
+# 			@pshlabels = ["SG&A-",
+# 					  "DME-",
+# 					  "DMA-",
+# 					  "DC-"]
+# 		end
+# 		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
+#		################ END LEGACY IMPLEMENTATION ############################
 	end
 	
 	puts "user scoped project list:"

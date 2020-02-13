@@ -1,4 +1,4 @@
-class Setting < ActiveRecord::Base
+class Setting < ApplicationRecord
 
 	default_scope {order('settings.key')}
 	scope :for_key, -> (rStr){where('settings.key = ?', rStr).order('settings.ordinal')}

@@ -1,4 +1,4 @@
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   belongs_to :owner, :class_name => "User"
   belongs_to :initiative
   has_many :assignments

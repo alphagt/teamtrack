@@ -1,4 +1,4 @@
-class Assignment < ActiveRecord::Base
+class Assignment < ApplicationRecord
   belongs_to :user, :foreign_key => "user_id", :touch => true
   belongs_to :project, :foreign_key => "project_id"
   belongs_to :tech_system, :foreign_key => "tech_sys_id"

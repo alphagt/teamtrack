@@ -1,4 +1,4 @@
-class Initiative < ActiveRecord::Base
+class Initiative < ApplicationRecord
 has_many :projects
 serialize :subprilist
   	

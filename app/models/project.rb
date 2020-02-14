@@ -3,8 +3,8 @@ class Project < ApplicationRecord
   belongs_to :initiative
   has_many :assignments
   has_many :users, -> { order "users.name" }, :through => :assignments
-  attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
-  	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
+  # attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
+#   	:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
 
   validates :fixed_resource_budget, :presence => true
   #Disabled initiative-priority correlation check for now - need to hanlde new ctp better

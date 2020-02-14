@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 ruby "2.4.5"
 
-gem 'rails', '4.2.8'
+gem 'rails', '~> 5.0.0'
+
 
 
 # Bundle edge Rails instead:
@@ -36,7 +37,7 @@ gem 'jquery-rails'
 
 gem 'devise'
 
-gem 'simple_form'
+gem 'simple_form', '~> 5.0.0'
 
 gem 'cancan'
 
@@ -73,4 +74,4 @@ gem 'stackprof', group: :development
 
 
 #backward compat for attribute protection in Rails 4
-gem 'protected_attributes'
+#gem 'protected_attributes'

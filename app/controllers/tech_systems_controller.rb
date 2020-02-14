@@ -101,4 +101,15 @@ class TechSystemsController < ApplicationController
       end
     end
   end
+  
+private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_techsystem
+      @techsystem = TechSystem.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def techsystem_params
+      params.require(:techsystem).permit(:owner, :name, :description, :qos_group,:owner_id)
+    end
 end

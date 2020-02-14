@@ -373,7 +373,7 @@ class UsersController < ApplicationController
 # 	end
 	puts "IN USER - Update method - " + @user.name
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
@@ -399,5 +399,18 @@ class UsersController < ApplicationController
 		format.js {render 'teamlist', :content_type => 'text/html', :layout=>false}
 	end
   end
+  
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def user_params
+      params.require(:user).permit(:name, :email, :password, :admin, :password_confirmation, :remember_me, :is_contractor,
+      	:default_system, :default_system_id, :verified, :isstatususer, :org, :orgowner,
+      	:ismanager, :impersonates, :impersonate_manager, :manager, :manager_id, :etype, :category)
+    end
   
 end

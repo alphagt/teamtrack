@@ -46,7 +46,7 @@ class AssignmentsController < ApplicationController
     #puts params.to_s
     if params.has_key?(:assignment)
     	@assignment = Assignment.new
-    	@assignment.assign_attributes(params[:assignment])
+    	@assignment.assign_attributes(assignment_params)
     else
     	@assignment = Assignment.new 
     end
@@ -135,7 +135,7 @@ class AssignmentsController < ApplicationController
     	end
     end
     
-    @assignment = Assignment.new(params[:assignment])
+    @assignment = Assignment.new(assignment_params)
     @usecweek = true
 	if @assignment.project.under_budget(@assignment.set_period_id) then
 		@assignment.is_fixed = true
@@ -170,7 +170,7 @@ class AssignmentsController < ApplicationController
 # 	puts 'update assignment'
 # 	puts params.to_s
     respond_to do |format|
-      if @assignment.update_attributes(params[:assignment])
+      if @assignment.update_attributes(assignment_params)
         format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -208,4 +208,17 @@ class AssignmentsController < ApplicationController
       end
     end
   end
+   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_assignment
+      @assignment = Assignment.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def assignment_params
+#     	attr_accessible :effort, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project, :week_number, :tech_system, :tech_sys_id  
+
+      params.require(:assignment).permit(:effort, :set_period_id, :is_fixed, 
+      	:project_id, :user_id, :user, :project, :week_number, :tech_system, :tech_sys_id)
+    end
 end

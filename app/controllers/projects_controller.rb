@@ -673,7 +673,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_params)
 	@project.active = true
 	
     respond_to do |format|
@@ -693,7 +693,7 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
     respond_to do |format|
-      if @project.update_attributes(params[:project])
+      if @project.update_attributes(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
@@ -755,4 +755,19 @@ class ProjectsController < ApplicationController
   	puts out.length
   	out
   end
+  
+private
+	# Use callbacks to share common setup or constraints between actions.
+	def set_project
+	  @project = Project.find(params[:id])
+	end
+
+	# Only allow a trusted parameter "white list" through.
+	def project_params
+# 		attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
+#   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
+
+	  params.require(:project).permit(:owner, :initiative, :active, :description, :category, :name, :owner_id,
+  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority)
+	end
 end

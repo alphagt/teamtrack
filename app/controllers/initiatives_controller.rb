@@ -1,8 +1,8 @@
 class InitiativesController < ApplicationController
   before_action :set_initiative, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!
-  before_filter :require_verified
-  before_filter :require_admin
+  before_action :authenticate_user!
+  before_action :require_verified
+  before_action :require_admin
 
   # GET /initiatives
   def index

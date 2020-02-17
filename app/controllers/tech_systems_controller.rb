@@ -1,7 +1,7 @@
 class TechSystemsController < ApplicationController
-  before_filter :authenticate_user!
-	before_filter :require_verified
-	before_filter :require_admin,  :except => [:index, :show]
+  before_action :authenticate_user!
+	before_action :require_verified
+	before_action :require_admin,  :except => [:index, :show]
   
   def index
   	#@techsystems = TechSystem.order("qos_group", "name")

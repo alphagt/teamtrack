@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 	respond_to :html, :js
-	before_filter :authenticate_user!
-	before_filter :require_manager, :except => [:team, :show, :extendteam]
-	before_filter :require_verified, :except => [:show]
+	before_action :authenticate_user!
+	before_action :require_manager, :except => [:team, :show, :extendteam]
+	before_action :require_verified, :except => [:show]
 		
   def index
   	puts "In UserController - Index"

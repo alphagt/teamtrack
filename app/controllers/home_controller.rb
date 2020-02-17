@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   def index
   	@exId = User.find_by_name("ExEmployeeMgr").id
   	@users = User.where('manager_id != ?', @exId).order("manager_id,name")

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @account.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @account.email %>
+</p>
+
+<p>
+  <strong>Primary admin:</strong>
+  <%= @account.primary_admin %>
+</p>
+
+<p>
+  <strong>Secondary admin:</strong>
+  <%= @account.secondary_admin %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @account.active %>
+</p>
+
+<p>
+  <strong>Termdate:</strong>
+  <%= @account.termdate %>
+</p>
+
+<p>
+  <strong>Userquota:</strong>
+  <%= @account.userquota %>
+</p>
+
+<%= link_to 'Edit', edit_account_path(@account) %> |
+<%= link_to 'Back', accounts_path %>

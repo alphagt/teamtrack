@@ -1,5 +1,6 @@
 TeamTrack::Application.routes.draw do
 
+  resources :accounts
   resources :settings
   resources :initiatives do
   	get 'archive', :on => :member

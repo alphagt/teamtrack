@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  email: MyString
+  primary_admin: 1
+  secondary_admin: 1
+  active: false
+  termdate: 2020-02-17
+  userquota: 1
+
+two:
+  name: MyString
+  email: MyString
+  primary_admin: 1
+  secondary_admin: 1
+  active: false
+  termdate: 2020-02-17
+  userquota: 1

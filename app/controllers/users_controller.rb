@@ -19,7 +19,11 @@ class UsersController < ApplicationController
 	end
 	
 	if params[:scope] == 'all' || @mgr_id == 0
-		@users = User.ordered_by_name
+		if current_user.superadmin
+			@users = User.ordered_by_account.ordered_by_name
+		else
+			@users = User.for_account(current_user.primary_account_id).ordered_by_name
+		end
 	else
   		#@users = User.where('users.id != ?', @exId).ordered_by_manager
   		@users = view_context.extended_subordinates(@mgr_id, true)
@@ -67,6 +71,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @org = current_user.org
+    @aid = current_user.primary_account_id
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }
@@ -97,8 +102,10 @@ class UsersController < ApplicationController
 	@user.ismanager = params[:user][:ismanager]
 	@user.default_system_id = params[:user][:default_system_id]
 	@user.admin = params[:user][:admin]
+	@mgr = User.find_by_id(params[:user][:manager_id])
+	@user.primary_account_id = @mgr.primary_account_id
 	if params[:user][:org].empty?
-		@user.org = User.find_by_id(params[:user][:manager_id]).org
+		@user.org = @mgr.org
 	else
 		@user.org = params[:user][:org]
 	end
@@ -410,7 +417,8 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :email, :password, :admin, :password_confirmation, :remember_me, :is_contractor,
       	:default_system, :default_system_id, :verified, :isstatususer, :org, :orgowner,
-      	:ismanager, :impersonates, :impersonate_manager, :manager, :manager_id, :etype, :category)
+      	:ismanager, :impersonates, :impersonate_manager, :manager, :manager_id, :etype, 
+      	:category, :primary_account_id, :superadmin)
     end
   
 end

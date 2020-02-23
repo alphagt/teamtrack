@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
+  belongs_to :primary_account, :class_name => "Account", :foreign_key => "primary_account_id"
   belongs_to  :default_system, :class_name => "TechSystem", :foreign_key => "default_system_id"
   belongs_to :manager, :class_name => "User", :foreign_key => "manager_id",  :touch => true
   belongs_to :impersonates, :class_name => "User", :foreign_key => "impersonate_manager"
@@ -13,11 +14,15 @@ class User < ApplicationRecord
   # scope :ordered_by_manager, -> {joins('INNER Join users as mgrs on mgrs.id = users.manager_id or 
 #   	mgrs.manager_id = 0').distinct.order('mgrs.name')}
 #   	#.order('users.name')}
- scope :ordered_by_manager, -> {includes(:manager).order('managers_users.name')}
+  scope :ordered_by_manager, -> {includes(:manager).order('managers_users.name')}
   
   scope :ordered_by_name, -> {order('users.name')}
   
+  scope :ordered_by_account, -> {order('users.primary_account_id')}
+  
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
+  
+  scope :for_account, -> (aid){where('primary_account_id =?', aid).order('users.name')}
   
   scope :fte_only, -> {where('ismanager = false AND (etype = "FTE")').order('users.name')}
   
@@ -52,9 +57,10 @@ class User < ApplicationRecord
 # 	  end
 #   end
 #   
-  def self.create_new_user(name, email, manager_id, pwd )
+  def self.create_new_user(name, email, manager_id, pwd, aid=0 )
     puts 'IN MODEL'
-    xuser = User.new({ :email => email, :password => "abc123", :password_confirmation => "abc123", :name => name, :manager_id => manager_id })
+    xuser = User.new({ :email => email, :password => "abc123", :password_confirmation => "abc123", :name => name, 
+    	:manager_id => manager_id, :primary_account_id => aid })
    	pFail = xuser.save
    	puts xuser.name
    	return xuser

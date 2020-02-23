@@ -66,6 +66,13 @@
     		<% end %>
       		<%= link_to('Settings', settings_path) %>
     		</li>
+    		<% if active == "accounts" %>
+    			<li class="active" >
+    		<% else %>
+    			<li>
+    		<% end %>
+      		<%= link_to('Accounts', accounts_path) %>
+    		</li>
     	<% end %>
 		<li>
 		<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        

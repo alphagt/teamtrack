@@ -1,5 +1,15 @@
 <h1>New Account</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "accounts"} %>
+<% end %>
 
-<%= render 'form', account: @account %>
+<% content_for :main1 do %>
+	<%= render 'form' %>
+<% end %>
 
-<%= link_to 'Back', accounts_path %>
+<% content_for :sidebar do %>
+	<table class="table">
+		<tr>
+			<td class="danger"><%= link_to 'Back', accounts_path %></td>
+	</table>
+<% end %>

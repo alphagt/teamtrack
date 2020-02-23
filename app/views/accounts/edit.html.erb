@@ -1,6 +1,17 @@
 <h1>Editing Account</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "accounts"} %>
+<% end %>
 
-<%= render 'form', account: @account %>
+<% content_for :main1 do %>
+	<%= render 'form' %>
+<% end %>
 
-<%= link_to 'Show', @account %> |
-<%= link_to 'Back', accounts_path %>
+<% content_for  :sidebarwide do %>
+<table class="table">
+	<tr>
+		<td class="danger"><%= link_to 'Show', @account %></td>
+	<tr>
+		<td class="danger"><%= link_to 'Back', accounts_path %></td>
+</table>
+<% end %>

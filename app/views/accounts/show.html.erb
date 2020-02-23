@@ -1,39 +1,58 @@
-<p id="notice"><%= notice %></p>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "accounts"} %>
+<% end %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @account.name %>
-</p>
+<% content_for :sidebar do %>
+	<table class="table">
+		<tr>
+		<td class="danger"><%= link_to 'Edit Account', edit_account_path(@account) %></td>
+		<tr>
+		<td class="danger"><%= link_to 'Back', accounts_path %></td>
+	</table>
+<% end %>
 
-<p>
-  <strong>Email:</strong>
-  <%= @account.email %>
-</p>
+<% content_for :main1 do %>
+<div class="row">
+	<div class="col-md-12 col-centered">
+		<p>
+		  <strong>Name:</strong>
+		  <%= @account.name %>
+		</p>
 
-<p>
-  <strong>Primary admin:</strong>
-  <%= @account.primary_admin %>
-</p>
+		<p>
+		  <strong>Email:</strong>
+		  <%= @account.email %>
+		</p>
 
-<p>
-  <strong>Secondary admin:</strong>
-  <%= @account.secondary_admin %>
-</p>
+		<p>
+		  <strong>Primary admin:</strong>
+		  <%= @account.primary_admin.name %>
+		</p>
 
-<p>
-  <strong>Active:</strong>
-  <%= @account.active %>
-</p>
+		<p>
+		  <strong>Secondary admin:</strong>
+		  <% if @account.secondary_admin then %>
+		  	<%= @account.secondary_admin.name %>
+		  <% else %>
+		  	UnAssigned
+		  <% end %>
+		</p>
 
-<p>
-  <strong>Termdate:</strong>
-  <%= @account.termdate %>
-</p>
+		<p>
+		  <strong>Active:</strong>
+		  <%= @account.active %>
+		</p>
 
-<p>
-  <strong>Userquota:</strong>
-  <%= @account.userquota %>
-</p>
+		<p>
+		  <strong>Termdate:</strong>
+		  <%= @account.termdate %>
+		</p>
 
-<%= link_to 'Edit', edit_account_path(@account) %> |
-<%= link_to 'Back', accounts_path %>
+		<p>
+		  <strong>Userquota:</strong>
+		  <%= @account.userquota %>
+		</p>
+	</div>
+</div>
+<%end%>
+

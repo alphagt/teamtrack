@@ -1,39 +1,56 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Accounts</h1>
+<br />
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "accounts"} %>
+<% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Primary admin</th>
-      <th>Secondary admin</th>
-      <th>Active</th>
-      <th>Termdate</th>
-      <th>Userquota</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<% content_for :sidebarwide do %>
+	<table class="table">
+		<tr>
+		<td class="danger"><%= link_to 'New Account', new_account_path %></td>
+	</table>
+<% end %>
 
-  <tbody>
-    <% @accounts.each do |account| %>
-      <tr>
-        <td><%= account.name %></td>
-        <td><%= account.email %></td>
-        <td><%= account.primary_admin %></td>
-        <td><%= account.secondary_admin %></td>
-        <td><%= account.active %></td>
-        <td><%= account.termdate %></td>
-        <td><%= account.userquota %></td>
-        <td><%= link_to 'Show', account %></td>
-        <td><%= link_to 'Edit', edit_account_path(account) %></td>
-        <td><%= link_to 'Destroy', account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% content_for :main1 do %>
+<row>
+	<div class="col-md-12 col-centered">
+		<table class="table">
+		  <thead>
+			<tr>
+			  <th>Name</th>
+			  <th>Email</th>
+			  <th>Primary admin</th>
+			  <th>Secondary admin</th>
+			  <th>Active</th>
+			  <th>Termdate</th>
+			  <th>Userquota</th>
+			  <th colspan="3"></th>
+			</tr>
+		  </thead>
 
+		  <tbody>
+			<% @accounts.each do |account| %>
+			  <tr>
+				<td class="link"><u><%= link_to account.name, account %></u></td>
+				<td><%= account.email %></td>
+				<td><%= account.primary_admin.name %></td>
+				<%if account.secondary_admin then %>
+					<td><%= account.secondary_admin.name %></td>
+				<%else%>
+					<td><%= "UnAssigned" %></td>
+				<%end%>
+				<td><%= account.active %></td>
+				<td><%= account.termdate %></td>
+				<td><%= account.userquota %></td>
+				<td><%= link_to 'Show', account %></td>
+				<td><%= link_to 'Edit', edit_account_path(account) %></td>
+				<td><%= link_to 'Destroy', account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+			  </tr>
+			<% end %>
+		  </tbody>
+		</table>
+	</div>
+</row>
 <br>
+<%end%>
 
-<%= link_to 'New Account', new_account_path %>

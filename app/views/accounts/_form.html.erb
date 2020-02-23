@@ -1,17 +1,22 @@
 <%= simple_form_for(@account) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :email %>
-    <%= f.input :primary_admin %>
-    <%= f.input :secondary_admin %>
-    <%= f.input :active %>
-    <%= f.input :termdate %>
-    <%= f.input :userquota %>
-  </div>
+  <div class="form-inputs">  <div class="form-group">
+  	<row>
+  		<div class="col-md-10">
+   			<%= f.input :name %>
+    		<%= f.input :email %>
+    		<%= f.association :primary_admin, :as => :select, :collection => User.managers_only, :required => true,  
+		 	:pattern => false, :label_method => :name, label: "Primary Admin" %>
+		 	<%= f.association :secondary_admin, :as => :select, :collection => User.managers_only, :required => true,  
+		 	:pattern => false, :label_method => :name, label: "Secondary Admin" %>
+    		<%= f.input :termdate %>
+    		<%= f.input :userquota %>
+  		</div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  		<div class="form-actions">
+    		<%= f.button :submit %>
+  		</div>
+  	</row>
   </div>
 <% end %>

@@ -67,7 +67,7 @@ class User < ApplicationRecord
   end
   
   def unique_name
-  	dupCount = User.where(:name => name).count
+  	dupCount = User.where(:email => email).count
   	puts dupCount
   	errors.add(:notice, "User already exists!") unless
   	dupCount == 0

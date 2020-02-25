@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
 	require 'gchart'
 	
 	#Full Project list used for aggregate statistics
-	@allProjects = Project.by_category
+	@allProjects = Project.for_account(current_user.primary_account_id).by_category
 	
 	
 	#Param Handling
@@ -121,7 +121,7 @@ class ProjectsController < ApplicationController
 	end
 	
 	if uList.count == 0  then
-		uList = User.all.pluck(:ID)
+		uList = User.for_account(current_user.primary_account_id).pluck(:ID)
 	end
 	
 #	#################################	

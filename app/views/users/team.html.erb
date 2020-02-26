@@ -181,7 +181,7 @@
 							<td><%= if !user.default_system.nil? then user.default_system.name else "NA" end %></td>
 							<td><%= if user.projects.length > 0 then current_system(user, @target_period) end %></td>
 							<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
-							<% if current_user.admin %>
+							<% if current_user.admin || current_user.ismanager %>
 								<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
 								extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
 							<% end %>		

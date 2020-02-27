@@ -30,34 +30,20 @@
 <table class="table-bordered table-condensed">
 	<tr>
 		<th/>
-		<th>FTE</th>
-		<th>Vendor</th>
-		<th>Intern</th>
+		<% Setting.for_key('etype').each do |et| %>
+			<th><%= et.displayname %></th>
+		<% end %>
 	</tr>
-	<tr>
-		<td>R&D</td>
-		<td><%= @resstats["R&D"]["FTE"] %></td>
-		<td><%=@resstats["R&D"]["Temp"]%></td>
-		<td><%=@resstats["R&D"]["Intern"]%></td>
-	</tr>
-	<tr>
-		<td>PGM</td>
-		<td><%=@resstats["PGM"]["FTE"]%></td>
-		<td><%=@resstats["PGM"]["Temp"]%></td>
-		<td><%=@resstats["PGM"]["Intern"]%></td>
-	</tr>
-	<tr>
-		<td>Ops</td>
-		<td><%=@resstats["Ops"]["FTE"]%></td>
-		<td><%=@resstats["Ops"]["Temp"]%></td>
-		<td><%=@resstats["Ops"]["Intern"]%></td>
-	</tr>
-	<tr>
-		<td>Other</td>
-		<td><%=@resstats["Other"]["FTE"]%></td>
-		<td><%=@resstats["Other"]["Temp"]%></td>
-		<td><%=@resstats["Other"]["Intern"]%></td>
-	</tr>
+	<% @resstats.each do |k,v| %>
+		<tr>
+			<td><%= k %></td>
+			<% v.to_h.each do |k1,v1| %>
+				<td><%= v1 %></td>
+			<% end %>
+		</tr>
+	<% end %>
+				
+
 </table>
 
 <!-- <h5>Contractors: <small><%= @user_list[2] %></small></h5> -->

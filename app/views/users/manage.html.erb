@@ -21,13 +21,13 @@
 			<div class="control-group select optional user_type">
 				<label class="select optional control-label" for="user_type"><%= get_cfield_name("u_cust_1")%></label>
 				<div class="controls">
-					<%= f.select(:etype, options_for_select(get_picklist("etype"), @user.etype), :required => true)  %>
+					<%= f.select(:etype, options_for_select(get_picklist("u_cust_1",nil,true), @user.etype), :required => true)  %>
 				</div>
 			</div>
 			<div class="control-group select optional user_category">
 				<label class="select optional control-label" for="user_category"><%= get_cfield_name("u_cust_2")%></label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(get_picklist("ecat"), @user.category), :required => true)  %>
+					<%= f.select(:category, options_for_select(get_picklist("u_cust_2",nil,true), @user.category), :required => true)  %>
 				</div>
 			</div>
 			<br>

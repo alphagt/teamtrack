@@ -207,12 +207,24 @@ class UsersController < ApplicationController
 	#Calulations for week summary
 	
 	#build hash of resource statistics (probably need to cache this later)
+	#fix fix to deal with settings based emp category and type matrix
 	@resstats = Hash.new()
 	resset = User.where("id IN (?)", fullulist)
-	@resstats["R&D"] = {"Intern" => resset.for_category("R&D").intern_only.count, "FTE" => resset.for_category("R&D").fte_only.count, "Temp" => resset.for_category("R&D").contract_only.count} 
-	@resstats["PGM"] = {"Intern" => resset.for_category("Program-Product").intern_only.count,"FTE" => resset.for_category("Program-Product").fte_only.count, "Temp" => resset.for_category("Program-Product").contract_only.count} 
-	@resstats["Ops"] = {"Intern" => resset.for_category("Operations").intern_only.count,"FTE" => resset.for_category("Operations").fte_only.count, "Temp" => resset.for_category("Operations").contract_only.count} 
-	@resstats["Other"] = {"Intern" => resset.for_category("Overhead").intern_only.count,"FTE" => resset.for_category("Overhead").fte_only.count, "Temp" => resset.for_category("Overhead").contract_only.count} 
+	Setting.for_key('ecat').each do |c|
+		puts c.value
+		ohash = Hash.new()
+		Setting.for_key('etype').each do |t|
+			puts '--- ', t.value
+			ohash[t.displayname] = resset.for_category(c.value).for_type(t.value).count
+		end 
+		@resstats[c.displayname] = ohash
+	end
+	 
+# 	@resstats["R&D"] = {"Intern" => resset.for_category("R&D").intern_only.count, "FTE" => resset.for_category("R&D").fte_only.count, "Temp" => resset.for_category("R&D").contract_only.count} 
+# 	@resstats["PGM"] = {"Intern" => resset.for_category("Program-Product").intern_only.count,"FTE" => resset.for_category("Program-Product").fte_only.count, "Temp" => resset.for_category("Program-Product").contract_only.count} 
+# 	@resstats["Ops"] = {"Intern" => resset.for_category("Operations").intern_only.count,"FTE" => resset.for_category("Operations").fte_only.count, "Temp" => resset.for_category("Operations").contract_only.count} 
+# 	@resstats["Other"] = {"Intern" => resset.for_category("Overhead").intern_only.count,"FTE" => resset.for_category("Overhead").fte_only.count, "Temp" => resset.for_category("Overhead").contract_only.count} 
+	puts "FIX FIX FIX"
 	puts @resstats.to_s
 	
 	@overhead_effort = 0

@@ -22,4 +22,62 @@ class ApplicationController < ActionController::Base
   		redirect_to team_user_path(:id => current_user.id)
   	end
   end
+  def calc_chart_data(rs,dimKey='p_cust_1')
+		#####  Handle .allocate effort categories for YTD #######
+		combined = rs.to_h
+	
+		##### V3 Implementation ####
+		cCount = combined.count 
+		
+		allocateTotal = 0
+		
+		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
+		key1 = Setting.for_key(dimKey).first.value
+# 		puts 'Category CF Key is: ' +  key1
+		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
+		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
+		puts 'Exclude Keys ' + exludeKeys.length.to_s
+		cCount = cCount - exludeKeys.length
+		if allocateKeys.length > 0 then
+			puts "FOUND ALLOCATION Catgory VALUE"
+			allocateKeys.each do |k|
+				#find hash item that matches the .allocate key
+				puts 'PROCESSING - ' + k.displayname
+				hentry = combined.assoc(k.value) 
+				
+				if !hentry.nil? then
+					puts '##### ' + hentry.to_s
+					allocateTotal += hentry[1]
+					cCount = cCount - 1
+				end
+			end
+			puts 'Number of keys to allocate to is ' + cCount.to_s
+			puts "##### Amount to Allocate =  " + allocateTotal.to_s
+			
+			#### Now iterate the non-allocated and non-exluded keys and allocate to them
+			update ={}
+			combined.map do |k,v|
+				if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
+					if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
+						puts 'ALLOCATE TO ' + k
+						v += allocateTotal.to_d/cCount #add equal proportion of allocate amount to this key
+						update.store(k,v)
+					else
+						combined.delete(k) #delete the .alloc key so it doesn't show up
+					end
+				else
+					puts "FOUND EXDCLUDE KEY"
+				end
+			end
+			puts 'UPDATE Hash - ' + update.to_s
+			if update.length > 0 then
+				combined.merge!(update)
+			end
+		else
+			puts "NO ALLOC KEYS FOUND"
+		end
+		 
+		combined.sort_by {|k,v| k.to_s}.to_h
+	end
+
 end

@@ -132,59 +132,9 @@ class ProjectsController < ApplicationController
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
 
-	#####  Handle .allocate effort categories for YTD #######
 	combinedytd = calc_chart_data(@cfdata)
 	
-		##### V3 Implementation ####
-# 		ecatCount = combinedytd.count 
-# 		
-# 		allocateTotal = 0
-# 		
-# 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
-# 		key1 = Setting.for_key('p_cust_1').first.value
-# # 		puts 'Category CF Key is: ' +  key1
-# 		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
-# 		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
-# 		puts 'Exclude Keys ' + exludeKeys.length.to_s
-# 		ecatCount = ecatCount - exludeKeys.length
-# 		if allocateKeys.length > 0 then
-# 			puts "FOUND ALLOCATION Catgory VALUE"
-# 			allocateKeys.each do |k|
-# 				#find hash item that matches the .allocate key
-# 				puts 'PROCESSING - ' + k.displayname
-# 				hentry = combinedytd.assoc(k.value) 
-# 				
-# 				if !hentry.nil? then
-# 					puts '##### ' + hentry.to_s
-# 					allocateTotal += hentry[1]
-# 					ecatCount = ecatCount - 1
-# 				end
-# 			end
-# 			puts 'Number of keys to allocate to is ' + ecatCount.to_s
-# 			puts "##### Amount to Allocate =  " + allocateTotal.to_s
-# 		else
-# 			puts "NO ALLOC KEYS FOUND"
-# 		end
-# 		 
-# 		#### Now iterate the non-allocated and non-exluded keys and allocate to them
-# 		updateytd ={}
-# 		combinedytd.map do |k,v|
-# 			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
-# 				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
-# 					puts 'ALLOCATE TO ' + k
-# 					v += allocateTotal.to_d/ecatCount #add equal proportion of allocate amount to this key
-# 					updateytd.store(k,v)
-# 				else
-# 					combinedytd.delete(k) #delete the .alloc key so it doesn't show up
-# 				end
-# 			else
-# 				puts "FOUND EXDCLUDE KEY"
-# 			end
-# 		end
-# 		puts 'UPDATE Hash - ' + updateytd.to_s
-# 		if updateytd.length > 0 then
-# 			combinedytd.merge!(updateytd)
-# 		end
+	
 	
 	##### Finalize var to support chart creation ######
 	@clabels_ytd = []
@@ -235,59 +185,9 @@ class ProjectsController < ApplicationController
 	puts 'Current Quarter Effort by Cat'
 	puts @cfdata_qtd.to_s
 	
-	#####  Handle .allocate effort categories for YTD #######
 	combinedqtd = calc_chart_data(@cfdata_qtd)
 	
-		##### V3 Implementation ####
-# 		ecatCount = combinedqtd.count 
-# 		
-# 		allocateTotal = 0
-# 		
-# 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
-# 		key1 = Setting.for_key('p_cust_1').first.value
-# # 		puts 'Category CF Key is: ' +  key1
-# 		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
-# 		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
-# 		puts 'Exclude Keys ' + exludeKeys.length.to_s
-# 		ecatCount = ecatCount - exludeKeys.length
-# 		if allocateKeys.length > 0 then
-# 			puts "FOUND ALLOCATION Catgory VALUE"
-# 			allocateKeys.each do |k|
-# 				#find hash item that matches the .allocate key
-# # 				puts 'PROCESSING - ' + k.displayname
-# 				hentry = combinedqtd.assoc(k.value) 
-# 				
-# 				if !hentry.nil? then
-# # 					puts '##### ' + hentry.to_s
-# 					allocateTotal += hentry[1]
-# 					ecatCount = ecatCount - 1
-# 				end
-# 			end
-# 			puts 'Number of keys to allocate to is ' + ecatCount.to_s
-# 			puts "##### Amount to Allocate =  " + allocateTotal.to_s
-# 		else
-# 			puts "NO ALLOC KEYS FOUND"
-# 		end
-# 		 
-# 		#### Now iterate the non-allocated and non-exluded keys and allocate to them
-# 		updateqtd ={}
-# 		combinedqtd.map do |k,v|
-# 			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
-# 				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
-# # 					puts 'ALLOCATE TO ' + k
-# 					v += allocateTotal.to_d/ecatCount #add equal proportion of allocate amount to this key
-# 					updateqtd.store(k,v)
-# 				else
-# 					combinedqtd.delete(k) #delete the .alloc key so it doesn't show up
-# 				end
-# 			else
-# # 				puts "FOUND EXDCLUDE KEY"
-# 			end
-# 		end
-# # 		puts 'UPDATE Hash - ' + updateytd.to_s
-# 		if updateqtd.length > 0 then
-# 			combinedqtd.merge!(updateqtd)
-# 		end
+
 	##### Finalize var to support chart creation ######
 		@clabels_qtd = []
 		@cvals_qtd = combinedqtd.values
@@ -373,58 +273,7 @@ class ProjectsController < ApplicationController
 		puts rtmeffort.to_s
 		combinedrtm = calc_chart_data(rtmeffort,'p_cust_2')
 
-		##### V3 Implementation ####
-# 		rtmCount = combinedrtm.count 
-# 		
-# 		allocateTotal = 0
-# 		
-# 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
-# 		key2 = Setting.for_key('p_cust_2').first.value
-# 		puts 'RTM CF Key is: ' +  key2
-# 		allocateKeys = Setting.for_key(key2).where('value LIKE ?', "%.all%")
-# 		exludeKeys = Setting.for_key(key2).where('value LIKE ?', "%.ex%")
-# 		puts 'Exclude Keys ' + exludeKeys.length.to_s
-# 		rtmCount = rtmCount - exludeKeys.length
-# 		if allocateKeys.length > 0 then
-# 			puts "FOUND ALLOCATION RTM VALUE"
-# 			allocateKeys.each do |k|
-# 				#find hash item that matches the .allocate key
-# 				hentry = combinedrtm.assoc(k.value) 
-# 				
-# 				if !hentry.nil? then
-# 					puts '##### ' + hentry.to_s
-# 					allocateTotal += hentry[1]
-# 					rtmCount = rtmCount - 1
-# 				end
-# 			end
-# 			puts "Number of keys to allocate to is ...."
-# 			puts "    " + rtmCount.to_s
-# 			puts "#####  " + allocateTotal.to_s
-# 		else
-# 			puts "NO ALLOC KEYS FOUND"
-# 		end
-# 		 
-# 		#### Now iterate the non-allocated and non-exluded keys and allocate to them
-# 		updatertm ={}
-# 		combinedrtm.map do |k,v|
-# 			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
-# 				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
-# 					puts 'ALLOCATE TO ' + k
-# 					v += allocateTotal.to_d/rtmCount #add equal proportion of allocate amount to this key
-# 					updatertm.store(k,v)
-# 				else
-# 					combinedrtm.delete(k) #delete the .alloc key so it doesn't show up
-# 				end
-# 			else
-# 				puts "FOUND EXDCLUDE KEY"
-# 			end
-# 		end
-# 		puts 'UPDATE Hash - ' + updatertm.to_s
-# 		if updatertm.length > 0 then
-# 			combinedrtm.merge!(updatertm)
-# 		end
-# 		
-# 		
+	
 		#### set the variables used in the view for charting
 		puts "FINAL RTM HASH"
 		puts combinedrtm.to_s
@@ -436,10 +285,6 @@ class ProjectsController < ApplicationController
 		@slabels = alabs
 		@sVals = combinedrtm.values	
 		
-
-#		##################################################
-#		FIX FIX -  Need to rewrite to support arbitrary stakeholder values via settings
-
 		#Stakeholder Calcs
 		# Get sum of effort grouped by stakeholder values
 		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
@@ -449,58 +294,7 @@ class ProjectsController < ApplicationController
 		puts psheffort.to_s
 		combinedpsh = calc_chart_data(psheffort,'p_cust_2').except("NA")
 		
-#		############# V3 IMPLEMENTATION ##############
-# 		pshCount = combinedpsh.count 
-# 		
-# 		allocateTotal = 0
-# 		
-# 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
-# 		key3 = Setting.for_key('p_cust_3').first.value
-# 		puts 'PSH CF Key is: ' +  key3
-# 		allocateKeys = Setting.for_key(key3).where('value LIKE ?', "%.all%")
-# 		exludeKeys = Setting.for_key(key3).where('value LIKE ?', "%.ex%")
-# 		puts 'Exclude Keys ' + exludeKeys.length.to_s
-# 		pshCount = pshCount - exludeKeys.length
-# 		if allocateKeys.length > 0 then
-# 			puts "FOUND ALLOCATION PSH VALUE"
-# 			allocateKeys.each do |k|
-# 				#find hash item that matches the .allocate key
-# 				hentry = combinedpsh.assoc(k.value) 
-# 				
-# 				if !hentry.nil? then
-# 					puts '##### ' + hentry.to_s
-# 					allocateTotal += hentry[1]
-# 					pshCount = pshCount - 1
-# 				end
-# 			end
-# 			puts "Number of keys to allocate to is ...."
-# 			puts "    " + pshCount.to_s
-# 			puts "#####  " + allocateTotal.to_s
-# 		else
-# 			puts "NO ALLOC KEYS FOUND"
-# 		end
-# 		 
-# 		#### Now iterate the non-allocated and non-exluded keys and allocate to them
-# 		updatepsh ={}
-# 		combinedpsh.map do |k,v|
-# 			if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
-# 				if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
-# 					puts 'ALLOCATE TO ' + k
-# 					v += allocateTotal.to_d/pshCount #add equal proportion of allocate amount to this key
-# 					updatepsh.store(k,v)
-# 				else
-# 					combinedpsh.delete(k) #delete the .alloc key so it doesn't show up
-# 				end
-# 			else
-# 				puts "FOUND EXDCLUDE KEY"
-# 			end
-# 		end
-# 		puts 'UPDATE Hash - ' + updatepsh.to_s
-# 		if updatepsh.length > 0 then
-# 			combinedpsh.merge!(updatepsh)
-# 		end
-# 		
-# 		
+	
 		#### set the variables used in the view for charting
 		puts "FINAL PSH HASH"
 		puts combinedpsh.to_s
@@ -512,42 +306,7 @@ class ProjectsController < ApplicationController
 		@pshlabels = alabs
 		@pshVals = combinedpsh.values	
 
-#		############# END V3 IMPL #################		
-		
-#      ############### LEGACY IMPLEMENTATION ##################		
-		# determine portion of effort tagged as 'Adobe' that came from projects in the Individual RTM
-# 		ind_psh_effort = Assignment.includes(:project).where('rtm = ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?)', "Individual",
-#  			@fy.to_s, (@fy + 1).to_s, Project.for_psh("Adobe").for_users(uList).pluck(:id)).sum(:effort)
-# 		
-# 		# Set adobe_effort to portion applicable to all stakeholders but subtracting out the Individual RTM portion
-# 		if combinedpsh.key?("Adobe") then adobe_effort = (combinedpsh["Adobe"].to_d - ind_psh_effort) else adobe_effort = 0 end
-# 		if combinedpsh.key?("SG&A") then sga_effort = combinedpsh["SG&A"].to_d else sga_effort = 0 end
-# 		if combinedpsh.key?("DME") then dme_effort = combinedpsh["DME"].to_d else dme_effort = 0 end
-# 		if combinedpsh.key?("DMA") then dma_effort = combinedpsh["DMA"].to_d else dma_effort = 0 end
-# 		if combinedpsh.key?("DC") then dc_effort = combinedpsh["DC"].to_d else dc_effort = 0 end
-# 		
-# 		totalpsh_effort = combinedpsh.values.sum
-# 		puts totalpsh_effort
-# 		
-# 		sga_effort += (adobe_effort * 0.1)
-# 		dme_effort += (adobe_effort * 0.5) + (ind_psh_effort * 0.7) # Add 50% of non-individual Adobe and 70% indivdiual adobe effort
-# 		dma_effort += (adobe_effort * 0.3) 
-# 		dc_effort += (adobe_effort * 0.1) + (ind_psh_effort * 0.3)  # Add 10% non-individual Adobe and 30% indvidual Adobe effort
-# 		
-# 		# Format labels with % values appended since gchart gem doesn't support percent on label feature
-# 		if totalpsh_effort > 0
-# 			@pshlabels = ["SG&A-" + (sga_effort/totalpsh_effort * 100).round().to_s + "%",
-# 					  "DME-" + (dme_effort/totalpsh_effort * 100).round().to_s + "%",
-# 					  "DMA-" + (dma_effort/totalpsh_effort * 100).round().to_s + "%",
-# 					  "DC-" + (dc_effort/totalpsh_effort * 100).round().to_s + "%"]
-# 		else
-# 			@pshlabels = ["SG&A-",
-# 					  "DME-",
-# 					  "DMA-",
-# 					  "DC-"]
-# 		end
-# 		@pshVals = [sga_effort, dme_effort, dma_effort, dc_effort]
-#		################ END LEGACY IMPLEMENTATION ############################
+
 	end
 	
 	puts "user scoped project list:"

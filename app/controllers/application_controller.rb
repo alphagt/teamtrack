@@ -77,6 +77,6 @@ class ApplicationController < ActionController::Base
 			puts "NO ALLOC KEYS FOUND"
 		end
 		 
-		combined
+		combined.sort_by {|k,v| k.to_s}.to_h
 	end
 end

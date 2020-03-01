@@ -220,11 +220,6 @@ class UsersController < ApplicationController
 		@resstats[c.displayname] = ohash
 	end
 	 
-# 	@resstats["R&D"] = {"Intern" => resset.for_category("R&D").intern_only.count, "FTE" => resset.for_category("R&D").fte_only.count, "Temp" => resset.for_category("R&D").contract_only.count} 
-# 	@resstats["PGM"] = {"Intern" => resset.for_category("Program-Product").intern_only.count,"FTE" => resset.for_category("Program-Product").fte_only.count, "Temp" => resset.for_category("Program-Product").contract_only.count} 
-# 	@resstats["Ops"] = {"Intern" => resset.for_category("Operations").intern_only.count,"FTE" => resset.for_category("Operations").fte_only.count, "Temp" => resset.for_category("Operations").contract_only.count} 
-# 	@resstats["Other"] = {"Intern" => resset.for_category("Overhead").intern_only.count,"FTE" => resset.for_category("Overhead").fte_only.count, "Temp" => resset.for_category("Overhead").contract_only.count} 
-	puts "FIX FIX FIX"
 	puts @resstats.to_s
 	
 	@overhead_effort = 0
@@ -273,9 +268,9 @@ class UsersController < ApplicationController
 	@cfdata = c_assignments.group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Effort by Cat'
 	puts @cfdata.to_s
-	@clabels = @cfdata.to_h.keys
-	@clabels.sort!
-	@cvals = @cfdata.to_h.values
+	cdataH = calc_chart_data(@cfdata)
+	@clabels = cdataH.keys
+	@cvals = cdataH.values
 	
   	#@currentmgr = ""
   	puts 'TEAM CONTROLER, manager is'  	

@@ -47,8 +47,32 @@ class SettingsController < ApplicationController
 
   # PATCH/PUT /settings/1
   def update
+  	puts params
     s = Setting.find(params[:id])
+    newVal = params[:setting][:value]
+    val = newVal.split(".")
+    puts val
     
+    if val.length > 1 then
+    	if val[1].include?("ex") && params[:tags][:ex] == "0" then
+    		#need to remove the excludes tag
+    		newVal = val[0]
+    	end
+    	if val[1].include?("al") && params[:tags][:all] == "0" then
+    		#need to remove allocate tag
+    		newVal = val[0]
+    	end
+    end
+    
+    #exclude takes precendence.  You cannot allocate an exluded value
+    if params[:tags][:ex] == "1" && newVal.split(".").length == 1  then
+    	newVal += ".exclude"
+    else
+    	if params[:tags][:all] == "1" && newVal.split("x").length == 1 then
+    		newVal += ".allocate"
+    	end
+    end
+
     if s.value == "fy offset" then
     	@old_offset = Setting.find(params[:id]).displayname.to_i
     	@new_offset = (params[:setting][:displayname]).to_i
@@ -77,6 +101,11 @@ class SettingsController < ApplicationController
     	if s.key = "category" && s.value != params[:setting][:value] then
     		#value changes so need to update project attributes where appropriate
     		Project.where("category = ?", s.value).update_all(category: params[:setting][:value])
+    	end
+    	#modify value to include tags if required
+    	if params[:setting][:value] != newVal then
+    		@setting.value = newVal
+    		@setting.save
     	end
       redirect_to @setting, notice: 'Setting was successfully updated.'
     else

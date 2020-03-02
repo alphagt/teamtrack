@@ -6,23 +6,36 @@
   		<div class="col-md-10">
   			<%if @sysadmin then %> 
   				<%= f.input :key %>
-  				<% else %>
-  					<% if @coresetting then %>
-  						<%= f.input :key, input_html: {readonly: true} %>
-  					<% else %>
-  					<div class="control-group select optional setting_key">
-					<label class="select optional control-label" for="setting_key">Key:</label>
-						<div class="controls">
-  							<%= f.select(:key, options_for_select(get_picklist("core",nil,true)), :required => true) %>
-  						</div>
+			<% else %>
+				<% if @coresetting then %>
+					<%= f.input :key, input_html: {readonly: true} %>
+				<% else %>
+				<div class="control-group select optional setting_key">
+				<label class="select optional control-label" for="setting_key">Key:</label>
+					<div class="controls">
+						<%= f.select(:key, options_for_select(get_picklist("core",nil,true)), :required => true) %>
 					</div>
-					<% end %>
-  				<% end %>
+				</div>
+				<% end %>
+			<% end %>
   			<%= if action_name == "edit" then f.input :ordinal end %>
     		<%= f.input :value, input_html: {readonly: @coresetting} %>
     		<%= if @sysadmin then f.input :stype, input_html: {readonly: @coresetting} end %>
     		<%= f.input :displayname %>
     		<%= f.input :description %>
+    		<br>
+    		<%= label_tag "Exlude from Chart Views?" %>
+    		<%= check_box(:tags, "ex", {:checked => if @setting.value.split(".").length > 1 && 
+    		@setting.value.split(".")[1].include?("ex") then true else false end}) %>
+    		<br>
+    		<%= label_tag "Allocate across other values in Chart Views?" %>
+    		<%= check_box(:tags, "all", {:checked => 
+    		 		if @setting.value.split(".").length > 1 && 
+    					@setting.value.split(".")[1].include?("al") then 
+    					true
+    				else 
+    					false
+    				end}) %>
   		</div>
 	  	<div class="form-actions">
 			<div style="float:left">

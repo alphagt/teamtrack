@@ -5,8 +5,10 @@ class SettingsController < ApplicationController
   def index
     if params[:sysadmin].present? then
     	@settings = Setting.all
+    	@sysadmin = true
     else
     	@settings = Setting.non_core
+    	@sysadmin = false
     end
   end
 

@@ -350,9 +350,11 @@ module ApplicationHelper
 	end	
 	
 	def get_cfield_name(key)
-		s = Setting.find_by_key(key)
+		s = Setting.for_paId(current_user.primary_account_id).find_by_key(key)
 		if s.stype == 0 then
 			s.displayname
+		else
+			Setting.core_only.find_by_value(key).displayname
 		end
 	end
 	

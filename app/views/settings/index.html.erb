@@ -17,8 +17,10 @@
 		<table class="table">
 		  <thead>
 			<tr>
-			  <th>Key</th>
-			  <th>Ordinal</th>
+			  <th>Setting</th>
+			  <% if @sysadmin then %>
+			  	<th>Ordinal</th>
+			  <% end %>
 			  <th>Value</th>
 			  <th>Display</th>
 			  <th>Description</th>
@@ -28,9 +30,15 @@
 		  <tbody>
 			<% @settings.each do |setting| %>
 			  <tr>
-				<td><%= setting.key %></td>
-				<td><%= setting.ordinal %></td>
-				<td><%= setting.value %></td>
+				<% if !@sysadmin then %>
+					<td><%= get_cfield_name(setting.key) %></td>
+					<td><%= setting.value.upcase %></td>
+				<% else %>
+					<td><%= setting.key %></td>
+					<td><%= setting.ordinal %></td>
+					<td><%= setting.value %></td>
+				<% end %>
+				
 				<td><%= setting.displayname %></td>
 				<td><%= setting.description %></td>
 				<td><%= link_to 'Show', setting %></td>

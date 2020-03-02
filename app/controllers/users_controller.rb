@@ -204,6 +204,7 @@ class UsersController < ApplicationController
 	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",
 		@target_period, fullulist).references(:project).where("projects.active = true") 
 	puts "AggAssignments -- " + c_assignments.count.to_s
+	
 	#Calulations for week summary
 	
 	#build hash of resource statistics (probably need to cache this later)
@@ -269,7 +270,7 @@ class UsersController < ApplicationController
 	puts 'Effort by Cat'
 	puts @cfdata.to_s
 	cdataH = calc_chart_data(@cfdata)
-	@clabels = cdataH.keys
+	@clabels = cdataH.keys.map { |k| k.split(".")[0]}
 	@cvals = cdataH.values
 	
   	#@currentmgr = ""

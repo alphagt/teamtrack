@@ -25,14 +25,27 @@ class ApplicationController < ActionController::Base
   def calc_chart_data(rs,dimKey='p_cust_1')
 		#####  Handle .allocate effort categories for YTD #######
 		combined = rs.to_h
-	
+		key1 = Setting.for_key(dimKey).first.value #the key for settings of type dimKey
+		#handle missing keys in passed in data
+		Setting.for_key(key1).each do |s|
+			
+			if !combined.key?(s.value) then
+				#add zero so allocation works right
+				puts "adding missing key: "
+				puts s.key + ":" + s.value
+				combined[s.value] = 0
+			end
+		end
+		puts "Hash after adding empty Keys:"
+		puts combined
+		
 		##### V3 Implementation ####
 		cCount = combined.count 
 		
 		allocateTotal = 0
 		
 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
-		key1 = Setting.for_key(dimKey).first.value
+		
 # 		puts 'Category CF Key is: ' +  key1
 		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
 		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
@@ -67,6 +80,9 @@ class ApplicationController < ActionController::Base
 					end
 				else
 					puts "FOUND EXDCLUDE KEY"
+					if v == 0 then
+						combined.delete(k) #delete empty keys
+					end
 				end
 			end
 			puts 'UPDATE Hash - ' + update.to_s

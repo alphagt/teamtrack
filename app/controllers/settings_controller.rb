@@ -73,7 +73,7 @@ class SettingsController < ApplicationController
     	end
     end
 
-    if s.value == "fy offset" then
+    if s.value == "fy offset" || s.key = "fy offset" then
     	@old_offset = Setting.find(params[:id]).displayname.to_i
     	@new_offset = (params[:setting][:displayname]).to_i
 #     	puts "new Offset ?", @new_offset

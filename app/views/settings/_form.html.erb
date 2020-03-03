@@ -3,7 +3,7 @@
 
   <div class="form-group">
   	<row>
-  		<div class="col-md-10">
+  		<div class="col-md-4">
   			<%if @sysadmin then %> 
   				<%= f.input :key %>
 			<% else %>
@@ -11,9 +11,9 @@
 					<%= f.input :key, input_html: {readonly: true} %>
 				<% else %>
 				<div class="control-group select optional setting_key">
-				<label class="select optional control-label" for="setting_key">Key:</label>
+				<label class="select optional control-label" for="setting_key">Type:</label>
 					<div class="controls">
-						<%= f.select(:key, options_for_select(get_picklist("core",nil,true)), :required => true) %>
+						<%= f.select(:key, options_for_select(get_picklist("core",nil,true), @setting.key), :required => true) %>
 					</div>
 				</div>
 				<% end %>
@@ -24,18 +24,25 @@
     		<%= f.input :displayname %>
     		<%= f.input :description %>
     		<br>
-    		<%= label_tag "Exlude from Chart Views?" %>
-    		<%= check_box(:tags, "ex", {:checked => if @setting.value.split(".").length > 1 && 
-    		@setting.value.split(".")[1].include?("ex") then true else false end}) %>
-    		<br>
-    		<%= label_tag "Allocate across other values in Chart Views?" %>
-    		<%= check_box(:tags, "all", {:checked => 
-    		 		if @setting.value.split(".").length > 1 && 
-    					@setting.value.split(".")[1].include?("al") then 
-    					true
-    				else 
-    					false
-    				end}) %>
+    		
+  		</div>
+  		<div class="col-md-6">
+  			<b>Chart Calculation Options:</b>
+  			<br>
+  			<br>
+  			<%= label_tag "Exclude from Chart Calcs?" %>
+    		<%= check_box(:tags, "ex", {:checked => 
+    			if  action_name != "new" && @setting.value.split(".").length > 1 && 
+    					@setting.value.split(".")[1].include?("ex") then true else false end}) %>
+    		<br>	
+    		<%= label_tag "Allocate across other values?" %>
+			<%= check_box(:tags, "all", {:checked => 
+						if  action_name != "new" && @setting.value.split(".").length > 1 && 
+							@setting.value.split(".")[1].include?("al") then 
+							true
+						else 
+							false
+						end}) %>	
   		</div>
 	  	<div class="form-actions">
 			<div style="float:left">

@@ -79,5 +79,4 @@ class ApplicationController < ActionController::Base
 		 
 		combined.sort_by {|k,v| k.to_s}.to_h
 	end
-
 end

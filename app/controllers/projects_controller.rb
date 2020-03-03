@@ -133,9 +133,7 @@ class ProjectsController < ApplicationController
 	puts @cfdata.to_s
 
 	combinedytd = calc_chart_data(@cfdata)
-	
-	
-	
+
 	##### Finalize var to support chart creation ######
 	@clabels_ytd = []
 	@cvals_ytd = combinedytd.values
@@ -147,11 +145,7 @@ class ProjectsController < ApplicationController
 	end	
 	puts @clabels_ytd.to_s
 	
-	
-	
-
-	
-	
+		
 	#Current Quarter Data
 	case @setq #determin start end week number for each quarter
 	when 1
@@ -271,9 +265,9 @@ class ProjectsController < ApplicationController
 			Project.for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 		puts "combined in hash"
 		puts rtmeffort.to_s
+
 		combinedrtm = calc_chart_data(rtmeffort,'p_cust_2')
 
-	
 		#### set the variables used in the view for charting
 		puts "FINAL RTM HASH"
 		puts combinedrtm.to_s
@@ -284,7 +278,7 @@ class ProjectsController < ApplicationController
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	
-		
+
 		#Stakeholder Calcs
 		# Get sum of effort grouped by stakeholder values
 		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
@@ -292,9 +286,9 @@ class ProjectsController < ApplicationController
 			Project.for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 		puts "STAKEHOLDER RAW DATA"
 		puts psheffort.to_s
+
 		combinedpsh = calc_chart_data(psheffort,'p_cust_2').except("NA")
-		
-	
+
 		#### set the variables used in the view for charting
 		puts "FINAL PSH HASH"
 		puts combinedpsh.to_s
@@ -305,7 +299,6 @@ class ProjectsController < ApplicationController
 		end
 		@pshlabels = alabs
 		@pshVals = combinedpsh.values	
-
 
 	end
 	

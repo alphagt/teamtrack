@@ -30,6 +30,8 @@ class User < ApplicationRecord
   
   scope :intern_only, -> {where('etype = "Intern"').order('users.name')}
   
+  scope :for_type, -> (etype){where('etype =?', etype).order('users.id')}
+  
   scope :for_org, -> (org){where('org = ?', org).order('users.id')}
   
   scope :for_email, -> (eid){where('email like (?)', "%#{eid}%").first}

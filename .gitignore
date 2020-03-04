@@ -11,7 +11,7 @@
 /db/*.sqlite3
 
 # Ignore database backups from prod
-/db/backups/*
+/db/backups
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

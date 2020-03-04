@@ -399,8 +399,8 @@ class UsersController < ApplicationController
   	@mgr = User.find(params[:id])
 	@subclass = params[:tname]
 	@baseorg = params[:baseorg]
-	@direct = params[:direct]
-	@period = 2018.21
+	@direct = params[:isdirect]
+	@period = view_context.current_period()
 	puts "@direct = " + @direct
 	respond_to do |format|
 		#format.html {render 'teamlist', :layout=>false}

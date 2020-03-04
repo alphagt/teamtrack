@@ -25,7 +25,7 @@ fetchrows =(rowent) ->
 	console.log("IsDirect for " + mid + ": " + isdirect)
 	$body = window.$("#body-" + m)
 	u = "/users/teamlist"
-	$.ajax(url: u, data: {id: m, tname: sclass, baseorg: org, direct: isdirect}).done (html) ->
+	$.ajax(url: u, data: {id: m, tname: sclass, baseorg: org, isdirect: isdirect}).done (html) ->
 		console.log(html)
 		$body.prepend(html)
 	

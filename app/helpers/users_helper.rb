@@ -14,7 +14,7 @@ module UsersHelper
 		
 # 		puts 'Count of current ASSIGNMENTS:'
 # 		puts @return.length
-		
+# 		puts @rStr
 		@rStr.chomp(", ")
 	end
 	
@@ -30,6 +30,7 @@ module UsersHelper
 				end
 			end
 		end
+# 		puts @rStr
 		@rStr.chomp(", ")
 	end
 	

@@ -9,7 +9,7 @@ module IAPI
 				out = Hash.new
 	  			out["response_type"] = "in_channel"
 	  			out["text"] = latestInfoStr(cuser)
-	  			out.to_json
+	  			out["text"]
 			end
 	
 			def current_period()

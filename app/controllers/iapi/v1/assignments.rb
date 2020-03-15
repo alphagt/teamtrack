@@ -10,6 +10,7 @@ module IAPI
 	  	requires :command, type: String
 	  end
 	  post do
+	  	puts params
 	  	case params["command"]
 	  		when '/getmyassignments'
 	  			Helpers.current_assignment(params)

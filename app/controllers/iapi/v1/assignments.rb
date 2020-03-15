@@ -11,7 +11,7 @@ module IAPI
 	  end
 	  post do
 	  	case params["command"]
-	  		when 'getmyassignments'
+	  		when '/getmyassignments'
 	  			Helpers.current_assignment(params)
 
 	  	end

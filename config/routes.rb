@@ -1,5 +1,7 @@
 TeamTrack::Application.routes.draw do
 
+  mount IAPI::Base, at: "/"
+
   resources :settings
   resources :initiatives do
   	get 'archive', :on => :member

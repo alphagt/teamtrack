@@ -84,7 +84,7 @@ module IAPI
 			def link_slack_user(sparams)
 				#given a slack request, call get profile, use email address to link to teamview user
 				puts "in Link Slack User"
-				client = Slack::Web::Client.new(:token => "xoxp-2869931141-781868969030-989929834131-623b22b4758e2232e94107af71fc6ae1")
+				client = Slack::Web::Client.new(:token => ENV['Slack_API_Key'])
 #				puts client.auth_test
 				uio = client.users_info(user: sparams["user_id"].to_s)
 				email = uio["user"]["profile"]["email"].to_s	

@@ -5,17 +5,30 @@ module IAPI
 
 
 	  params do
-	  	requires :user_id, type: String
-	  	requires :user_name, type: String
-	  	requires :command, type: String
+# 	  	requires :user_id, type: String
+# 	  	requires :user_name, type: String
+# 	  	requires :command, type: String
 	  end
 	  post do
 	  	puts params
-	  	case params["command"]
-	  		when '/getmyassignments'
-	  			Helpers.current_assignment(params)
-
-	  	end
+	  	if params["command"].present? then
+			case params["command"]
+				when '/getmyassignments'
+					ru = URI(params["response_url"])
+					puts ru
+					if Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
+						Hash.new
+					else
+						"Oops!  Something went wrong.  Please try again"	
+					end
+			end
+		end
+		if params["type"] == "block_actions" then
+			puts "Caught a button click"
+			tuser = User.find_by_name(params["actions"]["value"].split("_").last)
+			Helpers.extendlatest(tuser, params) 
+			#TODO handle errors if the extend fails
+		end
 	  end
       resource :assignments do
         desc "Return all self and subordinate assignments"

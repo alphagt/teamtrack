@@ -24,6 +24,7 @@ end
 gem 'grape'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'slack-ruby-client' 
+gem 'httparty'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -75,9 +76,6 @@ gem 'axlsx_rails'
 
 gem 'derailed_benchmarks', group: :development
 gem 'stackprof', group: :development
-
-#Slack Integration
-gem 'slack-ruby-client'
 
 
 #backward compat for attribute protection in Rails 4

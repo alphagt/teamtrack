@@ -2,14 +2,44 @@ module IAPI
 	module V1
 		module Helpers
 			extend self
-	
-			def current_assignment(sparams, speriod = current_period)
+			include HTTParty
+			
+			def current_assignment(sparams, asJson = false, speriod = current_period)
 				#get teamview user
 				cuser = user_from_slack(sparams)
 				out = Hash.new
-	  			out["response_type"] = "in_channel"
-	  			out["text"] = latestInfoStr(cuser)
-	  			out["text"]
+	  			out["response_type"] = "ephemeral"
+	  			out["channel"]=sparams["channel_id"].to_s
+	  			if cuser.subordinates.count > 0 then
+	  				sblocks = []
+	  				sblocks << {type: "section", 
+	  					text: {type: "plain_text", emoji: true, text: "Here are your team's current assignments"},
+	  					}
+	  				sblocks << {type: "divider"}
+	  				sblocks << {type: "section",
+	  							text: {type: "mrkdwn", text: "x of n employees have assignments this week"}}
+	  				sblocks << {type: "divider"}
+	  				sblocks << {type: "section",
+	  							text: {type: "mrkdwn", text: "*Assignments:*"}}
+	  				sblocks << getSlackAssignmentBlock(cuser)
+	  				cuser.subordinates.each do |s|
+	  					sblocks << getSlackAssignmentBlock(s)
+	  				end			
+	  				out["text"] = latestInfoStr(cuser)
+	  				out["blocks"]=sblocks
+	  				puts out.to_json
+	  			else
+	  				out["text"] = latestInfoStr(cuser)
+	  			end
+	  			if asJson
+	  				out.to_json
+	  			else
+	  				if sendSlackResponse(sparams["response_url"], out.to_json) then
+	  					"..."
+	  				else
+	  					"Whoops! Something went wrong, try again please."
+	  				end
+	  			end
 			end
 	
 			def current_period()
@@ -17,6 +47,22 @@ module IAPI
 				puts 'cPeriod ='
 				puts @out
 				@out
+			end
+			
+			def getSlackAssignmentBlock(e)
+				astring = latestInfoStr(e)
+				block = Hash.new
+				block["type"] = "section"
+				btext = Hash.new
+				btext["type"]="mrkdwn"
+				btext["text"]= "*" + astring + "*"
+				block["text"] = btext
+				bextend = Hash.new
+				bextend["type"]="button"
+				bextend["text"]={type: "plain_text", emoji: true, text: "Extend"}
+				bextend["value"]="extend_" + astring.split("(")[0]
+				block["accessory"]=bextend
+				block
 			end
 	
 			def offset_period(d, hardOffset = 53)
@@ -111,6 +157,24 @@ module IAPI
 				((p - p.to_i)*100).round
 			end
 			
+			def extendlatest(cuser, sparams, floor = 0)
+				if cuser.assignments.where("set_period_id >= ?", floor).length > 0
+					@latest = cuser.assignments.where("set_period_id >= ?", floor).order("set_period_id DESC").first.set_period_id	
+					cuser.assignments.where(:set_period_id => @latest).each do |a|
+						Assignment.extend_by_week(a)
+					end
+					r = Hash.new
+					r["response_type"]="ephemeral"
+					r["channel"]=sparams["channel_id"]
+					r["text"]="Assignments for " + cuser.name + " extended one week!"
+					sendSlackResponse(sparams["response_url"],r)
+					out = true
+				else
+					Array.new()
+					out = false
+				end
+			end
+			
 			def latestInfoStr(cuser)
 				@rStr = ""
 				tweek = ""
@@ -129,6 +193,23 @@ module IAPI
 					end
 				end
 				cuser.name + "(week " + w.to_s + "): " + @rStr.chomp(", ") 
+			end
+			
+			def sendSlackResponse(respUrl, resp)
+				#send a message via slack using a response_url
+				puts "Sending Slack Response ..."
+				puts respUrl
+				out = true
+				headers = { 'Content-Type' => 'application/json' }
+				begin
+					r = HTTParty.post(respUrl, body: resp, headers: headers)
+					puts puts "response #{r.body}"
+					return(r.code == 200)
+				rescue
+     				puts r.code.to_s
+     				return false
+ 				end
+				out
 			end
 
 		end

@@ -203,10 +203,10 @@ module IAPI
 				headers = { 'Content-Type' => 'application/json' }
 				begin
 					r = HTTParty.post(respUrl, body: resp, headers: headers)
-					puts puts "response #{r.body}"
+					puts "response #{r.body}"
 					return(r.code == 200)
 				rescue
-     				puts r.code.to_s
+     				puts "response #{r}"
      				return false
  				end
 				out

@@ -2,7 +2,9 @@ module IAPI
   module V1
     class Assignments < IAPI::V1::Base
       include IAPI::V1::Defaults
-
+      require 'json'
+      require 'uri'
+	  require 'net/http'
 
 	  params do
 # 	  	requires :user_id, type: String
@@ -10,7 +12,8 @@ module IAPI
 # 	  	requires :command, type: String
 	  end
 	  post do
-	  	puts params
+	  	puts "Handle Post Request"
+		puts request.body.read
 	  	if params["command"].present? then
 			case params["command"]
 				when '/getmyassignments'
@@ -23,10 +26,21 @@ module IAPI
 					end
 			end
 		end
-		if params["type"] == "block_actions" then
-			puts "Caught a button click"
-			tuser = User.find_by_name(params["actions"]["value"].split("_").last)
-			Helpers.extendlatest(tuser, params) 
+		if params["payload"].present? then
+			puts params["payload"]
+			puts params["payload"]["type"]
+	  		payload = JSON.parse(params["payload"], object_class: Hash, allos_nan: true, symbolize_names:true)
+			payload = JSON.parse(payload)
+	  		puts "###############"
+			puts payload
+			
+	  		if payload["type"] == "block_actions"
+				puts "Caught a button click"
+				uname = payload["actions"][0]["value"]
+				puts uname
+				tuser = User.find_by_name(uname.split("_").last)
+				Helpers.extendlatest(tuser, payload)
+			end 
 			#TODO handle errors if the extend fails
 		end
 	  end

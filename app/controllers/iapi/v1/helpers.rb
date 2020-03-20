@@ -167,7 +167,7 @@ module IAPI
 					r["response_type"]="ephemeral"
 					r["channel"]=sparams.with_indifferent_access["container"]["channel_id"]
 					r["text"]="Assignments for " + cuser.name + " extended one week!"
-					sendSlackResponse(sparams.with_indifferent_access["response_url"],r)
+					sendSlackResponse(sparams.with_indifferent_access["response_url"],r.to_json)
 					out = true
 				else
 					Array.new()

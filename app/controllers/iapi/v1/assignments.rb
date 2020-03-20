@@ -13,15 +13,12 @@ module IAPI
 	  end
 	  post do
 	  	puts "Handle Post Request"
-		puts request.body.read
 	  	if params["command"].present? then
 			case params["command"]
 				when '/getmyassignments'
 					ru = URI(params["response_url"])
 					puts ru
-					if Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
-						Hash.new
-					else
+					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
 						"Oops!  Something went wrong.  Please try again"	
 					end
 			end
@@ -29,14 +26,14 @@ module IAPI
 		if params["payload"].present? then
 	  		payload = JSON.parse(params["payload"], object_class: Hash, allos_nan: true, symbolize_names:true)
 			if !payload.is_a?(Hash) then
-				payload = JSON.parse(payload)
+				payload = JSON.parse(payload, symbolize_names: true)
 			end
 	  		puts "###############"
 			puts payload
 			
-	  		if payload["type"] == "block_actions"
+	  		if payload[:type] == "block_actions"
 				puts "Caught a button click"
-				uname = payload["actions"][0]["value"]
+				uname = payload[:actions][0][:value]
 # 				puts uname
 				tuser = User.find_by_name(uname.split("_").last)
 				Helpers.extendlatest(tuser, payload)

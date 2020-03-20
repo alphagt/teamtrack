@@ -165,7 +165,7 @@ module IAPI
 					end
 					r = Hash.new
 					r["response_type"]="ephemeral"
-					r["channel"]=sparams["channel_id"]
+					r["channel"]=sparams.with_indifferent_access["container"]["channel_id"]
 					r["text"]="Assignments for " + cuser.name + " extended one week!"
 					sendSlackResponse(sparams.with_indifferent_access["response_url"],r)
 					out = true
@@ -199,6 +199,7 @@ module IAPI
 				#send a message via slack using a response_url
 				puts "Sending Slack Response ..."
 				puts respUrl
+				puts resp
 				out = true
 				headers = { 'Content-Type' => 'application/json' }
 				begin

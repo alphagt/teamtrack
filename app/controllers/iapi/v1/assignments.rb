@@ -52,7 +52,8 @@ module IAPI
           puts "Got request for all assignments via API"
           puts params
           Helpers.current_assignment(params)
-          #Assignment.first.to_json
+          status 200
+          'ok'
         end
 
         desc "Return a graduate"

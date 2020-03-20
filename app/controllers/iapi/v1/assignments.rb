@@ -27,17 +27,17 @@ module IAPI
 			end
 		end
 		if params["payload"].present? then
-			puts params["payload"]
-			puts params["payload"]["type"]
 	  		payload = JSON.parse(params["payload"], object_class: Hash, allos_nan: true, symbolize_names:true)
-			payload = JSON.parse(payload)
+			if !payload.is_a?(Hash) then
+				payload = JSON.parse(payload)
+			end
 	  		puts "###############"
 			puts payload
 			
 	  		if payload["type"] == "block_actions"
 				puts "Caught a button click"
 				uname = payload["actions"][0]["value"]
-				puts uname
+# 				puts uname
 				tuser = User.find_by_name(uname.split("_").last)
 				Helpers.extendlatest(tuser, payload)
 			end 

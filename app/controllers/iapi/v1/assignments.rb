@@ -21,7 +21,7 @@ module IAPI
 					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
 						"Oops!  Something went wrong.  Please try again"
 					else
-						''	
+						status :no_content	
 					end
 			end
 		end
@@ -39,7 +39,7 @@ module IAPI
 # 				puts uname
 				tuser = User.find_by_name(uname.split("_").last)
 				Helpers.extendlatest(tuser, payload)
-				''
+				status :no_content
 			end 
 			#TODO handle errors if the extend fails
 		end

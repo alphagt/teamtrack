@@ -19,7 +19,9 @@ module IAPI
 					ru = URI(params["response_url"])
 					puts ru
 					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
-						"Oops!  Something went wrong.  Please try again"	
+						"Oops!  Something went wrong.  Please try again"
+					else
+						Array.new	
 					end
 			end
 		end

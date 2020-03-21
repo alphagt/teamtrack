@@ -10,11 +10,40 @@ module IAPI
 	  	requires :command, type: String
 	  end
 	  post do
-	  	case params["command"]
-	  		when 'getmyassignments'
-	  			Helpers.current_assignment(params)
+	  	puts "Handle Post Request"
+	  	if params["command"].present? then
+			case params["command"]
+				when '/getmyassignments'
+					ru = URI(params["response_url"])
+					puts ru
+					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
+						"Oops!  Something went wrong.  Please try again"
+					else
+						status 200
+						""	
+					end
+			end
+		end
+		if params["payload"].present? then
+	  		payload = JSON.parse(params["payload"], object_class: Hash, allos_nan: true, symbolize_names:true)
+			if !payload.is_a?(Hash) then
+				payload = JSON.parse(payload, symbolize_names: true)
+			end
+	  		puts "###############"
+			puts payload
+			
+	  		if payload[:type] == "block_actions"
+				puts "Caught a button click"
+				uname = payload[:actions][0][:value]
+# 				puts uname
+				tuser = User.find_by_name(uname.split("_").last)
+				Helpers.extendlatest(tuser, payload)
+				status 200
+				""
+			end 
+			#TODO handle errors if the extend fails
+		end
 
-	  	end
 	  end
       resource :assignments do
         desc "Return all self and subordinate assignments"
@@ -22,7 +51,9 @@ module IAPI
           puts "Got request for all assignments via API"
           puts params
           Helpers.current_assignment(params)
-          #Assignment.first.to_json
+
+          status 200
+          ""
         end
 
         desc "Return a graduate"

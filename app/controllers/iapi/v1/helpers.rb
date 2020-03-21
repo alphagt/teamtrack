@@ -2,8 +2,9 @@ module IAPI
 	module V1
 		module Helpers
 			extend self
-	
-			def current_assignment(sparams, speriod = current_period)
+
+			
+			def current_assignment(sparams, asJson = false, speriod = current_period)
 				#get teamview user
 				cuser = user_from_slack(sparams)
 				out = Hash.new
@@ -128,6 +129,43 @@ module IAPI
 					end
 				end
 				cuser.name + "(week " + w.to_s + "): " + @rStr.chomp(", ") 
+			end
+			
+			def sendSlackResponse(respUrl, resp)
+				#send a message via slack using a response_url
+				
+				out = SlackJob.perform_async(respUrl, resp)
+				# headers = { 'Content-Type' => 'application/json' }
+# 				begin
+# 					r = HTTParty.post(respUrl, body: resp, headers: headers)
+# 					puts "response #{r.body}"
+# 					return(r.code == 200)
+# 				rescue
+#      				puts "response #{r}"
+#      				return false
+#  				end
+
+			end
+			
+			class SlackJob
+
+			include SuckerPunch::Job
+			include HTTParty
+
+			  def perform(respUrl, resp)
+				headers = { 'Content-Type' => 'application/json' }
+				puts "Sending Slack Response ..."
+				puts respUrl
+				puts resp
+				begin
+					r = HTTParty.post(respUrl, body: resp, headers: headers)
+					puts "response #{r.body}"
+					return(r.code == 200)
+				rescue
+					puts "response #{r}"
+					return false
+				end
+			  end
 			end
 
 		end

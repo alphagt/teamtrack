@@ -20,7 +20,11 @@ module IAPI
 						"Oops!  Something went wrong.  Please try again"
 					else
 						status 200
+<<<<<<< HEAD
 						""	
+=======
+						out = ''	
+>>>>>>> f6c92f4... touch api files to support cherry pic to v4
 					end
 			end
 		end

@@ -8,9 +8,43 @@ module IAPI
 				#get teamview user
 				cuser = user_from_slack(sparams)
 				out = Hash.new
-	  			out["response_type"] = "in_channel"
-	  			out["text"] = latestInfoStr(cuser)
-	  			out.to_json
+
+	  			out["response_type"] = "ephemeral"
+	  			out["channel"]=sparams["channel_id"].to_s
+	  			scount = cuser.subordinates.count
+	  			if scount > 0 then
+	  				sblocks = []
+	  				sblocks << {type: "section", 
+	  					text: {type: "plain_text", emoji: true, 
+	  					text: "Here are your team's current assignments (week-" + 
+	  						week_from_period(current_period).to_s + ")"},
+	  					}
+	  				sblocks << {type: "divider"}
+	  				acount = current_subordinates_assigned(cuser)
+	  				mstr = acount.to_s + " of " + scount.to_s + " employees have assignments this week"
+	  				sblocks << {type: "section",
+	  							text: {type: "mrkdwn", text: mstr}}
+	  				sblocks << {type: "divider"}
+	  				sblocks << {type: "section",
+	  							text: {type: "mrkdwn", text: "*Assignments:*"}}
+	  				sblocks << getSlackAssignmentBlock(cuser)
+	  				cuser.subordinates.each do |s|
+	  					sblocks << getSlackAssignmentBlock(s)
+	  				end			
+	  				out["text"] = latestInfoStr(cuser, current_period)
+	  				out["blocks"]=sblocks
+	  			else
+	  				out["text"] = latestInfoStr(cuser, current_period)
+	  			end
+	  			if asJson
+	  				out.to_json
+	  			else
+	  				if sendSlackResponse(sparams["response_url"], out.to_json) then
+	  					"..."
+	  				else
+	  					"Whoops! Something went wrong, try again please."
+	  				end
+	  			end
 			end
 	
 			def current_period()

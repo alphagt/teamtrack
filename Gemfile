@@ -25,6 +25,8 @@ gem 'grape'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'slack-ruby-client' 
 gem 'httparty'
+gem 'sucker_punch', '~> 2.0'
+
 
 # Gems used only for assets and not required
 # in production environments by default.

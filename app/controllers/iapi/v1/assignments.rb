@@ -22,7 +22,7 @@ module IAPI
 						"Oops!  Something went wrong.  Please try again"
 					else
 						status 200
-						'ok'	
+						""	
 					end
 			end
 		end
@@ -41,7 +41,7 @@ module IAPI
 				tuser = User.find_by_name(uname.split("_").last)
 				Helpers.extendlatest(tuser, payload)
 				status 200
-				'ok'
+				""
 			end 
 			#TODO handle errors if the extend fails
 		end
@@ -53,7 +53,7 @@ module IAPI
           puts params
           Helpers.current_assignment(params)
           status 200
-          'ok'
+          ""
         end
 
         desc "Return a graduate"

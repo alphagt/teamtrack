@@ -31,7 +31,6 @@ module IAPI
 	  				end			
 	  				out["text"] = latestInfoStr(cuser, current_period)
 	  				out["blocks"]=sblocks
-# 	  				puts out.to_json
 	  			else
 	  				out["text"] = latestInfoStr(cuser, current_period)
 	  			end

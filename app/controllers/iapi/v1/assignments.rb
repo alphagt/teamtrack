@@ -24,7 +24,7 @@ module IAPI
 					else
 						puts "get assignments success"
 						status 200
-						out = {}	
+						out = ''	
 					end
 			end
 		end

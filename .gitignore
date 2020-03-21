@@ -10,7 +10,8 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
-# Ignore database backups from prod
+
+# Ignore backups from prod
 /db/backups
 
 # Ignore all logfiles and tempfiles.

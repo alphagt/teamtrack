@@ -61,11 +61,15 @@ module UsersHelper
 		end
 	end
 	
-	def latestInfoStr(cuser)
+	def latestInfoStr(cuser, tperiod = 0)
 		@str = ""
 		tweek = ""
 		if cuser.assignments.length > 0
-			@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
+			if tperiod == 0 then
+				@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
+			else
+				@latest = tperiod
+			end
 			cuser.assignments.where(:set_period_id => @latest).each do |a|
 				@rStr = @rStr + a.project.name + '(' + a.effort.to_s + ')' + ', '
 			end

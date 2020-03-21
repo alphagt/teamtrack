@@ -9,14 +9,19 @@ module IAPI
 				out = Hash.new
 	  			out["response_type"] = "ephemeral"
 	  			out["channel"]=sparams["channel_id"].to_s
-	  			if cuser.subordinates.count > 0 then
+	  			scount = cuser.subordinates.count
+	  			if scount > 0 then
 	  				sblocks = []
 	  				sblocks << {type: "section", 
-	  					text: {type: "plain_text", emoji: true, text: "Here are your team's current assignments"},
+	  					text: {type: "plain_text", emoji: true, 
+	  					text: "Here are your team's current assignments (week-" + 
+	  						week_from_period(current_period).to_s + ")"},
 	  					}
 	  				sblocks << {type: "divider"}
+	  				acount = current_subordinates_assigned(cuser)
+	  				mstr = acount.to_s + " of " + scount.to_s + " employees have assignments this week"
 	  				sblocks << {type: "section",
-	  							text: {type: "mrkdwn", text: "x of n employees have assignments this week"}}
+	  							text: {type: "mrkdwn", text: mstr}}
 	  				sblocks << {type: "divider"}
 	  				sblocks << {type: "section",
 	  							text: {type: "mrkdwn", text: "*Assignments:*"}}
@@ -24,11 +29,11 @@ module IAPI
 	  				cuser.subordinates.each do |s|
 	  					sblocks << getSlackAssignmentBlock(s)
 	  				end			
-	  				out["text"] = latestInfoStr(cuser)
+	  				out["text"] = latestInfoStr(cuser, current_period)
 	  				out["blocks"]=sblocks
-	  				puts out.to_json
+# 	  				puts out.to_json
 	  			else
-	  				out["text"] = latestInfoStr(cuser)
+	  				out["text"] = latestInfoStr(cuser, current_period)
 	  			end
 	  			if asJson
 	  				out.to_json
@@ -46,6 +51,16 @@ module IAPI
 				puts 'cPeriod ='
 				puts @out
 				@out
+			end
+			
+			def current_subordinates_assigned(mid, speriod = current_period)
+				iout = 0
+				User.find(mid).subordinates.each do |s|
+					if s.assignments.where("set_period_id =?", speriod).length > 0 
+						iout += 1
+					end
+				end
+				iout
 			end
 			
 			def getSlackAssignmentBlock(e)
@@ -174,11 +189,15 @@ module IAPI
 				end
 			end
 			
-			def latestInfoStr(cuser)
+			def latestInfoStr(cuser, tperiod = 0)
 				@rStr = ""
 				tweek = ""
 				if cuser.assignments.length > 0
-					@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
+					if tperiod == 0 then
+						@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
+					else
+						@latest = tperiod
+					end
 					puts "PROCESSING assignments for - " + @latest.to_s
 					cuser.assignments.where(:set_period_id => @latest).each do |a|
 						puts a.to_json
@@ -196,18 +215,7 @@ module IAPI
 			
 			def sendSlackResponse(respUrl, resp)
 				#send a message via slack using a response_url
-				
 				out = SlackJob.perform_async(respUrl, resp)
-				# headers = { 'Content-Type' => 'application/json' }
-# 				begin
-# 					r = HTTParty.post(respUrl, body: resp, headers: headers)
-# 					puts "response #{r.body}"
-# 					return(r.code == 200)
-# 				rescue
-#      				puts "response #{r}"
-#      				return false
-#  				end
-
 			end
 			
 			class SlackJob

@@ -13,16 +13,18 @@ module IAPI
 	  end
 	  post do
 	  	puts "Handle Post Request"
+	  	out = ""
 	  	if params["command"].present? then
 			case params["command"]
 				when '/getmyassignments'
-					ru = URI(params["response_url"])
-					puts ru
+# 					ru = URI(params["response_url"])
+# 					puts ru
 					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
 						"Oops!  Something went wrong.  Please try again"
 					else
+						puts "get assignments success"
 						status 200
-						""	
+						out = ""	
 					end
 			end
 		end
@@ -41,11 +43,13 @@ module IAPI
 				tuser = User.find_by_name(uname.split("_").last)
 				Helpers.extendlatest(tuser, payload)
 				status 200
-				""
+				out = ""
 			end 
 			#TODO handle errors if the extend fails
 		end
+		out
 	  end
+	  
       resource :assignments do
         desc "Return all self and subordinate assignments"
         get "", root: :assignments do
@@ -53,7 +57,7 @@ module IAPI
           puts params
           Helpers.current_assignment(params)
           status 200
-          ""
+          "..."
         end
 
         desc "Return a graduate"

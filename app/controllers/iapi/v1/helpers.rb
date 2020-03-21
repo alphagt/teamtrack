@@ -64,7 +64,7 @@ module IAPI
 			end
 			
 			def getSlackAssignmentBlock(e)
-				astring = latestInfoStr(e)
+				astring = latestInfoStr(e, current_period)
 				block = Hash.new
 				block["type"] = "section"
 				btext = Hash.new

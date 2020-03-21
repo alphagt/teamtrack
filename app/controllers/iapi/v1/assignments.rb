@@ -24,7 +24,7 @@ module IAPI
 					else
 						puts "get assignments success"
 						status 200
-						out = ""	
+						out = {}	
 					end
 			end
 		end
@@ -43,7 +43,7 @@ module IAPI
 				tuser = User.find_by_name(uname.split("_").last)
 				Helpers.extendlatest(tuser, payload)
 				status 200
-				out = ""
+				out = ''
 			end 
 			#TODO handle errors if the extend fails
 		end

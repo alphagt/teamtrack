@@ -11,6 +11,7 @@ module SettingsHelper
 	
 	def display_name_for(key, val)
 		out = 'Undefined'
+
 		#special handling, back-compat for fy offset as sys_name key
 		if val == "fy offset" && Setting.for_key(key).where('value = ?', val).empty? then
 			puts "Switch to new fy offset key"

@@ -63,18 +63,24 @@ module IAPI
 			end
 			
 			def getSlackAssignmentBlock(e)
+				puts "IN Assign Block Call"
 				astring = latestInfoStr(e, current_period)
+				puts "InfoString - #{astring}"
 				block = Hash.new
 				block["type"] = "section"
 				btext = Hash.new
 				btext["type"]="mrkdwn"
 				btext["text"]= "*" + astring + "*"
 				block["text"] = btext
-				bextend = Hash.new
-				bextend["type"]="button"
-				bextend["text"]={type: "plain_text", emoji: true, text: "Extend"}
-				bextend["value"]="extend_" + astring.split("(")[0]
-				block["accessory"]=bextend
+				
+# 				puts astring.split(":")[1].rstrip.length
+				if astring.split(":")[1].rstrip.length > 0 then
+					bextend = Hash.new
+					bextend["type"]="button"
+					bextend["text"]={type: "plain_text", emoji: true, text: "Extend"}
+					bextend["value"]="extend_" + astring.split("(")[0]
+					block["accessory"]=bextend
+				end
 				block
 			end
 	

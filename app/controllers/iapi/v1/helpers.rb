@@ -83,6 +83,38 @@ module IAPI
 				end
 				block
 			end
+			
+			def getProjectAlloc(sparams)
+				#Build Slack Resonse to summarize target week's staff allocations
+				if sparams["text"].present? then	
+					spid = period_from_week(sparams["text"])
+				else
+					spid = current_period()
+				end
+				out = Hash.new
+	  			out["response_type"] = "ephemeral"
+	  			out["channel"]=sparams["channel_id"].to_s
+	  			sblocks = []
+	  			sblocks << {type: "section", 
+					text: {type: "plain_text", emoji: true, 
+					text: "Here's what we are working on this week (week-" + 
+						week_from_period(spid).to_s + "):"},
+					}
+				sblocks << {type: "divider"}
+				#iterate each project with current assingments and build a block
+				Assignment.all.where("set_period_id = ?", spid).group(:project_id).sum(:effort).each do |pid,e|
+					puts "Project #{pid.to_s} - #{e.to_s}"
+					ablock = Hash.new
+					ablock["type"] = "section"
+					btext = Hash.new
+					btext["type"] = "mrkdwn"
+					btext["text"] = Project.find_by_id(pid).name + " - " + e.to_s + " engineers"
+					ablock["text"] = btext
+					sblocks << ablock
+				end
+				out["blocks"] = sblocks
+				out.to_json
+			end
 	
 			def offset_period(d, hardOffset = 53)
 				@cweek_number = 0.0

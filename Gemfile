@@ -27,6 +27,7 @@ gem 'slack-ruby-client'
 gem 'httparty'
 gem 'sucker_punch', '~> 2.0'
 
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -77,9 +78,6 @@ gem 'axlsx_rails'
 
 gem 'derailed_benchmarks', group: :development
 gem 'stackprof', group: :development
-
-#Slack Integration
-gem 'slack-ruby-client'
 
 
 #backward compat for attribute protection in Rails 4

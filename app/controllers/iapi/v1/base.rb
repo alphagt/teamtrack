@@ -5,7 +5,7 @@ module IAPI
 
 
       mount IAPI::V1::Assignments
-      # mount API::V1::AnotherResource
+      mount IAPI::V1::Slackhandler
     end
   end
 end

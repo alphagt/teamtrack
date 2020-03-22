@@ -19,14 +19,51 @@ module IAPI
 				when '/getmyassignments'
 # 					ru = URI(params["response_url"])
 # 					puts ru
-					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true)) then
-						"Oops!  Something went wrong.  Please try again"
+					if params["text"].present? then
+						 p = Helpers.period_from_week(params["text"]) || Helpers.current_period
+					else
+						p = Helpers.current_period
+					end
+					if !Helpers.sendSlackResponse(params["response_url"], Helpers.current_assignment(params, true, p)) then
+						out = "Oops!  Something went wrong.  Please try again"
 					else
 						puts "get assignments success"
 						status 200
 						out = ''	
 					end
-			end
+				when '/setassignment'
+					if !params["text"].present? then
+						out = "Ooops!  This call requires an employee name, project name, and effort value."
+					else
+						aparams = params["text"].split(",")
+						puts aparams
+						if aparams.length < 4 then
+							out = "Ooops!  Wrong parameters, please try again"
+						else
+							v = Helpers.validateSetParams(aparams)
+							if v.length > 0 then
+								#param errors
+								out = v[0]
+							else
+								mgr = Helpers.user_from_slack(params)
+								u = User.find_by_name(aparams[0].strip.to_s)
+								if u.manager == mgr then
+									tsv = u.default_system_id
+									prj = Project.find_by_name(aparams[1].strip.to_s)
+									period = Helpers.period_from_week(aparams[2])
+									eff = aparams[3].to_d
+									if Assignment.create!({user_id: u.id, project_id: prj.id, tech_sys_id: tsv, set_period_id: period, effort: eff}) then
+										out = "Assignment Created!"
+									else
+										out = "Whoops!   that didn't work."
+									end
+								else
+									out = "Hey! That's not cool.  You don't have permission to assign that user!"
+								end
+							end
+						end
+					end
+				end
 		end
 		if params["payload"].present? then
 	  		payload = JSON.parse(params["payload"], object_class: Hash, allos_nan: true, symbolize_names:true)

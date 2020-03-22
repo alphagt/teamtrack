@@ -15,7 +15,7 @@ module IAPI
 	  				sblocks << {type: "section", 
 	  					text: {type: "plain_text", emoji: true, 
 	  					text: "Here are your team's current assignments (week-" + 
-	  						week_from_period(current_period).to_s + ")"},
+	  						week_from_period(speriod).to_s + ")"},
 	  					}
 	  				sblocks << {type: "divider"}
 	  				acount = current_subordinates_assigned(cuser)
@@ -25,14 +25,14 @@ module IAPI
 	  				sblocks << {type: "divider"}
 	  				sblocks << {type: "section",
 	  							text: {type: "mrkdwn", text: "*Assignments:*"}}
-	  				sblocks << getSlackAssignmentBlock(cuser)
+	  				sblocks << getSlackAssignmentBlock(cuser, speriod)
 	  				cuser.subordinates.each do |s|
-	  					sblocks << getSlackAssignmentBlock(s)
+	  					sblocks << getSlackAssignmentBlock(s, speriod)
 	  				end			
-	  				out["text"] = latestInfoStr(cuser, current_period)
+	  				out["text"] = latestInfoStr(cuser, speriod)
 	  				out["blocks"]=sblocks
 	  			else
-	  				out["text"] = latestInfoStr(cuser, current_period)
+	  				out["text"] = latestInfoStr(cuser, speriod)
 	  			end
 	  			if asJson
 	  				out.to_json
@@ -62,9 +62,9 @@ module IAPI
 				iout
 			end
 			
-			def getSlackAssignmentBlock(e)
+			def getSlackAssignmentBlock(e, prd = current_period)
 				puts "IN Assign Block Call"
-				astring = latestInfoStr(e, current_period)
+				astring = latestInfoStr(e, prd)
 				puts "InfoString - #{astring}"
 				block = Hash.new
 				block["type"] = "section"
@@ -176,6 +176,35 @@ module IAPI
 				((p - p.to_i)*100).round
 			end
 			
+			def period_from_week(w)
+				@fWeek = w.to_i
+				puts @fWeek.to_s
+				current_period.to_i + @fWeek.fdiv(100).round(3)
+			end
+			
+			def validateSetParams(prs)
+				errs = []
+				#check user
+				if !User.find_by_name(prs[0].strip.to_s) then
+					errs << "User " + prs[0].strip.to_s + " NOT Found in TeamView!"
+					return errs
+				end
+				if !Project.find_by_name(prs[1].strip.to_s) then
+					errs << "Project " + prs[1].strip.to_s + " NOT Found in TeamView!"
+					return errs
+				end
+				w = Integer(prs[2]) rescue nil
+				if w.nil? || w > 52 then 
+					errs << "Invalid Week Number!"
+					return errs
+				end
+				if prs[3].to_d > 1 then
+					errs << "Effort value must be between 0 and 1"
+					return errs
+				end
+				return errs
+			end
+			
 			def extendlatest(cuser, sparams, floor = 0)
 				if cuser.assignments.where("set_period_id >= ?", floor).length > 0
 					@latest = cuser.assignments.where("set_period_id >= ?", floor).order("set_period_id DESC").first.set_period_id	
@@ -196,7 +225,7 @@ module IAPI
 			
 			def latestInfoStr(cuser, tperiod = 0)
 				@rStr = ""
-				tweek = ""
+				tweek = """"
 				if cuser.assignments.length > 0
 					if tperiod == 0 then
 						@latest = cuser.assignments.order("set_period_id DESC").first.set_period_id	
@@ -208,14 +237,9 @@ module IAPI
 						puts a.to_json
 						@rStr = @rStr + a.project.name + '(' + a.effort.to_s + ')' + ', '
 					end
-					w = week_from_period(@latest)
-					if w < 52 then
-						tweek = w + 1
-					else
-						tweek = (w + 1) - 52
-					end
 				end
-				cuser.name + "(week " + w.to_s + "): " + @rStr.chomp(", ") 
+				tweek = week_from_period(@latest)
+				cuser.name + "(week " + tweek.to_s + "): " + @rStr.chomp(", ") 
 			end
 			
 			def sendSlackResponse(respUrl, resp)

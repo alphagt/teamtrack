@@ -71,6 +71,7 @@ module IAPI
 						out = "..."
 					end
 				end
+				
 		end
 		if params["payload"].present? then
 	  		payload = JSON.parse(params["payload"], object_class: Hash, allos_nan: true, symbolize_names:true)

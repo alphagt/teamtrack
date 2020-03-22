@@ -254,6 +254,7 @@ module IAPI
 					Array.new()
 					out = false
 				end
+				
 			end
 			
 			def latestInfoStr(cuser, tperiod = 0)

@@ -24,6 +24,7 @@ class Project < ApplicationRecord
 	scope :for_rtm, -> (rStr){where('rtm = ?', rStr).order('projects.name')}
 	scope :for_psh, -> (shStr){where('psh = ?', shStr).order('projects.name')}
 	scope :for_account, -> (aid){joins(:users).merge(User.for_account(aid))}
+	scope :search_by_name, -> (n){where('name like ?', "%#{n}%")}
 
 	def ctpriority_supported_by_initiative
 		if initiative_id && initiative_id != 0 then

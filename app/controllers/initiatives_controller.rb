@@ -52,9 +52,9 @@ class InitiativesController < ApplicationController
 		end
     #****************
     puts @cdata
-    @clabels = @cdata.map {|i| i[0]}
-    @cvals= @cdata.map {|i| i[1]}
-    @wvals = @cdata.map {|i| i[2]}
+    @clabels = @cdata.map {|i| i[0].truncate(11)}
+    @cvals= @cdata.map {|i| i[1].round(2)}
+    @wvals = @cdata.map {|i| i[2].round(2)}
     
     #Get Summary Data Ready
     @sumEffort = @cvals.sum

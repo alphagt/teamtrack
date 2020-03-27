@@ -211,9 +211,9 @@ class ProjectsController < ApplicationController
 			pri_custname.freeze
 			pri_setting = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s)
 			if pri_setting.count > 0 then
-				pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname
+				pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname.truncate(11)
 			else
-				pri_display = a[0][1].to_s
+				pri_display = a[0][1].to_s.truncate(11)
 			end
 			puts "##### DISPLAY NAME - "
 			puts pri_display
@@ -225,7 +225,7 @@ class ProjectsController < ApplicationController
 					cat = pri_display + "-" + i.tag
 				else
 					#cat = a[0][1].to_s + "-" + i.name 
-					cat = pri_display + "-" + i.name
+					cat = pri_display + "-" + i.name.truncate(5)
 				end
 			else 
 				#cat = a[0][1].to_s + "-" + "NA" 
@@ -240,12 +240,12 @@ class ProjectsController < ApplicationController
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
 				if !i.tag.nil? then
-					cat =i.tag + "-*" + a[0][1].to_s
+					cat =i.tag + "-*" + a[0][1].round(1).to_s
 				else
-					cat = i.name + "-*" + a[0][1].to_s
+					cat = i.name.truncate(11) + "-*" + a[0][1].round(1).to_s
 				end
 			else 
-				cat = "NA" + "-*" + a[0][1].to_s  
+				cat = "NA" + "-*" + a[0][1].round(1).to_s  
 			end
 			[cat,(a[1].to_f/cweek).round(2)]
 		end	
@@ -274,7 +274,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << view_context.display_name_for(Setting.for_key("p_cust_2")[0].value,k).truncate(11) + "-" + v.to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_key("p_cust_2")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	
@@ -295,7 +295,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedpsh.map do |k,v|
-			alabs << view_context.display_name_for(Setting.for_key("p_cust_3")[0].value,k).truncate(11) + "-" + v.to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_key("p_cust_3")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@pshlabels = alabs
 		@pshVals = combinedpsh.values	

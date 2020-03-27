@@ -23,6 +23,7 @@ input.btn[type="submit"] {
 .col-centered{
     float: none;
     margin: 0 auto;
+    
 }
 
 .form-actions {
@@ -31,4 +32,15 @@ input.btn[type="submit"] {
 
 .icon-class {
 	background-position: 10%, 50%;
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }

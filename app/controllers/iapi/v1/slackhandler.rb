@@ -49,10 +49,10 @@ module IAPI
 								u = User.find_by_name(aparams[0].strip.to_s)
 								if u.manager == mgr then
 									tsv = u.default_system_id
-									prj = Project.find_by_name(aparams[1].strip.to_s)
+									prj = Helpers.getProjectId(aparams[1].strip.to_s)
 									period = Helpers.period_from_week(aparams[2])
 									eff = aparams[3].to_d
-									if Assignment.create!({user_id: u.id, project_id: prj.id, tech_sys_id: tsv, set_period_id: period, effort: eff}) then
+									if Assignment.create!({user_id: u.id, project_id: prj, tech_sys_id: tsv, set_period_id: period, effort: eff}) then
 										out = "Assignment Created!"
 									else
 										out = "Whoops!   that didn't work."

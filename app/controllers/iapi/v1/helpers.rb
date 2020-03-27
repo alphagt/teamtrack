@@ -85,6 +85,18 @@ module IAPI
 				block
 			end
 			
+			def getProjectId(pname)
+				pid = Project.find_by_name(pname)
+				if pid.nil? then
+					#try search
+					sres = Project.search_by_name(pname)
+					if sres.length == 1 then
+						pid = sres.first.id
+					end
+				end
+				pid
+			end
+			
 			def getProjectAlloc(sparams)
 				#Build Slack Resonse to summarize target week's staff allocations
 				if sparams["text"].present? then	
@@ -222,7 +234,7 @@ module IAPI
 					errs << "User " + prs[0].strip.to_s + " NOT Found in TeamView!"
 					return errs
 				end
-				if !Project.find_by_name(prs[1].strip.to_s) then
+				if getProjectId(prs[1].strip.to_s).nil? then
 					errs << "Project " + prs[1].strip.to_s + " NOT Found in TeamView!"
 					return errs
 				end

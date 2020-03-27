@@ -85,8 +85,8 @@ class InitiativesController < ApplicationController
 # 	puts @clabels.to_s	
 	#Data for projects pie chart
 	@cdata = Assignment.where('set_period_id = ? AND project_id IN (?)', 
-		view_context.current_period, @projects.pluck(:id)).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
-	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
+		view_context.current_period, @projects.pluck(:id)).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i.round(2)]}
+	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name.truncate(11) else "TBD" end}
 	@svalues = @cdata.to_h.values	
 		
 	#End prep chart data

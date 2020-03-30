@@ -240,12 +240,12 @@ class ProjectsController < ApplicationController
 			if !a[0][0].nil? then
 				i = Initiative.find(a[0][0])
 				if !i.tag.nil? then
-					cat =i.tag + "-*" + a[0][1].round(1).to_s
+					cat =i.tag + "-*" + a[0][1].truncate(11).to_s
 				else
-					cat = i.name.truncate(11) + "-*" + a[0][1].round(1).to_s
+					cat = i.name.truncate(11) + "-*" + a[0][1].truncate(6).to_s
 				end
 			else 
-				cat = "NA" + "-*" + a[0][1].round(1).to_s  
+				cat = "NA" + "-*" + a[0][1].truncate(11).to_s  
 			end
 			[cat,(a[1].to_f/cweek).round(2)]
 		end	

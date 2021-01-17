@@ -24,6 +24,7 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
 
     if @account.save
+      #bootstrap default settings and admin account?
       redirect_to @account, notice: 'Account was successfully created.'
     else
       render :new

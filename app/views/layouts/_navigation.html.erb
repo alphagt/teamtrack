@@ -68,12 +68,12 @@
     		</li>
     	<% end %>
     	<% if current_user.superadmin? %>
-    		<% if active == "accounts" %>
+    		<% if active == "tennants" %>
     			<li class="active" >
     		<% else %>
     			<li>
     		<% end %>
-      		<%= link_to('Accounts', accounts_path) %>
+      		<%= link_to('Tennants', accounts_path) %>
     		</li>
     	<% end %>
 		<li>

@@ -46,6 +46,7 @@
 				<%= f.association :impersonates, :as => :select, :collection => User.managers_only, 
 					:label_method => :name %>
 				<div class="checkbox">
+					<%= f.input :superadmin, inline_label: 'Is Super Admin', label: false %>
 					<%= f.input :admin, inline_label: 'Is Admin', label: false %>
 					<%= f.input :ismanager,inline_label: 'Is Manager', label: false %>
 					<%= f.input :isstatususer, inline_label: 'Is Status User', label: false %>

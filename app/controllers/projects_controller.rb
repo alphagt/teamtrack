@@ -37,7 +37,6 @@ class ProjectsController < ApplicationController
 	#Full Project list used for aggregate statistics
 	@allProjects = Project.for_account(current_user.primary_account_id).by_category
 	
-	
 	#Param Handling
 	
 	#Optional :org specifies a manager ID, default is current signed in user
@@ -107,6 +106,9 @@ class ProjectsController < ApplicationController
 			end	
 		end
 	end
+	
+	#Hanlde Empty project list
+	
 
 	if params[:showvals] == '1'
 		@showVals = true
@@ -141,7 +143,13 @@ class ProjectsController < ApplicationController
 	ytd_total = @cvals_ytd.sum
 	puts ytd_total
 	combinedytd.map do |key, val|
-		@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + (val.to_f/ytd_total * 100).round().to_s + "%"
+		#handle empty set
+		if val > 0 then
+			pVal = (val.to_f/ytd_total * 100).round().to_s
+		else
+			pVal = "0"
+		end
+		@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + pVal + "%"
 	end	
 	puts @clabels_ytd.to_s
 	
@@ -189,7 +197,13 @@ class ProjectsController < ApplicationController
 		qtd_total = @cvals_qtd.sum
 		puts qtd_total
 		combinedqtd.map do |key, val|
-			@clabels_qtd << view_context.display_name_for(Setting.for_key("p_cust_1")[0].value,key).truncate(11) + "-" + (val.to_f/qtd_total * 100).round().to_s + "%"
+			#handle empty set
+			if val > 0 then
+				pVal = (val.to_f/qtd_total * 100).round().to_s
+			else
+				pVal = "0"
+			end
+			@clabels_qtd << view_context.display_name_for(Setting.for_key("p_cust_1")[0].value,key).truncate(11) + "-" + pVal + "%"
 		end	
 		puts @clabels_qtd.to_s
 	

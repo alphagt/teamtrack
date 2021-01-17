@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  
   # rescue_from CanCan::AccessDenied do |exception|
 #     redirect_to root_path, :alert => exception.message
 #   end
@@ -95,4 +97,10 @@ class ApplicationController < ActionController::Base
 		 
 		combined.sort_by {|k,v| k.to_s}.to_h
 	end
+	
+  protected
+
+        def configure_permitted_parameters
+            devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :manager])
+        end
 end

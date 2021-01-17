@@ -70,10 +70,16 @@
 		<li>
 		<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
 		</li>
+		<li>
+		<%= link_to('My Account', edit_user_registration_path) %>        
+		</li>
     <% else %>
 	  <li>
 		  <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>
-	  </li>  
+	  </li> 
+	  <li>
+		<%= link_to('My Account', edit_user_registration_path) %>        
+		</li> 
 	<% end %>
  <% else %>
 		<% if active == "admin" %>
@@ -81,7 +87,7 @@
 		<% else %>
 				<li>
 		<% end %>
-		<%= link_to('Admin', new_user_registration_path)  %>
+		<%= link_to('SignUp', new_user_registration_path)  %>
 		</li>
 		<% if active == "login" %>
     		<li class="active">

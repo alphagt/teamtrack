@@ -4,8 +4,10 @@
 <% content_for :nav do %>
 	<%  render partial: "layouts/navigation", locals: {active: "login"} %>
 <% end %>
-<% if current_user and !current_user.verified %>
-	<p>Your account is pending administrative approval.  Check back later</p>
-<% else %>
-	<p>Contact your manager if you do not have an account on the system.<p>
+<% content_for :main1 do %>
+	<% if current_user and !current_user.verified %>
+		<p>Your account is pending administrative approval.  Check back later</p>
+	<% else %>
+		<p>Contact your manager if you do not have an account on the system.<p>
+	<% end %>
 <% end %>

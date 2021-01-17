@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
+  before_filter :configure_permitted_parameters, if: :devise_controller?
+\
+  
   # rescue_from CanCan::AccessDenied do |exception|
 #     redirect_to root_path, :alert => exception.message
 #   end
@@ -14,7 +17,7 @@ class ApplicationController < ActionController::Base
   def require_verified
     unless current_user and current_user.verified
       flash[:error] = "Your account has not been validated, contact administrator to access this section" 
-      redirect_to new_user_session_path # Prevents the current action from running
+      redirect_to new_user_registration_path # Prevents the current action from running
     end
   end
   def require_manager
@@ -95,4 +98,10 @@ class ApplicationController < ActionController::Base
 		 
 		combined.sort_by {|k,v| k.to_s}.to_h
 	end
+	
+  protected
+
+        def configure_permitted_parameters
+            devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :manager, :ismanager])
+        end
 end

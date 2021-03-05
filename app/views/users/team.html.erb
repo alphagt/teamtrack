@@ -129,6 +129,8 @@
             	<li><%= @manager.name + "'s Team" %></li>
             	<li><%= link_to "<span class='btn btn-danger btn-xs'>Extend All</span>".html_safe, extendteam_user_path(@manager, :floor => @target_period.to_s), 
 							:title => "Extend all team members' current (displayed) Assignments for 1 week"  %></li>
+				<li><%= link_to "<span class='btn btn-info btn-xs'>Nex Week</span>".html_safe, team_user_path(@manager, :period => @target_period + 0.01), 
+							:title => "Extend all team members' current (displayed) Assignments for 1 week"  %></li>
         	</ul>
     </div>
     <div class="collapse in" id="teamlistContent" aria-expanded="true">

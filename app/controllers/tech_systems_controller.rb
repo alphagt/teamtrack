@@ -72,7 +72,7 @@ class TechSystemsController < ApplicationController
     @system = TechSystem.find(params[:id])
 	puts "In TechSystem Update Controler Method - " + @system.name
     respond_to do |format|
-      if @system.update_attributes(params[:tech_system])
+      if @system.update_attributes(techsystem_params)
         format.html { redirect_to @system, notice: 'System was successfully updated.' }
         format.json { render json: @system, status: :updated, location: @system }
       else
@@ -110,6 +110,6 @@ private
 
     # Only allow a trusted parameter "white list" through.
     def techsystem_params
-      params.require(:techsystem).permit(:owner, :name, :description, :qos_group,:owner_id)
+      params.require(:tech_system).permit(:owner, :name, :description, :qos_group,:owner_id)
     end
 end

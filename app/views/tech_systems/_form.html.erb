@@ -2,11 +2,11 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :name, :autofocus => true %>
+    <%= f.input :name, :autofocus => true, :required => true %>
 	<%= f.input :description %>
 	<%= f.input :qos_group, label: get_cfield_name("ts_cust_1") %>
     <%= f.association :owner, :as => :select, :collection => User.managers_only, 
-    	:label_method => :name %>
+    	:label_method => :name, :required => true %>
   </div>
   <br/>
   <div class="form-actions">

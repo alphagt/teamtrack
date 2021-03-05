@@ -135,9 +135,9 @@ module UsersHelper
 		a_out
 	end
 	
-	def subs_assignment_stats_string(m)
+	def subs_assignment_stats_string(m, tperiod=current_period())
 		sout = " ("
-		counts = get_subs_count(m, true)
+		counts = get_subs_count(m, true, tperiod)
 		sout +=  counts["assigned"].to_s + "/" + counts["total"].to_s + ")"
 		sout
 	end

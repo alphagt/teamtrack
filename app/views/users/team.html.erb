@@ -229,9 +229,9 @@
 					  
 					  
 					  <% if @direct %>
-							<td class="success"><%= link_to @currentmgr.name + subs_assignment_stats_string(@currentmgr), team_user_path(@currentmgr), {:style => "color:blue;text-decoration : underline;"} %></td> 
+							<td class="success"><%= link_to @currentmgr.name + subs_assignment_stats_string(@currentmgr, @target_period), team_user_path(@currentmgr), {:style => "color:blue;text-decoration : underline;"} %></td> 
 					  <% else %>
-							<td class="info"><%= link_to @currentmgr.name + "*" + subs_assignment_stats_string(@currentmgr), team_user_path(@currentmgr), {:style => "color:blue;text-decoration : underline;"} %></td> 
+							<td class="info"><%= link_to @currentmgr.name + "*" + subs_assignment_stats_string(@currentmgr, @target_period), team_user_path(@currentmgr), {:style => "color:blue;text-decoration : underline;"} %></td> 
 					  <% end %>
 					  <td><%= if !@currentmgr.default_system.nil? then @currentmgr.default_system.name else "NA" end %></td>
 					  <td><%= if @currentmgr.projects.length > 0 then current_system(@currentmgr, @target_period) end %></td>

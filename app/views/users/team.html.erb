@@ -223,7 +223,7 @@
 				  
 				  <%= tag("tr", id: "parent-" + mgrId.to_s, class: rclass, data: {group: ctarget}) %>
 					 
-					  <%= tag("td", class: ['icon-class', 'collapsed'], data: {toggle: 'collapse', target: ctarget, org: @currentmgr.org, direct: @direct} ) %>
+					  <%= tag("td", class: ['icon-class', 'collapsed'], data: {toggle: 'collapse', target: ctarget, org: @currentmgr.org, direct: @direct, period: @target_period} ) %>
 					  
 					  
 					  <% if @direct %>

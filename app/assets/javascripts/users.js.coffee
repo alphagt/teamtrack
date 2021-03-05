@@ -22,10 +22,11 @@ fetchrows =(rowent) ->
 	sclass = $(icontd).data("target").substring(1)
 	org = $(icontd).data("org")
 	isdirect = $(icontd).data("direct")
+	tperiod = $(icontd).data("period")
 	console.log("IsDirect for " + mid + ": " + isdirect)
 	$body = window.$("#body-" + m)
 	u = "/users/teamlist"
-	$.ajax(url: u, data: {id: m, tname: sclass, baseorg: org, isdirect: isdirect}).done (html) ->
+	$.ajax(url: u, data: {id: m, tname: sclass, baseorg: org, isdirect: isdirect, tperiod: tperiod}).done (html) ->
 		console.log(html)
 		$body.prepend(html)
 	

@@ -407,8 +407,8 @@ class UsersController < ApplicationController
 	@subclass = params[:tname]
 	@baseorg = params[:baseorg]
 	@direct = params[:isdirect]
+	@period = params[:tperiod]
 
-	@period = view_context.current_period()
 	puts "@direct = " + @direct
 	respond_to do |format|
 		#format.html {render 'teamlist', :layout=>false}

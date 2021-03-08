@@ -115,7 +115,7 @@ GEM
     faraday-net_http (1.0.1)
     faraday_middleware (1.0.0)
       faraday (~> 1.0)
-    ffi (1.14.2)
+    ffi (1.15.0)
     get_process_mem (0.2.7)
       ffi (~> 1.0)
     gli (2.20.0)
@@ -127,7 +127,7 @@ GEM
       multi_json
       request_store (>= 1.0)
     googlecharts (1.6.12)
-    grape (1.5.2)
+    grape (1.5.3)
       activesupport
       builder
       dry-types (>= 1.1)
@@ -235,7 +235,7 @@ GEM
     simple_form (5.0.3)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
-    slack-ruby-client (0.16.0)
+    slack-ruby-client (0.17.0)
       faraday (>= 1.0)
       faraday_middleware
       gli

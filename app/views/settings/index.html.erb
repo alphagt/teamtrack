@@ -10,7 +10,7 @@
 			<td class="danger"><%= link_to 'New Setting', new_setting_path %></td>
 		</tr>
 		<tr>
-			<td class="danger"><%= link_to 'New Invite Code', addInviteCode_account_path(@acct) %></td>
+			<td class="danger"><%= link_to 'New Invite Code', addInviteCode_account_path(@acct), id: "newic"%></td>
 		</tr>
 	</table>
 <% end %>
@@ -22,7 +22,8 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Invite Code</th>
+					<th>Code</th>
+					<th>Note</th>
 					<th>Expiry</th>
 					<th colspan="1"></th>
 				</tr>
@@ -31,6 +32,7 @@
 				<% @acct.invitecodes.current.each do |code| %>
 				<tr>
 					<td><%= code.code %></td>
+					<td><%= code.note %></td>
 					<td><%= code.expire %></td>
 					<td><%= link_to 'Delete', removeInviteCode_accounts_path(:code => code.code) %></td>
 				</tr>

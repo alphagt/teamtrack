@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210306040606) do
+ActiveRecord::Schema.define(version: 20210308170136) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20210306040606) do
     t.datetime "expire"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "note"
     t.index ["account_id"], name: "index_invite_codes_on_account_id"
   end
 

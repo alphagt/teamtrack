@@ -49,9 +49,13 @@ class AccountsController < ApplicationController
   # GET /accounts/1/addInviteCode
   def addInviteCode
   	errMsg = "FAILED to create Invite Code!"
+  	note = ""
   	#enforce limit of 5 invite codes per account
+  	if params[:note].present? then
+  		note = params[:note]
+  	end
   	if @account.invitecodes.current.count < 5 then
-  		@ic = InviteCode.create_new_code(@account)
+  		@ic = InviteCode.create_new_code(@account,note)
   	else
   		errMsg = "Max number of invite codes reached!"
   	end

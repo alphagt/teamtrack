@@ -64,7 +64,7 @@
     		<% else %>
     			<li>
     		<% end %>
-      		<%= link_to('Settings', settings_path) %>
+      		<%= link_to('Acct Settings', settings_path) %>
     		</li>
     	<% end %>
     	<% if current_user.superadmin? %>
@@ -77,18 +77,18 @@
     		</li>
     	<% end %>
 		<li>
-		<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
+		<%= link_to('My Profile', edit_user_registration_path) %>        
 		</li>
 		<li>
-		<%= link_to('My Account', edit_user_registration_path) %>        
+		<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
 		</li>
     <% else %>
-	  <li>
+	   <li>
+		<%= link_to('My Profile', edit_user_registration_path) %>        
+	   </li>
+	   <li>
 		  <%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>
-	  </li> 
-	  <li>
-		<%= link_to('My Account', edit_user_registration_path) %>        
-		</li> 
+	   </li>  
 	<% end %>
  <% else %>
 		<% if active == "admin" %>

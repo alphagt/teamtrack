@@ -9,6 +9,8 @@ class SettingsController < ApplicationController
     else
     	@settings = Setting.non_core
     	@sysadmin = false
+    	@acct = current_user.primary_account
+    	puts "User Primary Account = " + @acct.id.to_s
     end
   end
 

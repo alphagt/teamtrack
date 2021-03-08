@@ -7,13 +7,41 @@
 <% content_for :sidebarwide do %>
 	<table class="table">
 		<tr>
-		<td class="danger"><%= link_to 'New Setting', new_setting_path %></td>
+			<td class="danger"><%= link_to 'New Setting', new_setting_path %></td>
+		</tr>
+		<tr>
+			<td class="danger"><%= link_to 'New Invite Code', addInviteCode_account_path(@acct) %></td>
+		</tr>
 	</table>
 <% end %>
 
 <% content_for :main1 do %>
 <row>
 	<div class="col-md-12 col-centered">
+		<b>Invite Codes</b>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Invite Code</th>
+					<th>Expiry</th>
+					<th colspan="1"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @acct.invitecodes.current.each do |code| %>
+				<tr>
+					<td><%= code.code %></td>
+					<td><%= code.expire %></td>
+					<td><%= link_to 'Delete', removeInviteCode_accounts_path(:code => code.code) %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</row>
+<row>
+	<div class="col-md-12 col-centered">
+		<b>Settings</b>
 		<table class="table">
 		  <thead>
 			<tr>

@@ -7,7 +7,7 @@
 	  <%= f.input :email, :required => true %>
 	  <%= f.input :password, :required => true %>
 	  <%= f.input :password_confirmation, :required => true %>
-	  <%= f.association :manager, :as => :select, :collection => User.managers_only, 
+	  <%= f.association :primary_account, :as => :select, :collection => Account.all, 
 				:label_method => :name, :required => true %>
 	  <%= f.button :submit, 'Sign up', :class => 'btn-primary' %>
 	<% end %>

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	respond_to :html, :js
 	before_action :authenticate_user!
-	before_action :require_manager, :except => [:team, :show, :extendteam]
+	before_action :require_manager, :except => [:team, :show, :extendteam, :index]
 	before_action :require_verified, :except => [:show]
 		
   def index
@@ -18,15 +18,24 @@ class UsersController < ApplicationController
 		@mgr_id = current_user.id
 	end
 	
-	if params[:scope] == 'all' || @mgr_id == 0
-		if current_user.superadmin
-			@users = User.ordered_by_account.ordered_by_name
+	if current_user.superadmin
+		if params[:acct].present? && params[:acct] != "-1"
+			@users = User.for_account(params[:acct]).ordered_by_name
+			puts "Filter by Acct ID"
 		else
-			@users = User.for_account(current_user.primary_account_id).ordered_by_name
+			@users = User.ordered_by_account.ordered_by_name
+		end
+		if params[:acct].present?
+			@sAcct = params[:acct]
+		else
+			@sAcct = -1
 		end
 	else
-  		#@users = User.where('users.id != ?', @exId).ordered_by_manager
-  		@users = view_context.extended_subordinates(@mgr_id, true)
+		if params[:scope] == 'all' || @mgr_id == 0
+			@users = User.for_account(current_user.primary_account_id).ordered_by_name
+		else
+  			@users = view_context.extended_subordinates(@mgr_id, true)
+  		end
   	end
   	
   end

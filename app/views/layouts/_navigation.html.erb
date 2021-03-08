@@ -49,7 +49,7 @@
       		<%= link_to('Assignments', assignments_path) %>
     		</li>
     	<% end %>
-    	<% if current_user.admin? | current_user.ismanager? %>
+    	<% if current_user.admin? | current_user.ismanager? | current_user.superadmin? %>
     		<% if active == "users" %>
     			<li class="active" >
     		<% else %>

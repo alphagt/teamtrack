@@ -57,5 +57,8 @@ $ ->
 	#	e.preventDefault()
 		console.log("Catch hide event")
 		
+	$("#u_acct").change ->
+    window.location.search = 'acct=' + (this).value
+		
 		
 					

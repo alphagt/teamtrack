@@ -383,6 +383,15 @@ module ApplicationHelper
 		@list
 	end
 	
+	def acct_list()
+		@list = []
+		@list << ["All",-1]
+		Account.all.each do |a|
+			@list << [a.name, a.id]
+		end
+		@list
+	end
+	
 	def orgs_hash()
 		ohash = Hash.new
 		User.managers_only.where("orgowner = true").each do  |u|

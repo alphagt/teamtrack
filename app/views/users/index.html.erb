@@ -5,7 +5,7 @@
 <% end %>
 
 <br/>
-<% if current_user.admin? then %>
+<% if current_user.admin? | current_user.superadmin? then %>
 	<% content_for :sidebarwide do %>
 	<table class="table">
 	    <tr>
@@ -20,6 +20,13 @@
 				<%= select_tag "p_org", options_for_select(org_mgrs_list(), @mgr_id.to_s) %>
 			</td>
 		<% end %>
+		<% if current_user.superadmin? %>
+			<tr>
+			<td class="danger">
+				<label for="u_acct">Account:</label>
+				<%= select_tag "u_acct", options_for_select(acct_list(), @sAcct) %>
+			</td>
+		<% end %>
 	</table>
 	<% end %>
 <% end %>
@@ -28,6 +35,9 @@
 <% content_for :main1 do %>
 <table class="table">
   <tr>
+    <% if current_user.superadmin %>
+    	<th>Account</th>
+    <% end %>
     <th>Name</th>
     <th>Emp Type</th>
     <th>Category</th>
@@ -40,12 +50,12 @@
     	<th>Status User?</th>
     	<th>Verified</th>
     <% end %>
-    <% if current_user.superadmin %>
-    	<th>Account</th>
-    <% end %>
   </tr>
 <% @users.each do |user| %>
   <tr>
+    <% if current_user.superadmin %>
+    	<td><%= user.primary_account.name %></td>
+    <% end %>
     <% if current_user.admin or user.manager == current_user %>
     	<td><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"}  %></td>
     <% else %>
@@ -61,9 +71,6 @@
     	<td><%= user.impersonates.name if user.impersonates %></td>
     	<td><%= user.isstatususer.to_s %></td>
     	<td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
-    <% end %>
-    <% if current_user.superadmin then %>
-    	<td><%= user.primary_account.name %></td>
     <% end %>
   </tr>
 <% end %>

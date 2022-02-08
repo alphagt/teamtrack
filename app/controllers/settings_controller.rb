@@ -3,6 +3,7 @@ class SettingsController < ApplicationController
 
   # GET /settings
   def index
+    @user = current_user
     if params[:sysadmin].present? then
     	@settings = Setting.all
     	@sysadmin = true

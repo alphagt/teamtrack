@@ -12,6 +12,7 @@
 	    <td class="danger"><%= link_to 'New User', new_user_path %></td>
 	    <tr>
 	    <td class="danger"><%= link_to 'Show All', users_path(:scope => "all") %></td>
+		<b><h5><%= "Account: " + current_user.primary_account.name %></h5></b>
 		<b><h4>Filters</h4></b>
 		<% if current_user.isstatususer? || current_user.admin %>
 			<tr>
@@ -46,6 +47,7 @@
     <th>Reset Pwd</th>
     <% if current_user.admin %>
     	<th>Admin?</th>
+    	<th>Tenant</th>
     	<th>Works on behalf of</th>
     	<th>Status User?</th>
     	<th>Verified</th>
@@ -67,7 +69,7 @@
     <td><%= user.manager.name if user.manager %></td>
     <td><%= link_to 'Reset', reset_user_path(user.id), {:style => "color:blue;text-decoration : underline;"}  %></td>
     <% if current_user.admin %>
-    	<td><%= user.admin.to_s %></td>    
+    	<td><%= user.admin.to_s %></td>   
     	<td><%= user.impersonates.name if user.impersonates %></td>
     	<td><%= user.isstatususer.to_s %></td>
     	<td><%= if user.verified then 'OK' else link_to 'Verify Now', user_verify_path(user.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>

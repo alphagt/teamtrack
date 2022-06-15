@@ -3,7 +3,7 @@
 
   <div class="form-inputs">  <div class="form-group">
   	<row>
-  		<div class="col-md-10">
+  		<div class="col-md-5">
    			<%= f.input :name %>
     		<%= f.input :email %>
     		<%= f.association :primary_admin, :as => :select, :collection => User.managers_only, :required => true,  
@@ -12,11 +12,11 @@
 		 	:pattern => false, :label_method => :name, label: "Secondary Admin" %>
     		<%= f.input :termdate %>
     		<%= f.input :userquota %>
+    		</br>
+    		<%= f.submit 'Create Tennant', class: "btn btn-default btn-primary" %>
   		</div>
 
-  		<div class="form-actions">
-    		<%= f.button :submit %>
-  		</div>
+  		
   	</row>
   </div>
 <% end %>

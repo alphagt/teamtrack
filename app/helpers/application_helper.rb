@@ -383,6 +383,8 @@ module ApplicationHelper
 		@list
 	end
 	
+	
+	
 	def acct_list()
 		@list = []
 		@list << ["All",-1]

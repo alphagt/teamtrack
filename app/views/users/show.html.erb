@@ -66,6 +66,7 @@
 <% end %>
 <br>
 <% content_for :sidebarwide do %>
+<h5><b><%= "Account: " + @user.primary_account.name %></b></h5>
 <table class="table" >
 	<tr>
 		<td class="danger"><%= link_to 'New Assignment', new_assignment_path(:uid => @user.id) %></td>

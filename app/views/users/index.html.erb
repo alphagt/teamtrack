@@ -12,7 +12,7 @@
 	    <td class="danger"><%= link_to 'New User', new_user_path %></td>
 	    <tr>
 	    <td class="danger"><%= link_to 'Show All', users_path(:scope => "all") %></td>
-		<b><h5><%= "Account: " + current_user.primary_account.name %></h5></b>
+		<b><h5><%= "Tennant: " + current_user.primary_account.name %></h5></b>
 		<b><h4>Filters</h4></b>
 		<% if current_user.isstatususer? || current_user.admin %>
 			<tr>
@@ -24,7 +24,7 @@
 		<% if current_user.superadmin? %>
 			<tr>
 			<td class="danger">
-				<label for="u_acct">Account:</label>
+				<label for="u_acct">Tennant:</label>
 				<%= select_tag "u_acct", options_for_select(acct_list(), @sAcct) %>
 			</td>
 		<% end %>
@@ -37,7 +37,7 @@
 <table class="table">
   <tr>
     <% if current_user.superadmin %>
-    	<th>Account</th>
+    	<th>Tennant</th>
     <% end %>
     <th>Name</th>
     <th>Emp Type</th>
@@ -47,7 +47,7 @@
     <th>Reset Pwd</th>
     <% if current_user.admin %>
     	<th>Admin?</th>
-    	<th>Tenant</th>
+    	<th>Tennant</th>
     	<th>Works on behalf of</th>
     	<th>Status User?</th>
     	<th>Verified</th>

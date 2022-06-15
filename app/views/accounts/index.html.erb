@@ -1,4 +1,4 @@
-<h1>Accounts</h1>
+<h1>Tennants</h1>
 <br />
 <% content_for :nav do %>
 	<%  render partial: "layouts/navigation", locals: {active: "tennants"} %>
@@ -7,7 +7,7 @@
 <% content_for :sidebarwide do %>
 	<table class="table">
 		<tr>
-		<td class="danger"><%= link_to 'New Account', new_account_path %></td>
+		<td class="danger"><%= link_to 'New Tennant', new_account_path %></td>
 	</table>
 <% end %>
 

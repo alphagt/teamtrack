@@ -77,6 +77,20 @@ class User < ApplicationRecord
   	dupCount == 0
   end	
   
+  def accounts
+  	accts = Array.new
+  	if primary_account_id.present?
+  		accts = [Account.find_by_id(primary_account_id)]
+		account_list.split(',').each do |aid|
+			a = Account.find_by_id(aid)
+			if a.present? && accts.exclude?(a)
+				accts << a
+			end
+		end
+	end
+  	accts
+  end
+  
   def primary_account_id=(val)
   	write_attribute(:primary_account_id, val)
   	self.join_account = val

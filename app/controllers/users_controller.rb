@@ -313,6 +313,21 @@ class UsersController < ApplicationController
     end
   end
   
+  # PUT /user/:id/leave_account
+  def leave_account
+  	@user = User.find(params[:id])
+  	@user.leave_account = params[:aid].to_i
+  	respond_to do |format|
+  		if @user.save
+  			format.html { redirect_to edit_user_registration_path(@user)}
+  			format.json { render json: @user, location: edit_user_registration_path}
+  		else
+  			format.html { redirect_to edit_user_registration_path(@user), notice: 'Failed to leave tennant, contact admin'}
+  			format.json { render json: @user.errors, status: :unprocessable_entity}
+  		end
+  	end
+  end
+  
   # GET /user/:id/extendteam
   def extendteam
   	@manager = User.find(params[:id])

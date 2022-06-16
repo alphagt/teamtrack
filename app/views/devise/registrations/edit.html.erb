@@ -6,17 +6,43 @@
 
 <% content_for :main1 do %>
 
-
-
-	<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
-	  <%= f.error_notification %>
-	  <%= f.input :name, :autofocus => true %>
-	  <%= f.input :email, :required => true %>
-	  <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
-	  <%= f.input :password_confirmation, :required => false %>
-	  <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>
-	  <%= f.button :submit, 'Update', :class => 'btn-primary' %>
-	<% end %>
+   <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-vertical' }) do |f| %>
+   <%= f.error_notification %>
+	<div class="form-group">
+  	<row>
+  		<div class="col-md-4">
+			  <%= f.input :name, :autofocus => true %>
+			  <%= f.input :email, :required => true %>
+			  <%= f.input :password, :autocomplete => "off", :hint => "leave it blank if you don't want to change it", :required => false %>
+			  <%= f.input :password_confirmation, :required => false %>
+			  <%= f.input :current_password, :hint => "we need your current password to confirm your changes", :required => true %>
+			  <%= f.button :submit, 'Update', :class => 'btn-primary' %>
+			</br>
+		</div>
+  		<div class="col-md-6">
+  			<b>Tennant Membership</b>
+  			<table class="table">
+				<thead>
+					<tr>
+						<th>Tennant Name</th>
+						<th>Role</th>
+						<th>Renewal Date</th>
+						<th colspan="1"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% current_user.accounts.each do |a| %>
+					<tr>
+						<td><%= a.name %></td>
+						<td><%= if a.primary_admin == current_user || a.secondary_admin == current_user then "Admin" else "Member" end %></td>
+						<td><%= a.termdate%></td>
+						<td class="danger"><%= link_to 'Leave Tennant', leave_account_user_path(id: current_user.id, aid: a.id), method: :put %></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+  		</div>	
+	  <% end %>
 <% end %>
 
 <% content_for :sidebarwide do %>

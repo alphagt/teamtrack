@@ -27,11 +27,11 @@ class AccountsController < ApplicationController
       #bootstrap default settings and admin account?
       #put admins in the account
       pa = User.find_by_id(@account.primary_admin_id)
-      pa.account_id = @account.id
+      pa.join_account = @account.id
       pa.save
       if @account.secondary_admin_id.present?
       	sa = User.find_by_id(@account.secondary_admin_id)
-      	sa.account_id = @account.id
+      	sa.join_account = @account.id
       	sa.save
       end
       redirect_to @account, notice: 'Account was successfully created.'

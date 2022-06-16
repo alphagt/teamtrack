@@ -81,14 +81,14 @@ class User < ApplicationRecord
   end
   
   def join_account=(val)
-  	if account_list.exclude? val.to_s
-		if account_list.present? then
+  	if account_list.present? && account_list.exclude?(val.to_s)
 			al = (account_list.split(',') << val).join(',')
-		else
+	else
+		if account_list.nil? || account_list.empty?
 			al = val
 		end
-		write_attribute(:account_list, al)
 	end
+	if not al.nil? then write_attribute(:account_list, al) end
   end
   
   def leave_account=(val)

@@ -31,7 +31,7 @@ TeamTrack::Application.routes.draw do
   	#root :to => 'home#index'
   end
   root :to => "home#index"
-  devise_for :users, :controllers => { registgrations: 'users/registrations' }
+  devise_for :users, :controllers => { registrations: 'users/registrations' }
   resources :users do
   	get 'index'
   	get 'verify'

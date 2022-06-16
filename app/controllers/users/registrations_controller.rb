@@ -1,30 +1,44 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create, :new]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
-
-  # POST /resource
-  def create
+  def new
     if params[:ic].present? then
   		icode = params[:ic]
   		@acct = InviteCode.find_by_code(icode).account_id
   		puts "Invite Code is: " + icode
   	else
-  		@acct = 0
+  		@acct = -1
   	end
-  	puts "Account Id is: " + @acct
+  	puts "Account Id is: " + @acct.to_s
   	if @acct.nil? then
-  		format.html { redirect_to home_path( alert: 'Invalid Invite Code: ' + icode  }
+  		format.html {redirect_to home_path(alert: 'Invalid Invite Code')}
     else
     	super
     end
   end
+
+  # POST /resource
+  def create
+  	super
+#     if params[:ic].present? then
+#   		icode = params[:ic]
+#   		@acct = InviteCode.find_by_code(icode).account_id
+#   		puts "Invite Code is: " + icode
+#   	else
+#   		@acct = -1
+#   	end
+#   	puts "Account Id is: " + @acct
+#   	if @acct.nil? then
+#   		format.html { redirect_to home_path( alert: 'Invalid Invite Code: ' + icode  }
+#		end
+#     else
+#     	super
+#     end
+   end
 
   # GET /resource/edit
   # def edit

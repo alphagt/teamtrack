@@ -27,5 +27,12 @@
 		<% end %>
 		<tr>
 			<td class="danger" ><%= link_to "Back", :back %> </td>
+		<% if current_user.account_list.present? && current_user.account_list.split(',').length > 1 %>
+		<tr>
+		<td class="danger">
+			<label for="acct_list">Tennant:</label>
+			<%= select_tag "acct_list", options_for_select(org_mgrs_list(), @mgr_id.to_s) %>
+		</td>
+	<% end %>
 	</table>
 <% end %>

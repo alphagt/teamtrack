@@ -74,4 +74,28 @@ class User < ApplicationRecord
   	errors.add(:notice, "User already exists!") unless
   	dupCount == 0
   end	
+  
+  def primary_account_id=(val)
+  	write_attribute(:primary_account_id, val)
+  	self.join_account = val
+  end
+  
+  def join_account=(val)
+  	if account_list.exclude? val.to_s
+		if account_list.present? then
+			al = (account_list.split(',') << val).join(',')
+		else
+			al = val
+		end
+		write_attribute(:account_list, al)
+	end
+  end
+  
+  def leave_account=(val)
+  	if account_list.present? then
+  		ala = account_list.split(',')
+  		ala.delete(val.to_s)
+  		write_attribute(:account_list, ala.join(','))
+  	end
+  end
 end

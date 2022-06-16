@@ -22,6 +22,8 @@ class User < ApplicationRecord
   
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
   
+  scope :verified_only, -> {where('verified = true').order('users.name')}
+  
   scope :for_account, -> (aid){where('primary_account_id =?', aid).order('users.name')}
   
   scope :fte_only, -> {where('ismanager = false AND (etype = "FTE")').order('users.name')}
@@ -89,13 +91,30 @@ class User < ApplicationRecord
 		end
 	end
 	if not al.nil? then write_attribute(:account_list, al) end
+	if primary_account_id.nil? then write_attribute(:primary_account_id, val) end
   end
   
   def leave_account=(val)
   	if account_list.present? then
   		ala = account_list.split(',')
   		ala.delete(val.to_s)
-  		write_attribute(:account_list, ala.join(','))
+  		if primary_account_id == val
+  			if ala.length() > 0
+  				write_attribute(:primary_account_id, ala.first.to_i)
+  			else 
+  				write_attribute(:primary_account_id, nil)
+  			end
+  		end
+	  	if ala.length > 1
+  			write_attribute(:account_list, ala.join(','))
+  		else
+  			if ala.length() == 1
+  				write_attribute(:account_list, ala[0])
+  			else
+  				write_attribute(:account_list, nil)
+			end
+  		end
+
   	end
   end
 end

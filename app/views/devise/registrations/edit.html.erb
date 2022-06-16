@@ -19,7 +19,7 @@
 	<% end %>
 <% end %>
 
-<% content_for :sidebar do %>
+<% content_for :sidebarwide do %>
 	<table class="table">
 		<% if current_user.admin %>
 			<tr>
@@ -31,7 +31,7 @@
 		<tr>
 		<td class="danger">
 			<label for="acct_list">Tennant:</label>
-			<%= select_tag "acct_list", options_for_select(org_mgrs_list(), @mgr_id.to_s) %>
+			<%= select_tag "acct_list", options_for_select(acct_list(current_user.id), current_user.primary_account_id) %>
 		</td>
 	<% end %>
 	</table>

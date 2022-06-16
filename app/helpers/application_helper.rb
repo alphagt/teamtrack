@@ -385,11 +385,19 @@ module ApplicationHelper
 	
 	
 	
-	def acct_list()
+	def acct_list(uid = -1)
 		@list = []
-		@list << ["All",-1]
-		Account.all.each do |a|
-			@list << [a.name, a.id]
+		
+		if uid == -1 
+			@list << ["All",-1]
+			Account.all.each do |a|
+				@list << [a.name, a.id]
+			end
+		else
+			User.find_by_id(uid).account_list.split(',').each do |aid|
+				a = Account.find_by_id(aid.to_i)
+				@list << [a.name, a.id]
+			end
 		end
 		@list
 	end

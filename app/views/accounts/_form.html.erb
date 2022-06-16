@@ -6,9 +6,9 @@
   		<div class="col-md-5">
    			<%= f.input :name %>
     		<%= f.input :email %>
-    		<%= f.association :primary_admin, :as => :select, :collection => User.managers_only, :required => true,  
+    		<%= f.association :primary_admin, :as => :select, :collection => User.verified_only, :required => true,  
 		 	:pattern => false, :label_method => :name, label: "Primary Admin" %>
-		 	<%= f.association :secondary_admin, :as => :select, :collection => User.managers_only, :required => true,  
+		 	<%= f.association :secondary_admin, :as => :select, :collection => User.verified_only, :required => true,  
 		 	:pattern => false, :label_method => :name, label: "Secondary Admin" %>
     		<%= f.input :termdate %>
     		<%= f.input :userquota %>

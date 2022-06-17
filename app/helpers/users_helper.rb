@@ -175,19 +175,22 @@ module UsersHelper
 		out
 	end
 	
-	def get_org(mid, org = nil, hold = [], ind = false)
+	def get_org(mid, org = nil, hold = [], ind = false, aid = -1)
 		#Generates an org info array in form [[list of all manager ids], number of IC FTE, number of IC Contractors, [list of direct report managers]]
 		ret = hold
 		m = User.find(mid)
+		if aid == -1 
+			aid = m.primary_account_id
+		end
 		puts "Get Org for " + m.name
 		puts "   Start Array " + ret.to_s
 		if org.nil?
 			org = m.org
 		end
 		if ind
-			subs = m.subordinates.for_account(m.primary_account_id).for_org(org)
+			subs = m.subordinates.for_account(aid).for_org(org)
 		else
-			subs = m.subordinates.for_account(m.primary_account_id)
+			subs = m.subordinates.for_account(aid)
 		end
 		
 		if ret.count == 0
@@ -205,7 +208,7 @@ module UsersHelper
 			if !ind
 				ret[3] += [u.id]
 			end
-			ret = get_org(u.id, org, ret, ind)
+			ret = get_org(u.id, org, ret, ind, aid)
 		end
 		
 		#identify indirect managers to add to list
@@ -225,7 +228,7 @@ module UsersHelper
 						ret[0] += [i.id]
 						#ret[1] += 1 #to account for the manager themselves
 						#recurse for this manager
-						ret = get_org(i.id, target_org, ret, true)
+						ret = get_org(i.id, target_org, ret, true, aid)
 					end
 				end
 			end

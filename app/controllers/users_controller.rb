@@ -149,6 +149,8 @@ class UsersController < ApplicationController
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
   	
+  	@aid = @manager.primary_account_id
+  	
   	if params.has_key?(:period) then
   		pparts = params[:period].split(".")
   		puts "Passed in Period Parts " + pparts.to_s
@@ -214,7 +216,7 @@ class UsersController < ApplicationController
 # 	puts @user_list.map{|u| u[1].to_s + "," + u[2].name}
 	puts "IDs List for Assignments Query"
 	fullulist = Array.new()
-	@user_list[0].map{|m| fullulist += User.find(m).subordinates.pluck(:id)}
+	@user_list[0].map{|m| fullulist += User.find(m).subordinates.for_account(@aid).pluck(:id)}
 	fullulist += @user_list[0]
 	puts fullulist.to_s
 	c_assignments = Assignment.includes(:project).where("assignments.set_period_id = ? AND assignments.user_id IN (?)",

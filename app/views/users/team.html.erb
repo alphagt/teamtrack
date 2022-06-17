@@ -96,7 +96,7 @@
 							<%= link_to 'View', user_path(@currentmgr), 
 							:title => "View details and assignment history for this manager" %></td>
 				  </tr>
-				  <% @currentmgr.subordinates.each do |user| %>
+				  <% @currentmgr.subordinates.for_account(@aid).each do |user| %>
 						<% if !user.ismanager %>
 							<tr>
 								<% if @currentmgr.org == baseorg %>
@@ -158,7 +158,7 @@
 			<% thismgr = User.find(mgrId) %>
 			<% if mgrId == @manager.id %>
 				<%= tag("tbody", {id: "body-" + mgrId.to_s}, true) %>
-				<% thismgr.subordinates.each do |user| %>
+				<% thismgr.subordinates.for_account(@aid).each do |user| %>
 					<% if !user.ismanager %>
 						<tr>
 							<td></td>

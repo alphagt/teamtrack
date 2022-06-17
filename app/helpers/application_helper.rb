@@ -114,7 +114,7 @@ module ApplicationHelper
 			# puts "Return Length - " 
 # 			puts @return.length
 			@m.subordinates.for_account(@aid).each do |s|
-				if s.subordinates.any?
+				if s.subordinates.for_account(@aid).any?
 		#			puts "---FOUND Sub-SUBORDINATES"
 		#			puts s.name	
 					@return |= all_subs(s.id, false, true)

@@ -45,6 +45,7 @@ TeamTrack::Application.routes.draw do
   	post 'exit', :on => :member
   	put 'update_accts', :on => :member
   	put 'leave_account', :on => :member
+  	get 'switch_account', :on => :member
   end 
   #match 'users/emp/create' => 'users#createemp', :as => :createemp
   # The priority is based upon order of creation:

@@ -328,6 +328,21 @@ class UsersController < ApplicationController
   	end
   end
   
+  # GET /user/:id/switch_account
+  def switch_account
+  	@user = User.find(params[:id])
+  	@user.primary_account_id = params[:aid].to_i
+  	respond_to do |format|
+  		if @user.save
+  			format.html { redirect_to root_path}
+  			format.json { render json: @user, location: root_path}
+  		else
+  			format.html { redirect_to root_path}
+  			format.json { render json: @user, location: root_path}
+  		end
+  	end
+  end
+  
   # GET /user/:id/extendteam
   def extendteam
   	@manager = User.find(params[:id])

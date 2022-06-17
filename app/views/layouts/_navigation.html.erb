@@ -82,6 +82,19 @@
 		<li>
 		<%= link_to('Logout', destroy_user_session_path, :method=>'delete') %>        
 		</li>
+		<% if current_user.accounts.length() > 1 %>
+			<div class='btn-group pull-right right-nav'>
+				<button type='button' class='btn btn-mini dropdown-toggle' data-toggle="dropdown">
+					<span class="caret"></span>
+					<span><%= Account.find(current_user.primary_account_id).name%></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<% current_user.accounts.each do |a| %>
+						<li><%= link_to a.name, switch_account_user_path(id: current_user.id, aid: a.id) %></li>
+					<% end %>
+				</ul>
+			</div>
+		<% end %>
     <% else %>
 	   <li>
 		<%= link_to('My Profile', edit_user_registration_path) %>        

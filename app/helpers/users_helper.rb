@@ -148,9 +148,9 @@ module UsersHelper
 		out = Hash.new()
 		cuser = m
 		if org.nil?
-			subs = cuser.subordinates 
+			subs = cuser.subordinates.for_account(cuser.primary_account_id) 
 		else
-			subs = cuser.subordinates.for_org(org)
+			subs = cuser.subordinates.for_account(cuser.primary_account_id).for_org(org)
 		end
 		x += subs.count
 		y = subs.has_current_assignments(speriod).count	
@@ -161,7 +161,7 @@ module UsersHelper
 		end	
 		
 		if include_indirect && cuser.orgowner
-			isubs = User.where("users.org = ?", cuser.org).managers_only
+			isubs = User.for_account(cuser.primary_account_id).where("users.org = ?", cuser.org).managers_only
 			isubs.each do |i|
 				if i.manager.nil? || i.org != i.manager.org
 					z = get_subs_count(i, false, speriod, i.org) 
@@ -185,9 +185,9 @@ module UsersHelper
 			org = m.org
 		end
 		if ind
-			subs = m.subordinates.for_org(org)
+			subs = m.subordinates.for_account(m.primary_account_id).for_org(org)
 		else
-			subs = m.subordinates
+			subs = m.subordinates.for_account(m.primary_account_id)
 		end
 		
 		if ret.count == 0

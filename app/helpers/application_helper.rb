@@ -96,23 +96,24 @@ module ApplicationHelper
 	
 	def all_subs(mid, showEx = false, subCall = false, by_mgr = true)
 		@m = User.find(mid)
+		@aid = @m.primary_account_id
 		@return = Array.new()
 # 		puts 'all_subs helper'
 # 		puts "MANAGER IS-" + @m.name
 # 		puts "showEx is-" + showEx.to_s
 # 		puts "subCall is-" + subCall.to_s
 # 		puts "by_mgr is-" + by_mgr.to_s
-		if @m.subordinates.any?
+		if @m.subordinates.for_account(@aid).any?
 			# puts "-FOUND SUBORDINATES"
 			@exId = User.find_by_name("ExEmployeeMgr").id
 			if showEx
-				@return = @m.subordinates
+				@return = @m.subordinates.for_account(@aid)
 			else
-				@return = @m.subordinates.where('users.id != ? AND users.manager_id != ?', @exId, @exId).order(:name)
+				@return = @m.subordinates.for_account(@aid).where('users.id != ? AND users.manager_id != ?', @exId, @exId).order(:name)
 			end
 			# puts "Return Length - " 
 # 			puts @return.length
-			@m.subordinates.each do |s|
+			@m.subordinates.for_account(@aid).each do |s|
 				if s.subordinates.any?
 		#			puts "---FOUND Sub-SUBORDINATES"
 		#			puts s.name	
@@ -396,7 +397,9 @@ module ApplicationHelper
 		else
 			User.find_by_id(uid).account_list.split(',').each do |aid|
 				a = Account.find_by_id(aid.to_i)
-				@list << [a.name, a.id]
+				if a.present?
+					@list << [a.name, a.id]
+				end
 			end
 		end
 		@list

@@ -144,7 +144,7 @@ class UsersController < ApplicationController
   	
   	@manager = User.find(params[:id])
   	@manager_string = 'For ' + @manager.name
-  	if @manager.impersonates then
+  	if @manager.impersonates && @manager.impersonates.account_list.split(',').include?(@manager.primary_account_id) then
   		@manager = @manager.impersonates
   		@manager_string = '[On Behalf Of] ' + @manager.name	
   	end
@@ -171,7 +171,7 @@ class UsersController < ApplicationController
   	
   	puts "Condense Var:  " + @condense.to_s
   	
-  	ckey = @manager.id.to_s + "-" + view_context.week_from_period(@target_period).to_s
+  	ckey = @manager.id.to_s + "-" + @manager.primary_account_id.to_s + "-" + view_context.week_from_period(@target_period).to_s
   	ctime_stamp = User.find(@manager.id).updated_at
   	if params[:nocache] == 'true' then
 		use_cache = false

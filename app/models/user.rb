@@ -24,7 +24,7 @@ class User < ApplicationRecord
   
   scope :verified_only, -> {where('verified = true').order('users.name')}
   
-  scope :for_account, -> (aid){where('primary_account_id =?', aid).order('users.name')}
+  scope :for_account, -> (aid){where("account_list REGEXP ?", '([^0-9]|^)' + aid.to_s + '([^0-9]|$)').order('users.name')}
   
   scope :fte_only, -> {where('ismanager = false AND (etype = "FTE")').order('users.name')}
   
@@ -81,10 +81,12 @@ class User < ApplicationRecord
   	accts = Array.new
   	if primary_account_id.present?
   		accts = [Account.find_by_id(primary_account_id)]
-		account_list.split(',').each do |aid|
-			a = Account.find_by_id(aid)
-			if a.present? && accts.exclude?(a)
-				accts << a
+		if account_list.present?
+			account_list.split(',').each do |aid|
+				a = Account.find_by_id(aid)
+				if a.present? && accts.exclude?(a)
+					accts << a
+				end
 			end
 		end
 	end

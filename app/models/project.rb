@@ -23,7 +23,7 @@ class Project < ApplicationRecord
 	scope :by_rtm, -> {order('projects.rtm', 'projects.name')}
 	scope :for_rtm, -> (rStr){where('rtm = ?', rStr).order('projects.name')}
 	scope :for_psh, -> (shStr){where('psh = ?', shStr).order('projects.name')}
-	scope :for_account, -> (aid){joins(:users).merge(User.for_account(aid))}
+	scope :for_account, -> (aid){where('account_id = ?', aid).order('projects.name')}
 	scope :search_by_name, -> (n){where('name like ?', "%#{n}%")}
 
 	def ctpriority_supported_by_initiative

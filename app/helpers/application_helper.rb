@@ -353,7 +353,7 @@ module ApplicationHelper
 	end	
 	
 	def get_cfield_name(key)
-		s = Setting.for_paId(current_user.primary_account_id).find_by_key(key)
+		s = Setting.for_account(current_user.primary_account_id).find_by_key(key)
 		if s != nil then
 			if s.stype == 0 then
 				s.displayname

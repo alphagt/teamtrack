@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210308170136) do
+ActiveRecord::Schema.define(version: 20220617191932) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 20210308170136) do
     t.datetime "updated_at", null: false
     t.string "tag"
     t.string "subprilist"
+    t.integer "account_id", default: 0
+    t.index ["account_id"], name: "index_initiatives_on_account_id"
     t.index ["active"], name: "index_initiatives_on_active"
   end
 
@@ -76,6 +78,8 @@ ActiveRecord::Schema.define(version: 20210308170136) do
     t.string "rtm", default: "NA"
     t.string "psh", default: "NA"
     t.string "ctpriority", default: "NA"
+    t.integer "account_id", default: 0
+    t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["active"], name: "index_projects_on_active"
     t.index ["category"], name: "index_projects_on_category"
     t.index ["initiative_id"], name: "index_projects_on_initiative_id"
@@ -101,7 +105,7 @@ ActiveRecord::Schema.define(version: 20210308170136) do
     t.string "displayname"
     t.string "description"
     t.integer "stype"
-    t.integer "primary_account_id"
+    t.integer "account_id"
   end
 
   create_table "tech_systems", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -111,6 +115,8 @@ ActiveRecord::Schema.define(version: 20210308170136) do
     t.integer "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
+    t.index ["account_id"], name: "index_tech_systems_on_account_id"
     t.index ["owner_id"], name: "index_tech_systems_on_owner_id"
     t.index ["qos_group"], name: "index_tech_systems_on_qos_group"
   end

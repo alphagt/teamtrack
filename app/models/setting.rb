@@ -4,5 +4,5 @@ class Setting < ApplicationRecord
 	scope :for_key, -> (rStr){where('settings.key = ?', rStr).order('settings.ordinal')}
 	scope :core_only, -> {where('settings.stype = 0').order('settings.ordinal')}
 	scope :non_core, -> {where('settings.stype != 0').order('settings.ordinal')}
-	scope :for_paId, -> (paid){where('settings.primary_account_id = ?', paid)}
+	scope :for_account, -> (aid){where('settings.account_id = ?', aid)}
 end

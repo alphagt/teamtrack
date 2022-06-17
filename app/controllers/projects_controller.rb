@@ -35,7 +35,9 @@ class ProjectsController < ApplicationController
 	require 'gchart'
 	
 	#Full Project list used for aggregate statistics
-	@allProjects = Project.for_account(current_user.primary_account_id).by_category
+	@aid = current_user.primary_account_id
+	@allProjects = Project.for_account(@aid).by_category
+	
 	
 	#Param Handling
 	
@@ -91,8 +93,8 @@ class ProjectsController < ApplicationController
 			uList = []
 			@projects = @allProjects.active
 		else
-			uList = view_context.all_subs_by_id(@mgr_id, @include_indirect)
-			@projects = Project.active.for_users(uList).by_category
+			uList = view_context.all_subs_by_id(@mgr_id, @include_indirect, @aid)
+			@projects = Project.active.for_account(@aid).for_users(uList).by_category
 		end
 	else
 		@scopeall = true	
@@ -101,8 +103,8 @@ class ProjectsController < ApplicationController
 				uList = []
 				@projects = @allProjects
 			else
-				uList = view_context.all_subs_by_id(@mgr_id, @include_indirect)
-				@projects = Project.for_users(uList).by_category
+				uList = view_context.all_subs_by_id(@mgr_id, @include_indirect, @aid)
+				@projects = Project.for_account(@aid).for_users(uList).by_category
 			end	
 		end
 	end
@@ -123,7 +125,7 @@ class ProjectsController < ApplicationController
 	end
 	
 	if uList.count == 0  then
-		uList = User.for_account(current_user.primary_account_id).pluck(:ID)
+		uList = User.for_account(@aid).pluck(:ID)
 	end
 	
 #	#################################	
@@ -276,7 +278,7 @@ class ProjectsController < ApplicationController
 		
 		rtmeffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
-			Project.for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+			Project.for_account(@aid).for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 		puts "combined in hash"
 		puts rtmeffort.to_s
 
@@ -297,7 +299,7 @@ class ProjectsController < ApplicationController
 		# Get sum of effort grouped by stakeholder values
 		psheffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
-			Project.for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+			Project.for_account(@aid).for_users(uList).pluck(:id)).group('projects.psh').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 		puts "STAKEHOLDER RAW DATA"
 		puts psheffort.to_s
 

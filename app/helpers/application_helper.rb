@@ -154,22 +154,23 @@ module ApplicationHelper
 		
 	end
 	
-	def all_subs_by_id(mid, bExtend = false)
+	def all_subs_by_id(mid, bExtend = false, aid = -1)
 		m = User.find(mid)
+		if aid == -1 then aid = m.primary_account_id end
 		a_return = Array.new()
 		if !bExtend 
 			#puts "MANAGER IS-" + @m.name
-			if m.subordinates.any?
+			if m.subordinates.for_account(aid).any?
 				# puts "-FOUND SUBORDINATES"
 				exId = User.find_by_name("ExEmployeeMgr").id
-				subs = m.subordinates.select(:id).where('id != ?', exId)
+				subs = m.subordinates.for_account(aid).select(:id).where('id != ?', exId)
 				a_return = subs.to_a
 				# puts "Return Length - " 
 	# 			puts @return.length
-				m.subordinates.each do |s|
-					if s.subordinates.any?
+				m.subordinates.for_account(aid).each do |s|
+					if s.subordinates.for_account(aid).any?
 			#			puts "---FOUND Sub-SUBORDINATES"	
-						a_return |= all_subs_by_id(s.id)
+						a_return |= all_subs_by_id(s.id, false, aid)
 						#puts @return.to_s
 					end
 				end
@@ -180,7 +181,7 @@ module ApplicationHelper
 				a_return
 			end
 		else
-			ex_subs = extended_subordinates(mid)
+			ex_subs = extended_subordinates(mid, aid)
 			if ex_subs.any?
 				a_return = ex_subs.map{|u| u[2].id}.to_a
 				puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name

@@ -17,24 +17,25 @@ class UsersController < ApplicationController
 	else
 		@mgr_id = current_user.id
 	end
+	if params[:acct].present?
+		@sAcct = params[:acct]
+	else
+		@sAcct = -1
+	end
 	
 	if current_user.superadmin
-		if params[:acct].present? && params[:acct] != "-1"
-			@users = User.for_account(params[:acct]).ordered_by_name
+		if aid != "-1"
+			@users = User.for_account(@sAcct).ordered_by_name
 			puts "Filter by Acct ID"
 		else
 			@users = User.ordered_by_account.ordered_by_name
 		end
-		if params[:acct].present?
-			@sAcct = params[:acct]
-		else
-			@sAcct = -1
-		end
+		
 	else
 		if params[:scope] == 'all' || @mgr_id == 0
 			@users = User.for_account(current_user.primary_account_id).ordered_by_name
 		else
-  			@users = view_context.extended_subordinates(@mgr_id, true)
+  			@users = view_context.extended_subordinates(@mgr_id, @sAcct, true)
   		end
   	end
   	
@@ -173,7 +174,7 @@ class UsersController < ApplicationController
   	
   	puts "Condense Var:  " + @condense.to_s
   	
-  	ckey = @manager.id.to_s + "-" + @manager.primary_account_id.to_s + "-" + view_context.week_from_period(@target_period).to_s
+  	ckey = @manager.id.to_s + "-" + @aid + "-" + view_context.week_from_period(@target_period).to_s
   	ctime_stamp = User.find(@manager.id).updated_at
   	if params[:nocache] == 'true' then
 		use_cache = false

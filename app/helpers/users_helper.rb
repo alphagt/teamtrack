@@ -83,7 +83,7 @@ module UsersHelper
 		@rStr.chomp(", ") + " to week: " + tweek.to_s
 	end
 	
-	def extended_subordinates(mid, noBlock=false, showEx=false, tperiod=current_period())
+	def extended_subordinates(mid, aid, noBlock=false, showEx=false, tperiod=current_period())
 		a_subs = Array.new()
 		m = User.find(mid)
 		a_subs += [m]
@@ -91,22 +91,22 @@ module UsersHelper
 		if !showEx then
 			xid = User.find_by_name("ExEmployeeMgr").id
 		end
-		a_subs += all_subs(mid, showEx)
+		a_subs += all_subs(mid, showEx, aid)
 		
 		if !noBlock then 
-			a_subs_block = view_user_block(a_subs, false, tperiod)
+			a_subs_block = view_user_block(a_subs, false, tperiod, aid)
 		else
 			a_subs_block = a_subs
 		end
 		puts "AllSubs:  #{a_subs.map{|u| u.name}}"
 		#determin list of orgs to include (any owned by self or subs)
-		org_list = m.subordinates.where("orgowner = true").pluck(:org)
+		org_list = m.subordinates.for_account(aid).where("orgowner = true").pluck(:org)
 		org_list += [m.org]
 		puts "Org List" + org_list.to_s
-		b_subs = User.where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
+		b_subs = User.for_account(aid).where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
 			xid, org_list, a_subs.map{|u| u.id}).order('manager_id')
 		b_subs.delete(m)
-		if !noBlock then b_subs = view_user_block(b_subs.uniq, true,tperiod) end
+		if !noBlock then b_subs = view_user_block(b_subs.uniq, true,tperiod, aid) end
 		#puts "Non-Sub Org Members:  #{b_subs.map{|u| u.name}}"
 		a_out = (a_subs_block + b_subs).uniq
 		#puts "ExtendedSubs Count IS:  #{a_out.count}"
@@ -114,7 +114,7 @@ module UsersHelper
 		a_out
 	end
 	
-	def view_user_block(ulist, areIndirect, tperiod)
+	def view_user_block(ulist, areIndirect, tperiod, aid)
 		a_out = Array.new()
 		previous = ulist.first
 		level = 0
@@ -125,7 +125,7 @@ module UsersHelper
 				level += 1
 				previous = u.manager
 			end
-			if u.subordinates.length == 0 then
+			if u.subordinates.for_account(aid).length == 0 then
 				#csys =  current_system(u, tperiod)
 				#cproj = current_project(u, tperiod)
 				a_out << [0, areIndirect, u, csys, cproj]

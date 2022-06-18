@@ -13,6 +13,7 @@ class Assignment < ApplicationRecord
   
   scope :by_user, -> (emp){where(:user_id => emp.id)}
   scope :no_overhead, -> {joins(:project).where("projects.category NOT IN ('Overhead')")} 
+  scope :for_account, -> (aid) {joins(:project).where("projects.account_id = ?", aid).order("assignments.set_period_id DESC")}
   scope :recent, -> (min_period) {where("set_period_id > ?", min_period).order("assignments.set_period_id DESC")}
   scope :by_org, -> {joins(:user).order("set_period_id desc, users.org, users.manager_id")}
   scope :fte_only, -> {joins(:user).where("users.is_contractor != true or users.is_contractor is null")}

@@ -7,18 +7,19 @@ class InitiativesController < ApplicationController
   # GET /initiatives
   def index
   	sname = view_context.display_name_for('sys_names', 'initiative').pluralize()
+    aid = current_user.primary_account_id
     if params[:fy].present?
 		if params[:fy].downcase == 'all'
-			@initiatives = Initiative.all
+			@initiatives = Initiative.for_account(aid).all
     		@fy = 'All'
     		@summary = sname + ' for all Fiscal Years - '
     	else
-			@initiatives = Initiative.active.for_year(params[:fy])
+			@initiatives = Initiative.for_account(aid).active.for_year(params[:fy])
     		@fy = params[:fy].to_i
     		@summary = sname + ' for FY ' + @fy.to_s + ' - '
     	end
 	else
-		@initiatives = Initiative.active.for_year(view_context.current_fy)
+		@initiatives = Initiative.for_account(aid).active.for_year(view_context.current_fy)
     	@fy = view_context.current_fy
     	@summary = sname + ' for FY ' + @fy.to_s + ' - '
 	end
@@ -35,7 +36,7 @@ class InitiativesController < ApplicationController
 #     	e.current_effort_weeks(view_context.current_period).to_d.round]}
     
     #Cache Implemenation
-    ckey = "InitativesData-" + cweek.to_s
+    ckey = "InitativesData-" + aid.to_s + "-" + cweek.to_s
   	if params[:nocache] == 'true' then
 		use_cache = false
 	else
@@ -100,6 +101,7 @@ class InitiativesController < ApplicationController
   # GET /initiatives/new
   def new
     @initiative = Initiative.new
+    @aid = current_user.primary_account_id
     
     respond_to do |format|
       format.html # new.html.erb
@@ -109,6 +111,7 @@ class InitiativesController < ApplicationController
 
   # GET /initiatives/1/edit
   def edit
+  	@aid = current_user.primary_account_id
   	@initiative = Initiative.find(params[:id])
     @subprilist = @initiative.subprilist
     respond_to do |format|
@@ -120,7 +123,7 @@ class InitiativesController < ApplicationController
   # POST /initiatives
   def create
     @initiative = Initiative.new(initiative_params)
-
+	@aid = current_user.primary_account_id
     respond_to do |format|
       if @initiative.save
         format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }
@@ -172,6 +175,6 @@ class InitiativesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def initiative_params
       params.require(:initiative).permit(:fiscal, :name, :description, :active, :tag, 
-      :subprilist)
+      :subprilist, :account_id)
     end
 end

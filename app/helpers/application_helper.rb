@@ -299,20 +299,24 @@ module ApplicationHelper
 		end
 	end
 	
-	def fy_list(option_all = true)
+	def fy_list(option_all = true, aid = -1)
 		@list = []
+		if aid == -1
+			aid = current_user.primary_account_id
+		end
 		if option_all
 			@list << "All"
 		end
-		if Assignment.count > 0 
-			min_y = Assignment.find_by_id(Assignment.all.select("id, min(set_period_id)").first.id).fiscal_year()
+		cfy = current_fy
+		if Assignment.for_account(aid).count > 0 
+			min_y = Assignment.find_by_id(Assignment.for_account(aid).select("assignments.id, min(set_period_id)").first.id).fiscal_year()
 		else
-			min_y = current_fy
+			min_y = cfy
 		end
 		puts "MIN FY IS:  "
 		puts min_y
 		@list << min_y
-		while min_y < current_fy do
+		while min_y < cfy do
 			min_y += 1
 			@list << min_y
 		end
@@ -324,29 +328,33 @@ module ApplicationHelper
 		@list = ('1' .. '52').to_a
 	end
 	
-	def get_picklist(key, proj = nil, showval = false)
-		if key == "core" then
-			if !showval then
-				Setting.core_only.pluck(:value)
-			else
-				Setting.core_only.pluck(:displayname,:value)
-			end
+	def get_picklist(key, proj = nil, showval = false, aid = -1)
+		if aid == -1
+			Array.new
 		else
-			puts "Get_Picklist for key: " + key
-			if key == 'priority' && !proj.nil? && proj.initiative.present?
-				#get the list for this key based on the associated initiative's subprilist
-				proj.initiative.subprilist
-			else
-				s = Setting.for_key(key)
-				if s.length > 0 then
-					subKey = Setting.for_key(key).first.value	
-				else
-					subKey = key
-				end
+			if key == "core" then
 				if !showval then
-					Setting.for_key(subKey).pluck(:displayname)
+					Setting.for_account(aid).core_only.pluck(:value)
 				else
-					Setting.for_key(subKey).pluck(:displayname,:value)
+					Setting.for_account(aid).core_only.pluck(:displayname,:value)
+				end
+			else
+				puts "Get_Picklist for key: " + key
+				if key == 'priority' && !proj.nil? && proj.initiative.present?
+					#get the list for this key based on the associated initiative's subprilist
+					proj.initiative.subprilist
+				else
+					s = Setting.for_account(aid).for_key(key)
+					if s.length > 0 then
+						subKey = Setting.for_account(aid).for_key(key).first.value	
+					else
+						subKey = key
+					end
+					if !showval then
+						Setting.for_account(aid).for_key(subKey).pluck(:displayname)
+					else
+						Setting.for_account(aid).for_key(subKey).pluck(:displayname,:value)
+					end
 				end
 			end
 		end

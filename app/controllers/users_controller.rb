@@ -174,7 +174,7 @@ class UsersController < ApplicationController
   	
   	puts "Condense Var:  " + @condense.to_s
   	
-  	ckey = @manager.id.to_s + "-" + @aid + "-" + view_context.week_from_period(@target_period).to_s
+  	ckey = @manager.id.to_s + "-" + @aid.to_s + "-" + view_context.week_from_period(@target_period).to_s
   	ctime_stamp = User.find(@manager.id).updated_at
   	if params[:nocache] == 'true' then
 		use_cache = false

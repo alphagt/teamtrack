@@ -4,6 +4,7 @@ serialize :subprilist
   	
 scope :active, -> {where('active = true')}
 scope :for_year, -> (y){where("fiscal = ? or name IN('Overhead','Basics')", y)}
+scope :for_account, -> (aid){where('account_id = ?', aid)}
 
 	def total_effort_weeks(cWeek)
 		@ytd_weeks = 0

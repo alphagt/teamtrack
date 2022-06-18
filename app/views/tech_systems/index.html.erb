@@ -15,7 +15,7 @@
 
 <% content_for :main1 do %>
 	<% if @techsystems.empty? %>
-		<p><b>NO SYSTEMS DEFINED <b><p>
+		<p><b><%= "NO " + display_name_for('sys_names', 'service').pluralize().upcase + " DEFINED" %><b><p>
 	<% else %>
 		<table class="table">
 		  <thead>

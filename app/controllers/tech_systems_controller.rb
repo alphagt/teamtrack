@@ -5,9 +5,11 @@ class TechSystemsController < ApplicationController
   
   def index
   	#@techsystems = TechSystem.order("qos_group", "name")
-  	@techsystems = TechSystem.by_qos
+  	@techsystems = TechSystem.for_account(current_user.primary_account_id).by_qos
   	puts "### TechSystems Index - " + @techsystems.count.to_s
-  	@current_qos = @techsystems.first().qos_group
+  	if @techsystems.present?
+  		@current_qos = @techsystems.first().qos_group
+  	end
   	respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @techsystems }
@@ -24,7 +26,7 @@ class TechSystemsController < ApplicationController
   end
 
   def create
-  	@system = TechSystem.new(params[:tech_system])
+  	@system = TechSystem.new(techsystem_params)
 	
     respond_to do |format|
       if @system.save
@@ -110,6 +112,6 @@ private
 
     # Only allow a trusted parameter "white list" through.
     def techsystem_params
-      params.require(:tech_system).permit(:owner, :name, :description, :qos_group,:owner_id)
+      params.require(:tech_system).permit(:owner, :name, :description, :qos_group, :owner_id, :account_id)
     end
 end

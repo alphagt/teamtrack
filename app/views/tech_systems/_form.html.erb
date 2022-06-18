@@ -5,7 +5,8 @@
     <%= f.input :name, :autofocus => true, :required => true %>
 	<%= f.input :description %>
 	<%= f.input :qos_group, label: get_cfield_name("ts_cust_1") %>
-    <%= f.association :owner, :as => :select, :collection => User.managers_only, 
+	<%= f.hidden_field :account_id, :value => current_user.primary_account_id %>
+    <%= f.association :owner, :as => :select, :collection => User.for_account(current_user.primary_account_id).managers_only, 
     	:label_method => :name, :required => true %>
   </div>
   <br/>

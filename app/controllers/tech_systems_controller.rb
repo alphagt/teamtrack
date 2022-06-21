@@ -18,8 +18,13 @@ class TechSystemsController < ApplicationController
 
   def new
   	@system = TechSystem.new
-	
-    respond_to do |format|
+  	@acct = current_user.primary_account_id
+	if Setting.for_account(@acct).non_core.where("settings.key = ?", 'sgroup').count > 0 
+		@adhocgroups = false
+	else
+		@adhocgroups = true
+	end
+	respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @system }
     end
@@ -87,6 +92,12 @@ class TechSystemsController < ApplicationController
   # GET /tech_systems/1/edit
   def edit
     @system = TechSystem.find(params[:id])
+    @acct = current_user.primary_account.id
+    if Setting.for_account(@acct).non_core.where("settings.key = ?", 'sgroup').count > 0 
+		@adhocgroups = false
+	else
+		@adhocgroups = true
+	end
   end
   
   # GET /tech_systems/1/archive

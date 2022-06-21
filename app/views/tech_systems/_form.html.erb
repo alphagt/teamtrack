@@ -4,7 +4,18 @@
   <div class="form-inputs">
     <%= f.input :name, :autofocus => true, :required => true %>
 	<%= f.input :description %>
-	<%= f.input :qos_group, label: get_cfield_name("ts_cust_1") %>
+	<% if @adhocgroups then %>
+		<%= f.input :qos_group, label: get_cfield_name("ts_cust_1") %>
+	<% else %>
+		<div class="control-group select optional ts_qosgroup">
+		<label class="select optional control-label" for="ts_qosgroup">g
+			<%= get_cfield_name("ts_cust_1") + ":"%>
+			</label>
+			<div class="controls">
+				<%= f.select(:qos_group, options_for_select(get_picklist("ts_cust_1",nil,true, @acct), @system.qos_group)) %>
+			</div>
+	</div>
+	<% end %>
 	<%= f.hidden_field :account_id, :value => current_user.primary_account_id %>
     <%= f.association :owner, :as => :select, :collection => User.for_account(current_user.primary_account_id).managers_only, 
     	:label_method => :name, :required => true %>

@@ -423,7 +423,9 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new
 	@ctplist = ctpLists()
+	@acct = current_user.primary_account_id
 	gon.ctplists = @ctplist
+	
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @project }

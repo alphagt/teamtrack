@@ -7,11 +7,12 @@ class SettingsController < ApplicationController
     aid = current_user.primary_account_id
     @acct = current_user.primary_account
     if params[:sysadmin].present? then
+    	#deprecated path, tennant admin shoudl see all settings. no special system ones
     	@settings = Setting.for_account(aid)
     	@sysadmin = true
     else
-    	@settings = Setting.for_account(aid).non_core
-    	@sysadmin = false
+    	@settings = Setting.for_account(aid)
+    	@sysadmin = true
     	@acct = current_user.primary_account
     	puts "User Primary Account = " + @acct.id.to_s
     end

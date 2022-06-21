@@ -23,7 +23,7 @@
 		  	<th></th>
 			<th>Name</th>
 			<th>Description</th>
-			<th><%= display_name_for('sys_names', 'service') + ' Group'%></th>
+			<th><%= get_cfield_name('ts_cust_1')%></th>
 			<th>Owner</th>
 			<th>Average HC</th>
 			<% if current_user.admin %>
@@ -35,7 +35,7 @@
 		  <tbody>
 		 <%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group1"}) %>
 			<td class="icon-class"></td>
-			<td><b><%= display_name_for('sys_names', 'service') + ' Group' + ": " + @current_qos %></b></td>
+			<td><b><%= get_cfield_name('ts_cust_1') + ": " + @current_qos %></b></td>
 			<td></td>
 			<td></td>
 			<td></td>

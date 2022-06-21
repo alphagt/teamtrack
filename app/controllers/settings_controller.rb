@@ -4,11 +4,13 @@ class SettingsController < ApplicationController
   # GET /settings
   def index
     @user = current_user
+    aid = current_user.primary_account_id
+    @acct = current_user.primary_account
     if params[:sysadmin].present? then
-    	@settings = Setting.all
+    	@settings = Setting.for_account(aid)
     	@sysadmin = true
     else
-    	@settings = Setting.non_core
+    	@settings = Setting.for_account(aid).non_core
     	@sysadmin = false
     	@acct = current_user.primary_account
     	puts "User Primary Account = " + @acct.id.to_s
@@ -22,6 +24,7 @@ class SettingsController < ApplicationController
   # GET /settings/new
   def new
     @setting = Setting.new
+    @acct = current_user.primary_account_id
     if params[:sysadmin].present? then
     	@sysadmin
     end
@@ -41,7 +44,7 @@ class SettingsController < ApplicationController
   # POST /settings
   def create
     @setting = Setting.new(setting_params)
-	@setting.ordinal = view_context.next_ordinal_for(@setting.key)
+	@setting.ordinal = view_context.next_ordinal_for(@setting.key, current_user.primary_account_id)
 	@setting.stype = 1
     if @setting.save
       redirect_to @setting, notice: 'Setting was successfully created.'
@@ -132,6 +135,6 @@ class SettingsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def setting_params
-      params.require(:setting).permit(:key, :ordinal, :value, :stype, :displayname, :description)
+      params.require(:setting).permit(:key, :ordinal, :value, :stype, :displayname, :description, :account_id)
     end
 end

@@ -34,6 +34,70 @@ class AccountsController < ApplicationController
       	sa.join_account = @account.id
       	sa.save
       end
+      
+      #Seed required Account Settings
+      #CoreSettings
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'sys_names', :value => "project", :displayname => "Project", 
+			:description => 'Custom field for menu name of the Project element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'sys_names', :value => "initiative", :displayname => "Initiative", 
+			:description => 'Custom field for menu name of the Initiative element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'sys_names', :value => "service", :displayname => "Service", 
+			:description => 'Custom field for menu name of the System element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
+		set.save
+		puts 'added ' << set.key
+# 		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'fy offset', :value => "0", :displayname => "Fiscal Year offset weeks", 
+# 			:description => 'Custom field for menu name of the System element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
+# 		set.save
+# 		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'sys_names', :value =>'fy offset', :displayname => "0", 
+			:description => 'Defines the number of weeks difference between week 1 of the calendar year and week 1 of the fiscal year'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_1', :value => "category", :displayname => 'category',
+			:description => 'Custom field for projects.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with p_cust_1 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_2', :value => "rtm", :displayname => 'rtm', 
+			:description => 'Custom field for projects.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with p_cust_12 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_3', :value => "division", :displayname => 'division',
+			:description => 'Custom field for projects.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with p_cust_3 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_4', :value => "priority", :displayname => 'OKR',
+			:description => 'Custom field for priority.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with p_cust_4 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'ts_cust_1', :value => "sgroup", :displayname => 'Service group',
+			:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with ts_cust_1 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'ts_cust_2', :value => "stype", :displayname => 'Service type', 
+			:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with ts_cust_1 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'u_cust_1', :value => 'etype', :displayname => 'Employee Type', 
+			:description => 'Custom field for users.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with ts_cust_1 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'u_cust_2', :value => 'ecat', :displayname => 'Employee Category', :description => 'Custom field for users.  Admin can define visible name by setting displayname on this setting.  picklist values can be added to settings with ts_cust_1 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+      
       redirect_to @account, notice: 'Account was successfully created.'
     else
       render :new
@@ -55,7 +119,7 @@ class AccountsController < ApplicationController
     redirect_to accounts_url, notice: 'Account was successfully destroyed.'
   end
   
-  # GET /accounts/1/addInviteCode
+  # GET /accounts/:id/addInviteCode
   def addInviteCode
   	errMsg = "FAILED to create Invite Code!"
   	note = ""

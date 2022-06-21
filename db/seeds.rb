@@ -1,19 +1,19 @@
 
 
 #CoreSettings
-set = Setting.create!  :stype => 1, :key => 'sys_names', :value => "project", :displayname => "Project", 
+set = Setting.create!  :stype => 0, :key => 'sys_names', :value => "project", :displayname => "Project", 
 	:description => 'Custom field for menu name of the Project element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 1, :key => 'sys_names', :value => "initiative", :displayname => "Initiative", 
+set = Setting.create!  :stype => 0, :key => 'sys_names', :value => "initiative", :displayname => "Initiative", 
 	:description => 'Custom field for menu name of the Initiative element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 1, :key => 'sys_names', :value => "service", :displayname => "Service", 
+set = Setting.create!  :stype => 0, :key => 'sys_names', :value => "service", :displayname => "Service", 
 	:description => 'Custom field for menu name of the System element in the system.  Admin can modify the display name but not delete this setting or add additional instances'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 0, :key => 'fy offset', :value => 0, :displayname => "Fiscal Year Offset", 
+set = Setting.create!  :stype => 0, :key => 'sys_names', :value => "fy offset", :displayname => "0", 
 	:description => 'Defines the number of weeks difference between week 1 of the calendar year and week 1 of the fiscal year'
 set.save
 puts 'added ' << set.key
@@ -44,12 +44,12 @@ puts 'added ' << set.key
 # 		picklist values can be added to settings with cust_4 as the key for those settings.'
 # set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 0, :key => 'ts_cust_1', :value => "", 
+set = Setting.create!  :stype => 0, :key => 'ts_cust_1', :value => "sgroup", :dispalyname => 'Service Group', 
 	:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
 		picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :stype => 0, :key => 'ts_cust_2', :value => "", 
+set = Setting.create!  :stype => 0, :key => 'ts_cust_2', :value => "stype", :displayname => 'Service Type',
 	:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
 		picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 set.save

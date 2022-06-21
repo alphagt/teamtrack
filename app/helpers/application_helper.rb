@@ -329,15 +329,20 @@ module ApplicationHelper
 	end
 	
 	def get_picklist(key, proj = nil, showval = false, aid = -1)
+		puts "get_picklist in account id: " + aid.to_s
 		if aid == -1
-			Array.new
+			aid = current_user.primary_account_id
 		else
 			if key == "core" then
+				#Exclude sysname and fy offset keys as these aren't instanceable settings
+				eva = ['sys_names','fy offset']
 				if !showval then
-					Setting.for_account(aid).core_only.pluck(:value)
+					pl = Setting.for_account(aid).core_only.where("settings.key NOT IN (?)", Array.wrap(eva)).pluck(:value)
 				else
-					Setting.for_account(aid).core_only.pluck(:displayname,:value)
+					pl = Setting.for_account(aid).core_only.where("settings.key NOT IN (?)", Array.wrap(eva)).pluck(:displayname,:value)
 				end
+				puts pl
+				pl
 			else
 				puts "Get_Picklist for key: " + key
 				if key == 'priority' && !proj.nil? && proj.initiative.present?
@@ -358,15 +363,17 @@ module ApplicationHelper
 				end
 			end
 		end
+		
 	end	
 	
 	def get_cfield_name(key)
 		s = Setting.for_account(current_user.primary_account_id).find_by_key(key)
 		if s != nil then
+			puts "Looking up Field Name for: " + s.key
 			if s.stype == 0 then
 				s.displayname
 			else
-				Setting.core_only.find_by_value(key).displayname
+				Setting.for_account(current_user.primary_account_id).find_by_value(key).displayname
 			end
 		else
 			"Undefined"

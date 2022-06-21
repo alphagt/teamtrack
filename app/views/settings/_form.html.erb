@@ -1,8 +1,10 @@
 <%= simple_form_for(@setting) do |f| %>
   <%= f.error_notification %>
 
+
   <div class="form-group">
   	<row>
+  	
   		<div class="col-md-4">
   			<%if @sysadmin then %> 
   				<%= f.input :key %>
@@ -13,7 +15,7 @@
 				<div class="control-group select optional setting_key">
 				<label class="select optional control-label" for="setting_key">Type:</label>
 					<div class="controls">
-						<%= f.select(:key, options_for_select(get_picklist("core",nil,true), @setting.key), :required => true) %>
+						<%= f.select(:key, options_for_select(get_picklist("core",nil,true, @acct), @setting.key), :required => true) %>
 					</div>
 				</div>
 				<% end %>
@@ -23,6 +25,7 @@
     		<%= if @sysadmin then f.input :stype, input_html: {readonly: @coresetting} end %>
     		<%= f.input :displayname %>
     		<%= f.input :description %>
+    		<%= f.hidden_field :account_id, :value => current_user.primary_account_id %>
     		<br>
     		
   		</div>

@@ -89,7 +89,7 @@ module UsersHelper
 		a_subs += [m]
 		xid = 0
 		if !showEx then
-			xid = User.find_by_name("ExEmployeeMgr").id
+			xid = User.for_account(current_user.primary_account_id).find_by_name("ExEmployeeMgr").id
 		end
 		a_subs += all_subs(mid, showEx, aid)
 		

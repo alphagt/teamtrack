@@ -97,6 +97,12 @@ class AccountsController < ApplicationController
 		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'u_cust_2', :value => 'ecat', :displayname => 'Employee Category', :description => 'Custom field for users.  Admin can define visible name by setting displayname on this setting.  picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 		set.save
 		puts 'added ' << set.key
+		
+		user = User.create! :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
+		user['manager_id'] = 1
+		user.join_account = @account.id
+		user.save
+		puts 'New user created: ' << user.name
       
       redirect_to @account, notice: 'Account was successfully created.'
     else

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 		
   def index
   	puts "In UserController - Index"
-  	@exId = User.find_by_name("ExEmployeeMgr").id
+  	@exId = User.for_account(current_user.primary_account_id).find_by_name("ExEmployeeMgr").id
   	
   	if params[:org].present?
 		if params[:org].downcase == 'all'
@@ -198,7 +198,7 @@ class UsersController < ApplicationController
 	end
   	if params[:showEx] == 'true' then
 #   		puts 'Foud ShowEx Param'
-		@user_list[0] << User.find_by_name("ExEmployeeMgr").id
+		@user_list[0] << User.for_account(current_user.primary_account_id).find_by_name("ExEmployeeMgr").id
 		puts "Added Ex Emp!"
 		puts @user_list.to_s
 
@@ -382,7 +382,7 @@ class UsersController < ApplicationController
 		rcode = 2
 	else
 		mUser.name += ' Ex'
-		mUser.manager = User.find_by_name("ExEmployeeMgr") #special user for collecting x employees under
+		mUser.manager = User.for_account(current_user.primary_account_id).find_by_name("ExEmployeeMgr") #special user for collecting x employees under
 		mUser.admin = false
 		mUser.ismanager = false
 		mUser.orgowner = false

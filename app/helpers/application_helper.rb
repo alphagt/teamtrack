@@ -105,7 +105,7 @@ module ApplicationHelper
 # 		puts "by_mgr is-" + by_mgr.to_s
 		if @m.subordinates.for_account(@aid).any?
 			# puts "-FOUND SUBORDINATES"
-			@exId = User.find_by_name("ExEmployeeMgr").id
+			@exId = User.for_account(@aid).find_by_name("ExEmployeeMgr").id
 			if showEx
 				@return = @m.subordinates.for_account(@aid)
 			else
@@ -162,7 +162,7 @@ module ApplicationHelper
 			#puts "MANAGER IS-" + @m.name
 			if m.subordinates.for_account(aid).any?
 				# puts "-FOUND SUBORDINATES"
-				exId = User.find_by_name("ExEmployeeMgr").id
+				exId = User.for_account(aid).find_by_name("ExEmployeeMgr").id
 				subs = m.subordinates.for_account(aid).select(:id).where('id != ?', exId)
 				a_return = subs.to_a
 				# puts "Return Length - " 
@@ -342,7 +342,6 @@ module ApplicationHelper
 					pl = Setting.for_account(aid).core_only.where("settings.key NOT IN (?)", Array.wrap(eva)).pluck(:displayname,:value)
 				end
 				puts pl
-				pl
 			else
 				puts "Get_Picklist for key: " + key
 				if key == 'priority' && !proj.nil? && proj.initiative.present?

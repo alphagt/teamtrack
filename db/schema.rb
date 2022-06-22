@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 20220617191932) do
     t.string "etype"
     t.string "category"
     t.boolean "superadmin", default: false
-    t.integer "primary_account_id", default: 0
+    t.integer "primary_account_id", default: -1
     t.text "account_list"
     t.string "slackid"
     t.index ["email"], name: "index_users_on_email", unique: true

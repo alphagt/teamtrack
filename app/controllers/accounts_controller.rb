@@ -27,11 +27,19 @@ class AccountsController < ApplicationController
       #bootstrap default settings and admin account?
       #put admins in the account
       pa = User.find_by_id(@account.primary_admin_id)
-      pa.join_account = @account.id
+      if pa.primary_account_id > 0
+      	pa.join_account = @account.id
+      else
+      	pa.primary_account_id = @account.id
+      end
       pa.save
       if @account.secondary_admin_id.present?
       	sa = User.find_by_id(@account.secondary_admin_id)
-      	sa.join_account = @account.id
+      	if sa.primary_account_id > 0 
+      		sa.join_account = @account.id
+      	else
+      		sa.primary_account_id = @account.id
+      	end
       	sa.save
       end
       
@@ -98,9 +106,8 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 		
-		user = User.create! :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
-		user['manager_id'] = 1
-		user.join_account = @account.id
+		user = User.create! :primary_account_id => @account.id, :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
+		user['manager_id'] = pa.id
 		user.save
 		puts 'New user created: ' << user.name
       

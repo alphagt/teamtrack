@@ -6,7 +6,13 @@
 <% end %>
 <% content_for :main1 do %>
 	<% if current_user and !current_user.verified %>
-		<p>Your account is pending administrative approval.  Check back later</p>
+		<% if current_user.primary_account_id == -1 %>
+			<div class="btn btn-primary">
+  				<%= link_to 'Create Your Team', new_account_path(), :class => "btn" %> |
+			</div>
+		<% else %>	
+			<p>Your account is pending administrative approval.  Check back later</p>
+		<% end %>
 	<% else %>
 		<p>Contact your manager if you do not have an account on the system.<p>
 	<% end %>

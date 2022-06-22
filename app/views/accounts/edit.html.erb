@@ -9,9 +9,15 @@
 
 <% content_for  :sidebarwide do %>
 <table class="table">
+	<% if current_user.superadmin? then %>
 	<tr>
 		<td class="danger"><%= link_to 'Show', @account %></td>
+	<% end %>
 	<tr>
-		<td class="danger"><%= link_to 'Back', accounts_path %></td>
+		<% if current_user.superadmin? then %>
+			<td class="danger"><%= link_to 'Back', accounts_path() %></td>
+		<% else %>
+			<td class="danger"><%= link_to 'Back', account_path(@account) %></td>
+		<% end %>
 </table>
 <% end %>

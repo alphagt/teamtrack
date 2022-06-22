@@ -7,7 +7,11 @@
 		<tr>
 		<td class="danger"><%= link_to 'Edit Account', edit_account_path(@account) %></td>
 		<tr>
-		<td class="danger"><%= link_to 'Back', accounts_path %></td>
+		<% if current_user.superadmin? then %>
+			<td class="danger"><%= link_to 'Back', accounts_path() %></td>
+		<% else %>
+			<td class="danger"><%= link_to 'Back', account_path(@account) %></td>
+		<% end %>
 	</table>
 <% end %>
 
@@ -20,7 +24,7 @@
 		</p>
 
 		<p>
-		  <strong>Email:</strong>
+		  <strong>Admin Email Address:</strong>
 		  <%= @account.email %>
 		</p>
 

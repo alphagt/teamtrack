@@ -18,25 +18,31 @@ class UsersController < ApplicationController
 		@mgr_id = current_user.id
 	end
 	if params[:acct].present?
-		@sAcct = params[:acct]
+		@sAcct = params[:acct].to_i
 	else
 		@sAcct = -1
 	end
 	
 	if current_user.superadmin
-		if aid != "-1"
+		if @sAcct != -1
 			@users = User.for_account(@sAcct).ordered_by_name
 			puts "Filter by Acct ID"
 		else
 			@users = User.ordered_by_account.ordered_by_name
+			@sAcct = current_user.primary_account_id
 		end
 		
 	else
 		if params[:scope] == 'all' || @mgr_id == 0
-			@users = User.for_account(current_user.primary_account_id).ordered_by_name
+			@users = User.for_account(current_user.primary_account _id).ordered_by_name
 		else
   			@users = view_context.extended_subordinates(@mgr_id, @sAcct, true)
   		end
+  	end
+  	if @sAcct != -1 
+  		@act = Account.find(@sAcct)
+  	else
+  		@act = Account.find(current_user.primary_account_id)
   	end
   	
   end
@@ -82,6 +88,7 @@ class UsersController < ApplicationController
     @user = User.new
     @org = current_user.org
     @aid = current_user.primary_account_id
+    puts "SET AID to: " + @aid.to_s
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }
@@ -113,7 +120,7 @@ class UsersController < ApplicationController
 	@user.default_system_id = params[:user][:default_system_id]
 	@user.admin = params[:user][:admin]
 	@mgr = User.find_by_id(params[:user][:manager_id])
-	@user.primary_account_id = @mgr.primary_account_id
+	@user.primary_account_id = params[:user][:primary_account_id]
 	if params[:user][:org].empty?
 		@user.org = @mgr.org
 	else

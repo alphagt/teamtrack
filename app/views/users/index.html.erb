@@ -25,7 +25,7 @@
 			<tr>
 			<td class="danger">
 				<label for="u_acct">Tennant:</label>
-				<%= select_tag "u_acct", options_for_select(acct_list(), @sAcct) %>
+				<%= select_tag "u_acct", options_for_select(acct_list(), @act.id)%>
 			</td>
 		<% end %>
 	</table>
@@ -56,7 +56,7 @@
 <% @users.each do |user| %>
   <tr>
     <% if current_user.superadmin %>
-    	<td><%= if user.primary_account_id.present? then user.primary_account.name else "Undefined" end %></td>
+    	<td><%= if user.primary_account_id.present? && user.primary_account_id > 0 then User.find(user.primary_account_id).name else "Undefined" end %></td>
     <% end %>
     <% if current_user.admin || current_user.superadmin || user.manager == current_user %>
     	<td><%= link_to user.name, user_path(user), {:style => "text-decoration : underline;"}  %></td>

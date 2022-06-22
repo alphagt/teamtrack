@@ -79,14 +79,14 @@ class User < ApplicationRecord
   
   def accounts
   	accts = Array.new
-  	if primary_account_id.present?
+  	if primary_account_id.present? && primary_account_id > 0
   		accts = [Account.find_by_id(primary_account_id)]
-		if account_list.present?
-			account_list.split(',').each do |aid|
-				a = Account.find_by_id(aid)
-				if a.present? && accts.exclude?(a)
-					accts << a
-				end
+  	end
+	if account_list.present?
+		account_list.split(',').each do |aid|
+			a = Account.find_by_id(aid)
+			if a.present? && accts.exclude?(a)
+				accts << a
 			end
 		end
 	end
@@ -94,11 +94,17 @@ class User < ApplicationRecord
   end
   
   def primary_account_id=(val)
+  	
   	write_attribute(:primary_account_id, val)
-  	self.join_account = val
+  	if val.to_i > 0 then
+  		self.join_account = val
+  	end
   end
   
   def join_account=(val)
+  	if val.to_i < 1 
+  		return
+  	end
   	if account_list.present? && account_list.exclude?(val.to_s)
 			al = (account_list.split(',') << val).join(',')
 	else

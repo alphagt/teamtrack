@@ -1,7 +1,7 @@
 
 
 #base Tennant
-acct = Account.create! :name = 'System Base Tennant', :email => 'kdt33@cornell.edu'
+acct = Account.create! :name => 'System Base Tennant', :email => 'kdt33@cornell.edu', :primary_admin_id => 1
 acct.save
 aid = acct.id
 puts 'added base tennant account'
@@ -43,7 +43,7 @@ set = Setting.create!  :account_id => aid, :stype => 0, :key => 'p_cust_4', :val
 		picklist values can be added to settings with p_cust_4 as the key for those settings.'
 set.save
 puts 'added ' << set.key
-set = Setting.create!  :account_id => aid, :stype => 0, :key => 'ts_cust_1', :value => "sgroup", :dispalyname => 'Service Group', 
+set = Setting.create!  :account_id => aid, :stype => 0, :key => 'ts_cust_1', :value => "sgroup", :displayname => 'Service Group', 
 	:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
 		picklist values can be added to settings with ts_cust_1 as the key for those settings.'
 set.save
@@ -72,8 +72,7 @@ case Rails.env
 when "development"
 #Default User
 puts 'SETTING UP DEFAULT USER LOGIN'
-@suser = User.create! :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
-@suser.join_account = aid
+@suser = User.create! :primary_account_id => aid, :superadmin => true, :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
 @suser.save
 
 @da = @suser
@@ -92,16 +91,14 @@ proj.save
 puts 'added RTB Project'
 
 #test users
-user = User.create! :name => 'Test User', :email => 'test@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'Test'
+user = User.create! :primary_account_id => aid, :name => 'Test User', :email => 'test@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'Test'
 #user['manager_id'] = 1
 user.manager = @suser
-user.join_account = aid
 user.save
 
 puts 'New user created: ' << user.name
-user = User.create! :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
+user = User.create! :primary_account_id => aid, :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
 user['manager_id'] = 1
-user.join_account = aid
 user.save
 
 puts 'New user created: ' << user.name
@@ -123,14 +120,12 @@ puts 'added ' << sys.name
 when "production"
 #Default User
 puts 'SETTING UP DEFAULT USER LOGIN'
-@suser = User.create! :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
-@suser.join_account = aid
+@suser = User.create! :primary_account_id => aid, :superadmin => true, :name => 'System Admin', :email => 'sysadmin@teamtrack.com', :admin => true, :verified => true, :password => 'password', :password_confirmation => 'password', :org => 'System'
 @suser.save
 @da = @suser
 puts 'New user created: ' << @suser.name
-user = User.create! :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
+user = User.create! :primary_account_id => aid, :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
 user['manager_id'] = 1
-user.join_account = aid
 user.save
 
 puts 'New user created: ' << user.name

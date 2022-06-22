@@ -3,20 +3,27 @@
 
   <div class="form-inputs">  <div class="form-group">
   	<row>
+  		
   		<div class="col-md-5">
    			<%= f.input :name %>
-    		<%= f.input :email %>
-    		<%= f.association :primary_admin, :as => :select, :collection => User.verified_only, :required => true,  
-		 	:pattern => false, :label_method => :name, label: "Primary Admin" %>
-		 	<%= f.association :secondary_admin, :as => :select, :collection => User.verified_only, :required => true,  
-		 	:pattern => false, :label_method => :name, label: "Secondary Admin" %>
-    		<%= f.input :termdate %>
-    		<%= f.input :userquota %>
+    		<%= f.input :email, label: "Admin Email Address:" %>
+    		<% if current_user.superadmin? then %>
+  				<%= f.association :primary_admin, :as => :select, :collection => User.verified_only, :required => true,  
+		 		:pattern => false, :label_method => :name, label: "Primary Admin" %>
+  				<%= f.association :secondary_admin, :as => :select, :collection => User.verified_only, :required => true,  
+		 		:pattern => false, :label_method => :name, label: "Secondary Admin" %>
+  			<% else %>
+    			<%= f.hidden_field :primary_admin_id, :value => current_user.id %>
+    		<% end %>
+    		<%= f.hidden_field :termdate, :value => 1.year.since(Date.today) %>
+    		<%= f.hidden_field :userquota, :value => 10 %>
     		</br>
-    		<%= f.submit 'Create Tennant', class: "btn btn-default btn-primary" %>
+    		<% if action_name == 'new' then %>
+    			<%= f.submit 'Create Tennant', class: "btn btn-default btn-primary" %>
+    		<% else %>
+    			<%= f.submit 'Update Tennant', class: "btn btn-default btn-primary" %>
+    		<% end %>
   		</div>
-
-  		
   	</row>
   </div>
 <% end %>

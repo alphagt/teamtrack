@@ -123,7 +123,9 @@ class InitiativesController < ApplicationController
   # POST /initiatives
   def create
     @initiative = Initiative.new(initiative_params)
-	@aid = current_user.primary_account_id
+    if !params["initiative"]["subprilist"].empty?
+    	@initiative.subprilist = params["initiative"]["subprilist"]
+    end
     respond_to do |format|
       if @initiative.save
         format.html { redirect_to @initiative, notice: 'Initiative was successfully created.' }

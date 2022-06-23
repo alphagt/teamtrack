@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	respond_to :html, :js
 	before_action :authenticate_user!
-	before_action :require_manager, :except => [:team, :show, :extendteam, :index]
+	before_action :require_manager, :except => [:team, :show, :extendteam, :index, :switch_account]
 	before_action :require_verified, :except => [:show]
 		
   def index
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 		
 	else
 		if params[:scope] == 'all' || @mgr_id == 0
-			@users = User.for_account(current_user.primary_account _id).ordered_by_name
+			@users = User.for_account(current_user.primary_account_id).ordered_by_name
 		else
   			@users = view_context.extended_subordinates(@mgr_id, @sAcct, true)
   		end
@@ -86,8 +86,17 @@ class UsersController < ApplicationController
   # GET /users/new.json
   def new
     @user = User.new
-    @org = current_user.org
     @aid = current_user.primary_account_id
+    if current_user.org.present?
+    	@org = current_user.org
+    else
+    	if @aid > 0 
+    		@org = Account.find(@aid).name
+    	else
+    		@org = 'Unknown'
+    	end
+    end
+    
     puts "SET AID to: " + @aid.to_s
     respond_to do |format|
       format.html # new.html.erb
@@ -340,15 +349,18 @@ class UsersController < ApplicationController
   
   # GET /user/:id/switch_account
   def switch_account
+  	puts "in Switch_account"
   	@user = User.find(params[:id])
   	@user.primary_account_id = params[:aid].to_i
+  	puts "switching to " + @user.primary_account_id.to_s
   	respond_to do |format|
   		if @user.save
   			format.html { redirect_to root_path}
   			format.json { render json: @user, location: root_path}
   		else
-  			format.html { redirect_to root_path}
-  			format.json { render json: @user, location: root_path}
+  			puts "WTF"
+  			format.html { redirect_to root_path, notice: 'Tennant Switch Failed'}
+  			format.json { render json: @user.errors, notice: 'Tennant Switch Failed' }
   		end
   	end
   end

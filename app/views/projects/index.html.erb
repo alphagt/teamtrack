@@ -59,7 +59,7 @@
 	<div class="col-md-8 col-centered">
 		<h3><b><%= if @scopeall then "All" else "Active" end %>
 			<%= " " + display_name_for('sys_names', 'project').pluralize() + " for Org: " %>
-			<%= if @mgr_id == 0 then "All Orgs - FY" else User.find_by_id(@mgr_id).org + " - FY" end %>
+			<%= if !@mgr_id.present? || @mgr_id == 0 then "All Orgs - FY" else User.find_by_id(@mgr_id).org + " - FY" end %>
 			<%= @fy.to_s %></b>
 		</h3>
 	</div>

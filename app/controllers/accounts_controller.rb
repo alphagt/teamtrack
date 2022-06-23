@@ -32,6 +32,9 @@ class AccountsController < ApplicationController
       else
       	pa.primary_account_id = @account.id
       end
+      if !pa.org.present?
+      	pa.org = @account.name
+      end
       pa.save
       if @account.secondary_admin_id.present?
       	sa = User.find_by_id(@account.secondary_admin_id)

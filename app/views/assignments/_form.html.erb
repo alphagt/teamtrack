@@ -25,7 +25,7 @@
 						<div class="control-group select optional user_type">
 							<label class="select optional control-label" for="user_type">Employee Type:</label>
 							<div class="controls">
-								<%= user_fields.select(:etype, options_for_select(get_picklist("u_cust_1",nil)))  %>
+								<%= user_fields.select(:etype, options_for_select(get_picklist("u_cust_1",nil,false,@aid)))  %>
 							</div>
 						</div>
 						<div class="control-group select optional user_category">
@@ -45,8 +45,8 @@
 		<row>
 		<div class ='col-md-3'>	
 			<%= f.input :effort, :autofocus => true %>
-			<%= f.association :tech_system, :as => :select, :collection => TechSystem.by_name, :required => true %>
-			<%= f.association :project, :as => :select, :collection => Project.active.by_name, :required => true %>
+			<%= f.association :tech_system, :as => :select, :collection => TechSystem.for_account(@aid).by_name, :required => true %>
+			<%= f.association :project, :as => :select, :collection => Project.for_account(@aid).active.by_name, :required => true %>
 			<br/>
 			<div class="form-actions">
 				<%= f.button :submit %>

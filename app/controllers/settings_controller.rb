@@ -13,7 +13,6 @@ class SettingsController < ApplicationController
     else
     	@settings = Setting.for_account(aid)
     	@sysadmin = true
-    	@acct = current_user.primary_account
     	puts "User Primary Account = " + @acct.id.to_s
     end
   end

@@ -341,7 +341,8 @@ module ApplicationHelper
 				else
 					pl = Setting.for_account(aid).core_only.where("settings.key NOT IN (?)", Array.wrap(eva)).pluck(:displayname,:value)
 				end
-				puts pl
+				puts pl.to_s
+				pl
 			else
 				puts "Get_Picklist for key: " + key
 				if key == 'priority' && !proj.nil? && proj.initiative.present?

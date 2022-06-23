@@ -11,7 +11,7 @@
 			<%= f.hidden_field :password, :value => "abc123" %>
 			<%= f.hidden_field :primary_account_id, :value => @aid %>
 			<%= f.association :manager, :as => :select, :collection => User.for_account(@aid).managers_only, :label_method => :name %>
-			<%= f.association :default_system, :as => :select  %>
+			<%= f.association :default_system, :as => :select, :collection => TechSystem.for_account(@aid) %>
 			<div class="control-group select optional user_type">
 				<label class="select optional control-label" for="user_type"><%= get_cfield_name("u_cust_1")%></label>
 				<div class="controls">

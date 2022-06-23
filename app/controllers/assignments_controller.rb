@@ -42,6 +42,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/:uid/new.json
   def new
     @manager = current_user
+    @aid = current_user.primary_account_id
     puts 'IN NEW CONTROLER'
     #puts params.to_s
     if params.has_key?(:assignment)

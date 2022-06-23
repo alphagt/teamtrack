@@ -17,8 +17,8 @@
 	</div>
 	<% end %>
 	<%= f.hidden_field :account_id, :value => current_user.primary_account_id %>
-    <%= f.association :owner, :as => :select, :collection => User.for_account(current_user.primary_account_id).managers_only, 
-    	:label_method => :name, :required => true %>
+    <%= f.association :owner, :as => :select, :collection => User.for_account(current_user.primary_account_id).managers_and_admins, 
+    	:patern => false, :label_method => :name, :required => true %>
   </div>
   <br/>
   <div class="form-actions">

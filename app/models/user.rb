@@ -22,6 +22,8 @@ class User < ApplicationRecord
   
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
   
+  scope :managers_and_admins, -> {where('ismanager = true OR admin = true').order('users.name')}
+  
   scope :verified_only, -> {where('verified = true').order('users.name')}
   
   scope :for_account, -> (aid){where("account_list REGEXP ?", '([^0-9]|^)' + aid.to_s + '([^0-9]|$)').order('users.name')}
@@ -96,9 +98,20 @@ class User < ApplicationRecord
   def primary_account_id=(val)
   	
   	write_attribute(:primary_account_id, val)
-  	if val.to_i > 0 then
-  		self.join_account = val
+  	if val.to_i > 0
+  		if !account_list.present? || account_list.split(',').exclude?(val.to_s)
+  			self.join_account = val
+  		end
   	end
+  	#toggle admin flag based on user's role in the target account
+  	if val.to_i > 0
+		act = Account.find(val)
+		if act.primary_admin_id == self.id || act.secondary_admin_id == self.id
+			write_attribute(:admin, true)
+		else
+			write_attribute(:admin, false)
+		end
+	end
   end
   
   def join_account=(val)

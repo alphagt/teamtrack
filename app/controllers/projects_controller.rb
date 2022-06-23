@@ -435,6 +435,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
+    @aid = current_user.primary_account_id
     @ctplist = ctpLists()
     puts @ctplist.to_s
     gon.ctplists = @ctplist
@@ -538,6 +539,6 @@ private
 #   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
 
 	  params.require(:project).permit(:owner, :initiative, :active, :description, :category, :name, :owner_id,
-  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority)
+  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :account_id)
 	end
 end

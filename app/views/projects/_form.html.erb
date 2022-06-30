@@ -17,37 +17,37 @@
 		<% end %>
 		<br/>
 		<%= f.input :name, :autofocus => true, label: "Name"  %>
-		<%= f.association :owner, :as => :select, :collection => User.for_account(@acct).managers_only, :required => true,  
+		<%= f.association :owner, :as => :select, :collection => User.for_account(@aid).managers_only, :required => true,  
 		 	:pattern => false, :label_method => :name, label: "Owner" %>	
 		<%= f.input :description, as: :text, inline_label: 'Description:', label: "Description", :required => true, :input_html => {:rows => 5} %>
 		<%= f.input :upl_number, inline_label: 'ID #:', label: display_name_for('sys_names', 'project') + ' ID #' %>
 		<div class="control-group select optional project_category">
 			<label class="select optional control-label" for="project_category"><%= get_cfield_name("p_cust_1") + ":"%></label>
 				<div class="controls">
-					<%= f.select(:category, options_for_select(get_picklist("p_cust_1",nil,true,@acct), 
+					<%= f.select(:category, options_for_select(get_picklist("p_cust_1",nil,true,@aid), 
 					@project.category), :required => true)  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_rtm">
 			<label class="select optional control-label" for="project_rtm"><%= get_cfield_name("p_cust_2") + ":"%></label>
 				<div class="controls">
-					<%= f.select(:rtm, options_for_select(get_picklist("p_cust_2",nil,true,@acct), 
+					<%= f.select(:rtm, options_for_select(get_picklist("p_cust_2",nil,true,@aid), 
 					@project.rtm))  %>
 				</div>
 		</div>
 		<div class="control-group select optional project_psh">
 			<label class="select optional control-label" for="projeect_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
 				<div class="controls">
-					<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,false,@acct), @project.psh))  %>
+					<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,false,@aid), @project.psh))  %>
 				</div>
 		</div>
-		<%= f.association :initiative, :as => :select, :collection => Initiative.for_account(@acct).for_year(current_fy),
+		<%= f.association :initiative, :as => :select, :collection => Initiative.for_account(@aid).for_year(current_fy),
 			:label_method => :name, label: display_name_for('sys_names', 'initiative') + ":", :input_html => {onchange: "updateprilist(this)", 
 			data: {message: "['o1', 'o2', 'o3']"} } %>
 		<div class="control-group select optional project_ctpriority">
 			<label class="select optional control-label" for="project_ctpriority"><%= get_cfield_name("p_cust_4") + ":"%></label>
 				<div class="controls">
-					<%= f.select :ctpriority, options_for_select(get_picklist("p_cust_4",@project,true,@acct), @project.ctpriority)  %>
+					<%= f.select :ctpriority, options_for_select(get_picklist("p_cust_4",@project,true,@aid), @project.ctpriority)  %>
 				</div>
 		</div>
 		<br/>

@@ -423,7 +423,7 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new
 	@ctplist = ctpLists()
-	@acct = current_user.primary_account_id
+	@aid = current_user.primary_account_id
 	gon.ctplists = @ctplist
 	
     respond_to do |format|

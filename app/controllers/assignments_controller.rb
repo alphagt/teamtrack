@@ -109,6 +109,7 @@ class AssignmentsController < ApplicationController
 				:org => current_user.org,
 				:etype => params[:newuser][0][:etype],
 				:category => params[:newuser][0][:category]
+				:primary_account_id => current_user.primary_account_id
 			@nUser.save
 			puts "INLINE USER CREATED"
 			puts @nUser.to_s

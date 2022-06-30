@@ -109,10 +109,18 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 		
+		#Add system user 'ExEmployeeMgr' for this new account
+		
 		user = User.create! :primary_account_id => @account.id, :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
 		user['manager_id'] = pa.id
 		user.save
 		puts 'New user created: ' << user.name
+		
+		#Add default tech system for this account
+		sys = TechSystem.create! :account_id => @account.id, :name => 'System Default', :description => 'Default TechSystem for this account', 
+		:qos_group => 'NA', :owner_id => pa.id
+		sys.save
+		puts 'added default system for new account'
       
       redirect_to @account, notice: 'Account was successfully created.'
     else

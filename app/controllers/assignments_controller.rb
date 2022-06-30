@@ -108,7 +108,7 @@ class AssignmentsController < ApplicationController
 				:default_system_id => params[:assignment][:tech_sys_id], :admin => false,
 				:org => current_user.org,
 				:etype => params[:newuser][0][:etype],
-				:category => params[:newuser][0][:category]
+				:category => params[:newuser][0][:category],
 				:primary_account_id => current_user.primary_account_id
 			@nUser.save
 			puts "INLINE USER CREATED"
@@ -152,16 +152,19 @@ class AssignmentsController < ApplicationController
         format.json { render json: @assignment, status: :created, location: @assignment }
       else
       	puts 'ERROR SAVING NEW ASSIGNMENT'
-      	puts @assignment.errors.to_h
-      	puts @assignment.errors.to_h[:project_id]
+      	
       	if @error.nil? then 
       		if @assignment.errors.to_h[:project_id].present? then
+      			puts @assignment.errors.to_h[:project_id]
       			@error = @assignment.errors.to_h[:project_id] 
       		else
+      			puts @assignment.errors.to_h
       			@error = @assignment.errors.to_h
       		end
+      	else
+      		puts @error
       	end
-        format.html { redirect_to new_assignment_path(:assignment => params[:assignment]),  alert: 'Assignment Failed: ' + @error.to_s  }
+        format.html { redirect_to new_assignment_path(),  alert: 'Assignment Failed: ' + @error.to_s  }
         format.json { render json: @assignment.errors, status: :unprocessable_entity }
       end
     end

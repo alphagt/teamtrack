@@ -23,7 +23,7 @@ test:
   variables:
     sql_mode: TRADITIONAL
 
-production:
+development:
   adapter: mysql2
   encoding: utf8
   database: teamtrack_dev
@@ -36,14 +36,14 @@ production:
     sql_mode: TRADITIONAL
 
 
-productionxx:
+production:
   adapter: mysql2
-  database: teamtrack_prod
-  username: w0ve6rvy0xxtqon1
-  password: x1cv016c4dflhkqw
+  database: evmafh2t4uqy6umj
+  username: h073ds8cslww7hru
+  password: pr6fl5c4kp8d6ue4
   pool: 5
   timeout: 5000
-  host: gi6kn64hu98hy0b6.chr7pe7iynqr.eu-west-1.rds.amazonaws.com
+  host: qao3ibsa7hhgecbv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com
   port: 3306
   variables:
     sql_mode: TRADITIONAL

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.4.5"
+ruby "2.6.5"
 
 gem 'rails', '~> 5.1.0'
 
@@ -31,12 +31,13 @@ gem 'sucker_punch', '~> 2.0'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 5.0.6'
+  #gem 'sass-rails', require: false
+  gem 'sassc-rails'
   gem 'coffee-rails', '~> 4.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
-
+	gem 'mini_racer', '~> 0.5.0'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -53,7 +54,7 @@ gem 'gon'
 gem 'smarter_csv'
 gem 'activerecord-import'
 
-gem 'bootstrap-sass', '~> 3.2.0'
+gem 'bootstrap-sass'
 gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'
 gem 'googlecharts'

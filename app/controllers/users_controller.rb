@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 	before_action :authenticate_user!
 	before_action :require_manager, :except => [:team, :show, :extendteam, :index, :switch_account]
 	before_action :require_verified, :except => [:show]
+	before_action :set_user, :except => [:team, :new, :createemp, :teamlist, :index]
 		
   def index
   	puts "In UserController - Index"
@@ -50,7 +51,7 @@ class UsersController < ApplicationController
   def show
   	 puts "Looking Up User Number:"
   	 #puts params[:id]
-     @user = User.find(params[:id])
+     #@user = User.find(params[:id])
      #scope the assignment history per params
      if params[:history_scope] == 'all'
      	@scope = "all"
@@ -79,8 +80,9 @@ class UsersController < ApplicationController
   
   # GET /users/:id/manage
   def manage
-  	@user = User.find(params[:id])
-  	@org = @user.org
+  	# @user = User.find(params[:id])
+#   	@org = @user.org
+#   	@aid = @user.primary_account_id
   end
   # GET /users/new
   # GET /users/new.json
@@ -106,7 +108,7 @@ class UsersController < ApplicationController
   
   #GET /users/:id/reset
   def reset
-  	@user = User.find(params[:id])
+#   	@user = User.find(params[:id])
   	@user.password = 'password'
   	respond_to do |format|  	
 		if @user.save then
@@ -304,9 +306,15 @@ class UsersController < ApplicationController
 	@cfdata = c_assignments.group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Effort by Cat'
 	puts @cfdata.to_s
-	cdataH = calc_chart_data(@cfdata)
-	@clabels = cdataH.keys.map { |k| k.split(".")[0]}
-	@cvals = cdataH.values
+	#handle empty set for brand new Account
+	if @cfdata.nil?
+		@clabels = []
+		@cvals = []
+	else
+		cdataH = calc_chart_data(@cfdata)
+		@clabels = cdataH.keys.map { |k| k.split(".")[0]}
+		@cvals = cdataH.values
+	end
 	
   	#@currentmgr = ""
   	puts 'TEAM CONTROLER, manager is'  	
@@ -317,7 +325,7 @@ class UsersController < ApplicationController
   def extendCurrentAssignment
   	puts 'IN Extend Current Assignment '
   	rcode = true
-  	view_context.latest(User.find(params[:id])).each do |a|
+  	view_context.latest(@user).each do |a|
   		tmp = Assignment.extend_by_week(a)
   		puts "Extend " + a.id.to_s + " Result: " + tmp.to_s
   	end
@@ -334,7 +342,7 @@ class UsersController < ApplicationController
   
   # PUT /user/:id/leave_account
   def leave_account
-  	@user = User.find(params[:id])
+  	# @user = User.find(params[:id])
   	@user.leave_account = params[:aid].to_i
   	respond_to do |format|
   		if @user.save
@@ -350,7 +358,7 @@ class UsersController < ApplicationController
   # GET /user/:id/switch_account
   def switch_account
   	puts "in Switch_account"
-  	@user = User.find(params[:id])
+#   	@user = User.find(params[:id])
   	@user.primary_account_id = params[:aid].to_i
   	puts "switching to " + @user.primary_account_id.to_s
   	respond_to do |format|
@@ -367,7 +375,7 @@ class UsersController < ApplicationController
   
   # GET /user/:id/extendteam
   def extendteam
-  	@manager = User.find(params[:id])
+  	@manager = @user
   	floor = 0
 		if !params[:floor].nil?
 			floor = params[:floor]
@@ -386,9 +394,9 @@ class UsersController < ApplicationController
   
   #GET /users/:id/verify
   def verify
-  	@u = User.find(params[:user_id])
-  	@u.verified = true
-  	@u.save
+#   	@u = User.find(params[:user_id])
+  	@user.verified = true
+  	@user.save
   	redirect_to users_path 
   end
   
@@ -397,32 +405,32 @@ class UsersController < ApplicationController
 #   	puts params
 	rcode =1
 	mUser = User.find(params[:id])
-	if mUser.subordinates.length > 0 then
+	if @user.subordinates.length > 0 then
 		rcode = 2
 	else
-		mUser.name += ' Ex'
-		mUser.manager = User.for_account(current_user.primary_account_id).find_by_name("ExEmployeeMgr") #special user for collecting x employees under
-		mUser.admin = false
-		mUser.ismanager = false
-		mUser.orgowner = false
-		mUser.org = 'ExOrg'
+		@user.name += ' Ex'
+		@user.manager = User.for_account(@aid).find_by_name("ExEmployeeMgr") #special user for collecting x employees under
+		@user.admin = false
+		@user.ismanager = false
+		@user.orgowner = false
+		@user.org = 'ExOrg'
 		
-		if mUser.save then
+		if @user.save then
 			rcode = 0
 		end
 	end
 	respond_to do |format|
       if rcode == 0
-        format.html { redirect_to mUser, notice: 'User was successfully removed.' }
+        format.html { redirect_to @user, notice: 'User was successfully removed.' }
         format.json { head :no_content }
       else
         if rcode == 1
-        	format.html { redirect_to mUser, notice: 'ERROR attempting to remove user' }
-        	format.json { render json: mUser.errors, status: :unprocessable_entity }
+        	format.html { redirect_to @user, notice: 'ERROR attempting to remove user' }
+        	format.json { render json: @user.errors, status: :unprocessable_entity }
         end
         if rcode == 2
-        	format.html { redirect_to team_user_path(mUser), notice: 'User has current subordinates! Reassign them before removing this user' }
-        	format.json { render json: mUser.errors, status: :unprocessable_entity }
+        	format.html { redirect_to team_user_path(@user), notice: 'User has current subordinates! Reassign them before removing this user' }
+        	format.json { render json: @user.errors, status: :unprocessable_entity }
         end
       end
     end	 
@@ -431,7 +439,7 @@ class UsersController < ApplicationController
   # PUT /user/1
   # PUT /user/1.json
   def update
-    @user = User.find(params[:id])
+#     @user = User.find(params[:id])
     #@org = current_user.org
     #Update the user list cache for this user's manager
     
@@ -481,6 +489,8 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+      @org = @user.org
+  	  @aid = @user.primary_account_id
     end
 
     # Only allow a trusted parameter "white list" through.

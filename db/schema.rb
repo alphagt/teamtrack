@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220617191932) do
+ActiveRecord::Schema.define(version: 20220701201527) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
@@ -79,13 +79,13 @@ ActiveRecord::Schema.define(version: 20220617191932) do
     t.string "psh", default: "NA"
     t.string "ctpriority", default: "NA"
     t.integer "account_id", default: 0
+    t.index ["account_id", "upl_number"], name: "index_projects_on_account_id_and_upl_number", unique: true
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["active"], name: "index_projects_on_active"
     t.index ["category"], name: "index_projects_on_category"
     t.index ["initiative_id"], name: "index_projects_on_initiative_id"
     t.index ["name"], name: "index_projects_on_name"
     t.index ["owner_id"], name: "index_projects_on_owner_id"
-    t.index ["upl_number"], name: "index_projects_on_upl_number", unique: true
   end
 
   create_table "set_periods", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|

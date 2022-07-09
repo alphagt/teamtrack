@@ -67,9 +67,11 @@
 <div class="row no-gutters">
   <div class="col-md-12 col-centered">
 	<div class="col-md-5">
-		<%= image_tag(Gchart.pie(:title => 'YTD ' + get_cfield_name('p_cust_1') + ' Allocation', 
-		:labels => @clabels_ytd, :data => @cvals_ytd, :text => 'value', :size => '380x220', :chart_background => 'CCCCCC',
-		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
+		<% if @cvals_ytd.length > 0 then %>
+			<%= image_tag(Gchart.pie(:title => 'YTD ' + get_cfield_name('p_cust_1') + ' Allocation', 
+			:labels => @clabels_ytd, :data => @cvals_ytd, :text => 'value', :size => '380x220', :chart_background => 'CCCCCC',
+			:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
+		<% end %>
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cfdata.to_s end %></p>
 	</div>

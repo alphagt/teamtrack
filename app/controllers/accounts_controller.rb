@@ -121,7 +121,27 @@ class AccountsController < ApplicationController
 		:qos_group => 'NA', :owner_id => pa.id
 		sys.save
 		puts 'added default system for new account'
+		
+		#Default Investment Categories
+		set = Setting.create!  :account_id => @account_id, :ordinal => 1, :stype => 1, :key => 'category', :value => 'OVH.all', :displayname => 'Overhead', :description => 'Timeoff, Management, Leave of absence'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account_id, :ordinal => 2, :stype => 1, :key => 'category', :value => 'RTB', :displayname => 'Run the Business', :description => 'Work to keep the lights on, '
+		set.save
+		puts 'added ' << set.key
       
+		#Default basic Iniiative      
+		@init = Initiative.create! :account_id => @account.id, :name => 'Default Basics Initiative', :tag => 'BASICS', :description => 'Foundational work.', :subprilist => ['NA']
+		@init.save
+		puts 'New initiative created:  ' << @init.tag
+
+      	#Default Projects
+		proj = Project.create! :account_id => @account.id, :name => 'Maintenance/Tech Debt', :active => true, :owner => pa, :description => 'Vacation, Leave of Absence, or other time off', :tribe => sys.name, :category => 'PTO', 
+		:fixed_resource_budget => 15, :upl_number => -1
+		proj.save
+		puts 'added default project for Time Off and LOA'
+
       redirect_to @account, notice: 'Account was successfully created.'
     else
       render :new

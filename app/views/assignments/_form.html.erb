@@ -31,7 +31,7 @@
 						<div class="control-group select optional user_category">
 							<label class="select optional control-label" for="user_category">Employee Category:</label>
 							<div class="controls">
-								<%= user_fields.select :category, [['R&D'],['Program-Product'],['Operations'],['Overhead']]  %>
+								<%= user_fields.select(:category, options_for_select(get_picklist("u_cust_2",nil,false,@aid)))  %>
 							</div>
 						</div>
 					

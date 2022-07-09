@@ -136,24 +136,29 @@ class ProjectsController < ApplicationController
 	puts 'YTD Effort by Cat'
 	puts @cfdata.to_s
 
-	combinedytd = calc_chart_data(@cfdata)
-
-	##### Finalize var to support chart creation ######
 	@clabels_ytd = []
-	@cvals_ytd = combinedytd.values
-	puts "YTD Total"
-	ytd_total = @cvals_ytd.sum
-	puts ytd_total
-	combinedytd.map do |key, val|
-		#handle empty set
-		if val > 0 then
-			pVal = (val.to_f/ytd_total * 100).round().to_s
-		else
-			pVal = "0"
-		end
-		@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + pVal + "%"
-	end	
+	@cvals_ytd = []
+	
+	if @cfdata.length > 0
+		combinedytd = calc_chart_data(@cfdata)
+		##### Finalize var to support chart creation ######
+		@cvals_ytd = combinedytd.values
+		puts "YTD Total"
+		ytd_total = @cvals_ytd.sum
+		puts ytd_total
+		combinedytd.map do |key, val|
+			#handle empty set
+			if val > 0 then
+				pVal = (val.to_f/ytd_total * 100).round().to_s
+			else
+				pVal = "0"
+			end
+			@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + pVal + "%"
+		end	
+	end
+	puts "## YTD Hash labels, values "
 	puts @clabels_ytd.to_s
+	puts @cvals_ytd.to_s
 	
 		
 	#Current Quarter Data

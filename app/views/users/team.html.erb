@@ -50,10 +50,11 @@
 <h5><%= "Wk-" + week_from_period(@target_period).to_s + " Allocated:" %><small><%= @total_effort.to_s + " of " + @tm_count.to_s %></small></h5>
 <!-- <h5>People Managers:  <small><%= @user_list[0].count %></small></h5> -->
 <h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
-
-<%= image_tag(Gchart.pie(:title => 'Effort Allocation', 
+	<% if @cvals.length > 0 then %>
+		<%= image_tag(Gchart.pie(:title => 'Effort Allocation', 
 		:legend => @clabels, :legend_position => 'bottom', :data => @cvals, 
 		:size => '140x200', :chart_background => 'CCCCCC', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
+	<% end %>
 
 <br/>
 <h5><%= link_to 'Refresh Stats', team_user_path(:id => @manager.id, :nocache => 'true'), 

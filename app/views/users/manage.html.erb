@@ -15,9 +15,9 @@
 			<%= f.input :name %>
 			<%= f.input :email %>
 			<%= f.input :org %>
-			<%= f.association :manager, :as => :select, :collection => User.managers_only, 
+			<%= f.association :manager, :as => :select, :collection => User.for_account(@aid).managers_only, 
 				:label_method => :name %>
-			<%= f.association :default_system, :as => :select %>
+			<%= f.association :default_system, :as => :select, :collection => TechSystem.for_account(@aid), :label_method => :name %>
 			<div class="control-group select optional user_type">
 				<label class="select optional control-label" for="user_type"><%= get_cfield_name("u_cust_1")%></label>
 				<div class="controls">
@@ -43,7 +43,7 @@
 				<h5><b><u>Admin Options</u></b></h5>
 				<br/>
 				<br/>
-				<%= f.association :impersonates, :as => :select, :collection => User.managers_only, 
+				<%= f.association :impersonates, :as => :select, :collection => User.for_account(@aid).managers_only, 
 					:label_method => :name %>
 				<div class="checkbox">
 					<%= f.input :superadmin, inline_label: 'Is Super Admin', label: false %>

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.6.5"
+ruby "2.7.6"
 
 gem 'rails', '~> 5.1.0'
 
@@ -42,6 +42,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+gem 'bigdecimal', '1.3.5'
 
 gem 'devise'
 

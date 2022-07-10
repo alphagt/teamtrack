@@ -24,20 +24,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
   	super
-#     if params[:ic].present? then
-#   		icode = params[:ic]
-#   		@acct = InviteCode.find_by_code(icode).account_id
-#   		puts "Invite Code is: " + icode
-#   	else
-#   		@acct = -1
-#   	end
-#   	puts "Account Id is: " + @acct
-#   	if @acct.nil? then
-#   		format.html { redirect_to home_path( alert: 'Invalid Invite Code: ' + icode  }
-#		end
-#     else
-#     	super
-#     end
+
    end
 
   # GET /resource/edit

@@ -228,11 +228,11 @@ class ProjectsController < ApplicationController
 			set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
 		
-			pri_custname = Setting.for_key("p_cust_4").pluck(:value)
+			pri_custname = Setting.for_account(@aid).for_key("p_cust_4").pluck(:value)
 			pri_custname.freeze
-			pri_setting = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s)
+			pri_setting = Setting.for_account(@adi).for_key(pri_custname).where("value = ?",a[0][1].to_s)
 			if pri_setting.count > 0 then
-				pri_display = Setting.for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname.truncate(11)
+				pri_display = Setting.for_account(@aid).for_key(pri_custname).where("value = ?",a[0][1].to_s).first.displayname.truncate(11)
 			else
 				pri_display = a[0][1].to_s.truncate(11)
 			end

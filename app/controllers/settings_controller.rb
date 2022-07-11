@@ -33,7 +33,7 @@ class SettingsController < ApplicationController
   # GET /settings/1/edit
   def edit
   	@coresetting = false
-  	@aid = current_user.primary_account_id
+  	@acct = current_user.primary_account_id
   	if params[:sysadmin].present? then
   		@sysadmin = true
   	end

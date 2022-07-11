@@ -488,7 +488,13 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:user_id])
+      if params[:id].present?
+      	@user = User.find(params[:id])
+      else
+      	if params[:user_id].present?
+      		@user = User.find(params[:user_id])
+      	end
+      end
       @org = @user.org
   	  @aid = @user.primary_account_id
     end

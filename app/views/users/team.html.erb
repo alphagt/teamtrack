@@ -3,7 +3,7 @@
 <% content_for :nav do %>
 	<%  render partial: "layouts/navigation", locals: {active: "team"} %>
 <% end %>
-<% content_for :sidebarwide do %>
+<% content_for :sidebarxwide do %>
 <table class="table" >
 	<tr>
 		<td class="danger"><%= link_to 'New Assignment', new_assignment_path %></td>
@@ -31,7 +31,7 @@
 	<tr>
 		<th/>
 		<% Setting.for_key('etype').each do |et| %>
-			<th><%= et.displayname %></th>
+			<th><%= et.value %></th>
 		<% end %>
 	</tr>
 	<% @resstats.each do |k,v| %>

@@ -66,6 +66,7 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1/edit
   def edit
     @assignment = Assignment.find(params[:id])
+    @aid = current_user.primary_account_id
     @newuser = User.new
     if current_user.admin? then
     	@showFixedCbox = true

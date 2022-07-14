@@ -108,8 +108,8 @@ class AssignmentsController < ApplicationController
 				:password => 'abc123', :password_confirmation => 'abc123', :manager_id => current_user.id, 
 				:default_system_id => params[:assignment][:tech_sys_id], :admin => false,
 				:org => current_user.org,
-				:etype => params[:newuser][0][:etype],
-				:category => params[:newuser][0][:category],
+				:etype => Setting.find_by_displayname(params[:newuser][0][:etype]).value,
+				:category => Setting.find_by_displayname(params[:newuser][0][:category]).value,
 				:primary_account_id => current_user.primary_account_id
 			@nUser.save
 			puts "INLINE USER CREATED"

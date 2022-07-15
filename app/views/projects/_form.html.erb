@@ -28,19 +28,23 @@
 					@project.category), :required => true)  %>
 				</div>
 		</div>
-		<div class="control-group select optional project_rtm">
-			<label class="select optional control-label" for="project_rtm"><%= get_cfield_name("p_cust_2") + ":"%></label>
-				<div class="controls">
-					<%= f.select(:rtm, options_for_select(get_picklist("p_cust_2",nil,true,@aid), 
-					@project.rtm))  %>
-				</div>
-		</div>
-		<div class="control-group select optional project_psh">
-			<label class="select optional control-label" for="projeect_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
-				<div class="controls">
-					<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,false,@aid), @project.psh))  %>
-				</div>
-		</div>
+		<% if !Setting.for_account(@aid).find_by_key('rtm').nil? %>
+			<div class="control-group select optional project_rtm">
+				<label class="select optional control-label" for="project_rtm"><%= get_cfield_name("p_cust_2") + ":"%></label>
+					<div class="controls">
+						<%= f.select(:rtm, options_for_select(get_picklist("p_cust_2",nil,true,@aid), 
+						@project.rtm))  %>
+					</div>
+			</div>
+		<% end %>
+		<% if !Setting.for_account(@aid).find_by_key('division').nil? %>
+			<div class="control-group select optional project_psh">
+				<label class="select optional control-label" for="projeect_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
+					<div class="controls">
+						<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,false,@aid), @project.psh))  %>
+					</div>
+			</div>
+		<% end %>
 		<%= f.association :initiative, :as => :select, :collection => Initiative.for_account(@aid).for_year(current_fy),
 			:label_method => :name, label: display_name_for('sys_names', 'initiative') + ":", :input_html => {onchange: "updateprilist(this)", 
 			data: {message: "['o1', 'o2', 'o3']"} } %>

@@ -113,37 +113,95 @@ class AccountsController < ApplicationController
 		puts 'added ' << set.key
 		
 		#Add system user 'ExEmployeeMgr' for this new account
-		
-		user = User.create! :primary_account_id => @account.id, :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
-		user['manager_id'] = pa.id
+		user = User.create! :primary_account_id => @account.id, :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, 
+			:password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => @account.id.to_s + '-System', :admin => false, :manager_id => pa.id, :etype => 'FTE', :category => 'MGMT'
 		user.save
 		puts 'New user created: ' << user.name
 		
 		#Add default tech system for this account
 		sys = TechSystem.create! :account_id => @account.id, :name => 'System Default', :description => 'Default TechSystem for this account', 
-		:qos_group => 'NA', :owner_id => pa.id
+		:qos_group => 'Back-End', :owner_id => pa.id
 		sys.save
 		puts 'added default system for new account'
 		
 		#Default Investment Categories
-		set = Setting.create!  :account_id => @account_id, :ordinal => 1, :stype => 1, :key => 'category', :value => 'OVH.all', :displayname => 'Overhead', :description => 'Timeoff, Management, Leave of absence'
+		set = Setting.create! :account_id => @account.id, :ordinal => 1, :stype => 1, :key => 'category', :value => 'OVH.all', :displayname => 'Overhead', 
+			:description => 'Timeoff, Management, Leave of absence'
 		set.save
 		puts 'added ' << set.key
 		
-		set = Setting.create!  :account_id => @account_id, :ordinal => 2, :stype => 1, :key => 'category', :value => 'RTB', :displayname => 'Run the Business', :description => 'Work to keep the lights on, '
+		set = Setting.create!  :account_id => @account.id, :ordinal => 2, :stype => 1, :key => 'category', :value => 'KTLO', :displayname => 'Keep the Lights On'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'category', :value => 'ARCH', :displayname => 'Architecture & Innovation'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 4, :stype => 1, :key => 'category', :value => 'NPV', :displayname => 'New Product Value'
+		set.save
+		puts 'added ' << set.key
+		
+		#Default QOS Groups
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'sgroup', :value => 'BE', :displayname => 'Back-End'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'sgroup', :value => 'FE', :displayname => 'Front-End'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'sgroup', :value => 'TO', :displayname => 'Tools'
+		set.save
+		puts 'added ' << set.key
+		
+		#Default OKRs
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'priority', :value => 'OKR1', :displayname => 'OKR #1'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'priority', :value => 'OKR2', :displayname => 'OKR #2'
+		set.save
+		puts 'added ' << set.key
+		
+		#Default User Types
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'etype', :value => 'FTE', :displayname => 'Full-Time'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'etype', :value => 'INTERN', :displayname => 'Intern'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'etype', :value => 'TEMP', :displayname => 'Contractor'
+		set.save
+		puts 'added ' << set.key
+		
+		#Defalut User Categories
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'ecat', :value => 'ENG', :displayname => 'Engineer'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :ordinal => 3, :stype => 1, :key => 'ecat', :value => 'MGMT', :displayname => 'Management'
 		set.save
 		puts 'added ' << set.key
       
 		#Default basic Iniiative      
-		@init = Initiative.create! :account_id => @account.id, :name => 'Default Basics Initiative', :tag => 'BASICS', :description => 'Foundational work.', :subprilist => ['NA']
+		@init = Initiative.create! :account_id => @account.id, :name => 'Default Basics Initiative', :tag => 'BASICS', :description => 'Foundational work.', :subprilist => ['OKR1','OKR2']
 		@init.save
 		puts 'New initiative created:  ' << @init.tag
 
       	#Default Projects
-		proj = Project.create! :account_id => @account.id, :name => 'Maintenance/Tech Debt', :active => true, :owner => pa, :description => 'Vacation, Leave of Absence, or other time off', :tribe => sys.name, :category => 'PTO', 
-		:fixed_resource_budget => 15, :upl_number => -1
+		proj = Project.create! :account_id => @account.id, :name => 'Time Off/LOA', :active => true, :owner => pa, :description => 'Vacation, Leave of Absence, or other time off', :tribe => sys.name, :category => 'OVH.all', 
+		  :fixed_resource_budget => 15, :upl_number => -1
 		proj.save
 		puts 'added default project for Time Off and LOA'
+		
+		proj = Project.create! :account_id => @account.id, :name => 'Maintenance/Tech-Debt', :active => true, :owner => pa, :description => 'Ongoing Maintenance and Quality Work', :tribe => sys.name, :category => 'KTLO',
+		  :fixed_resource_budget => 15, :upl_number => -2
+		proj.save
+		puts 'added default project for Maintenance/Tech-Debt'
+		
 
       redirect_to @account, notice: 'Account was successfully created.'
     else

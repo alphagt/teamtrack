@@ -45,8 +45,10 @@
 		<row>
 		<div class ='col-md-3'>	
 			<%= f.input :effort, :autofocus => true %>
-			<%= f.association :tech_system, :as => :select, :collection => TechSystem.for_account(@aid).by_name, :required => true %>
-			<%= f.association :project, :as => :select, :collection => Project.for_account(@aid).active.by_name, :required => true %>
+			<%= f.association :tech_system, :as => :select, :collection => TechSystem.for_account(@aid).by_name, :labelmethod => :name,
+			label: display_name_for('sys_names', 'service'), :required => true %>
+			<%= f.association :project, :as => :select, :collection => Project.for_account(@aid).active.by_name, :labelmethod => :name,
+			label: display_name_for('sys_names', 'project'), :required => true %>
 			<br/>
 			<div class="form-actions">
 				<%= f.button :submit %>

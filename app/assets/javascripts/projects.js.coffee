@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 @updateprilist =(list) ->
-   selectedi = list.selectedOptions[0].value
+   selectedi = list.selectedOptions[0].value || 0
    console.log("theme changed!" + selectedi)
    theme = window.$("#project_initiative_id")[0]
    console.log("Active Theme id is:  " + theme.selectedOptions[0].text )

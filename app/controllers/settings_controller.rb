@@ -44,6 +44,7 @@ class SettingsController < ApplicationController
 
   # POST /settings
   def create
+  	#TODO:  hanle exclude and allocate settings properly here.
     @setting = Setting.new(setting_params)
 	@setting.ordinal = view_context.next_ordinal_for(@setting.key, current_user.primary_account_id)
 	@setting.stype = 1
@@ -77,7 +78,7 @@ class SettingsController < ApplicationController
     if params[:tags][:ex] == "1" && newVal.split(".").length == 1  then
     	newVal += ".exclude"
     else
-    	if params[:tags][:all] == "1" && newVal.split("x").length == 1 then
+    	if params[:tags][:all] == "1" && newVal.split(".").length == 1 then
     		newVal += ".allocate"
     	end
     end

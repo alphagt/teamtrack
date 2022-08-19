@@ -355,6 +355,7 @@ module ApplicationHelper
 					else
 						subKey = key
 					end
+					puts "Subkey: " + subKey
 					if !showval then
 						Setting.for_account(aid).for_key(subKey).pluck(:displayname)
 					else

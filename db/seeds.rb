@@ -27,6 +27,25 @@ set = Setting.create!  :account_id => aid, :stype => 0, :key => 'p_cust_1', :val
 		picklist values can be added to settings with p_cust_1 as the key for those settings.'
 set.save
 puts 'added ' << set.key
+
+#add Default Investment Categories
+set = Setting.create!  :account_id => aid, :stype => 1, :key => 'category', :value => "OVH.allocate", :displayname => 'Overhead',
+	:description => 'System defined default category for Overhead like PTO/LOA or other projects'
+set.save
+puts 'added ' << set.value
+set = Setting.create!  :account_id => aid, :stype => 1, :key => 'category', :value => "RTB", :displayname => 'Run The Business',
+	:description => 'System defined default category for minor enhancement and reactive work'
+set.save
+puts 'added ' << set.value
+set = Setting.create!  :account_id => aid, :stype => 1, :key => 'category', :value => "SEC", :displayname => 'Security/Compliance',
+	:description => 'System defined default category for security and compliance related work'
+set.save
+puts 'added ' << set.value
+set = Setting.create!  :account_id => aid, :stype => 1, :key => 'category', :value => "HQA", :displayname => 'High Quality & Architecture',
+	:description => 'System defined default category for quality and architecture related work'
+set.save
+puts 'added ' << set.value
+
 set = Setting.create!  :account_id => aid, :stype => 0, :key => 'p_cust_2', :value => "rtm", :displayname => 'rtm', 
 	:description => 'Custom field for projects.  Admin can define visible name by setting displayname on this setting.  
 		picklist values can be added to settings with p_cust_12 as the key for those settings.'
@@ -81,7 +100,7 @@ proj = Project.create! :account_id => aid, :name => 'Maintenance/Tech Debt', :ac
 :fixed_resource_budget => 15, :initiative_id => @init.id, :upl_number => -1
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :account_id => aid, :name => 'Security-Compliance Maintenance', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', 
+proj = Project.create! :account_id => aid, :name => 'Security-Compliance Maintenance', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'SEC', 
 :fixed_resource_budget => 10, :initiative_id => @init.id, :upl_number => -2
 proj.save
 puts 'added security compliance project'
@@ -89,6 +108,10 @@ proj = Project.create! :account_id => aid, :name => 'Run the Business', :active 
 :fixed_resource_budget => 30, :initiative_id => @init.id, :upl_number => -3
 proj.save
 puts 'added RTB Project'
+proj = Project.create! :account_id => aid, :name => 'Time-Off PTO/LOA', :active => true, :owner => @da, :description => 'Time Off', :tribe => 'All',  :category => 'OVH.all', 
+:fixed_resource_budget => 30, :initiative_id => @init.id, :upl_number => -3
+proj.save
+puts 'added PTO Project'
 
 #test users
 user = User.create! :primary_account_id => aid, :name => 'Test User', :email => 'test@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'Test'

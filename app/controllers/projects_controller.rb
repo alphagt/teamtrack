@@ -518,7 +518,7 @@ class ProjectsController < ApplicationController
   		
   		while((i.id - lasti) > 1) do
   			#fill the gap in idexes in the array
-  			out << [""]
+  			out << Setting.for_account(current_user.primary_account_id).for_key(Setting.for_account(current_user.primary_account_id).for_key('p_cust_4').first.value).pluck(:value)
   			lasti += 1
   		end
   		if i.subprilist.present? then
@@ -529,6 +529,7 @@ class ProjectsController < ApplicationController
   		lasti += 1
   	end
   	puts out.length
+  	puts out.to_s
   	out
   end
   

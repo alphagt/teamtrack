@@ -4,7 +4,7 @@
 <ul class="nav nav-pills" role="tablist">
  <% if user_signed_in? %>
 	<% if current_user.verified? %>
-    	<% if current_user.admin? | current_user.ismanager? %>
+    	<% if current_user.admin? | current_user.ismanager? | current_user.impersonate_manager.present? %>
 			<% if active == "team" %>
 				<li class="active" >
 			<% else %>

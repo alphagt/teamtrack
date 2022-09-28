@@ -100,7 +100,7 @@ class AssignmentsController < ApplicationController
     	end
     	if @error.nil?
 # 			puts 'No Errors, Creating User'
-			@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@adobe.com'
+			@fakeEmail = params[:newuser][0][:name].hash.to_s + 'temp@teamview.com'
 # 			puts @fakeEmail
  
 			@nUser = User.create! :name => params[:newuser][0][:name], 

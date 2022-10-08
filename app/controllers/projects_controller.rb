@@ -336,17 +336,22 @@ class ProjectsController < ApplicationController
   	require 'csv'
   	
   	#options = {:force_utf8, :strip_chars_from_headers => "s/([()])//g", :key_mapping => {:issue_key => :issue_key, :summary => :summary, :reporter => :owner}, :remove_unmapped_keys => true}
+    @aid = current_user.primary_account_id
     
     tFile = params[:file]
     newproj = []
-    cols = [:active, :name, :upl_number, :owner_id, :description]
+    cols = [:account_id, :active, :name, :upl_number, :owner_id, :description, :category]
 	CSV.foreach(tFile.path, headers: true) do |r|
 		puts r
 		i = r.to_h
 		puts i
 		pid = i['Issue key'].split("-")[1].to_i || -1
+		desc = ""
+		if i['Description'] then
+			desc = i['Description'].truncate(150, separator: ' ')
+		end
 		puts pid.to_s
-		if Project.find_by_upl_number(pid).nil? then
+		if Project.for_account(@aid).find_by_upl_number(pid).nil? then
 			puts i.keys
 			p = Hash.new()
 			oUser = User.for_email(i['Owner'])
@@ -363,9 +368,13 @@ class ProjectsController < ApplicationController
 			p[:name] = i['Summary']
 			p[:upl_number] = pid
 			p[:owner_id] = oid
-			p[:description] = i['Issue key']
+			p[:description] = desc
+			p[:category] = i['Category']
+			p[:account_id] = @aid
 			puts p.to_s
 			newproj << p
+		else
+			puts "Found Existing Project by Id"
 		end
 	end	
 		

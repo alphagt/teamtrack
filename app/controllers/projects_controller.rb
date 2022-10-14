@@ -340,7 +340,7 @@ class ProjectsController < ApplicationController
     
     tFile = params[:file]
     newproj = []
-    cols = [:account_id, :active, :name, ,:rtm, :upl_number, :owner_id, :description, :category, :fixed_resource_budget]
+    cols = [:account_id, :active, :name, :rtm, :upl_number, :owner_id, :description, :category, :fixed_resource_budget]
 	CSV.foreach(tFile.path, headers: true) do |r|
 		puts r
 		i = r.to_h

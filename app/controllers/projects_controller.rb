@@ -340,16 +340,25 @@ class ProjectsController < ApplicationController
     
     tFile = params[:file]
     newproj = []
-    cols = [:account_id, :active, :name, :upl_number, :owner_id, :description, :category]
+    cols = [:account_id, :active, :name, ,:rtm, :upl_number, :owner_id, :description, :category, :fixed_resource_budget]
 	CSV.foreach(tFile.path, headers: true) do |r|
 		puts r
 		i = r.to_h
 		puts i
 		pid = i['Issue key'].split("-")[1].to_i || -1
 		desc = ""
+		rtm = ""
 		if i['Description'] then
 			desc = i['Description'].truncate(150, separator: ' ')
 		end
+		if i['RTM'] then
+			rtm = i['RTM'].truncate(50)
+		else
+			if i[view_context.get_cfield_name("p_cust_2")] then
+				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
+			end
+		end
+			
 		puts pid.to_s
 		if Project.for_account(@aid).find_by_upl_number(pid).nil? then
 			puts i.keys
@@ -371,6 +380,8 @@ class ProjectsController < ApplicationController
 			p[:description] = desc
 			p[:category] = i['Category']
 			p[:account_id] = @aid
+			p[:fixed_resource_budget] = 5
+			p[:rtm] = rtm
 			puts p.to_s
 			newproj << p
 		else

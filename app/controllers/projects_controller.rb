@@ -358,7 +358,12 @@ class ProjectsController < ApplicationController
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
 			end
 		end
-			
+		if i['Category'] then
+			puts "Find setting value for category: " + i['Category']
+			s = Setting.for_account(@aid).find_by_displayname(i['Category'])
+			cat = s.value || i['Category']
+		end
+		
 		puts pid.to_s
 		if Project.for_account(@aid).find_by_upl_number(pid).nil? then
 			puts i.keys
@@ -378,7 +383,7 @@ class ProjectsController < ApplicationController
 			p[:upl_number] = pid
 			p[:owner_id] = oid
 			p[:description] = desc
-			p[:category] = i['Category']
+			p[:category] = cat
 			p[:account_id] = @aid
 			p[:fixed_resource_budget] = 5
 			p[:rtm] = rtm

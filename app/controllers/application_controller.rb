@@ -26,11 +26,12 @@ class ApplicationController < ActionController::Base
   	end
   end
   def calc_chart_data(rs,dimKey='p_cust_1')
+		aid = current_user.primary_account_id
 		#####  Handle .allocate effort categories for YTD #######
 		combined = rs.to_h
-		key1 = Setting.for_key(dimKey).first.value #the key for settings of type dimKey
+		key1 = Setting.for_account(aid).for_key(dimKey).first.value #the key for settings of type dimKey
 		#handle missing keys in passed in data
-		Setting.for_key(key1).each do |s|
+		Setting.for_account(aid).for_key(key1).each do |s|
 			
 			if !combined.key?(s.value) then
 				#add zero so allocation works right
@@ -50,8 +51,8 @@ class ApplicationController < ActionController::Base
 		#check if any of the custom-field values for p_cust_2 are tagged wtih the .allocate adornment
 		
 # 		puts 'Category CF Key is: ' +  key1
-		allocateKeys = Setting.for_key(key1).where('value LIKE ?', "%.all%")
-		exludeKeys = Setting.for_key(key1).where('value LIKE ?', "%.ex%")
+		allocateKeys = Setting.for_account(aid).for_key(key1).where('value LIKE ?', "%.all%")
+		exludeKeys = Setting.for_account(aid).for_key(key1).where('value LIKE ?', "%.ex%")
 		puts 'Exclude Keys ' + exludeKeys.length.to_s
 		cCount = cCount - exludeKeys.length
 		if allocateKeys.length > 0 then

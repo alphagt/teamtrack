@@ -352,7 +352,9 @@ class ProjectsController < ApplicationController
 			desc = i['Description'].truncate(150, separator: ' ')
 		end
 		if i['RTM'] then
-			rtm = i['RTM'].truncate(50)
+			puts "Find setting value for RTM: " + i['RTM']
+			s = Setting.for_account(@aid).fing_by_displayname(i['RTM'])
+			rtm = s.value || i['RTM']
 		else
 			if i[view_context.get_cfield_name("p_cust_2")] then
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)

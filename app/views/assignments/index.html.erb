@@ -7,7 +7,7 @@
 <table class="table">
 	<tr>
 	<td class="danger">
-		<label for="t_week">Target Week:</label>
+		<label for="t_week"><%= @fy.to_i.to_s + " Target Week:"%></label>
 		<%= select_tag "t_week", options_for_select(w_list(), @wk) %>
 	</td>
 	<tr>

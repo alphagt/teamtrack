@@ -11,10 +11,16 @@ class AssignmentsController < ApplicationController
 	else
 		@wk = view_context.current_week().to_i
 	end
+	if params[:fy].present?
+		@fy = params[:fy].to_f
+	else
+		@fy = view_context.current_fy().to_f
+	end
+	
 	@fname = "attachment; filename=\"TTAssignmentsWeek" + @wk.to_s + ".xlsx\""
 	puts @fname
 	
-	@tperiod = view_context.current_fy().to_f + (@wk.fdiv(100).round(3))
+	@tperiod = @fy + (@wk.fdiv(100).round(3))
 	puts "Target Period for Assignments"
 	puts @tperiod.to_s
 		

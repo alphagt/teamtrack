@@ -12,7 +12,7 @@
 	</td>
 	<tr>
 		<td class="danger">
-			<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :wk => @wk) %>
+			<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wk => @wk) %>
 		</td>	
 </table>
 <% end %>

@@ -16,15 +16,40 @@ class AssignmentsController < ApplicationController
 	else
 		@fy = view_context.current_fy().to_f
 	end
+	wr = []
+	if params[:wkrange].present?
+
+		ia = params[:wkrange].split(',')
+		ia.each do |w|
+			if w.include?('...')
+				b = w.split('...')
+				it = b.first.to_i
+				stop = b.last.to_i
+				while it <= stop do
+					wr << @fy + (it.fdiv(100).round(3))
+					it += 1
+				end
+			else
+				it = w.to_i
+				wr << @fy + (it.fdiv(100).round(3))
+			end
+			puts "Period Array --------"
+			puts wr.join(',')
+			
+		end
+	else
+		wr << @fy + (@wk.fdiv(100).round(3))
+	end
+	@tperiod = wr
 	
 	@fname = "attachment; filename=\"TTAssignmentsWeek" + @wk.to_s + ".xlsx\""
 	puts @fname
 	
-	@tperiod = @fy + (@wk.fdiv(100).round(3))
+	
 	puts "Target Period for Assignments"
-	puts @tperiod.to_s
+	puts @tperiod.join(',')
 		
-  	@assignments = Assignment.where('set_period_id = ?', @tperiod).order("project_id,set_period_id DESC,user_id")
+  	@assignments = Assignment.where('set_period_id in(?)', @tperiod).order("set_period_id DESC, project_id,user_id")
 	@manager = current_user
     respond_to do |format|
       format.html # index.html.erb

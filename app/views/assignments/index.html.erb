@@ -7,8 +7,18 @@
 <table class="table">
 	<tr>
 	<td class="danger">
-		<label for="t_week"><%= @fy.to_i.to_s + " Target Week:"%></label>
+		<label for="t_fy"><%= "Fiscal Year:"%></label>
+		<%= select_tag "t_fy", options_for_select(fy_list(), @fy.to_i) %>
+	</td>
+	<tr>
+	<td class="danger">
+		<label for="t_week"><%= "Target Week:"%></label>
 		<%= select_tag "t_week", options_for_select(w_list(), @wk) %>
+	</td>
+	<tr>
+	<td class="danger">
+		<label for="t_range"><%= "Week Range:"%></label>
+		<%= button_tag 'Custom Range', type: 'button', name: "t_range", id:"t_range" %>
 	</td>
 	<tr>
 		<td class="danger">

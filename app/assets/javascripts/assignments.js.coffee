@@ -7,6 +7,15 @@ $(document).on "focus", "[data-behaviour~='datepicker']", (e) ->
  - weekStart: 1
  - autoclose: true
  
-$(document).ready ->
-  $("#t_week").change ->
-    window.location.search = 'wk=' + (this).value
+$ ->
+	$("#t_range").on "click", (e) ->
+		e.preventDefault()
+		console.log("caught button click")
+		window.location.search = 'fy=' + $("#t_fy").val() + '&wkrange=' + prompt("Week Range?","")
+		
+	$("#t_week").change ->
+   		window.location.search = 'wk=' + (this).value + '&fy=' + $("#t_fy").val()
+    
+    $("#t_fy").change ->
+    	window.location.search = 'wk=' + $("#t_week").val() + '&fy=' + (this).value
+

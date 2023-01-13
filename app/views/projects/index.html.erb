@@ -126,14 +126,15 @@
 			<th></th>
 		<% end %>
 	  </tr>
-	<% @projects.where(:active => true).each do |project|  %>
+
+	  <% @projects.select {|a,p| p.active}.each do |a,project| %>
 	  <tr>
 		<td class="link"><u><%= link_to project.name, project %></u></td>
 		<td><%= project.upl_number %></td>
 		<td><%= display_name_for("category",project.category) %></td>
 		<td><%= project.owner.name %></td>
 		<td><%= project.description %></td>
-		<td><%= current_allocation(project, 1) %></td>
+		<td><%= a %></td>
 		<td><%= (ytd_allocation(project, 1, @fy).to_d/current_week()).round(1) %></td>
 		<% if current_user.admin %>
 			<td><%= if !project.initiative.nil? then project.initiative.name end %></td>
@@ -143,14 +144,15 @@
 	  </tr>  
 	<% end %>
 	<% if current_user.admin %>
-		<% @projects.where(:active => false).each do |p| %>
+
+			<% @projects.select {|a,prj| !prj.active}.each do |a,p| %>
 			<tr>
 				<td class="link"><u><%= link_to p.name, p %></u></td>
 				<td><%= p.upl_number %></td>
 				<td><%= display_name_for("category",p.category) %></td>
 				<td><%= p.owner.name %></td>
 				<td><%= p.description %></td>
-				<td><%= current_allocation(p) %></td>
+				<td><%= a %></td>
 				<td><%= ytd_allocation(p) %></td>
 				<td><%= p.initiative_id %></td>
 				<td><%= if p.active then "Active" else "Closed" end %></td>

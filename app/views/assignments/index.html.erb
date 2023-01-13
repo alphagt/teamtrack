@@ -22,7 +22,11 @@
 	</td>
 	<tr>
 		<td class="danger">
-			<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wk => @wk) %>
+			<% if @tperiod.length > 1 then %>
+				<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wkrange => @wrange) %>				
+			<% else %>
+				<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wk => @wk) %>
+			<% end %>
 		</td>	
 </table>
 <% end %>

@@ -18,8 +18,8 @@ class AssignmentsController < ApplicationController
 	end
 	wr = []
 	if params[:wkrange].present?
-
-		ia = params[:wkrange].split(',')
+		@wrange = params[:wkrange]
+		ia = @wrange.split(',')
 		ia.each do |w|
 			if w.include?('...')
 				b = w.split('...')

@@ -326,8 +326,13 @@ class ProjectsController < ApplicationController
 	puts "user scoped project list:"
 	puts @projects.count
 	
-	prj = @projects.map{ |p| [view_context.current_allocation(p,1),p] }.to_h
-	@projects = prj.sort_by {|alloc,p| alloc}.reverse
+	prj = @projects.map{ |p| [view_context.current_allocation(p,1).to_s + "_" + p.id.to_s,p] }.to_h
+#	TODO - use this sort once we add grouped view on projects index view
+#	@projects = prj.sort_by {|alloc,p| [p.category, -alloc]}
+
+	@projects = prj.sort_by {|alloc,p| [alloc]}.reverse
+	
+	puts @projects.to_h.keys
 	
     respond_to do |format|
       format.html # index.html.erb

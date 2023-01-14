@@ -134,7 +134,7 @@
 		<td><%= display_name_for("category",project.category) %></td>
 		<td><%= project.owner.name %></td>
 		<td><%= project.description %></td>
-		<td><%= a %></td>
+		<td><%= a.split("_")[0] %></td>
 		<td><%= (ytd_allocation(project, 1, @fy).to_d/current_week()).round(1) %></td>
 		<% if current_user.admin %>
 			<td><%= if !project.initiative.nil? then project.initiative.name end %></td>
@@ -152,7 +152,7 @@
 				<td><%= display_name_for("category",p.category) %></td>
 				<td><%= p.owner.name %></td>
 				<td><%= p.description %></td>
-				<td><%= a %></td>
+				<td><%= a.split("_")[0] %></td>
 				<td><%= ytd_allocation(p) %></td>
 				<td><%= p.initiative_id %></td>
 				<td><%= if p.active then "Active" else "Closed" end %></td>

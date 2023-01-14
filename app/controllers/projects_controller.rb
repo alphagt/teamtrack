@@ -330,7 +330,7 @@ class ProjectsController < ApplicationController
 #	TODO - use this sort once we add grouped view on projects index view
 #	@projects = prj.sort_by {|alloc,p| [p.category, -alloc]}
 
-	@projects = prj.sort_by {|alloc,p| [alloc]}.reverse
+	@projects = prj.sort_by {|alloc,p| [alloc.split('_')[0]]}.reverse
 	
 	puts @projects.to_h.keys
 	

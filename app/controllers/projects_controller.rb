@@ -153,7 +153,8 @@ class ProjectsController < ApplicationController
 			else
 				pVal = "0"
 			end
-			@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + pVal + "%"
+			#@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + pVal + "%"	
+			@clabels_ytd << key + "-" + pVal + "%"
 		end	
 	end
 	puts "## YTD Hash labels, values "
@@ -210,7 +211,9 @@ class ProjectsController < ApplicationController
 			else
 				pVal = "0"
 			end
-			@clabels_qtd << view_context.display_name_for(Setting.for_key("p_cust_1")[0].value,key).truncate(11) + "-" + pVal + "%"
+			# @clabels_qtd << view_context.display_name_for(Setting.for_key("p_cust_1")[0].value,key).truncate(11) + "-" + pVal + "%"
+			@clabels_qtd << key + "-" + pVal + "%"
+
 		end	
 		puts @clabels_qtd.to_s
 	
@@ -353,6 +356,7 @@ class ProjectsController < ApplicationController
 		puts r
 		i = r.to_h
 		puts i
+		#process columns with labels that match 'reserved' names: ISSUE KEY, DESCRIPTION, SUMMARY, RTM, CATEGORY
 		pid = i['Issue key'].split("-")[1].to_i || -1
 		desc = ""
 		rtm = ""
@@ -361,8 +365,9 @@ class ProjectsController < ApplicationController
 		end
 		if i['RTM'] then
 			puts "Find setting value for RTM: " + i['RTM']
+			#get known picklist value associated with imported value
 			s = Setting.for_account(@aid).fing_by_displayname(i['RTM'])
-			rtm = s.value || i['RTM']
+			rtm = s.value || i['RTM'] #use found picklist val or insert the imported value as is
 		else
 			if i[view_context.get_cfield_name("p_cust_2")] then
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
@@ -370,8 +375,9 @@ class ProjectsController < ApplicationController
 		end
 		if i['Category'] then
 			puts "Find setting value for category: " + i['Category']
+			#lookup whether the imported category value is a picklist item in teamview
 			s = Setting.for_account(@aid).find_by_displayname(i['Category'])
-			cat = s.value || i['Category']
+			cat = s.value || i['Category'] #associate to picklist if possible or set to imported value
 		end
 		
 		puts pid.to_s

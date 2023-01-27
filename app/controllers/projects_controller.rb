@@ -366,7 +366,7 @@ class ProjectsController < ApplicationController
 		if i['RTM'] then
 			puts "Find setting value for RTM: " + i['RTM']
 			#get known picklist value associated with imported value
-			s = Setting.for_account(@aid).fing_by_displayname(i['RTM'])
+			s = Setting.for_account(@aid).find_by_displayname(i['RTM'])
 			rtm = s.value || i['RTM'] #use found picklist val or insert the imported value as is
 		else
 			if i[view_context.get_cfield_name("p_cust_2")] then

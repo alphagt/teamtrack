@@ -367,7 +367,11 @@ class ProjectsController < ApplicationController
 			puts "Find setting value for RTM: " + i['RTM']
 			#get known picklist value associated with imported value
 			s = Setting.for_account(@aid).find_by_displayname(i['RTM'])
-			rtm = s.value || i['RTM'] #use found picklist val or insert the imported value as is
+			if !s.nil?
+				rtm = s.value
+			else
+			 	rtm = i['RTM'] #use found picklist val or insert the imported value as is
+			end
 		else
 			if i[view_context.get_cfield_name("p_cust_2")] then
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
@@ -377,7 +381,11 @@ class ProjectsController < ApplicationController
 			puts "Find setting value for category: " + i['Category']
 			#lookup whether the imported category value is a picklist item in teamview
 			s = Setting.for_account(@aid).find_by_displayname(i['Category'])
-			cat = s.value || i['Category'] #associate to picklist if possible or set to imported value
+			if !s.nil?
+				cat = s.value
+			else
+				cat = i['Category'] #associate to picklist if possible or set to imported value
+			end
 		end
 		
 		puts pid.to_s

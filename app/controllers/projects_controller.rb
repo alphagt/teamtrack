@@ -352,58 +352,132 @@ class ProjectsController < ApplicationController
     tFile = params[:file]
     newproj = []
     cols = [:account_id, :active, :name, :rtm, :upl_number, :owner_id, :description, :category, :fixed_resource_budget]
+	fieldMappingsChecked = false
+	#setup default field names hash
+	iFields = Hash.new()
+	iFields['name'] = 'name'
+	iFields['rtm'] = 'rtm'
+	iFields['upl_number'] = 'upl_number'
+	iFields['description'] = 'description'
+	iFields['category'] = 'category'
+	iFields['owner_email'] = 'email'
+	iFields['owner_name'] = 'owner'
+	
 	CSV.foreach(tFile.path, headers: true) do |r|
 		puts r
-		i = r.to_h
+		i = r.to_h.with_indifferent_access
+		puts "RAW HASH ---"
+		puts i.keys().first.chars
+		plug = i.keys().first.encode("ASCII", "UTF-8", undef: :replace)
+				
+		if i.keys().first != plug then
+			#special handling for Jira Summary field due to ruby hash wierdness with key 'summary'
+			puts "EXCEPTION - Handling reserved word key Summary"	
+			i[plug.tr('?','')] = i.delete i.keys().first
+			i = i.transform_keys(&:downcase)
+		else
+			i = r.to_h.transform_keys(&:downcase)
+		end
+		puts "CLEAN HASH"
 		puts i
-		#process columns with labels that match 'reserved' names: ISSUE KEY, DESCRIPTION, SUMMARY, RTM, CATEGORY
-		pid = i['Issue key'].split("-")[1].to_i || -1
+		
+		
+		#get import settings for this tennant and add to iFields hash once on first record
+		if !fieldMappingsChecked then
+			cfname = Setting.for_account(@aid).find_by_key("p_cust_5").value
+			puts "cfname " + cfname
+			imap = Setting.for_account(@aid).for_key(cfname) #get any configured import mappings
+			#check if the imported data has any filed names that are mapped
+			imap.each do |h|
+				f = i.select {|k,v| k.include? h.displayname.downcase}
+				if !f.nil?
+					iFields[h.value] = h.displayname.downcase
+					puts "added " + h.displayname.downcase + " for project field " + h.value
+				else
+					puts "Didn't find import column for " + h.value
+				end
+			end
+			puts "MAPPED FIELDS FOUND ===== " 
+			puts iFields.to_s
+			fieldMappingsChecked = true
+		end
+		
+		#process columns with labels that match 'reserved' names: ISSUE KEY, DESCRIPTION, RTM, CATEGORY
+		if iFields['upl_number'] == "issue key" then  
+			#this is a jira import so trim the project key off the issue number
+			puts "PROCESS JIRA ISSUE KEY"
+			pid = i[iFields['upl_number']].split("-")[1].to_i || Project.for_account(@aid).pluck(:upl_number).max + 1
+		else
+			pid = i[iFields['upl_number']].to_i || Project.for_account(@aid).pluck(:upl_number).max + 1
+		end
+		
 		desc = ""
 		rtm = ""
-		if i['Description'] then
-			desc = i['Description'].truncate(150, separator: ' ')
+		if i[iFields['description']] then
+			desc = i[iFields['description']].truncate(150, separator: ' ')
 		end
-		if i['RTM'] then
-			puts "Find setting value for RTM: " + i['RTM']
+		if i[iFields['rtm']] then
+			puts "Find setting value for RTM: " + i[iFields['rtm']]
 			#get known picklist value associated with imported value
-			s = Setting.for_account(@aid).find_by_displayname(i['RTM'])
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['rtm']])
 			if !s.nil?
 				rtm = s.value
 			else
-			 	rtm = i['RTM'] #use found picklist val or insert the imported value as is
+			 	rtm = i[iFields['rtm']] #use found picklist val or insert the imported value as is
 			end
-		else
+		else #case of no explicit mapping but import has field with same custom displayname
 			if i[view_context.get_cfield_name("p_cust_2")] then
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
 			end
 		end
-		if i['Category'] then
-			puts "Find setting value for category: " + i['Category']
+		if i[iFields['category']] then
+			puts "Find setting value for category: " + i[iFields['category']]
 			#lookup whether the imported category value is a picklist item in teamview
-			s = Setting.for_account(@aid).find_by_displayname(i['Category'])
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['category']])
 			if !s.nil?
 				cat = s.value
 			else
-				cat = i['Category'] #associate to picklist if possible or set to imported value
+				cat = i[iFields['category']] #associate to picklist if possible or set to imported value
 			end
 		end
 		
-		puts pid.to_s
-		if Project.for_account(@aid).find_by_upl_number(pid).nil? then
+		if i['summary'] then
+			pname = i[iFields['name']]
+		else
+			pname = "undefined"
+			puts "FAILED to find project name"
+		end
+		
+		if !i[iFields['owner_email']].blank? then
+			oUser = User.for_account(@aid).for_email(i[iFields['owner_email']]) 
+		else
+			if !i[iFields['owner_name']].blank? then
+				puts "Failed to find owner by email, checking by name: " + i[iFields['owner_name']]
+				#use project owner name to try and resolve owner in teamview 
+				oUser = User.for_account(@aid).find_by_name(i[iFields['owner_name']])
+			end
+		end
+		if oUser.respond_to?(:id) then
+			puts "oUser from file = " + oUser.name
+			if oUser.ismanager
+				oid = oUser.id
+			else
+				oid = oUser.manager_id || "1"
+			end
+		else
+			oid = "1"
+		end
+		puts "Owner Resolved to " + User.find_by_id(oid).name
+		oUser = nil
+		
+		puts "UID = " + pid.to_s
+		tProj = Project.for_account(@aid).find_by_upl_number(pid)
+		if tProj.nil? then
 			puts i.keys
 			p = Hash.new()
-			oUser = User.for_email(i['Owner'])
-			if oUser.respond_to?(:id) then
-				if oUser.ismanager
-					oid = oUser.id
-				else
-					oid = oUser.manager_id || "1"
-				end
-			else
-				oid = "1"
-			end
+			
 			p[:active] = true
-			p[:name] = i['Summary']
+			p[:name] = pname
 			p[:upl_number] = pid
 			p[:owner_id] = oid
 			p[:description] = desc
@@ -415,6 +489,20 @@ class ProjectsController < ApplicationController
 			newproj << p
 		else
 			puts "Found Existing Project by Id"
+			puts "    : " + tProj.id.to_s
+			u = Hash.new()
+			
+			u[:name] = pname
+			u[:owner_id] = oid
+			u[:description] = desc
+			u[:category] = cat
+			u[:rtm] = rtm
+			
+			puts "UPDATE HASH VALUE:   "
+			puts u.to_s
+			unless Project.update(tProj.id,u)
+				puts "FAILED UPDATE of EXISTING PROJECT"			
+			end
 		end
 	end	
 		

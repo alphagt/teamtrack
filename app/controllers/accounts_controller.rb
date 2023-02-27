@@ -112,6 +112,10 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 		
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_5', :value => 'imap', :displayname => 'Import Mapping', :description => 'Custom field for projects.  Admin can define import mappings between project fileds (value), and import column names (display value)'
+		set.save
+		puts 'added ' << set.key
+		
 		#Add system user 'ExEmployeeMgr' for this new account
 		user = User.create! :primary_account_id => @account.id, :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, 
 			:password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => @account.id.to_s + '-System', :admin => false, :manager_id => pa.id, :etype => 'FTE', :category => 'MGMT'

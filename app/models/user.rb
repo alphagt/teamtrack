@@ -95,6 +95,8 @@ class User < ApplicationRecord
   	accts
   end
   
+  
+  
   def primary_account_id=(val)
   	
   	write_attribute(:primary_account_id, val)

@@ -74,6 +74,7 @@ class AssignmentsController < ApplicationController
   def new
     @manager = current_user
     @aid = current_user.primary_account_id
+    @plist = Project.for_account(@aid).active.by_name.pluck(:name)
     puts 'IN NEW CONTROLER'
     #puts params.to_s
     if params.has_key?(:assignment)

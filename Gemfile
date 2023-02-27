@@ -60,6 +60,8 @@ gem 'bootstrap-sass'
 gem 'bootstrap-datepicker-rails'
 gem 'autoprefixer-rails'
 gem 'googlecharts'
+gem 'bootstrap3_autocomplete_input'
+
 
 #Excel Export Gem
 gem 'axlsx_rails'

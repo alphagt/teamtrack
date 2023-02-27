@@ -14,6 +14,9 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
+//= require bootstrap3-typeahead.min
+//= require bootstrap3-autocomplete-input
+//= require bootstrap3-autocomplete-input-init-turbolinks
 //= require users
 //= require_tree .
 

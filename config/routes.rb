@@ -20,6 +20,7 @@ TeamTrack::Application.routes.draw do
   resources :projects do
   	get 'archive', :on => :member
   	post 'import', :on => :collection
+  	get :autocomplete_project_name, :on => :collection
   end
   
   resources :tech_systems do

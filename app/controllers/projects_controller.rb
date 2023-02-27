@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+	autocomplete :project, :name, :full => true
 	before_action :authenticate_user!
 	before_action :require_verified
 	before_action :require_admin,  :except => [:index, :show] 
@@ -26,7 +27,10 @@ class ProjectsController < ApplicationController
 	#*****************************
   end
   
-  
+ def get_autocomplete_items(parameters)
+ 	items = Project.for_account(current_user.primary_account_id).
+ 		active.select("id, name").order("name")
+ end
   
   # GET /projects
   # GET /projects.json

@@ -85,4 +85,5 @@ class Project < ApplicationRecord
 		#**********
 		@ytd.to_d.round(2)
 	end
+	
 end

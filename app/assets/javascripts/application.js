@@ -14,14 +14,23 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
-//= require bootstrap3-typeahead.min
-//= require bootstrap3-autocomplete-input
-//= require bootstrap3-autocomplete-input-init-turbolinks
 //= require users
+//= require select2
 //= require_tree .
 
 $(document).on("focus", "[data-behaviour~='datepicker']", function(e){
     $(this).datepicker({"format": "yyyy-mm-dd", "weekStart": 1, "autoclose": true})
 });
+
+(function($){
+   "use strict";
+    $(document).on('ready', function(){
+        $("#project_list").select2({
+            allowClear: true,
+            theme: "bootstrap"
+        });
+    });
+}(jQuery));
+
 
 

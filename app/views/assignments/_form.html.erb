@@ -47,7 +47,8 @@
 			<%= f.input :effort, :autofocus => true %>
 			<%= f.association :tech_system, :as => :select, :collection => TechSystem.for_account(@aid).by_name, :labelmethod => :name,
 			label: display_name_for('sys_names', 'service'), :required => true %>
-			<%= f.association :project, :as => :select, :collection => Project.for_account(@aid).active.by_name, :required => true, input_html: {class: 'ui-autocomplete-input', data: {autocomplete_source: autocomplete_project_name_projects_path} }%>
+			<%= f.association :project, :collection => Project.for_account(@aid).active.by_name, :labelmethod => :name, 
+			:required => true, input_html: {class: 'select2 form-field', id: 'project_list'}%>
 			<br/>
 			<div class="form-actions">
 				<%= f.button :submit %>

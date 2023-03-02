@@ -7,7 +7,7 @@ $(document).on "focus", "[data-behaviour~='datepicker']", (e) ->
  - weekStart: 1
  - autoclose: true
  
-$ ->
+$ ->			
 	$("#t_range").on "click", (e) ->
 		e.preventDefault()
 		console.log("caught button click")

@@ -1,5 +1,4 @@
 class ProjectsController < ApplicationController
-	autocomplete :project, :name, :full => true
 	before_action :authenticate_user!
 	before_action :require_verified
 	before_action :require_admin,  :except => [:index, :show] 

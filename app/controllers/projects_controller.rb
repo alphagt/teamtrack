@@ -444,7 +444,7 @@ class ProjectsController < ApplicationController
 			end
 		end
 		
-		if i['summary'] then
+		if i[iFields['name']] then
 			pname = i[iFields['name']]
 		else
 			pname = "undefined"
@@ -495,7 +495,9 @@ class ProjectsController < ApplicationController
 			puts "    : " + tProj.id.to_s
 			u = Hash.new()
 			
-			u[:name] = pname
+			if pname != 'undefined' then
+				u[:name] = pname
+			end
 			u[:owner_id] = oid
 			u[:description] = desc
 			u[:category] = cat

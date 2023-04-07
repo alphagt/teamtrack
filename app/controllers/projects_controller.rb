@@ -301,7 +301,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << view_context.display_name_for(Setting.for_key("p_cust_2")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	
@@ -314,7 +314,7 @@ class ProjectsController < ApplicationController
 		puts "STAKEHOLDER RAW DATA"
 		puts psheffort.to_s
 
-		combinedpsh = calc_chart_data(psheffort,'p_cust_2').except("NA")
+		combinedpsh = calc_chart_data(psheffort,'p_cust_3').except("NA")
 
 		#### set the variables used in the view for charting
 		puts "FINAL PSH HASH"
@@ -322,7 +322,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedpsh.map do |k,v|
-			alabs << view_context.display_name_for(Setting.for_key("p_cust_3")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_3")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@pshlabels = alabs
 		@pshVals = combinedpsh.values	

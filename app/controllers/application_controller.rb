@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
 		allocateKeys = Setting.for_account(aid).for_key(key1).where('value LIKE ?', "%.all%")
 		exludeKeys = Setting.for_account(aid).for_key(key1).where('value LIKE ?', "%.ex%")
 		puts 'Exclude Keys ' + exludeKeys.length.to_s
+		puts 'Alloc Keys ' + allocateKeys.length.to_s
 		cCount = cCount - exludeKeys.length
 		if allocateKeys.length > 0 then
 			puts "FOUND ALLOCATION Catgory VALUE"

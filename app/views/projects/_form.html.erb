@@ -41,7 +41,7 @@
 			<div class="control-group select optional project_psh">
 				<label class="select optional control-label" for="projeect_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
 					<div class="controls">
-						<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,false,@aid), @project.psh))  %>
+						<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,true,@aid), @project.psh))  %>
 					</div>
 			</div>
 		<% end %>

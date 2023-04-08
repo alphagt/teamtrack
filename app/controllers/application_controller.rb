@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 		aid = current_user.primary_account_id
 		#####  Handle .allocate effort categories for YTD #######
 		combined = rs.to_h
-		key1 = Setting.for_account(aid).for_key(dimKey).first.value #the key for settings of type dimKey
+		key1 = Setting.for_account(aid).core_only.for_key(dimKey).first.value #the key for settings of type dimKey
 		#handle missing keys in passed in data
 		Setting.for_account(aid).for_key(key1).each do |s|
 			
@@ -83,11 +83,6 @@ class ApplicationController < ActionController::Base
 					else
 						combined.delete(k) #delete the .alloc key so it doesn't show up
 					end
-				else
-					puts "FOUND EXDCLUDE KEY"
-					if v == 0 then
-						combined.delete(k) #delete empty keys
-					end
 				end
 			end
 			puts 'UPDATE Hash - ' + update.to_s
@@ -97,6 +92,15 @@ class ApplicationController < ActionController::Base
 		else
 			puts "NO ALLOC KEYS FOUND"
 		end
+		
+		#remove the exclude keys
+		combined.map do |k,v|
+			if exludeKeys.where("value = ?", k).length > 0
+				puts "REMOVING EXCLUDE KEY: " + k
+				puts combined.delete(k).to_s
+			end
+		end
+		
 		 
 		combined.sort_by {|k,v| k.to_s}.to_h
 	end

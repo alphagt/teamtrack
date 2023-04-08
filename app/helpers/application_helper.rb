@@ -330,6 +330,7 @@ module ApplicationHelper
 	
 	def get_picklist(key, proj = nil, showval = false, aid = -1)
 		puts "get_picklist in account id: " + aid.to_s
+		puts "--- FOR KEY: " + key
 		if aid == -1
 			aid = current_user.primary_account_id
 		else

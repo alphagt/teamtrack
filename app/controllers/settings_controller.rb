@@ -59,9 +59,11 @@ class SettingsController < ApplicationController
   def update
   	puts params
     s = Setting.find(params[:id])
+    oldVal = s.value
     newVal = params[:setting][:value]
     val = newVal.split(".")
     puts val
+    @aid = current_user.primary_account_id
     
     if val.length > 1 then
     	if val[1].include?("ex") && params[:tags][:ex] == "0" then
@@ -82,6 +84,7 @@ class SettingsController < ApplicationController
     		newVal += ".allocate"
     	end
     end
+	
 
     if s.value == "fy offset" then
     	@old_offset = Setting.find(params[:id]).displayname.to_i
@@ -89,7 +92,7 @@ class SettingsController < ApplicationController
 #     	puts "new Offset ?", @new_offset
     	@dif = @old_offset - @new_offset
     	 #do something to update existing assignments in the current fy
-      	asnPerDate = Assignment.select("set_period_id").distinct.pluck(:set_period_id)
+      	asnPerDate = Assignment.for_account(@aid).select("set_period_id").distinct.pluck(:set_period_id)
       	puts "Date Correction Update Quant: ?", asnPerDate.count
       	asnPerDate.each do |a|
 #       	puts 'IN Update Assignments Block'
@@ -99,18 +102,25 @@ class SettingsController < ApplicationController
 #       	puts d.to_s
       		newP = view_context.period_from_date(d,@new_offset)
 #       	puts newP
-      		Assignment.where("set_period_id = ?", a).update_all(set_period_id: newP)
+      		Assignment.for_account(@aid).where("set_period_id = ?", a).update_all(set_period_id: newP)
       	end
     end
     
     if @setting.update(setting_params)
-    	if s.key = "rtm" && s.value != params[:setting][:value] then
+    	puts "Old value: " + oldVal
+    	puts "New Val: " + newVal
+    	if s.key = "rtm" && oldVal != newVal then
+    		puts "Cascade-Update RTM due to change from prior value: " + s.value
     		#value changes so need to update project attributes where appropriate
-    		Project.where("rtm = ?", s.value).update_all(rtm: params[:setting][:value])
+    		Project.for_account(@aid).where("rtm = ?", s.value).update_all(rtm: newVal)
     	end
-    	if s.key = "category" && s.value != params[:setting][:value] then
+    	if s.key = "category" && s.value != newVal then
     		#value changes so need to update project attributes where appropriate
-    		Project.where("category = ?", s.value).update_all(category: params[:setting][:value])
+    		Project.for_account(@aid).where("category = ?", s.value).update_all(category: newVal)
+    	end
+    	if s.key = "psh" && s.value != newVal then
+    		#value changes so need to update project attributes where appropriate
+    		Project.for_account(@aid).where("psh = ?", s.value).update_all(psh: newVal)
     	end
     	#modify value to include tags if required
     	if params[:setting][:value] != newVal then

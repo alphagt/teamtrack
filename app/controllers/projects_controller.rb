@@ -687,6 +687,6 @@ private
 #   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
 
 	  params.require(:project).permit(:owner, :initiative, :active, :description, :category, :name, :owner_id,
-  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :account_id)
+  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :account_id, :end_date)
 	end
 end

@@ -39,9 +39,17 @@
 		<% end %>
 		<% if !Setting.for_account(@aid).find_by_key('division').nil? %>
 			<div class="control-group select optional project_psh">
-				<label class="select optional control-label" for="projeect_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
+				<label class="select optional control-label" for="project_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
 					<div class="controls">
 						<%= f.select(:psh, options_for_select(get_picklist("p_cust_3",nil,true,@aid), @project.psh))  %>
+					</div>
+			</div>
+		<% end %>
+		<% if !Setting.for_account(@aid).find_by_key('team').nil? %>
+			<div class="control-group select optional project_tribe">
+				<label class="select optional control-label" for="project_tribe"><%= get_cfield_name("p_cust_5") + ":"%></label>
+					<div class="controls">
+						<%= f.select(:tribe, options_for_select(get_picklist("p_cust_5",nil,true,@aid), @project.tribe))  %>
 					</div>
 			</div>
 		<% end %>

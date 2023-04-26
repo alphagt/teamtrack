@@ -93,6 +93,17 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 		
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "team", :displayname => 'Team',
+			:description => 'Custom field for project team.  Admin can define visible name by setting displayname on this setting.  
+				picklist values can be added to settings with p_cust_6 as the key for those settings.'
+		set.save
+		puts 'added ' << set.key
+		
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_7', :value => "end_date", :displayname => 'ShipDate',
+			:description => 'Custom field for project end date.  Admin can define visible name by setting displayname on this setting.'
+		set.save
+		puts 'added ' << set.key
+		
 		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'ts_cust_1', :value => "sgroup", :displayname => 'Service group',
 			:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with ts_cust_1 as the key for those settings.'
@@ -100,7 +111,7 @@ class AccountsController < ApplicationController
 		puts 'added ' << set.key
 		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'ts_cust_2', :value => "stype", :displayname => 'Service type', 
 			:description => 'Custom field for tech systems.  Admin can define visible name by setting displayname on this setting.  
-				picklist values can be added to settings with ts_cust_1 as the key for those settings.'
+				picklist values can be added to settings with ts_cust_2 as the key for those settings.'
 		set.save
 		puts 'added ' << set.key
 		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'u_cust_1', :value => 'etype', :displayname => 'Employee Type', 

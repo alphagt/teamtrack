@@ -57,6 +57,68 @@ class AssignmentsController < ApplicationController
       format.xlsx {response.headers['Content-Disposition'] = @fname}
     end
   end
+  
+  # GET /assignments
+  # GET /assignments.json
+  def summary
+  	if params[:wk].present?
+		@wk = params[:wk].to_i
+	else
+		@wk = view_context.current_week().to_i
+	end
+	if params[:fy].present?
+		@fy = params[:fy].to_f
+	else
+		@fy = view_context.current_fy().to_f
+	end
+	wr = []
+	if params[:wkrange].present?
+		@wrange = params[:wkrange]
+		ia = @wrange.split(',')
+		ia.each do |w|
+			if w.include?('...')
+				b = w.split('...')
+				it = b.first.to_i
+				stop = b.last.to_i
+				while it <= stop do
+					wr << @fy + (it.fdiv(100).round(3))
+					it += 1
+				end
+			else
+				it = w.to_i
+				wr << @fy + (it.fdiv(100).round(3))
+			end
+			puts "Period Array --------"
+			puts wr.join(',')
+			
+		end
+	else
+		wr << @fy + (@wk.fdiv(100).round(3))
+	end
+	@tperiod = wr
+	
+	@fname = "attachment; filename=\"TTAssignmentsSummary" + @wk.to_s + ".xlsx\""
+	puts @fname
+	
+	
+	puts "Target Period for Assignments"
+	puts @tperiod.join(',')
+	
+	@p_list = Assignment.recent(@tperiod.min).group(:project_id).pluck(:project_id)
+		
+  	@assignments = Assignment.includes(:project,:user).where('project_id in(?)', @p_list).
+  		group('projects.id','users.id').sum(:effort)
+  		
+  	puts 'Summary Assignments List: '
+  	puts @assignments
+  	
+	@manager = current_user
+    respond_to do |format|
+      format.html # summary.html.erb
+      format.json { render json: @assignments }
+      format.xlsx {response.headers['Content-Disposition'] = @fname}
+    end
+  end
 
   # GET /assignments/1
   # GET /assignments/1.json

@@ -15,6 +15,7 @@ TeamTrack::Application.routes.draw do
   resources :assignments do
   	#get 'new', :on => :member
   	get 'extend', :on => :member
+  	get 'summary', :on => :collection
   end
 
   resources :projects do

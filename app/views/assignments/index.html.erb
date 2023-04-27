@@ -23,9 +23,17 @@
 	<tr>
 		<td class="danger">
 			<% if @tperiod.length > 1 then %>
-				<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wkrange => @wrange) %>				
+				<%= link_to 'Download Selected View as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wkrange => @wrange) %>				
 			<% else %>
-				<%= link_to 'Download Selected Week as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wk => @wk) %>
+				<%= link_to 'Download Selected View as .xlsx', assignments_path(format: :xlsx, :fy => @fy, :wk => @wk) %>
+			<% end %>
+		</td>
+	<tr>
+		<td class="danger">
+			<% if @tperiod.length > 1 then %>
+				<%= link_to 'Effort Summary for Selected Weeks', summary_assignments_path(format: :html, :fy => @fy, :wkrange => @wrange) %>				
+			<% else %>
+				<%= link_to 'Effort Summary for Selected Weeks', summary_assignments_path(format: :html, :fy => @fy, :wk => @wk) %>
 			<% end %>
 		</td>	
 </table>

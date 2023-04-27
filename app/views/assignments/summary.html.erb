@@ -1,0 +1,70 @@
+<h1>Effort Summary</h1>
+<% content_for :nav do %>
+	<%  render partial: "layouts/navigation", locals: {active: "assignments"} %>
+<% end %>
+
+<% content_for :sidebarwide do %>
+<table class="table">
+	<tr>
+	<td class="danger">
+		<label for="t_fy"><%= "Fiscal Year:"%></label>
+		<%= select_tag "t_fy", options_for_select(fy_list(), @fy.to_i) %>
+	</td>
+	<tr>
+	<td class="danger">
+		<label for="t_week"><%= "Target Week:"%></label>
+		<%= select_tag "t_week", options_for_select(w_list(), @wk) %>
+	</td>
+	<tr>
+	<td class="danger">
+		<label for="t_range"><%= "Week Range:"%></label>
+		<%= button_tag 'Custom Range', type: 'button', name: "t_range", id:"t_range" %>
+	</td>
+	<tr>
+		<td class="danger">
+			<% if @tperiod.length > 1 then %>
+				<%= link_to 'Download Selected View as .xlsx', summary_assignments_path(format: :xlsx, :fy => @fy, :wkrange => @wrange) %>				
+			<% else %>
+				<%= link_to 'Download Selected View as .xlsx', summary_assignments_path(format: :xlsx, :fy => @fy, :wk => @wk) %>
+			<% end %>
+		</td>
+	<tr>
+		<td class="danger">
+			<% if @tperiod.length > 1 then %>
+				<%= link_to 'Full View for Selected Weeks', assignments_path(format: :html, :fy => @fy, :wkrange => @wrange) %>				
+			<% else %>
+				<%= link_to 'Full View for Selected Weeks', assignments_path(format: :html, :fy => @fy, :wk => @wk) %>
+			<% end %>
+		</td>	
+</table>
+<% end %>
+
+<% content_for :main1 do %>
+<table class="table">
+  <tr>
+    <th>Project</th>
+    <th>User</th>
+    <th>Effort</th>
+    <th>Is Active</th>
+    <th>End Date</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @assignments.each do |a| %>
+  <% @p = Project.find_by_id(a[0][0]) %>
+  <tr>
+    <td><%= @p.name %></td>
+    <td><%= User.find_by_id(a[0][1]).name %></td>
+ 	<td><%= a[1].to_s %></td>
+    <td><%= @p.active %></td>
+    <% if @p.end_date.nil? then %>
+    	<td>In Progress</td>
+    <% else %>
+    	<td><%= @p.end_date %></td>
+    <% end %>
+  </tr>
+<% end %>
+
+</table>
+<% end %>

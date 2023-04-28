@@ -330,7 +330,6 @@ module ApplicationHelper
 	
 	def get_picklist(key, proj = nil, showval = false, aid = -1)
 		puts "get_picklist in account id: " + aid.to_s
-		puts "--- FOR KEY: " + key
 		if aid == -1
 			aid = current_user.primary_account_id
 		else
@@ -426,7 +425,8 @@ module ApplicationHelper
 	
 	def orgs_hash()
 		ohash = Hash.new
-		User.managers_only.where("orgowner = true").each do  |u|
+		aid = current_user.primary_account_id
+		User.for_account(aid).managers_only.where("orgowner = true").each do  |u|
 			if u.manager.nil? || !u.manager.orgowner
 				ohash[u.org] = u.name
 			else

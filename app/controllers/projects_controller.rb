@@ -475,6 +475,10 @@ class ProjectsController < ApplicationController
 		
 		puts "UID = " + pid.to_s
 		tProj = Project.for_account(@aid).find_by_upl_number(pid)
+		#retry using name match incase of shift in JIRA ids
+		if tProj.nil? then
+			tProj = Project.for_account(@aid).find_by_name(pname)
+		end
 		if tProj.nil? then
 			puts i.keys
 			p = Hash.new()
@@ -491,13 +495,14 @@ class ProjectsController < ApplicationController
 			puts p.to_s
 			newproj << p
 		else
-			puts "Found Existing Project by Id"
-			puts "    : " + tProj.id.to_s
+			puts "Found Existing Project by Id or Name"
+			puts "    : " + tProj.name
 			u = Hash.new()
 			
 			if pname != 'undefined' then
 				u[:name] = pname
 			end
+			u[:upl_number] = pid
 			u[:owner_id] = oid
 			u[:description] = desc
 			u[:category] = cat

@@ -54,10 +54,10 @@
 <% @assignments.each do |a| %>
   <% @p = Project.find_by_id(a[0][0]) %>
   <tr>
-    <td><%= @p.name %></td>
+    <td><%= if @p.name.nil? then "Undefined: " + a[0][0].to_s else @p.name end %></td>
     <td><%= User.find_by_id(a[0][1]).name %></td>
  	<td><%= a[1].to_s %></td>
-    <td><%= @p.active %></td>
+    <td><%= if @p.active.nil? then "False" else @p.active end %></td>
     <% if @p.end_date.nil? then %>
     	<td>In Progress</td>
     <% else %>

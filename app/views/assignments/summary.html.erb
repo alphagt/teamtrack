@@ -58,7 +58,7 @@
     <td><%= User.find_by_id(a[0][1]).name %></td>
  	<td><%= a[1].to_s %></td>
     <td><%= if @p.nil? then "False" else @p.active end %></td>
-    <% if @p.end_date.nil? then %>
+    <% if @p.nil? || @p.end_date.nil? then %>
     	<td>In Progress</td>
     <% else %>
     	<td><%= @p.end_date %></td>

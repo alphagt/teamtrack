@@ -105,6 +105,8 @@ class AssignmentsController < ApplicationController
 	puts @tperiod.join(',')
 	
 	@p_list = Assignment.recent(@tperiod.min).group(:project_id).pluck(:project_id)
+	puts "projects list: "
+	puts @p_list
 		
   	@assignments = Assignment.includes(:project,:user).where('project_id in(?)', @p_list).
   		group('projects.id','users.id').sum(:effort)

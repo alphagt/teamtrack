@@ -13,14 +13,15 @@ wb.add_worksheet(name: "Assignments Summary ") do |sheet|
 		ishort = "NA"
 		p = Project.find_by_id(a[0][0])
 		u = User.find_by_id(a[0][1])
-		if p.initiative.present? then
-			iname = p.initiative.name
-			if p.initiative.tag.present? then ishort = p.initiative.tag end
+		if !p.nil? 
+			if p.initiative.present? then
+				iname = p.initiative.name
+				if p.initiative.tag.present? then ishort = p.initiative.tag end
+			end
+			orgOwner = hOrgOwners[u.org]
+		
+			sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1] ]
 		end
-		
-		orgOwner = hOrgOwners[u.org]
-		
-		sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1] ]
 	end
 
 end

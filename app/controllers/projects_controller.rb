@@ -451,13 +451,8 @@ class ProjectsController < ApplicationController
 		
 		if i[iFields['end_date']] then
 			puts "Find setting value for end_date: " + i[iFields['end_date']]
-			#get known picklist value associated with imported value
-			s = Setting.for_account(@aid).find_by_displayname(i[iFields['end_date']])
-			if !s.nil? && !s.value.nil? 
-				eDate = s.value
-			else
-			 	eDate =i[iFields['end_date']] #use found picklist val or insert the imported value as is
-			end
+			eDate =i[iFields['end_date']] #use found picklist val or insert the imported value as is
+
 		else #case of no explicit mapping but import has field with same custom displayname
 			if i[view_context.get_cfield_name("p_cust_7")] then
 				eDate = i[view_context.get_cfield_name("p_cust_7")]

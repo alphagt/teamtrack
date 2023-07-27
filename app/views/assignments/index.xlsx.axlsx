@@ -12,21 +12,34 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 	@assignments.each do |a|
 		iname = "NA"
 		ishort = "NA"
+		ctp = "NA"
+		pPsh = "NA"
+		pCat = "NA"
+		pRtm = "NA"
 		
-		if a.project.initiative.present? then
-			iname = a.project.initiative.name
-			if a.project.initiative.tag.present? then ishort = a.project.initiative.tag end
-		end
-		if a.project.keyproj.present? && a.project.keyproj
-			ctp = ishort + "-*" + a.project.name
+		p = a.project
+		if !p.nil? then
+			if a.project.initiative.present? then
+				iname = a.project.initiative.name
+				if a.project.initiative.tag.present? then ishort = a.project.initiative.tag end
+			end
+			if a.project.keyproj.present? && a.project.keyproj
+				ctp = ishort + "-*" + a.project.name
+			else
+				ctp = ishort + "-" + a.project.ctpriority	
+			end 
+			pName = p.name
+			pRtm = p.rtm
+			pPsh = p.psh
+			pCat = p.category
 		else
-			ctp = ishort + "-" + a.project.ctpriority	
-		end 
+			pName = "NA Project-" + a.id.toString
+		end
 		orgOwner = hOrgOwners[a.user.org]
 		
 		sheet.add_row [a.fiscal_year, a.week_number, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,
-			a.project.name, iname, a.project.rtm, a.project.psh, 
-			ctp, a.project.category ]
+			pName, iname, pRtm, pPsh, 
+			ctp, pCat ]
 	end
 
 end

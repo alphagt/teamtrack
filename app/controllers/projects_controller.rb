@@ -369,8 +369,8 @@ class ProjectsController < ApplicationController
 	CSV.foreach(tFile.path, headers: true) do |r|
 		puts r
 		i = r.to_h.with_indifferent_access
-		puts "RAW HASH ---"
-		puts i.keys().first.chars
+		# puts "RAW HASH ---"
+# 		puts i.keys().first.chars
 		plug = i.keys().first.encode("ASCII", "UTF-8", undef: :replace)
 				
 		if i.keys().first != plug then
@@ -381,8 +381,8 @@ class ProjectsController < ApplicationController
 		else
 			i = r.to_h.transform_keys(&:downcase)
 		end
-		puts "CLEAN HASH"
-		puts i
+		# puts "CLEAN HASH"
+# 		puts i
 		
 		
 		#get import settings for this tennant and add to iFields hash once on first record
@@ -423,7 +423,7 @@ class ProjectsController < ApplicationController
 			puts "Find setting value for RTM: " + i[iFields['rtm']]
 			#get known picklist value associated with imported value
 			s = Setting.for_account(@aid).find_by_displayname(i[iFields['rtm']])
-			if !s.nil?
+			if !s.nil? && !s.value.nil?
 				rtm = s.value
 			else
 			 	rtm = i[iFields['rtm']] #use found picklist val or insert the imported value as is
@@ -438,7 +438,7 @@ class ProjectsController < ApplicationController
 			puts "Find setting value for tribe: " + i[iFields['tribe']]
 			#get known picklist value associated with imported value
 			s = Setting.for_account(@aid).find_by_displayname(i[iFields['tribe']])
-			if !s.nil?
+			if !s.nil? && !s.value.nil?
 				tribe = s.value
 			else
 			 	tribe = i[iFields['tribe']] #use found picklist val or insert the imported value as is
@@ -453,14 +453,14 @@ class ProjectsController < ApplicationController
 			puts "Find setting value for end_date: " + i[iFields['end_date']]
 			#get known picklist value associated with imported value
 			s = Setting.for_account(@aid).find_by_displayname(i[iFields['end_date']])
-			if !s.nil?
-				eDate = Date.parse(s.value)
+			if !s.nil? && !s.value.nil? 
+				eDate = s.value
 			else
-			 	eDate = Date.parse(i[iFields['end_date']]) #use found picklist val or insert the imported value as is
+			 	eDate =i[iFields['end_date']] #use found picklist val or insert the imported value as is
 			end
 		else #case of no explicit mapping but import has field with same custom displayname
 			if i[view_context.get_cfield_name("p_cust_7")] then
-				eDate = Date.parse(i[view_context.get_cfield_name("p_cust_7")])
+				eDate = i[view_context.get_cfield_name("p_cust_7")]
 			end
 		end
 		
@@ -468,7 +468,7 @@ class ProjectsController < ApplicationController
 			puts "Find setting value for category: " + i[iFields['category']]
 			#lookup whether the imported category value is a picklist item in teamview
 			s = Setting.for_account(@aid).find_by_displayname(i[iFields['category']])
-			if !s.nil?
+			if !s.nil? && !s.value.nil?
 				cat = s.value
 			else
 				cat = i[iFields['category']] #associate to picklist if possible or set to imported value

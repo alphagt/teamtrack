@@ -413,7 +413,7 @@ class ProjectsController < ApplicationController
 		else
 			pid = i[iFields['upl_number']].to_i || Project.for_account(@aid).pluck(:upl_number).max + 1
 		end
-		
+		#TODO - Handle possible pid collision from using jira issue key value
 		desc = ""
 		rtm = ""
 		if i[iFields['description']] then
@@ -433,6 +433,37 @@ class ProjectsController < ApplicationController
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
 			end
 		end
+		
+		if i[iFields['tribe']] then
+			puts "Find setting value for tribe: " + i[iFields['tribe']]
+			#get known picklist value associated with imported value
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['tribe']])
+			if !s.nil?
+				tribe = s.value
+			else
+			 	tribe = i[iFields['tribe']] #use found picklist val or insert the imported value as is
+			end
+		else #case of no explicit mapping but import has field with same custom displayname
+			if i[view_context.get_cfield_name("p_cust_6")] then
+				tribe = i[view_context.get_cfield_name("p_cust_6")].truncate(50)
+			end
+		end
+		
+		if i[iFields['end_date']] then
+			puts "Find setting value for end_date: " + i[iFields['end_date']]
+			#get known picklist value associated with imported value
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['end_date']])
+			if !s.nil?
+				eDate = s.value
+			else
+			 	eDate = i[iFields['end_date']] #use found picklist val or insert the imported value as is
+			end
+		else #case of no explicit mapping but import has field with same custom displayname
+			if i[view_context.get_cfield_name("p_cust_7")] then
+				eDate = i[view_context.get_cfield_name("p_cust_7")]
+			end
+		end
+		
 		if i[iFields['category']] then
 			puts "Find setting value for category: " + i[iFields['category']]
 			#lookup whether the imported category value is a picklist item in teamview
@@ -443,6 +474,7 @@ class ProjectsController < ApplicationController
 				cat = i[iFields['category']] #associate to picklist if possible or set to imported value
 			end
 		end
+		#ToDo - add handling for no mapping but same field name as with RTM above
 		
 		if i[iFields['name']] then
 			pname = i[iFields['name']]
@@ -492,6 +524,8 @@ class ProjectsController < ApplicationController
 			p[:account_id] = @aid
 			p[:fixed_resource_budget] = 5
 			p[:rtm] = rtm
+			p[:tribe] = tribe
+			p[:end_date] = eDate
 			puts p.to_s
 			newproj << p
 		else
@@ -507,6 +541,8 @@ class ProjectsController < ApplicationController
 			u[:description] = desc
 			u[:category] = cat
 			u[:rtm] = rtm
+			u[:tribe] = tribe
+			u[:end_date] = eDate
 			
 			puts "UPDATE HASH VALUE:   "
 			puts u.to_s

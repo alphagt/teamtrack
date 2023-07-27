@@ -4,7 +4,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 
 	sheet.add_row ["fiscal Yr", "Fiscal Wk", "Manager", "TeamTrack Org", "Org Owner", "Employee", "Employee Type", 
 		"Weeks Effort", "Project", "PRP Theme", "Route To Market", "Stakeholder Org", "Sub-Priority",
-		"Allocation Type"]
+		"Allocation Type", "Launch Date"]
 		
 	#get orgs and their owners
 	hOrgOwners = orgs_hash()
@@ -32,6 +32,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			pRtm = p.rtm
 			pPsh = p.psh
 			pCat = p.category
+			pEdate = p.end_date
 		else
 			puts "ASSERT - Missing Project on assignment ?", a.id.to_s
 			pName = "NA Project-" + a.id.to_s
@@ -40,7 +41,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 		
 		sheet.add_row [a.fiscal_year, a.week_number, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,
 			pName, iname, pRtm, pPsh, 
-			ctp, pCat ]
+			ctp, pCat, pEdate ]
 	end
 
 end

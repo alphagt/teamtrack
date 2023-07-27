@@ -81,19 +81,19 @@ class AccountsController < ApplicationController
 				picklist values can be added to settings with p_cust_12 as the key for those settings.'
 		set.save
 		puts 'added ' << set.key
-		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_3', :value => "division", :displayname => 'division',
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_3', :value => "psh", :displayname => 'division',
 			:description => 'Custom field for projects.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with p_cust_3 as the key for those settings.'
 		set.save
 		puts 'added ' << set.key
 
-		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_4', :value => "priority", :displayname => 'OKR',
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_4', :value => "ctpriority", :displayname => 'OKR',
 			:description => 'Custom field for priority.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with p_cust_4 as the key for those settings.'
 		set.save
 		puts 'added ' << set.key
 		
-		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "team", :displayname => 'Team',
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "tribe", :displayname => 'Team',
 			:description => 'Custom field for project team.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with p_cust_6 as the key for those settings.'
 		set.save

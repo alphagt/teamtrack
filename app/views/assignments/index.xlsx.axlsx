@@ -33,7 +33,8 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			pPsh = p.psh
 			pCat = p.category
 		else
-			pName = "NA Project-" + a.id.toString
+			puts "ASSERT - Missing Project on assignment ?", a.id.to_s
+			pName = "NA Project-" + a.id.to_s
 		end
 		orgOwner = hOrgOwners[a.user.org]
 		

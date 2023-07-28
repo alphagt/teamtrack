@@ -1,10 +1,5 @@
 module UsersHelper
 
-	def dlog(str)
-		if Rails.env.development?
-			puts str
-		end
-	end
 	def current_project(cuser, tperiod = current_period)
 		@cperiod = tperiod
 # 		puts "current_project funct - C Period is:"
@@ -103,11 +98,11 @@ module UsersHelper
 		else
 			a_subs_block = a_subs
 		end
-		dlog "AllSubs:  #{a_subs.map{|u| u.name}}"
+		puts "AllSubs:  #{a_subs.map{|u| u.name}}"
 		#determin list of orgs to include (any owned by self or subs)
 		org_list = m.subordinates.for_account(aid).where("orgowner = true").pluck(:org)
 		org_list += [m.org]
-		dlog "Org List" + org_list.to_s
+		puts "Org List" + org_list.to_s
 		b_subs = User.for_account(aid).where("manager_id IS NOT NULL AND manager_id != ? AND org IN (?) AND id not in(?)", 
 			xid, org_list, a_subs.map{|u| u.id}).order('manager_id')
 		b_subs.delete(m)
@@ -136,7 +131,7 @@ module UsersHelper
 				a_out << [0, areIndirect, u, csys, cproj]
 			end
 		end	
-		dlog a_out.to_s
+		puts a_out.to_s
 		a_out
 	end
 	
@@ -187,8 +182,8 @@ module UsersHelper
 		if aid == -1 
 			aid = m.primary_account_id
 		end
-		dlog "Get Org for " + m.name
-		dlog "   Start Array " + ret.to_s
+		puts "Get Org for " + m.name
+		puts "   Start Array " + ret.to_s
 		if org.nil?
 			org = m.org
 		end
@@ -219,10 +214,10 @@ module UsersHelper
 		#identify indirect managers to add to list
 		if m.orgowner
 			target_org = m.org
-			dlog "   BRANCH FOR INDIRECT ORG:  " + target_org
+			puts "   BRANCH FOR INDIRECT ORG:  " + target_org
 			isubs = User.where("users.org = ?", target_org).managers_only
-			dlog "   MANAGERS FOR " + target_org
-			dlog isubs.pluck(:name)
+			puts "   MANAGERS FOR " + target_org
+			puts isubs.pluck(:name)
 			#identify just the 'top-level' indirect managers
 			isubs.each do |i|
 				if !ret[0].include? i.id
@@ -238,7 +233,7 @@ module UsersHelper
 				end
 			end
 		end
-		dlog "   END ARRAY " + ret.to_s
+		puts "   END ARRAY " + ret.to_s
 		ret
 	end
 	

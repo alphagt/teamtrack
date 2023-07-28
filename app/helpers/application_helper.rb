@@ -1,9 +1,4 @@
 module ApplicationHelper
-	def dlog(str)
-		if Rails.env.development?
-			puts str
-		end
-	end
 	def period_to_date(speriod)
 		@cweek_number = 0.0
 		
@@ -55,9 +50,9 @@ module ApplicationHelper
  		#puts 'period_from_parts'
  		#puts 'iWeek'
  		# @fWeek = 0.0
- 		dlog iWeek
+ 		puts iWeek
 		@fWeek = iWeek.to_i
-		dlog @fWeek.to_s
+		puts @fWeek.to_s
 		@return = iFy.to_i + @fWeek.fdiv(100).round(3)
 	end
 	
@@ -179,7 +174,7 @@ module ApplicationHelper
 						#puts @return.to_s
 					end
 				end
-				dlog "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
+				puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
 				a_return
 			else
 	# 			puts @return.to_s
@@ -189,7 +184,7 @@ module ApplicationHelper
 			ex_subs = extended_subordinates(mid, aid)
 			if ex_subs.any?
 				a_return = ex_subs.map{|u| u[2].id}.to_a
-				dlog "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
+				puts "Found " + a_return.length.to_s + " Subordinates for " + User.find(mid).name
 				a_return 
 			else
 				a_return
@@ -263,8 +258,8 @@ module ApplicationHelper
 # 		puts  @cweek_number
 # 		@out = @fyear + @cweek_number.fdiv(100).round(3)
 		@out = offset_period(Date.today)
-		dlog 'cPeriod ='
-		dlog @out
+		puts 'cPeriod ='
+		puts @out
 		@out
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
@@ -277,7 +272,7 @@ module ApplicationHelper
 		else
 			@cfy_offset = hardOffset
 		end
-		dlog 'OFFSET = ' + @cfy_offset.to_s
+		puts 'OFFSET = ?',@cfy_offset
 		if @cfy_offset == 0 then
 			@offset_y_adjust = 0
 		else
@@ -318,14 +313,14 @@ module ApplicationHelper
 		else
 			min_y = cfy
 		end
-		dlog "MIN FY IS:  "
-		dlog min_y
+		puts "MIN FY IS:  "
+		puts min_y
 		@list << min_y
 		while min_y < cfy do
 			min_y += 1
 			@list << min_y
 		end
-		dlog @list
+		puts @list
 		@list
 	end
 	
@@ -334,7 +329,7 @@ module ApplicationHelper
 	end
 	
 	def get_picklist(key, proj = nil, showval = false, aid = -1)
-		dlog "get_picklist in account id: " + aid.to_s
+		puts "get_picklist in account id: " + aid.to_s
 		if aid == -1
 			aid = current_user.primary_account_id
 		else
@@ -346,10 +341,10 @@ module ApplicationHelper
 				else
 					pl = Setting.for_account(aid).core_only.where("settings.key NOT IN (?)", Array.wrap(eva)).pluck(:displayname,:value)
 				end
-				dlog pl.to_s
+				puts pl.to_s
 				pl
 			else
-				dlog "Get_Picklist for key: " + key
+				puts "Get_Picklist for key: " + key
 				if key == 'priority' && !proj.nil? && proj.initiative.present?
 					#get the list for this key based on the associated initiative's subprilist
 					proj.initiative.subprilist
@@ -360,7 +355,7 @@ module ApplicationHelper
 					else
 						subKey = key
 					end
-					dlog "Subkey: " + subKey
+					puts "Subkey: " + subKey
 					if !showval then
 						Setting.for_account(aid).for_key(subKey).pluck(:displayname)
 					else
@@ -375,7 +370,7 @@ module ApplicationHelper
 	def get_cfield_name(key)
 		s = Setting.for_account(current_user.primary_account_id).find_by_key(key)
 		if s != nil then
-			dlog "Looking up Field Name for: " + s.key
+			puts "Looking up Field Name for: " + s.key
 			if s.stype == 0 then
 				s.displayname
 			else
@@ -396,7 +391,7 @@ module ApplicationHelper
 			if u.manager.nil? || !u.manager.orgowner
 				rawname = u.name.split(" ")[1] || u.name
 				if rawname.length > 18 - u.org.length then
-					dlog "TRUNCATING ORG OWNER NAME"
+					puts "TRUNCATING ORG OWNER NAME"
 					tname = rawname.truncate(8)
 				else
 					tname = rawname

@@ -265,7 +265,7 @@ class UsersController < ApplicationController
 	cache_hit = true	
 	## Total Effort & Overhead
 
-	if @tm_count > 10 && use_cache 
+	if @tm_count > 10
 		#lets use cach for the calcs
 		cVal = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/teamstats", expires_in: 24.hours, force: !use_cache) do
 			puts "Write teamstats to Cache - " + ckey
@@ -311,7 +311,8 @@ class UsersController < ApplicationController
 		@clabels = []
 		@cvals = []
 	else
-		cdataH = calc_chart_data(@cfdata)
+		cdataH = 
+		chart_data(@cfdata)
 		@clabels = cdataH.keys.map { |k| k.split(".")[0]}
 		@cvals = cdataH.values
 	end

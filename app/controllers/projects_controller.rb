@@ -468,6 +468,10 @@ class ProjectsController < ApplicationController
 			else
 				cat = i[iFields['category']] #associate to picklist if possible or set to imported value
 			end
+			if cat.nil?
+				puts "Empty Category Import Detected"
+				cat = 'Undefined'
+			end
 		end
 		#ToDo - add handling for no mapping but same field name as with RTM above
 		

@@ -720,7 +720,7 @@ private
 	# Only allow a trusted parameter "white list" through.
 	def project_params
 # 		attr_accessible :owner, :initiative, :active, :description, :category, :name, :owner_id,
-#   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority
+#   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :end_date
 
 	  params.require(:project).permit(:owner, :initiative, :active, :description, :category, :name, :owner_id,
   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :account_id, :end_date)

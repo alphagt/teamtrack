@@ -265,7 +265,7 @@ class UsersController < ApplicationController
 	cache_hit = true	
 	## Total Effort & Overhead
 
-	if @tm_count > 10 
+	if @tm_count > 10 && use_cache 
 		#lets use cach for the calcs
 		cVal = Rails.cache.fetch("#{ckey}:#{ctime_stamp}/teamstats", expires_in: 24.hours, force: !use_cache) do
 			puts "Write teamstats to Cache - " + ckey

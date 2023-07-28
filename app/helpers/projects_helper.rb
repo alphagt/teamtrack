@@ -1,5 +1,10 @@
 module ProjectsHelper
 
+	def dlog(str)
+		if Rails.env.development?
+			puts str
+		end
+	end
 	def current_allocation(proj, sum = 0)
 	#ToReview
 		@fixed = 0
@@ -44,8 +49,8 @@ module ProjectsHelper
 	end
 	def ytd_allocation(proj, sum = 0, fiscaly = current_fy())
 	#ToFIX
-		puts "ytd_allocation Call"
-		puts fiscaly
+		dlog "ytd_allocation Call"
+		dlog fiscaly
 		@fixtotal = 0
 		@nitrototal = 0
 		@output = "Fixed: "
@@ -59,7 +64,7 @@ module ProjectsHelper
 			#puts "In Else Clause"
 			@fWeek = 52
 		end
-		puts "fweek = " + @fWeek.to_s
+		dlog "fweek = " + @fWeek.to_s
 		#ReDesign The following ....
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
 		#Deprecated IMPL

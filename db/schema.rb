@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_27_151902) do
+ActiveRecord::Schema.define(version: 2023_07_31_183121) do
 
   create_table "accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2023_07_27_151902) do
     t.string "ctpriority", default: "NA"
     t.integer "account_id", default: 0
     t.datetime "end_date"
+    t.string "fin_type", default: "Undefined"
     t.index ["account_id", "upl_number"], name: "index_projects_on_account_id_and_upl_number", unique: true
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["active"], name: "index_projects_on_active"

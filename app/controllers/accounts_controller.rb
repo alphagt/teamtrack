@@ -93,8 +93,8 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 		
-		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "tribe", :displayname => 'Team',
-			:description => 'Custom field for project team.  Admin can define visible name by setting displayname on this setting.  
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "fin_type, :displayname => 'Finance Type',
+			:description => 'Custom field for project for finance category.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with p_cust_6 as the key for those settings.'
 		set.save
 		puts 'added ' << set.key
@@ -207,12 +207,12 @@ class AccountsController < ApplicationController
 		puts 'New initiative created:  ' << @init.tag
 
       	#Default Projects
-		proj = Project.create! :account_id => @account.id, :name => 'Time Off/LOA', :active => true, :owner => pa, :description => 'Vacation, Leave of Absence, or other time off', :tribe => sys.name, :category => 'OVH.all', 
+		proj = Project.create! :account_id => @account.id, :name => 'Time Off/LOA', :active => true, :owner => pa, :description => 'Vacation, Leave of Absence, or other time off', :category => 'OVH.all', 
 		  :fixed_resource_budget => 15, :upl_number => -1
 		proj.save
 		puts 'added default project for Time Off and LOA'
 		
-		proj = Project.create! :account_id => @account.id, :name => 'Maintenance/Tech-Debt', :active => true, :owner => pa, :description => 'Ongoing Maintenance and Quality Work', :tribe => sys.name, :category => 'KTLO',
+		proj = Project.create! :account_id => @account.id, :name => 'Maintenance/Tech-Debt', :active => true, :owner => pa, :description => 'Ongoing Maintenance and Quality Work', :category => 'KTLO',
 		  :fixed_resource_budget => 15, :upl_number => -2
 		proj.save
 		puts 'added default project for Maintenance/Tech-Debt'

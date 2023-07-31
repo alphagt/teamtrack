@@ -434,18 +434,18 @@ class ProjectsController < ApplicationController
 			end
 		end
 		
-		if i[iFields['tribe']] then
-			puts "Find setting value for tribe: " + i[iFields['tribe']]
+		if i[iFields['fin_type']] then
+			puts "Find setting value for fin_type: " + i[iFields['fin_type']]
 			#get known picklist value associated with imported value
-			s = Setting.for_account(@aid).find_by_displayname(i[iFields['tribe']])
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['fin_type']])
 			if !s.nil? && !s.value.nil?
-				tribe = s.value
+				finType = s.value
 			else
-			 	tribe = i[iFields['tribe']] #use found picklist val or insert the imported value as is
+			 	finType = i[iFields['fin_type']] #use found picklist val or insert the imported value as is
 			end
 		else #case of no explicit mapping but import has field with same custom displayname
 			if i[view_context.get_cfield_name("p_cust_6")] then
-				tribe = i[view_context.get_cfield_name("p_cust_6")].truncate(50)
+				finType = i[view_context.get_cfield_name("p_cust_6")].truncate(50)
 			end
 		end
 		
@@ -523,7 +523,7 @@ class ProjectsController < ApplicationController
 			p[:account_id] = @aid
 			p[:fixed_resource_budget] = 5
 			p[:rtm] = rtm
-			p[:tribe] = tribe
+			p[:fin_type] = finType
 			p[:end_date] = eDate
 			puts p.to_s
 			newproj << p
@@ -540,7 +540,7 @@ class ProjectsController < ApplicationController
 			u[:description] = desc
 			u[:category] = cat
 			u[:rtm] = rtm
-			u[:tribe] = tribe
+			u[:fin_type] = finType
 			u[:end_date] = eDate
 			
 			puts "UPDATE HASH VALUE:   "

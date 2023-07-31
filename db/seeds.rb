@@ -154,15 +154,15 @@ user.save
 puts 'New user created: ' << user.name
 
 #Default Projects
-proj = Project.create! :account_id => aid, :name => 'Maintenance/Tech Debt', :active => true, :owner => @da, :description => 'Bug fix, Tech Debt, Ops Improvements', :tribe => 'All', :category => 'HQA', 
+proj = Project.create! :account_id => aid, :name => 'Maintenance/Tech Debt', :active => true, :owner => @da, :description => 'Bug fix, Tech Debt, Ops Improvements', :category => 'HQA', 
 :fixed_resource_budget => 15, :initiative_id => @init.id, :upl_number => -1
 proj.save
 puts 'added maintenance project'
-proj = Project.create! :account_id => aid, :name => 'Security-Compliance Maintenance', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :tribe => 'All', :category => 'Sec/Comp', 
+proj = Project.create! :account_id => aid, :name => 'Security-Compliance Maintenance', :active => true, :owner => @da, :description => 'Bug fixes and small sec/comp work items', :category => 'Sec/Comp', 
 :fixed_resource_budget => 10, :initiative_id => @init.id, :upl_number => -2
 proj.save
 puts 'added security compliance project'
-proj = Project.create! :account_id => aid, :name => 'Run the Business', :active => true, :owner => @da, :description => 'Operations and minor enhancements', :tribe => 'All',  :category => 'RTB', 
+proj = Project.create! :account_id => aid, :name => 'Run the Business', :active => true, :owner => @da, :description => 'Operations and minor enhancements',  :category => 'RTB', 
 :fixed_resource_budget => 30, :initiative_id => @init.id, :upl_number => -3
 proj.save
 puts 'added RTB Project'

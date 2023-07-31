@@ -32,7 +32,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			pRtm = p.rtm
 			pPsh = p.psh
 			pCat = p.category
-			pTribe = p.tribe
+			pFin = p.fin_type
 			pEdate = p.end_date
 		else
 			puts "ASSERT - Missing Project on assignment ?", a.id.to_s
@@ -42,7 +42,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 		
 		sheet.add_row [a.fiscal_year, a.week_number, a.user.manager.name, a.user.org, orgOwner, a.user.name, a.user.etype, a.effort,
 			pName, iname, pRtm, pPsh, 
-			ctp, pCat, pTribe, pEdate ]
+			ctp, pCat, pFin, pEdate ]
 	end
 
 end

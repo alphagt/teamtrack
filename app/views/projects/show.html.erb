@@ -29,7 +29,7 @@
 		<p><b>Description: </b><%= @project.description %></p>
 		<p><b><%= get_cfield_name("p_cust_1") + ": "%></b><%= display_name_for("category",@project.category) %></p>
 		<p><b><%=get_cfield_name("p_cust_3") + ": "%></b><%= display_name_for("division",@project.psh) %></p>
-		<p><b><%=get_cfield_name("p_cust_6") + ": "%></b><%= display_name_for("tribe",@project.tribe) %></p>
+		<p><b><%=get_cfield_name("p_cust_6") + ": "%></b><%= display_name_for("fin_type",@project.fin_type) %></p>
 		<p><b><%=get_cfield_name("p_cust_7") + ": "%></b><%= display_name_for("end_date",@project.end_date) %></p>
 		<p><b><%=get_cfield_name("p_cust_2") + ": "%></b><%= display_name_for("rtm",@project.rtm) %></p>
 		<p><b><%=display_name_for('sys_names', 'initiative') + ": "%></b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>

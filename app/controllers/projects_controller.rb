@@ -468,10 +468,10 @@ class ProjectsController < ApplicationController
 			else
 				cat = i[iFields['category']] #associate to picklist if possible or set to imported value
 			end
-			if cat.nil?
-				puts "Empty Category Import Detected"
-				cat = 'Undefined'
-			end
+		end
+		if cat.nil?
+			puts "Empty Category Import Detected"
+			cat = 'Undefined'
 		end
 		#ToDo - add handling for no mapping but same field name as with RTM above
 		
@@ -649,7 +649,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.json
   def update
     @project = Project.find(params[:id])
-
+	puts project_params.to_s
     respond_to do |format|
       if @project.update_attributes(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }

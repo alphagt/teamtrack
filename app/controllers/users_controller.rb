@@ -311,8 +311,7 @@ class UsersController < ApplicationController
 		@clabels = []
 		@cvals = []
 	else
-		cdataH = 
-		chart_data(@cfdata)
+		cdataH = calc_chart_data(@cfdata)
 		@clabels = cdataH.keys.map { |k| k.split(".")[0]}
 		@cvals = cdataH.values
 	end

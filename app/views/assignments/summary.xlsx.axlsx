@@ -3,7 +3,7 @@ wb = xlsx_package.workbook
 wb.add_worksheet(name: "Assignments Summary ") do |sheet|
 
 	sheet.add_row ["Project", "Initiative", "Manager", "TeamView Org", "Org Owner", "Employee", "Employee Type", 
-		"Weeks Effort", "Project Launch Date"]
+		"Weeks Effort", "Accounting_Treatment", "Project Launch Date"]
 		
 	#get orgs and their owners
 	hOrgOwners = orgs_hash()
@@ -20,7 +20,7 @@ wb.add_worksheet(name: "Assignments Summary ") do |sheet|
 			end
 			orgOwner = hOrgOwners[u.org]
 		
-			sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1], p.end_date ]
+			sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1], p.tribe, p.end_date ]
 		end
 	end
 

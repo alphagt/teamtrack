@@ -62,7 +62,13 @@
 					<%= f.select :ctpriority, options_for_select(get_picklist("p_cust_4",@project,true,@aid), @project.ctpriority)  %>
 				</div>
 		</div>
-		<br/>
+		<div class="control-group select optional project_end_date">
+			<label class="select optional control-label" for="project_end_date"><%= "Launch Date:"%></label>
+				<div class="controls">
+					<%= f.datetime_select :end_date, {start_year: 2021, min_step: 60, order: [:day, :month, :year] }, {label: "Launch Date"}  %>
+				</div>
+		</div>
+				<br/>
 		<%= f.input :fixed_resource_budget, inline_label: 'Fixed Resource Budget:', label: "Resource Budget",
 			input_html: {value: @project.fixed_resource_budget || '0'} %>
 		<% if current_user.admin %>

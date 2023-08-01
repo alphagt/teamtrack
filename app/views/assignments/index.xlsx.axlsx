@@ -33,7 +33,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			pPsh = p.psh
 			pCat = p.category
 			pFin = p.fin_type
-			pEdate = p.end_date
+			pEdate = if p.end_date then p.end_date.strftime("%m/%d/%Y") else "In Progress" end
 		else
 			puts "ASSERT - Missing Project on assignment ?", a.id.to_s
 			pName = "NA Project-" + a.id.to_s

@@ -21,7 +21,7 @@ wb.add_worksheet(name: "Assignments Summary ") do |sheet|
 			orgOwner = hOrgOwners[u.org]
 			pEnd = if p.end_date then p.end_date.strftime("%m/%d/%Y") else "In Progress" end
 			sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1], p.fin_type, 
-			pEnd ]
+			pEnd]
 		end
 	end
 

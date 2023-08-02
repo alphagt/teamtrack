@@ -30,12 +30,11 @@
 		<p><b><%= get_cfield_name("p_cust_1") + ": "%></b><%= display_name_for("category",@project.category) %></p>
 		<p><b><%=get_cfield_name("p_cust_3") + ": "%></b><%= display_name_for("division",@project.psh) %></p>
 		<p><b><%=get_cfield_name("p_cust_6") + ": "%></b><%= display_name_for("fin_type",@project.fin_type) %></p>
-		<p><b><%=get_cfield_name("p_cust_7") + ": "%></b><%= if !@project.end_date.nil? then @project.end_date.strftime("%m/%d/%Y") end %></p>
+		<p><b><%=get_cfield_name("p_cust_7") + ": "%></b><%= if !@project.end_date.nil? then @project.end_date.strftime("%m/%d/%Y") else "In Progress" end %></p>
 		<p><b><%=get_cfield_name("p_cust_2") + ": "%></b><%= display_name_for("rtm",@project.rtm) %></p>
 		<p><b><%=display_name_for('sys_names', 'initiative') + ": "%></b><%= if !@project.initiative.nil? then @project.initiative.name end %></p>
 		<p><b><%=get_cfield_name("p_cust_4") + ": "%></b><%= if !@project.ctpriority.nil? then display_name_for("ctpriority",@project.ctpriority) end %></p>	
 		<p><b>Resource Plan: </b><%= @project.fixed_resource_budget %></p>
-		<p><b><%=get_cfield_name("p_cust_7") + ": "%></b><%= display_name_for("end_date",@project.end_date) %></p>
 	</div>
 	<div class="col-md-6">
 		<%= image_tag(Gchart.bar(:title => "Effort History", 

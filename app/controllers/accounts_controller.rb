@@ -93,7 +93,7 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 		
-		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "fin_type, :displayname => 'Finance Type',
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_6', :value => "fin_type", :displayname => 'Finance Type',
 			:description => 'Custom field for project for finance category.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with p_cust_6 as the key for those settings.'
 		set.save

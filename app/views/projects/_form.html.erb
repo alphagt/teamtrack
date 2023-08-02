@@ -53,7 +53,7 @@
 					</div>
 			</div>
 		<% end %>
-		<%= f.association :initiative, :as => :select, :collection => Initiative.for_account(@aid).for_year(current_fy),
+		<%= f.association :initiative, :as => :select, :collection => Initiative.for_account(@aid).active.for_year(current_fy),
 			:label_method => :name, label: display_name_for('sys_names', 'initiative') + ":", :input_html => {onchange: "updateprilist(this)", 
 			data: {message: "['o1', 'o2', 'o3']"} } %>
 		<div class="control-group select optional project_ctpriority">

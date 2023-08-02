@@ -65,7 +65,7 @@
 		<div class="control-group select optional project_end_date">
 			<label class="select optional control-label" for="project_end_date"><%= "Launch Date:"%></label>
 				<div class="controls">
-					<%= f.datetime_select :end_date, {start_year: 2021, min_step: 60, order: [:day, :month, :year] }, {label: "Launch Date"}  %>
+					<%= f.date_select :end_date, {:order => [:day, :month, :year] }, {label: "Launch Date"}  %>
 				</div>
 		</div>
 				<br/>

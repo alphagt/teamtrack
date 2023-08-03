@@ -48,7 +48,7 @@ class InitiativesController < ApplicationController
 			puts "Write initiative data to cache: " + ckey
 			cache_hit = false
 			Rails.cache.delete_matched("#{ckey}")
-			 @cdata = @initiatives.map {|e| [e.name,e.total_effort_weeks(cweek).to_d.round, 
+			 @cdata = @initiatives.map {|e| [e.tag,e.total_effort_weeks(cweek).to_d.round, 
     			e.current_effort_weeks(view_context.current_period).to_d.round]}
 		end
     #****************

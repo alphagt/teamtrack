@@ -1,7 +1,7 @@
 <h1>Listing Themes</h1>
 
 <% content_for :nav do %>
-	<%  render partial: "layouts/navigation", locals: {active: "initiative"} %>
+	<%  render partial: "layouts/navigation", locals: {active: "initiatives"} %>
 <% end %>
 
 <% content_for :sidebarwide do %>
@@ -32,14 +32,14 @@
   <div class="col-md-12 col-centered">
 	<div class="col-md-6">
 		<%= image_tag(Gchart.pie(:title => 'Current Effort', 
-		:labels => @clabels, :data => @wvals, :size => '400x200', :chart_background => 'CCCCCC',
+		:legend => @clabels, :data => @wvals, :size => '400x200', :chart_background => 'CCCCCC',
 		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cdata.to_s end %></p>
 	</div>
 	<div class="col-md-6">
 		<%= image_tag(Gchart.pie(:title => 'YTD Effort', 
-		:labels => @clabels, :data => @cvals, :size => '400x200', :chart_background => 'CCCCCC',
+		:legend => @clabels, :data => @cvals, :size => '400x200', :chart_background => 'CCCCCC',
 		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cdata.to_s end %></p>
@@ -56,6 +56,7 @@
 			  <thead>
 			  <tr>
 			  	<th></th>
+				<th class="col-sm-1">Code</th>
 				<th class="col-sm-3">Name</th>
 				<th class="col-sm-3">Description</th>
 				<th>Fiscal Year</th>
@@ -71,6 +72,7 @@
 			<% @initiatives.where(:active => true).each do |initiative|  %>
 			  <%= tag("tr", class: ['warning', 'collapsed'], data: {toggle: 'collapse', target: ".group" + initiative.id.to_s}) %>
 				<td class="icon-class"></td>
+				<td><%= initiative.tag %></td>
 				<td class="link"><u><b><%= link_to initiative.name, initiative %></b></u></td>
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>

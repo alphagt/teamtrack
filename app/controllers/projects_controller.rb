@@ -543,10 +543,10 @@ class ProjectsController < ApplicationController
 		#handle initiative mappings
 		if !i[iFields['initiative']].blank? then
 			puts "Looking up id for Initiative: " +i[iFields['initiative']]
-			i = Initiative.for_account(@aid).find_by_name(i[iFields['initiative']])
+			init = Initiative.for_account(@aid).find_by_name(i[iFields['initiative']])
 			iId = nil
-			if i
-				iId = i.id
+			if init
+				iId = init.id
 				puts "Mapped Initiative to: " + iId.to_s
 			else 
 				puts "ERROR - Non-Existent Initiative name encountered: " +  i[iFields['initiative']]

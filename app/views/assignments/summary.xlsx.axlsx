@@ -20,7 +20,15 @@ wb.add_worksheet(name: "Assignments Summary ") do |sheet|
 			end
 			orgOwner = hOrgOwners[u.org]
 			pEnd = if p.end_date then p.end_date.strftime("%m/%d/%Y") else "In Progress" end
-			sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1], p.fin_type, 
+			if !p.fin_type.nil? && !Setting.for_account(p.account_id).find_by_key('fin_type').nil?
+				s = Setting.for_account(p.account_id).for_key('fin_type').where('value = ?', p.fin_type)
+				if s.length > 0
+					pFin = s.first.displayname || "Undefined"
+				end
+			else
+				pFin = p.fin_type
+			end
+			sheet.add_row [p.name, iname, p.owner.name, u.org, orgOwner, u.name, u.etype, a[1], pFin, 
 			pEnd]
 		end
 	end

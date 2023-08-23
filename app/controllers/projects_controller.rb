@@ -354,7 +354,7 @@ class ProjectsController < ApplicationController
     
     tFile = params[:file]
     newproj = []
-    cols = [:account_id, :active, :name, :rtm, :upl_number, :owner_id, :description, :category, :fixed_resource_budget]
+    cols = [:account_id, :active, :name, :psh, :rtm, :ctpriority, :upl_number, :owner_id, :description, :category, :fixed_resource_budget]
 	fieldMappingsChecked = false
 	#setup default field names hash
 	iFields = Hash.new()
@@ -365,6 +365,11 @@ class ProjectsController < ApplicationController
 	iFields['category'] = 'category'
 	iFields['owner_email'] = 'email'
 	iFields['owner_name'] = 'owner'
+	iFields['psh'] = 'division'
+	iFields['fin_type'] = 'fin_type'
+	iFields['end_date'] = 'end_date'
+	iFields['ctpriority'] = 'okr'
+	iFields['initiative'] = 'initiative'
 	
 	CSV.foreach(tFile.path, headers: true) do |r|
 		puts r
@@ -449,15 +454,46 @@ class ProjectsController < ApplicationController
 			end
 		end
 		
+		if i[iFields['psh']] then
+			puts "Find setting value for psh: " + i[iFields['psh']]
+			#get known picklist value associated with imported value
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['psh']])
+			if !s.nil? && !s.value.nil?
+				div = s.value
+			else
+			 	div = i[iFields['psh']] #use found picklist val or insert the imported value as is
+			end
+		else #case of no explicit mapping but import has field with same custom displayname
+			if i[view_context.get_cfield_name("p_cust_3")] then
+				div = i[view_context.get_cfield_name("p_cust_3")].truncate(50)
+			end
+		end
+		
+		if i[iFields['ctpriority']] then
+			puts "Find setting value for ctpriority: " + i[iFields['ctpriority']]
+			#get known picklist value associated with imported value
+			s = Setting.for_account(@aid).find_by_displayname(i[iFields['ctpriority']])
+			if !s.nil? && !s.value.nil?
+				okr = s.value
+			else
+			 	okr = i[iFields['ctpriority']] #use found picklist val or insert the imported value as is
+			end
+		else #case of no explicit mapping but import has field with same custom displayname
+			if i[view_context.get_cfield_name("p_cust_4")] then
+				okr = i[view_context.get_cfield_name("p_cust_4")].truncate(50)
+			end
+		end
+		
 		if i[iFields['end_date']] then
-			puts "Find setting value for end_date: " + i[iFields['end_date']]
-			eDate =i[iFields['end_date']] #use found picklist val or insert the imported value as is
-
+			puts "Found value for end_date: " + i[iFields['end_date']]
+			eDate = i[iFields['end_date']] #use found picklist val or insert the imported value as is
+			
 		else #case of no explicit mapping but import has field with same custom displayname
 			if i[view_context.get_cfield_name("p_cust_7")] then
 				eDate = i[view_context.get_cfield_name("p_cust_7")]
 			end
 		end
+		puts "eDate is " + eDate.to_s 
 		
 		if i[iFields['category']] then
 			puts "Find setting value for category: " + i[iFields['category']]
@@ -504,6 +540,13 @@ class ProjectsController < ApplicationController
 		puts "Owner Resolved to " + User.find_by_id(oid).name
 		oUser = nil
 		
+		#handle initiative mappings
+		if !i[iFields['initiative']].blank? then
+			puts "Looking up id for Initiative: " +i[iFields['initiative']]
+			iId = Initiative.for_account(@aid).find_by_name(i[iFields['initiative']]).id
+		end
+		puts "Mapped Initiative to: " + iId.to_s
+		
 		puts "UID = " + pid.to_s
 		tProj = Project.for_account(@aid).find_by_upl_number(pid)
 		#retry using name match incase of shift in JIRA ids
@@ -525,6 +568,9 @@ class ProjectsController < ApplicationController
 			p[:rtm] = rtm
 			p[:fin_type] = finType
 			p[:end_date] = eDate
+			p[:psh] = div
+			p[:ctpriority] = okr
+			p[:initiative_id] = iId
 			puts p.to_s
 			newproj << p
 		else
@@ -535,13 +581,16 @@ class ProjectsController < ApplicationController
 			if pname != 'undefined' then
 				u[:name] = pname
 			end
-			u[:upl_number] = pid
-			u[:owner_id] = oid
-			u[:description] = desc
-			u[:category] = cat
-			u[:rtm] = rtm
-			u[:fin_type] = finType
-			u[:end_date] = eDate
+			u[:upl_number] = pid ||= tProj.upl_number
+			u[:owner_id] = oid ||= tProj.owner_id
+			u[:description] = desc ||= tProj.description
+			u[:category] = cat ||= tProj.category
+			u[:rtm] = rtm ||= tProj.rtm
+			u[:fin_type] = finType ||= tProj.fin_type
+			u[:end_date] = eDate ||= tProj.end_date
+			u[:psh] = div ||= tProj.psh
+			u[:ctpriority] = okr ||= tProj.ctpriority
+			u[:initiative_id] = iId ||= tProj.initiative_id
 			
 			puts "UPDATE HASH VALUE:   "
 			puts u.to_s
@@ -727,6 +776,7 @@ private
 #   		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :end_date
 
 	  params.require(:project).permit(:owner, :initiative, :active, :description, :category, :name, :owner_id,
-  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :account_id, :end_date)
+  		:initiative_id, :fixed_resource_budget, :upl_number, :keyproj, :rtm, :psh, :tribe, :ctpriority, :account_id, 
+  		:end_date, :initiative_id)
 	end
 end

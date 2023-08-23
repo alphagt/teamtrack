@@ -547,11 +547,12 @@ class ProjectsController < ApplicationController
 			iId = nil
 			if i
 				iId = i.id
+				puts "Mapped Initiative to: " + iId.to_s
 			else 
 				puts "ERROR - Non-Existent Initiative name encountered: " +  i[iFields['initiative']]
 			end
 		end
-		puts "Mapped Initiative to: " + iId.to_s
+		
 		
 		puts "UID = " + pid.to_s
 		tProj = Project.for_account(@aid).find_by_upl_number(pid)

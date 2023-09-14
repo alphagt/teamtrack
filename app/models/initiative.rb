@@ -15,12 +15,21 @@ scope :for_account, -> (aid){where('account_id = ?', aid)}
 		@ytd_weeks.round(1)
 	end
 	
-	def current_effort_weeks(pid)
+	def current_effort_weeks(pid, fullQ = false)
 		@c_weeks = 0
 		fy = self.cfiscal
 		puts "current_effort_weeks for initiative for week: ?", pid.to_s
-		self.projects.for_year(fy).each do |proj|
-			@c_weeks += proj.assignments.where("set_period_id = ?", pid).sum("effort")
+		if fullQ 
+			qWeeks = qWeekRange(pid)
+			sWeek = fy.to_i + qWeeks[0].fdiv(100).round(3)
+			eWeek = fy.to_i + qWeeks[1].fdiv(100).round(3)
+			self.projects.for_year(fy).each do |proj|
+				@c_weeks += proj.assignments.where("set_period_id Between ? AND ?",sWeek,eWeek).sum("effort")
+			end
+		else
+			self.projects.for_year(fy).each do |proj|
+				@c_weeks += proj.assignments.where("set_period_id = ?", pid).sum("effort")
+			end
 		end
 		@c_weeks.round(1)
 	end
@@ -32,5 +41,22 @@ scope :for_account, -> (aid){where('account_id = ?', aid)}
 		else
 			self.fiscal
 		end
+	end
+	
+	def qWeekRange(pid)
+		@cw = ((pid - pid.to_i)*100).round
+		puts "Week Range PID = " + @cw.to_s
+		case 
+		when @cw <= 13
+			wRange = [1,13]
+		when 13 < @cw && @cw <= 25
+			wRange = [13,26]
+		when 25 < @cw && @cw <= 37
+			wRange = [25,38]
+		when @cw > 37
+			wRange = [38,52]
+		end
+		
+		wRange
 	end
 end

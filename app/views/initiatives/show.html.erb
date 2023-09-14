@@ -27,6 +27,7 @@
 					@initiative.subprilist.map(&:inspect).join(', ') else "None Defined" end %></p>
 			<p><b>Active: </b><%= @initiative.active %></p>
 			<p><b>Average Weekly HC:  </b><%= (@initiative.total_effort_weeks(current_week())/current_week()).round %></p>
+			<p><b>QTD Effort:  </b><%= @initiative.current_effort_weeks(current_period(),true).round %></p>
 		</div>
 		<div class="col-md-6">
 			<%= image_tag(Gchart.bar(:title => "Effort History", 
@@ -36,7 +37,7 @@
 			:axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
 		</div>
 		<div class="col-md-3">
-			<%= image_tag(Gchart.pie(:title => "Current Initiative Effort", 
+			<%= image_tag(Gchart.pie(:title => "Current Effort Allocation", 
 			:data => @svalues, :chart_background => 'CCCCCC', :size => '300x300',
 			:legend => @slabels, :legend_position => 'bottom', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"), 
 			class: "img-responsive")%>

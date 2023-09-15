@@ -51,7 +51,7 @@
 <!-- <h5>People Managers:  <small><%= @user_list[0].count %></small></h5> -->
 <h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
 	<% if @cvals.length > 0 then %>
-		<%= image_tag(Gchart.pie(:title => 'Effort Allocation', 
+		<%= image_tag(Gchart.pie(:title => 'Invest Type Allocation', 
 		:legend => @clabels, :legend_position => 'bottom', :data => @cvals, 
 		:size => '250x250', :chart_background => 'CCCCCC', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"))%>
 	<% end %>

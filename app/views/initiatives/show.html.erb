@@ -38,7 +38,7 @@
 		</div>
 		<div class="col-md-5">
 			<%= image_tag(Gchart.pie(:title => "Current Effort Allocation", 
-			:data => @svalues, :chart_background => 'CCCCCC', :size => '350x300',
+			:data => @svalues, :chart_background => 'CCCCCC', :size => '350x350',
 			:legend => @slabels, :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"), 
 			class: "img-responsive")%>
 		</div>
@@ -59,22 +59,22 @@
 				<th>Category</th>
 				<th>Delivery Lead</th>
 				<th>Description</th>
-				<th>Current Week Effort</th>
-				<th>YTD Total Effort (weeks)</th>
+				<th>Current Week Effort (wks)</th>
+				<th>YTD Total Effort (wks)</th>
 				<th>FTE Equivalents</th>
 				<% if current_user.admin %>
 					<th>Status</th>
 					<th>Key Initiative<th>
 				<% end %>
 			  </tr>
-			<% @projects.each do |project|  %>
+			<% @projects.each do |a, project|  %>
 			  <tr>
 				<td class="link"><u><%= link_to project.name, project %></u></td>
 				<td><%= project.upl_number %></td>
 				<td><%= project.category %></td>
 				<td><%= project.owner.name %></td>
 				<td><%= project.description %></td>
-				<td><%= current_allocation(project, 1) %></td>
+				<td><%= a %></td>
 				<td><%= ytd_allocation(project, 1) %></td>
 				<td><%= (ytd_allocation(project, 1).to_d/current_week()).round(1) %></td>
 				<% if current_user.admin %>

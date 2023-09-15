@@ -87,10 +87,14 @@ class InitiativesController < ApplicationController
 	#Data for projects pie chart
 	@cdata = Assignment.where('set_period_id = ? AND project_id IN (?)', 
 		view_context.current_period, @projects.pluck(:id)).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i.round(2)]}
-	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name.truncate(11) else "TBD" end}
+	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name.truncate(20) else "TBD" end}
 	@svalues = @cdata.to_h.values	
 		
 	#End prep chart data
+	
+	#sort project list by current allocation
+  	prj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}.to_h
+  	@projects = prj.sort_by {|alloc,p| [alloc,p]}.reverse
 	
   	 respond_to do |format|
       format.html # show.html.erb

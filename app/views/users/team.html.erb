@@ -114,7 +114,7 @@
 								<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
 								<% if current_user.admin %>
 									<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
-									extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
+									extendCurrentAssignment_user_path(user, :period => @target_period.to_s), :title => latestInfoStr(user) end %></td>
 								<% end %>		
 							</tr>
 						<% end %>
@@ -177,7 +177,7 @@
 							<td><%= if user.projects.length > 0 then current_project(user, @target_period) end %></td>
 							<% if current_user.admin || current_user.ismanager || current_user.impersonate_manager.present? %>
 								<td class="danger"><%= if latest(user).length > 0 && free_next_week(user) then link_to 'Extend', 
-								extendCurrentAssignment_user_path(user), :title => latestInfoStr(user) end %></td>
+								extendCurrentAssignment_user_path(user, :period => @target_period.to_s), :title => latestInfoStr(user) end %></td>
 							<% end %>		
 						</tr>
 					<% end %>

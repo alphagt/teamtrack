@@ -324,6 +324,10 @@ class UsersController < ApplicationController
   # GET /user/:id/extendcurrent
   def extendCurrentAssignment
   	puts 'IN Extend Current Assignment '
+  	@period = view_context.current_period
+  	if params[:period].present?
+  		@period = params[:period]
+  	end
   	rcode = true
   	view_context.latest(@user).each do |a|
   		tmp = Assignment.extend_by_week(a)
@@ -331,10 +335,10 @@ class UsersController < ApplicationController
   	end
   	respond_to do |format|
       if rcode
-        format.html { redirect_to team_user_path(@current_user), notice: 'Assignments were successfully extended.' }
+        format.html { redirect_to team_user_path(@current_user, :period => @period), notice: 'Assignments were successfully extended.' }
         format.json { render json: @current_user, status: :extended, location: team_user_path(@current_user) }
       else
-        format.html { redirect_to team_user_path(@current_user), notice: 'No Assignments were extended' }
+        format.html { redirect_to team_user_path(@current_user, :period => @period), notice: 'No Assignments were extended' }
         format.json { render json: @current_user.errors, status: :unprocessable_entity }
       end
     end

@@ -95,6 +95,7 @@ class InitiativesController < ApplicationController
 	#sort project list by current allocation
   	prj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}.to_h
   	@projects = prj.sort_by {|alloc,p| [alloc,p]}.reverse
+  	puts @projects
 	
   	 respond_to do |format|
       format.html # show.html.erb

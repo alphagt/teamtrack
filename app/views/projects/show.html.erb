@@ -28,7 +28,7 @@
 		<p><b>Owner: </b><%= @project.owner.name %></p>
 		<p><b>Description: </b><%= @project.description %></p>
 		<p><b><%= get_cfield_name("p_cust_1") + ": "%></b><%= display_name_for("category",@project.category) %></p>
-		<p><b><%=get_cfield_name("p_cust_3") + ": "%></b><%= display_name_for("division",@project.psh) %></p>
+		<p><b><%=get_cfield_name("p_cust_3") + ": "%></b><%= display_name_for("psh",@project.psh) %></p>
 		<p><b><%=get_cfield_name("p_cust_6") + ": "%></b><%= display_name_for("fin_type",@project.fin_type) %></p>
 		<p><b><%=get_cfield_name("p_cust_7") + ": "%></b><%= if !@project.end_date.nil? then @project.end_date.strftime("%m/%d/%Y") else "In Progress" end %></p>
 		<p><b><%=get_cfield_name("p_cust_2") + ": "%></b><%= display_name_for("rtm",@project.rtm) %></p>

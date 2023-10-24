@@ -37,7 +37,7 @@
 					</div>
 			</div>
 		<% end %>
-		<% if !Setting.for_account(@aid).find_by_key('division').nil? %>
+		<% if !Setting.for_account(@aid).find_by_key('psh').nil? %>
 			<div class="control-group select optional project_psh">
 				<label class="select optional control-label" for="project_psh"><%= get_cfield_name("p_cust_3") + ":"%></label>
 					<div class="controls">

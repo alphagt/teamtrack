@@ -83,7 +83,8 @@
 					<td><%= if initiative.active then "Active" else "Closed" end %></td>
 				<% end %>
 			  </tr> 
-			  <% initiative.projects.each do |p| %>
+			  <% @plist = initiative.projects.map{|p| [current_allocation(p,1),p]}.to_h.sort_by {|alloc,p| [alloc,p]}.reverse %>
+			  <% @plist.each do |a, p| %>
 			  	<% if p.keyproj %>
 			  		<tr>
 			  	<% else %>

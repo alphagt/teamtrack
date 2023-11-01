@@ -57,14 +57,14 @@ class ApplicationController < ActionController::Base
 		puts 'Alloc Keys ' + allocateKeys.length.to_s
 		cCount = cCount - exludeKeys.length
 		if allocateKeys.length > 0 then
-			puts "FOUND ALLOCATION Catgory VALUE"
+			#puts "FOUND ALLOCATION Catgory VALUE"
 			allocateKeys.each do |k|
 				#find hash item that matches the .allocate key
-				puts 'PROCESSING - ' + k.displayname
+				#puts 'PROCESSING - ' + k.displayname
 				hentry = combined.assoc(k.value) 
 				
 				if !hentry.nil? then
-					puts '##### ' + hentry.to_s
+					#puts '##### ' + hentry.to_s
 					allocateTotal += hentry[1]
 					cCount = cCount - 1
 				end

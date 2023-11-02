@@ -19,7 +19,8 @@
 	</td>
 </table>
 
-<h5><%= "Effective HC: " + (@sumEffort/current_week()).round.to_s %></h5>
+<h5><%= "Average Weekly HC: " + (@sumEffort/current_week()).round.to_s %></h5>
+<h5><%= "QTD Effort(wks): " + (@qtdEffort).round.to_s %></h5>
 <% end %>
 
 <% content_for :main1 do %>
@@ -96,7 +97,7 @@
 			  		<td><%= p.description %></td>
 			  		<td></td>
 			  		<td><%= current_allocation(p,1) %></td>
-			  		<td><%= ytd_allocation(p,1) %></td>
+			  		<td><%= ytd_allocation(p,1,false) %></td>
 			  		<td></td>
 			  		<% if current_user.admin %>
 						<td><%= if p.active then "Active" else "Closed" end %></td>

@@ -49,16 +49,21 @@ class InitiativesController < ApplicationController
 			cache_hit = false
 			Rails.cache.delete_matched("#{ckey}")
 			 @cdata = @initiatives.map {|e| [e.tag,e.total_effort_weeks(cweek).to_d.round, 
-    			e.current_effort_weeks(view_context.current_period).to_d.round]}
+    			e.current_effort_weeks(view_context.current_period).to_d.round,
+    			e.current_effort_weeks(view_context.current_period,true).to_d.round]}
 		end
     #****************
     puts @cdata
     @clabels = @cdata.map {|i| i[0].truncate(11)}
     @cvals= @cdata.map {|i| i[1].round(2)}
     @wvals = @cdata.map {|i| i[2].round(2)}
+    @qtdvals = @cdata.map {|i| i[3].round(2)}
+    puts "Q to Date"
+    puts @qtdvals
     
     #Get Summary Data Ready
     @sumEffort = @cvals.sum
+    @qtdEffort = @qtdvals.sum
     
     
     respond_to do |format|

@@ -42,7 +42,7 @@ module ProjectsHelper
 #		puts  @cweek_number
 #		@cweek_number
 	end
-	def ytd_allocation(proj, sum = 0, fiscaly = current_fy())
+	def ytd_allocation(proj, sum = 0, allq = true, fiscaly = current_fy())
 	#ToFIX
 		puts "ytd_allocation Call"
 		puts fiscaly
@@ -51,15 +51,22 @@ module ProjectsHelper
 		@output = "Fixed: "
 		@cperiod = current_period().to_f() #SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
 		@pFy = fiscaly.to_i
+		qRange = qWeekRange(current_period)
 		#puts "pFY - "
 		#puts @pFy
-		if @pFy == current_fy().to_i then
+		@fWeek = 52
+		@sWeek = @pFy.to_f
+		if allq && @pFy == current_fy().to_i then
 			@fWeek = ((@cperiod - @pFy) * 100).round
 		else
-			#puts "In Else Clause"
-			@fWeek = 52
+			if !allq && @pFy == current_fy().to_i then
+				#set fweek to end of current quarter
+				@fWeek = qRange[1]
+				@sWeek = qRange[0]
+			end
 		end
 		puts "fweek = " + @fWeek.to_s
+		
 		#ReDesign The following ....
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
 		#Deprecated IMPL
@@ -75,9 +82,9 @@ module ProjectsHelper
 # 			end
 		#**********
 		@fixtotal = Assignment.where("project_id = ? and is_fixed = true and set_period_id between ? and ?",
-			proj.id, @pFy.to_f, @pFy.to_f + ((@fWeek+1).to_f/100)).sum(:effort).round(1)
+			proj.id, (@pFy + (@sWeek-1).fdiv(100)).round(3), (@pFy + (@fWeek+1).fdiv(100)).round(3)).sum(:effort).round(1)
 		@nitrototal = Assignment.where("project_id = ? and is_fixed = false and set_period_id between ? and ?",
-			proj.id, @pFy.to_f, @pFy.to_f + ((@fWeek+1).to_f/100)).sum(:effort).round(1)
+			proj.id, (@pFy + (@sWeek-1).fdiv(100)).round(3), (@pFy + (@fWeek+1).fdiv(100)).round(3)).sum(:effort).round(1)
 		
 		if sum == 1 then
 			@output = (@fixtotal + @nitrototal).round(1).to_s

@@ -37,6 +37,8 @@
 			<% end %>
 		</td>	
 </table>
+
+<h5><%= "Total Effort(wks): " + @assignments.sum(:effort).round(2).to_s %></h5>
 <% end %>
 
 <% content_for :main1 do %>

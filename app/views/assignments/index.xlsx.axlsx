@@ -26,12 +26,12 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			if a.project.keyproj.present? && a.project.keyproj
 				ctp = ishort + "-*" + a.project.name
 			else
-				ctp = ishort + "-" + a.project.ctpriority	
+				ctp = ishort + "-" + (a.project.ctpriority || "?")	
 			end 
 			pName = p.name
-			pRtm = p.rtm
-			pPsh = p.psh
-			pCat = p.category
+			pRtm = p.rtm || "Undefined"
+			pPsh = p.psh || "Undefined"
+			pCat = p.category || "Undefined"
 			if !p.fin_type.nil? && !Setting.for_account(p.account_id).find_by_key('fin_type').nil?
 				s = Setting.for_account(p.account_id).for_key('fin_type').where('value = ?', p.fin_type)
 				if s.length > 0

@@ -78,13 +78,13 @@
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>
-				<td><%= initiative.current_effort_weeks(current_period(),true).round %></td>
+				<td><%= initiative.current_effort_weeks(current_period(),true) %></td>
 				<td><%= (initiative.total_effort_weeks(current_week())/current_week()).round %></td>
 				<% if current_user.admin %>
 					<td><%= if initiative.active then "Active" else "Closed" end %></td>
 				<% end %>
 			  </tr> 
-			  <% @plist = initiative.projects.map{|p| [current_allocation(p,1),p]}.to_h.sort_by {|alloc,p| [alloc,p]}.reverse %>
+			  <% @plist = initiative.projects.map{|p| [current_allocation(p,1),p]}.sort_by {|alloc,p| [alloc,p]}.reverse %>
 			  <% @plist.each do |a, p| %>
 			  	<% if p.keyproj %>
 			  		<tr>

@@ -443,11 +443,11 @@ module ApplicationHelper
 		when @cw <= 13
 			wRange = [1,13]
 		when 13 < @cw && @cw <= 25
-			wRange = [13,26]
+			wRange = [14,26]
 		when 25 < @cw && @cw <= 37
-			wRange = [25,38]
-		when @cw > 37
-			wRange = [38,52]
+			wRange = [27,39]
+		when @cw > 38
+			wRange = [40,52]
 		end
 		
 		wRange

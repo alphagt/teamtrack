@@ -16,7 +16,7 @@ scope :for_account, -> (aid){where('account_id = ?', aid)}
 	end
 	
 	def current_effort_weeks(pid, fullQ = false)
-		@c_weeks = 0
+		@c_weeks = 0.0
 		fy = self.cfiscal
 		puts "current_effort_weeks for initiative for week: ?", pid.to_s
 		if fullQ 
@@ -24,7 +24,9 @@ scope :for_account, -> (aid){where('account_id = ?', aid)}
 			sWeek = fy.to_i + (qWeeks[0]-1).fdiv(100).round(3)
 			eWeek = fy.to_i + (qWeeks[1]+1).fdiv(100).round(3)
 			self.projects.for_year(fy).each do |proj|
-				@c_weeks += proj.assignments.where("set_period_id Between ? AND ?",sWeek,eWeek).sum("effort")
+				e = proj.assignments.where("set_period_id Between ? AND ?",sWeek,eWeek).sum("effort")
+				@c_weeks += e
+				puts "Add inscope weeks: " + proj.name + " - " + e.to_s 
 			end
 		else
 			self.projects.for_year(fy).each do |proj|

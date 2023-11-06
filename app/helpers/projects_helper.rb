@@ -61,11 +61,12 @@ module ProjectsHelper
 		else
 			if !allq && @pFy == current_fy().to_i then
 				#set fweek to end of current quarter
-				@fWeek = qRange[1]
-				@sWeek = qRange[0]
+				@fWeek = @pFy + ((qRange[1] + 1).fdiv(100)).round(3)
+				@sWeek = @pFy + ((qRange[0] - 1).fdiv(100)).round(3)
 			end
 		end
 		puts "fweek = " + @fWeek.to_s
+		puts "sweek=" + @sWeek.to_s
 		
 		#ReDesign The following ....
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => (1)..(current_fiscal_week())).each do |sp|
@@ -82,14 +83,16 @@ module ProjectsHelper
 # 			end
 		#**********
 		@fixtotal = Assignment.where("project_id = ? and is_fixed = true and set_period_id between ? and ?",
-			proj.id, (@pFy + (@sWeek-1).fdiv(100)).round(3), (@pFy + (@fWeek+1).fdiv(100)).round(3)).sum(:effort).round(1)
+			proj.id, @sWeek, @fWeek).sum(:effort)
 		@nitrototal = Assignment.where("project_id = ? and is_fixed = false and set_period_id between ? and ?",
-			proj.id, (@pFy + (@sWeek-1).fdiv(100)).round(3), (@pFy + (@fWeek+1).fdiv(100)).round(3)).sum(:effort).round(1)
+			proj.id, @sWeek, @fWeek).sum(:effort)
 		
+		puts "fixed: " + @fixtotal.to_s
+		puts "nitro: " + @nitrototal.to_s
 		if sum == 1 then
 			@output = (@fixtotal + @nitrototal).round(1).to_s
 		else
-			@output += @fixtotal.to_s + " | Nitro: " + @nitrototal.to_s
+			@output += @fixtotal.round(1).to_s + " | Nitro: " + @nitrototal.round(1).to_s
 		end
 	end
 

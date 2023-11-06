@@ -75,8 +75,9 @@ class InitiativesController < ApplicationController
   # GET /initiatives/1
   def show
   	@initiative = Initiative.find(params[:id])
-  	@projects = Project.for_initiative(params[:id])
-  	
+  	@projects = @initiative.projects #Project.for_initiative(params[:id])
+  	puts "initial PROJECT list for initiative has this many projects: " + @projects.count.to_s
+  	puts @projects.to_s
   	#Prep Chart Data for past 12 weeks of effort
 	@clabels = []
 	@cvalues = []
@@ -98,9 +99,13 @@ class InitiativesController < ApplicationController
 	#End prep chart data
 	
 	#sort project list by current allocation
-  	prj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}.to_h
+  	aprj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}
+  	puts aprj.to_s
+  	puts aprj.to_h.to_s
+  	prj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}
+  	puts "Hash post map has this many projects: " + prj.count.to_s
   	@projects = prj.sort_by {|alloc,p| [alloc,p]}.reverse
-  	puts @projects
+  	puts @projects.to_s
 	
   	 respond_to do |format|
       format.html # show.html.erb

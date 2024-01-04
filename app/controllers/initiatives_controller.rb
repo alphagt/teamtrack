@@ -14,7 +14,7 @@ class InitiativesController < ApplicationController
     		@fy = 'All'
     		@summary = sname + ' for all Fiscal Years - '
     	else
-			@initiatives = Initiative.for_account(aid).active.for_year(params[:fy])
+			@initiatives = Initiative.for_account(aid).active.for_year(params[:fy].to_i)
     		@fy = params[:fy].to_i
     		@summary = sname + ' for FY ' + @fy.to_s + ' - '
     	end
@@ -99,9 +99,6 @@ class InitiativesController < ApplicationController
 	#End prep chart data
 	
 	#sort project list by current allocation
-  	aprj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}
-  	puts aprj.to_s
-  	puts aprj.to_h.to_s
   	prj = @projects.map{ |p| [view_context.current_allocation(p,1),p]}
   	puts "Hash post map has this many projects: " + prj.count.to_s
   	@projects = prj.sort_by {|alloc,p| [alloc,p]}.reverse

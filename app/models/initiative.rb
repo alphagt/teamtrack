@@ -1,9 +1,11 @@
 class Initiative < ApplicationRecord
 has_many :projects
+has_many :assignments
 serialize :subprilist
   	
 scope :active, -> {where('active = true')}
-scope :for_year, -> (y){where("fiscal = ? or name IN('Overhead','Basics')", y)}
+#scope :for_year, -> (y){where("(fiscal = ? or name IN('Overhead','Basics')", y)}
+scope :for_year, -> (fy){joins(:assignments).where("assignments.set_period_id between ? and ?", fy, (fy + 1)).distinct}
 scope :for_account, -> (aid){where('account_id = ?', aid)}
 
 	def total_effort_weeks(cWeek, fy = self.cfiscal)

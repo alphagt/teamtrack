@@ -17,10 +17,17 @@
 		<label for="f_year">Fiscal Year:</label>
 		<%= select_tag "f_year", options_for_select(fy_list(), @fy.to_s) %>
 	</td>
+	<tr>
+	<td class="danger">
+		<label for="f_quarter">Quarter:</label>
+		<%= select_tag "f_quarter", options_for_select(['All','1','2','3','4'], if !@q.nil? then @q.to_s end) %>
+	</td>
 </table>
 
-<h5><%= "Average Weekly HC: " + if @fy == current_fy then (@sumEffort/current_week()).round.to_s else "" end %></h5>
-<h5><%= "QTD Effort(wks): " + if @fy == current_fy then (@qtdEffort).round.to_s else "" end %></h5>
+<h5><%= "Average Weekly HC: " + if @fy == current_fy then (@sumEffort/current_week()).round.to_s else 
+									""
+								end %></h5>
+<h5><%= "Period Effort(wks): " + if @fy == current_fy then (@qtdEffort).round.to_s else "" end %></h5>
 <% end %>
 
 <% content_for :main1 do %>
@@ -62,8 +69,8 @@
 				<th class="col-sm-3">Description</th>
 				<th>Fiscal Year</th>
 				<th>Current Week Effort</th>
-				<th><%= if @fy == current_fy then "QTD Person Weeks" else "FY Person Weeks" end %></th>
-				<th><%= if @fy == current_fy then "YTD Effective HC" else "FY Effective HC" end %></th>
+				<th><%= if @fy == current_fy.to_s || @q.to_i > 0 then "QTD Person Weeks" else "FY Person Weeks" end %></th>
+				<th>Effective HC</th>
 				<% if current_user.admin %>
 					<th>Status</th>
 				<% end %>
@@ -78,14 +85,24 @@
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>
-				<td><%= if @fy == current_fy then initiative.current_effort_weeks(current_period(),true) else
-					    	if !@fy.is_a? Numeric  then initiative.total_effort_weeks(52,initiative.fiscal) else
-					    		initiative.total_effort_weeks(52,@fy) end 
-					    	end %></td>
-				<td><%= if @fy == current_fy then (initiative.total_effort_weeks(current_week())/current_week()).round else
-				           if !@fy.is_a? Numeric  then (initiative.total_effort_weeks(52,initiative.fiscal)/52).round(1) else
-				           	 (initiative.total_effort_weeks(52,@fy)/52).round(1) end
-				           end %></td>
+				<td><%= if @fy == current_fy && @q.to_i == 0 then initiative.current_effort_weeks(current_period(),true) else
+							if @fy == current_fy then initiative.current_effort_weeks(@fy + (@q.to_i * 12).fdiv(100).round(3),true)	else						
+					    		if !@fy.is_a? Numeric then initiative.total_effort_weeks(52,initiative.fiscal) else
+					    			if @q.to_i == 0  then initiative.total_effort_weeks(52,@fy) else
+					    				initiative.current_effort_weeks(@fy + (@q.to_i * 12).fdiv(100).round(3),true)
+					    			end 
+					    		end 
+					    	end
+					    end %></td>
+				<td><%= if @fy == current_fy && @q.to_i == 0 then (initiative.total_effort_weeks(current_week())/current_week()).round() else
+							if @fy == current_fy then (initiative.current_effort_weeks(@fy + (@q.to_i * 12).fdiv(100).round(3),true)/12).round(1) else
+				           		if !@fy.is_a? Numeric  then (initiative.total_effort_weeks(52,initiative.fiscal)/52).round(1) else
+								 	if @q.to_i == 0 then (initiative.total_effort_weeks(52,@fy)/52).round(1) else
+										(initiative.current_effort_weeks(@fy + (@q.to_i * 12).fdiv(100).round(3),true)/12).round(1) 
+								 	end
+								end
+				           	end
+				        end %></td>
 				<% if current_user.admin %>
 					<td><%= if initiative.active then "Active" else "Closed" end %></td>
 				<% end %>

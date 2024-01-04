@@ -23,10 +23,16 @@ class InitiativesController < ApplicationController
     	@fy = view_context.current_fy
     	@summary = sname + ' for FY ' + @fy.to_s + ' - '
 	end
-    
-    puts 'Initiatives#Index - count'
-    puts @initiatives.count
-    puts @fy
+	if params[:q].present?
+		@q = params[:q].to_s
+		if @q.to_i > 0
+			@summary = sname + " for Q" + @q + ' FY ' + @fy.to_s + ' - '
+		end
+	end 
+ 
+    puts 'Initiatives#Index - count' + @initiatives.count.to_s
+    puts 'Fiscal Year: ' + @fy.to_s
+    puts 'Quarter: ' + @q.to_s
     
     @fy_list = view_context.fy_list()
     

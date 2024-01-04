@@ -6,3 +6,6 @@ $(document).ready ->
   $("#f_year").change ->
     window.location.search = 'fy=' + (this).value
     
+  $("#f_quarter").change ->
+    window.location.search = 'q=' + (this).value + '&fy=' + $("#f_year").val()
+    

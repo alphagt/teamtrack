@@ -1,7 +1,10 @@
 class Assignment < ApplicationRecord
   belongs_to :user, :foreign_key => "user_id", :touch => true
   belongs_to :project, :foreign_key => "project_id"
+  belongs_to :initiative, :foreign_key => "initiative_id", :touch => true
   belongs_to :tech_system, :foreign_key => "tech_sys_id"
+  
+  before_save :project_initiative_id
   # attr_accessible :effort, :set_period_id, :is_fixed, :project_id, :user_id, :user, :project, :week_number, :tech_system, :tech_sys_id  
   validates :project_id, :presence => true
   validates :user_id, :presence => true
@@ -10,12 +13,15 @@ class Assignment < ApplicationRecord
   validate :total_effort_max
   validate :one_assg_per_project_week, :on => :create
   validate :project_active, :on => [:create, :update]
+  validate :project_initiative_id, :on => [:create, :update]
   
   scope :by_user, -> (emp){where(:user_id => emp.id)}
   scope :no_overhead, -> {joins(:project).where("projects.category NOT IN ('Overhead')")} 
   scope :for_account, -> (aid) {joins(:project).where("projects.account_id = ?", aid).order("assignments.set_period_id DESC")} 
   scope :for_project, -> (pid) {where(:project_id => pid).order("assignments.set_period_id DESC")}
-  scope :recent, -> (min_period) {where("set_period_id > ?", min_period).order("assignments.set_period_id DESC")}
+  scope :for_initiative, -> (iid) {where(:initiative_id => iid).order("assignments.set_period_id DESC")}
+  scope :recent, -> (min_period) {where("set_period_id >= ?", min_period).order("assignments.set_period_id DESC")}
+  scope :ytd, -> (max_period) {where("set_period_id Between ? and ?", max_period.to_i,max_period)}
   scope :by_org, -> {joins(:user).order("set_period_id desc, users.org, users.manager_id")}
   scope :fte_only, -> {joins(:user).where("users.is_contractor != true or users.is_contractor is null")}
   
@@ -66,6 +72,12 @@ class Assignment < ApplicationRecord
   
   def fiscal_year
   	self.set_period_id.to_i
+  end
+  
+  def project_initiative_id
+  	unless self.initiative_id.present? && self.initiative_id > 0
+  		self.initiative_id = Project.find(self.project_id).initiative_id
+  	end
   end
   
   def total_effort_max

@@ -26,7 +26,7 @@ wb.add_worksheet(name: "Assignments Wk " + @wk.to_s) do |sheet|
 			if a.project.keyproj.present? && a.project.keyproj
 				ctp = ishort + "-*" + a.project.name
 			else
-				ctp = ishort + "-" + (a.project.ctpriority || "?")	
+				ctp = ishort + "-" + (a.project.ctpriority || "NA")	
 			end 
 			pName = p.name
 			pRtm = p.rtm || "Undefined"

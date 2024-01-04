@@ -19,8 +19,8 @@
 	</td>
 </table>
 
-<h5><%= "Average Weekly HC: " + (@sumEffort/current_week()).round.to_s %></h5>
-<h5><%= "QTD Effort(wks): " + (@qtdEffort).round.to_s %></h5>
+<h5><%= "Average Weekly HC: " + if @fy == current_fy then (@sumEffort/current_week()).round.to_s else "" end %></h5>
+<h5><%= "QTD Effort(wks): " + if @fy == current_fy then (@qtdEffort).round.to_s else "" end %></h5>
 <% end %>
 
 <% content_for :main1 do %>
@@ -78,8 +78,14 @@
 				<td><%= initiative.description %></td>
 				<td><%= initiative.fiscal %></td>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>
-				<td><%= initiative.current_effort_weeks(current_period(),true) %></td>
-				<td><%= (initiative.total_effort_weeks(current_week())/current_week()).round %></td>
+				<td><%= if @fy == current_fy then initiative.current_effort_weeks(current_period(),true) else
+					    	if !@fy.is_a? Numeric  then initiative.total_effort_weeks(52,initiative.fiscal) else
+					    		initiative.total_effort_weeks(52,@fy) end 
+					    	end %></td>
+				<td><%= if @fy == current_fy then (initiative.total_effort_weeks(current_week())/current_week()).round else
+				           if !@fy.is_a? Numeric  then (initiative.total_effort_weeks(52,initiative.fiscal)/52).round(1) else
+				           	 (initiative.total_effort_weeks(52,@fy)/52).round(1) end
+				           end %></td>
 				<% if current_user.admin %>
 					<td><%= if initiative.active then "Active" else "Closed" end %></td>
 				<% end %>
@@ -97,7 +103,11 @@
 			  		<td><%= p.description %></td>
 			  		<td></td>
 			  		<td><%= current_allocation(p,1) %></td>
-			  		<td><%= ytd_allocation(p,1,false) %></td>
+			  		<td><%= if @fy == current_fy then ytd_allocation(p,true,false,@fy) else
+			  					if !@fy.is_a? Numeric then ytd_allocation(p,true,true,initiative.fiscal) else
+			  			   			ytd_allocation(p,true,true,@fy)
+			  			   		end 
+			  			   end %></td>
 			  		<td></td>
 			  		<% if current_user.admin %>
 						<td><%= if p.active then "Active" else "Closed" end %></td>

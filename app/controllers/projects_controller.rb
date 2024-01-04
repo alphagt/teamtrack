@@ -393,7 +393,7 @@ class ProjectsController < ApplicationController
 		#get import settings for this tennant and add to iFields hash once on first record
 		if !fieldMappingsChecked then
 			cfname = Setting.for_account(@aid).find_by_key("p_cust_5").value
-			puts "cfname " + cfname
+			#puts "cfname " + cfname
 			imap = Setting.for_account(@aid).for_key(cfname) #get any configured import mappings
 			#check if the imported data has any filed names that are mapped
 			imap.each do |h|
@@ -402,7 +402,7 @@ class ProjectsController < ApplicationController
 					iFields[h.value] = h.displayname.downcase
 					puts "added " + h.displayname.downcase + " for project field " + h.value
 				else
-					puts "Didn't find import column for " + h.value
+					#puts "Didn't find import column for " + h.value
 				end
 			end
 			puts "MAPPED FIELDS FOUND ===== " 
@@ -413,7 +413,7 @@ class ProjectsController < ApplicationController
 		#process columns with labels that match 'reserved' names: ISSUE KEY, DESCRIPTION, RTM, CATEGORY
 		if iFields['upl_number'] == "issue key" then  
 			#this is a jira import so trim the project key off the issue number
-			puts "PROCESS JIRA ISSUE KEY"
+			#puts "PROCESS JIRA ISSUE KEY"
 			pid = i[iFields['upl_number']].split("-")[1].to_i || Project.for_account(@aid).pluck(:upl_number).max + 1
 		else
 			pid = i[iFields['upl_number']].to_i || Project.for_account(@aid).pluck(:upl_number).max + 1
@@ -546,7 +546,7 @@ class ProjectsController < ApplicationController
 			init = Initiative.for_account(@aid).find_by_name(i[iFields['initiative']])
 			iId = nil
 			if init
-				iId = init.id
+				iId = i.id
 				puts "Mapped Initiative to: " + iId.to_s
 			else 
 				puts "ERROR - Non-Existent Initiative name encountered: " +  i[iFields['initiative']]
@@ -706,8 +706,19 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
 	puts project_params.to_s
+	#cascade update current year assignments when initiative changes
+	if params[:project][:initiative_id] != @project.initiative_id then
+		puts "Handling cascade update of assignments for Initiative Change"
+		@old_init = @project.initiative_id
+		@maxp = view_context.current_fy + (52).fdiv(100).round(3)
+		@new_init = params[:project][:initiative_id]
+		puts "MaxPeriod:   " + @maxp.to_s
+		puts "NewInitiative:  " + @new_init
+		#Assignment.for_initiative(@project.initiative_id).update_all(initiative_id: params[:initiative_id].to_i)
+	end
     respond_to do |format|
       if @project.update_attributes(project_params)
+      	Assignment.for_initiative(@old_init).ytd(@maxp).update_all(initiative_id: @new_init)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else

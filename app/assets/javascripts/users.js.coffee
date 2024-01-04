@@ -59,6 +59,6 @@ $ ->
 		
 	$("#u_acct").change ->
     window.location.search = 'acct=' + (this).value
-		
-		
-					
+    
+    $("#i_week").change ->
+   		window.location.search = 'pDate=' + (this).value		

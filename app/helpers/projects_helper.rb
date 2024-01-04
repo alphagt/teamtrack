@@ -42,7 +42,7 @@ module ProjectsHelper
 #		puts  @cweek_number
 #		@cweek_number
 	end
-	def ytd_allocation(proj, sum = 0, allq = true, fiscaly = current_fy())
+	def ytd_allocation(proj, combined = false, fullYear = true, fiscaly = current_fy())
 	#ToFIX
 		puts "ytd_allocation Call"
 		puts fiscaly
@@ -50,20 +50,16 @@ module ProjectsHelper
 		@nitrototal = 0
 		@output = "Fixed: "
 		@cperiod = current_period().to_f() #SetPeriod.where(:fiscal_year => @fyear, :week_number => current_fiscal_week())
-		@pFy = fiscaly.to_i
+		@pFy = fiscaly
 		qRange = qWeekRange(current_period)
 		#puts "pFY - "
 		#puts @pFy
-		@fWeek = 52
+		@fWeek = @pFy + (52).fdiv(100).round(3)
 		@sWeek = @pFy.to_f
-		if allq && @pFy == current_fy().to_i then
-			@fWeek = ((@cperiod - @pFy) * 100).round
-		else
-			if !allq && @pFy == current_fy().to_i then
-				#set fweek to end of current quarter
-				@fWeek = @pFy + ((qRange[1] + 1).fdiv(100)).round(3)
-				@sWeek = @pFy + ((qRange[0] - 1).fdiv(100)).round(3)
-			end
+		if !fullYear then
+			#set fweek to end of current quarter
+			@fWeek = @pFy + ((qRange[1] + 1).fdiv(100)).round(3)
+			@sWeek = @pFy + ((qRange[0] - 1).fdiv(100)).round(3)
 		end
 		puts "fweek = " + @fWeek.to_s
 		puts "sweek=" + @sWeek.to_s
@@ -89,10 +85,10 @@ module ProjectsHelper
 		
 		puts "fixed: " + @fixtotal.to_s
 		puts "nitro: " + @nitrototal.to_s
-		if sum == 1 then
+		if combined then
 			@output = (@fixtotal + @nitrototal).round(1).to_s
 		else
-			@output += @fixtotal.round(1).to_s + " | Nitro: " + @nitrototal.round(1).to_s
+			@output += @fixtotal.round(1).to_s + " | Extension: " + @nitrototal.round(1).to_s
 		end
 	end
 

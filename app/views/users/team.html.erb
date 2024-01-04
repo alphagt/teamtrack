@@ -7,6 +7,11 @@
 <table class="table" >
 	<tr>
 		<td class="danger"><%= link_to 'New Assignment', new_assignment_path %></td>
+	<tr>
+		<td class="danger">
+		<label for="i_Week">View Week:</label>
+			<%= date_select("pDate", "date", {:selected => Date.today}, :id => "i_week") %>
+		</td>
 	<% if @condense then %>
 		<tr>
 			<td class="danger"><%= link_to 'Expand All Users', team_user_path(:id => @manager.id, :condense => false, :nocache => true) %></td>

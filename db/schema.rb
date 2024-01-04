@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_31_183121) do
+ActiveRecord::Schema.define(version: 2024_01_03_202628) do
 
   create_table "accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2023_07_31_183121) do
     t.datetime "updated_at"
     t.decimal "set_period_id", precision: 6, scale: 2
     t.integer "tech_sys_id", default: 0
+    t.integer "initiative_id", default: 0
     t.index ["project_id"], name: "index_assignments_on_project_id"
     t.index ["set_period_id"], name: "index_assignments_on_set_period_id"
     t.index ["user_id"], name: "index_assignments_on_user_id"

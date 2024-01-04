@@ -6,34 +6,41 @@ scope :active, -> {where('active = true')}
 scope :for_year, -> (y){where("fiscal = ? or name IN('Overhead','Basics')", y)}
 scope :for_account, -> (aid){where('account_id = ?', aid)}
 
-	def total_effort_weeks(cWeek)
+	def total_effort_weeks(cWeek, fy = self.cfiscal)
 		@ytd_weeks = 0
-		fy = self.cfiscal
-		self.projects.for_year(fy).each do |proj|
-			@ytd_weeks += proj.ytd_allocation(fy, cWeek)
-		end
-		@ytd_weeks.round(1)
+		puts "TEW FY:  " + fy.to_s
+		@newTotal = Assignment.for_initiative(self.id).ytd(fy.to_i + cWeek.fdiv(100).round(3)).sum(:effort)
+		#puts "TEST-" + self.tag + ":  " + @newTotal.to_s
+		#Old Impl - Deprecated
+		# self.projects.for_year(fy).each do |proj|
+# 			@ytd_weeks += proj.ytd_allocation(fy, cWeek)
+# 		  end
+# 		  @ytd_weeks.round(1)
+		@newTotal.round(1)
 	end
 	
 	def current_effort_weeks(pid, fullQ = false)
 		@c_weeks = 0.0
-		fy = self.cfiscal
+		fy = pid.to_i
 		puts "current_effort_weeks for initiative for week: ?", pid.to_s
 		if fullQ 
 			qWeeks = ApplicationController.helpers.qWeekRange(pid)
-			sWeek = fy.to_i + (qWeeks[0]-1).fdiv(100).round(3)
-			eWeek = fy.to_i + (qWeeks[1]+1).fdiv(100).round(3)
-			self.projects.for_year(fy).each do |proj|
-				e = proj.assignments.where("set_period_id Between ? AND ?",sWeek,eWeek).sum("effort")
-				@c_weeks += e
-				puts "Add inscope weeks: " + proj.name + " - " + e.to_s 
-			end
+			sWeek = fy + (qWeeks[0]-1).fdiv(100).round(3)
+			eWeek = fy + (qWeeks[1]+1).fdiv(100).round(3)
+			@new_c_weeks = Assignment.for_initiative(self.id).where("set_period_id BETWEEN ? AND ?",sWeek,eWeek).sum(:effort)
+			# puts "TEST-" + self.tag + ":  " + @new_c_weeks.round(1).to_s
+# 			self.projects.for_year(fy).each do |proj|
+# 				e = proj.assignments.where("set_period_id Between ? AND ?",sWeek,eWeek).sum("effort")
+# 				@c_weeks += e
+# 				#puts "Add inscope weeks: " + proj.name + " - " + e.to_s 
+# 			end
 		else
-			self.projects.for_year(fy).each do |proj|
-				@c_weeks += proj.assignments.where("set_period_id = ?", pid).sum("effort")
-			end
+			@new_c_weeks = Assignment.for_initiative(self.id).recent(pid).sum(:effort)
+# 			self.projects.for_year(fy).each do |proj|
+# 				@c_weeks += proj.assignments.where("set_period_id = ?", pid).sum("effort")
+# 			end
 		end
-		@c_weeks.round(1)
+		@new_c_weeks.round(1)
 	end
 	
 	def cfiscal

@@ -75,8 +75,8 @@
 				<td><%= project.owner.name %></td>
 				<td><%= project.description %></td>
 				<td><%= a %></td>
-				<td><%= ytd_allocation(project, 1) %></td>
-				<td><%= (ytd_allocation(project, 1).to_d/current_week()).round(1) %></td>
+				<td><%= ytd_allocation(project, true) %></td>
+				<td><%= (ytd_allocation(project, true).to_d/current_week()).round(1) %></td>
 				<% if current_user.admin %>
 					<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
 					<td><%= if project.keyproj then "X" end %></td>

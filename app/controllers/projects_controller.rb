@@ -546,7 +546,7 @@ class ProjectsController < ApplicationController
 			init = Initiative.for_account(@aid).find_by_name(i[iFields['initiative']])
 			iId = nil
 			if init
-				iId = i.id
+				iId = init.id
 				puts "Mapped Initiative to: " + iId.to_s
 			else 
 				puts "ERROR - Non-Existent Initiative name encountered: " +  i[iFields['initiative']]

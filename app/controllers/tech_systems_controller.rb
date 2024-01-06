@@ -5,8 +5,9 @@ class TechSystemsController < ApplicationController
   
   def index
   	#@techsystems = TechSystem.order("qos_group", "name")
-  	@techsystems = TechSystem.for_account(current_user.primary_account_id).by_qos
+  	@techsystems = TechSystem.for_account(current_user.primary_account_id).active.by_qos
   	puts "### TechSystems Index - " + @techsystems.count.to_s
+  	puts @techsystems.pluck(:id,:qos_group).to_s
   	if @techsystems.present?
   		@current_qos = @techsystems.first().qos_group
   	end

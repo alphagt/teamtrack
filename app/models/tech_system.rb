@@ -8,6 +8,7 @@ class TechSystem < ApplicationRecord
 	scope :by_name, -> {order('name')}
 	scope :for_qos, -> (gname){where('qos_group = ?', gname)}
 	scope :for_account, -> (aid){where('account_id = ?', aid)}
+	scope :active, -> {where("qos_group != 'Archived'")}
 	
 	def average_assigned(fy, wk)
 		x = Assignment.where("tech_sys_id = ? AND set_period_id > ?", self.id, fy.to_d).sum("effort")

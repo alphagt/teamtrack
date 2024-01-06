@@ -43,6 +43,7 @@
 		  </tr>
 		<% @gnum = 1 %>
 		<% @techsystems.each do |tsystem|  %>
+		  <% puts tsystem.name + ':' + tsystem.id.to_s  %>
 		  <% if !tsystem.nil? && tsystem.qos_group != "Archived" %>
 			  <% if tsystem.qos_group != @current_qos %>
 			  	<% @gnum += 1 %>

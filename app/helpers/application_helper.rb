@@ -4,7 +4,7 @@ module ApplicationHelper
 		
 		@fyear = speriod.to_i
 		@cfy_offset = display_name_for('sys_names', 'fy offset').to_i * -1
-		puts 'OFFSET = ?',@cfy_offset
+		#puts 'OFFSET = ?',@cfy_offset
 		if @cfy_offset == 0 then
 			@offset_y_adjust = 0
 		else
@@ -50,9 +50,9 @@ module ApplicationHelper
  		#puts 'period_from_parts'
  		#puts 'iWeek'
  		# @fWeek = 0.0
- 		puts iWeek
+ 		#puts iWeek
 		@fWeek = iWeek.to_i
-		puts @fWeek.to_s
+		#puts @fWeek.to_s
 		@return = iFy.to_i + @fWeek.fdiv(100).round(3)
 	end
 	
@@ -258,8 +258,8 @@ module ApplicationHelper
 # 		puts  @cweek_number
 # 		@out = @fyear + @cweek_number.fdiv(100).round(3)
 		@out = offset_period(Date.today)
-		puts 'cPeriod ='
-		puts @out
+		#puts 'cPeriod ='
+		#puts @out
 		@out
 		#SetPeriod.where(:fiscal_year => @fyear, :week_number => @cweek_number).first
 	end
@@ -272,7 +272,7 @@ module ApplicationHelper
 		else
 			@cfy_offset = hardOffset
 		end
-		puts 'OFFSET = ?',@cfy_offset
+		#puts 'OFFSET = ?',@cfy_offset
 		if @cfy_offset == 0 then
 			@offset_y_adjust = 0
 		else

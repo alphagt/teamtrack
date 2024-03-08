@@ -31,7 +31,9 @@ class Assignment < ApplicationRecord
     
   def self.extend_by_week(cAssign)
   #ToFix
+			puts cAssign.set_period_id
 			@pFy = cAssign.set_period_id.to_i
+			puts @pFY
 			@fWeek = ((cAssign.set_period_id - @pFy) * 100).round 
 			puts @fWeek
 			if @fWeek < 52

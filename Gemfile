@@ -15,7 +15,7 @@ gem 'rails', '~> 5.2.3'
 #  gem 'pg'
 #end
 
-gem 'mysql2', '~> 0.4.0', :group => [:development, :test, :production]
+gem 'mysql2', '~> 0.5.0', :group => [:development, :test, :production]
 group :production do
   gem 'rails_12factor'
 end

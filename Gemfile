@@ -64,7 +64,7 @@ gem 'select2-rails'
 
 
 #Excel Export Gem
-gem 'axlsx_rails'
+gem 'caxlsx_rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

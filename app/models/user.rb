@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :subordinates, :class_name => "User", :foreign_key => "manager_id"
   belongs_to :primary_account, :class_name => "Account", :foreign_key => "primary_account_id"
   belongs_to  :default_system, :class_name => "TechSystem", :foreign_key => "default_system_id"
-  belongs_to :manager, :class_name => "User", :foreign_key => "manager_id",  :touch => true
+  belongs_to :manager, :class_name => "User", :foreign_key => "manager_id" #,  :touch => true
   belongs_to :impersonates, :class_name => "User", :foreign_key => "impersonate_manager"
   has_many :assignments
   has_many :projects, :through => :assignments

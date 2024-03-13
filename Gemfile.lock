@@ -47,9 +47,6 @@ GEM
     arel (9.0.0)
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
-    axlsx_rails (0.6.1)
-      actionpack (>= 3.1)
-      caxlsx (>= 3.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark-ips (2.13.0)
@@ -66,6 +63,9 @@ GEM
       marcel (~> 1.0)
       nokogiri (~> 1.10, >= 1.10.4)
       rubyzip (>= 1.3.0, < 3)
+    caxlsx_rails (0.6.3)
+      actionpack (>= 3.1)
+      caxlsx (>= 3.0)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -293,11 +293,11 @@ PLATFORMS
 DEPENDENCIES
   activerecord-import
   autoprefixer-rails
-  axlsx_rails
   bigdecimal (= 1.3.5)
   bootstrap-datepicker-rails
   bootstrap-sass
   cancan
+  caxlsx_rails
   coffee-rails (~> 4.2.1)
   derailed_benchmarks
   devise

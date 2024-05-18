@@ -417,7 +417,7 @@ class UsersController < ApplicationController
 		@user.admin = false
 		@user.ismanager = false
 		@user.orgowner = false
-		@user.org = 'ExOrg'
+		@user.org = @aid.to_s + '-System'
 		
 		if @user.save then
 			rcode = 0

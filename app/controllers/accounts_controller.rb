@@ -49,6 +49,10 @@ class AccountsController < ApplicationController
       	sa.save
       end
       
+      #Setup Ex Employee Manager user for this account
+      
+      
+      
       #Seed required Account Settings
       #CoreSettings
 		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'sys_names', :value => "project", :displayname => "Project", 
@@ -129,7 +133,7 @@ class AccountsController < ApplicationController
 		
 		#Add system user 'ExEmployeeMgr' for this new account
 		user = User.create! :primary_account_id => @account.id, :name => 'ExEmployeeMgr', :email => @account.id.to_s + 'bogus@nowhere.com', :verified => false, 
-			:password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => @account.id.to_s + '-System', :admin => false, :manager_id => pa.id, :etype => 'FTE', :category => 'MGMT'
+			:password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => @account.id.to_s + '-System', :admin => false, :manager_id => nil, :etype => 'FTE', :category => 'MGMT'
 		user.save
 		puts 'New user created: ' << user.name
 		

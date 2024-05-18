@@ -147,7 +147,7 @@ puts 'SETTING UP DEFAULT USER LOGIN'
 @suser.save
 @da = @suser
 puts 'New user created: ' << @suser.name
-user = User.create! :primary_account_id => aid, :name => 'ExEmployeeMgr', :email => 'test2@adobe.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
+user = User.create! :primary_account_id => aid, :name => 'ExEmployeeMgr', :email => 'exem@teamtrack.com', :verified => true, :password => 'A3kavazz', :password_confirmation => 'A3kavazz', :org => 'System'
 user['manager_id'] = 1
 user.save
 

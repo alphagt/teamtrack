@@ -275,18 +275,18 @@ class ProjectsController < ApplicationController
 		@keyprojdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = true AND
 			set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.name']).references(:project).sum(:effort).map do |a|
-			if !a[0][0].nil? then
-				i = Initiative.find(a[0][0])
-				if !i.tag.nil? then
-					cat =i.tag + "-*" + a[0][1].truncate(11).to_s
-				else
-					cat = i.name.truncate(11) + "-*" + a[0][1].truncate(6).to_s
+				if !a[0][0].nil? then
+					i = Initiative.find(a[0][0])
+					if !i.tag.nil? then
+						cat =i.tag + "-*" + a[0][1].truncate(11).to_s
+					else
+						cat = i.name.truncate(11) + "-*" + a[0][1].truncate(6).to_s
+					end
+				else 
+					cat = "NA" + "-*" + a[0][1].truncate(11).to_s  
 				end
-			else 
-				cat = "NA" + "-*" + a[0][1].truncate(11).to_s  
-			end
-			[cat,(a[1].to_f/cweek).round(2)]
-		end	
+				[cat,(a[1].to_f/cweek).round(2)]
+			end	
 		puts "PRIORITY KEY PROJECT DATA BLOCK:"
 		puts @keyprojdata.to_s
 		@ctpdata += @keyprojdata
@@ -312,7 +312,7 @@ class ProjectsController < ApplicationController
 		
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k).truncate(11) #+ "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	

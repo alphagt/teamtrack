@@ -17,6 +17,8 @@
 //= require users
 //= require select2
 //= require_tree .
+//= require chartkick
+//= require highcharts
 
 $(document).on("focus", "[data-behaviour~='datepicker']", function(e){
     $(this).datepicker({"format": "yyyy-mm-dd", "weekStart": 1, "autoclose": true})

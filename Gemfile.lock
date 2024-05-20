@@ -66,6 +66,7 @@ GEM
     caxlsx_rails (0.6.3)
       actionpack (>= 3.1)
       caxlsx (>= 3.0)
+    chartkick (5.0.6)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -298,6 +299,7 @@ DEPENDENCIES
   bootstrap-sass
   cancan
   caxlsx_rails
+  chartkick
   coffee-rails (~> 4.2.1)
   derailed_benchmarks
   devise

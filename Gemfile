@@ -66,6 +66,9 @@ gem 'select2-rails'
 #Excel Export Gem
 gem 'caxlsx_rails'
 
+#chart helper
+gem 'chartkick'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

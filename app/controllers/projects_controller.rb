@@ -134,6 +134,16 @@ class ProjectsController < ApplicationController
 #	#################################	
 #	#Calculate and group fixed effort totals for chart
 	
+	@pie_config = "{ plotOptions: {
+								pie: {
+								  dataLabels: {
+									enabled: false
+								   },
+								   showInLegend: true
+								}
+							  }
+							}"
+	
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @allProjects.pluck(:id), uList).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
@@ -163,6 +173,7 @@ class ProjectsController < ApplicationController
 	puts "## YTD Hash labels, values "
 	puts @clabels_ytd.to_s
 	puts @cvals_ytd.to_s
+	
 	
 		
 	#Current Quarter Data

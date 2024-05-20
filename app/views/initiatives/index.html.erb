@@ -39,16 +39,36 @@
 <div class="row">
   <div class="col-md-12 col-centered">
 	<div class="col-md-6">
-		<%= image_tag(Gchart.pie(:title => 'Current Effort', 
-		:legend => @clabels, :data => @wvals, :size => '450x300', :chart_background => 'CCCCCC',
-		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
+		<%= pie_chart Hash[@clabels.zip(@wvals)], adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+				title: 'Current Effort',
+			    library: { plotOptions: {
+								pie: {
+								  dataLabels: {
+									enabled: true,
+									style: {
+										fontSize: 10}
+								   },
+								   showInLegend:false
+								}
+							  }
+						  } %>
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cdata.to_s end %></p>
 	</div>
 	<div class="col-md-6">
-		<%= image_tag(Gchart.pie(:title => 'YTD Effort', 
-		:legend => @clabels, :data => @cvals, :size => '450x300', :chart_background => 'CCCCCC',
-		:slice_colors => "3DB1FF,0061D7,FF148A,FF8A14", :pieSliceText => 'value'))%>
+		<%= pie_chart Hash[@clabels.zip(@cvals)], adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+				title: 'YTD Effort',
+			    library: { plotOptions: {
+								pie: {
+								  dataLabels: {
+									enabled: true,
+									style: {
+										fontSize: 10}
+								   },
+								   showInLegend:false
+								}
+							  }
+						  } %>
 		</br>
 		<p><%= if @showVals then 'Data:  ' + @cdata.to_s end %></p>
 	</div>

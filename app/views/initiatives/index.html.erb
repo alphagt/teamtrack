@@ -89,7 +89,9 @@
 				<th class="col-sm-1">Code</th>
 				<th class="col-sm-3">Name</th>
 				<th class="col-sm-3">Description</th>
-				<th>Fiscal Year</th>
+				<% if @fy == 'All' %>
+					<th>Fiscal Year</th>
+				<% end %>
 				<th>Current Week Effort</th>
 				<th><%= if @fy == current_fy.to_s || @q.to_i > 0 then "QTD Person Weeks" else "FY Person Weeks" end %></th>
 				<th>Effective HC</th>
@@ -105,7 +107,9 @@
 				<td><%= initiative.tag %></td>
 				<td class="link"><u><b><%= link_to initiative.name, initiative %></b></u></td>
 				<td><%= initiative.description %></td>
-				<td><%= initiative.fiscal %></td>
+				<% if @fy == 'All' %>
+					<td><%= initiative.fiscal %></td>
+				<% end %>
 				<td><%= initiative.current_effort_weeks(current_period) %></td>
 				<td><%= if @fy == current_fy && @q.to_i == 0 then initiative.current_effort_weeks(current_period(),true) else
 							if @fy == current_fy then initiative.current_effort_weeks(@fy + (@q.to_i * 12).fdiv(100).round(3),true)	else						

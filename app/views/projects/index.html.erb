@@ -173,7 +173,7 @@
 		<td class="link"><u><%= link_to project.name, project %></u></td>
 		<td><%= project.upl_number %></td>
 		<td><%= display_name_for("category",project.category) %></td>
-		<td><%= project.owner.name %></td>
+		<td><%= if !project.owner.nil? then project.owner.name else 'Undefined' end %></td>
 		<td><%= project.description %></td>
 		<td><%= a.split("_")[0] %></td>
 		<td><%= (ytd_allocation(project, true, @fy).to_d/current_week()).round(1) %></td>
@@ -191,7 +191,7 @@
 				<td class="link"><u><%= link_to p.name, p %></u></td>
 				<td><%= p.upl_number %></td>
 				<td><%= display_name_for("category",p.category) %></td>
-				<td><%= p.owner.name %></td>
+				<td><%= if !p.owner.nil? then p.owner.name else 'Undefined' end %></td>
 				<td><%= p.description %></td>
 				<td><%= a.split("_")[0] %></td>
 				<td><%= ytd_allocation(p) %></td>

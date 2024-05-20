@@ -1,0 +1,29 @@
+alink {
+  color: #FF0000; }
+  alink:visited {
+    color: #00FF00; }
+  alink:hover {
+    color: #FF00FF;
+    background-color: #000; }
+
+.follow-button {
+  background: transparent;
+  border: 1px solid #e8e8e8;
+  display: block;
+  float: left;
+  background: #0089d1;
+  color: #006faa;
+  font-weight: 400;
+  font-size: 1.4em;
+  display: block;
+  padding: 0px 4px 0px 4px;
+  text-decoration: none; }
+  .follow-button:hover {
+    color: #e5f6ff;
+    background: #0089d1; }
+
+.link-button {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid #006699;
+  background-color: #0097DF; }

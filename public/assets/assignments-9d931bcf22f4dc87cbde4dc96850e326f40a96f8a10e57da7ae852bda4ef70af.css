@@ -1,0 +1,7 @@
+alink {
+  color: #fff; }
+  alink:visited {
+    color: #666; }
+  alink:hover {
+    color: #fff;
+    background-color: #000; }

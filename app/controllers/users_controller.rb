@@ -158,8 +158,6 @@ class UsersController < ApplicationController
   
   # GET /users/:id/team
   def team
-  
-  	require 'gchart'
   	
   	@manager = User.find(params[:id])
   	@manager_string = 'For ' + @manager.name
@@ -312,8 +310,12 @@ class UsersController < ApplicationController
 		@cvals = []
 	else
 		cdataH = calc_chart_data(@cfdata)
+		#Legacy G Chart IMPL #
 		@clabels = cdataH.keys.map { |k| k.split(".")[0]}
 		@cvals = cdataH.values
+		#Highcharts IMPL
+		@alocdataH = cdataH.map {|k,v| [k.split(".")[0],v]}.to_h
+		puts @alocdataH
 	end
 	
   	#@currentmgr = ""

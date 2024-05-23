@@ -56,7 +56,7 @@
 <!-- <h5>People Managers:  <small><%= @user_list[0].count %></small></h5> -->
 <h5>% Unavailable: <small><%= @oh_pct + "%" %></small></h5>
 	<% if @cvals.length > 0 then %>
-		<%= pie_chart Hash[@clabels.zip(@cvals)], adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+		<%= pie_chart @alocdataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
 				title: 'Invest Type Allocation',
 			    library: { plotOptions: {
 								pie: {

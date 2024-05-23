@@ -23,7 +23,7 @@ module SettingsHelper
 			out = Setting.for_account(aid).find_by_key(val).value
 		else
 			if !Setting.for_account(aid).find_by_key(key).nil?
-				s = Setting.for_account(aid).for_key(key).where('value = ?', val)
+				s = Setting.for_account(aid).for_key(key).where('value LIKE ?', val + "%")
 				if s.length > 0
 					out = s.first.displayname || "blank"
 				else

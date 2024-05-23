@@ -134,16 +134,6 @@ class ProjectsController < ApplicationController
 #	#################################	
 #	#Calculate and group fixed effort totals for chart
 	
-	@pie_config = "{ plotOptions: {
-								pie: {
-								  dataLabels: {
-									enabled: false
-								   },
-								   showInLegend: true
-								}
-							  }
-							}"
-	
 	@cfdata = Assignment.includes(:project).where('projects.category != ? AND set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 		'Overhead', @fy.to_s, (@fy + 1).to_s, @allProjects.pluck(:id), uList).group('projects.category').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'YTD Effort by Cat'
@@ -154,7 +144,8 @@ class ProjectsController < ApplicationController
 	
 	if @cfdata.length > 0
 		combinedytd = calc_chart_data(@cfdata)
-		##### Finalize var to support chart creation ######
+
+		##### Legacy G Chart IMPL: Finalize var to support chart creation ######
 		@cvals_ytd = combinedytd.values
 		puts "YTD Total"
 		ytd_total = @cvals_ytd.sum
@@ -169,10 +160,14 @@ class ProjectsController < ApplicationController
 			#@clabels_ytd << view_context.display_name_for("category",key).truncate(11) + "-" + pVal + "%"	
 			@clabels_ytd << key + "-" + pVal + "%"
 		end	
+		###### Highcharts Impl #######
+		@ytddataH = combinedytd
 	end
-	puts "## YTD Hash labels, values "
+	puts "## YTD Hash labels, values Arrays "
 	puts @clabels_ytd.to_s
 	puts @cvals_ytd.to_s
+	puts "## YTD Hash for Highcharts"
+	puts @ytddataH
 	
 	
 		
@@ -212,7 +207,7 @@ class ProjectsController < ApplicationController
 	combinedqtd = calc_chart_data(@cfdata_qtd)
 	
 
-	##### Finalize var to support chart creation ######
+	##### Legacy G Chart IMPL: Finalize var to support chart creation ######
 		@clabels_qtd = []
 		@cvals_qtd = combinedqtd.values
 		puts "QTD Total"
@@ -230,6 +225,9 @@ class ProjectsController < ApplicationController
 
 		end	
 		puts @clabels_qtd.to_s
+		
+	###### Highcharts IMPL
+		@qtddataH = combinedqtd	
 	
 	
 	#Calculate and group RTM and Stakeholder summary data for charts
@@ -241,7 +239,7 @@ class ProjectsController < ApplicationController
 		puts "Current Week is"
 		puts cweek
 		#get grouped effort for assignments bounded by projects and users relevant to the viewing manager
-		@ctpdata = Assignment.fte_only.includes(:project).where('projects.category != ? AND projects.keyproj = false AND 
+		@ctpdata = Assignment.includes(:project).where('projects.category != ? AND projects.keyproj = false AND 
 			set_period_id BETWEEN ? and ? AND projects.id IN (?) AND assignments.user_id IN (?)', 
 			'Overhead', @fy.to_s, (@fy + 1).to_s, @projects.pluck(:id), uList).group(['projects.initiative_id','projects.ctpriority']).references(:project).sum(:effort).map do |a|
 		
@@ -310,12 +308,23 @@ class ProjectsController < ApplicationController
 		puts "FINAL RTM HASH"
 		puts combinedrtm.to_s
 		
+		# Legacy G chart IMPL for Arrays
 		alabs = []
 		combinedrtm.map do |k,v|
-			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k).truncate(11) #+ "-" + v.round(2).to_s #TODO - change to percent of total?
+			sKey = Setting.for_account(@aid).for_key("p_cust_2")[0].value
+			sVal = k
+			puts sKey + ":" + sVal
+			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k.split(".")[0],@aid).truncate(11) #+ "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	
+		puts @slabels
+		puts @sVals
+		
+		# Highchart IMPL
+		@rtmdataH = combinedrtm.map {|k,v| [view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k.split(".")[0],@aid),v]}.to_h
+		puts "Highchart hash for RTB pie chart"
+		puts @rtmdataH
 
 		#Stakeholder Calcs
 		# Get sum of effort grouped by stakeholder values
@@ -331,13 +340,19 @@ class ProjectsController < ApplicationController
 		puts "FINAL PSH HASH"
 		puts combinedpsh.to_s
 		
+		#Legacy G Chart IMPL
 		alabs = []
 		combinedpsh.map do |k,v|
 			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_3")[0].value,k).truncate(11) + "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@pshlabels = alabs
 		@pshVals = combinedpsh.values	
-
+		
+		#High Chart Impl
+		@pshdataH = combinedpsh.map {|k,v| [view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_3")[0].value,k,@aid),v]}.to_h
+		puts "Highcharts hash for PSH chart"
+		puts @pshdataH
+		
 	end
 	
 	puts "user scoped project list:"

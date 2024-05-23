@@ -107,7 +107,7 @@ class InitiativesController < ApplicationController
 
 	#High Charts Impl
 	puts "Highchart Data"
-	@cdataH = @cdata.map{|k,v| ["week" + view_context.week_from_period(k).to_s, v]}.to_h
+	@cdataH = @cdata.map{|k,v| ["week" + format('%02d', view_context.week_from_period(k)), v]}.to_h
 	@cdataH = @cdataH.sort_by {|key| key}.to_h
 	puts @cdataH
 

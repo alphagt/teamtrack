@@ -30,7 +30,7 @@ class InitiativesController < ApplicationController
 		end
 	end 
  
-    puts 'Initiatives#Index - count' + @initiatives.count.to_s
+    puts 'Initiatives#Index - count ' + @initiatives.count.to_s
     puts 'Fiscal Year: ' + @fy.to_s
     puts 'Quarter: ' + @q.to_s
     
@@ -54,7 +54,7 @@ class InitiativesController < ApplicationController
 			puts "Write initiative data to cache: " + ckey
 			cache_hit = false
 			Rails.cache.delete_matched("#{ckey}")
-			 @cdata = @initiatives.map {|e| [e.tag,e.total_effort_weeks(cweek).to_d.round, 
+			 @cdata = @initiatives.map {|e| [e.tag,e.total_effort_weeks(cweek,@fy).to_d.round, 
     			e.current_effort_weeks(view_context.current_period).to_d.round,
     			e.current_effort_weeks(view_context.current_period,true).to_d.round]}
 		end
@@ -80,6 +80,11 @@ class InitiativesController < ApplicationController
 
   # GET /initiatives/1
   def show
+  	if params[:fy].present?
+  		@fy = params[:fy]
+  	else
+  		@fy = view_context.current_fy()
+  	end
   	@initiative = Initiative.find(params[:id])
   	@projects = @initiative.projects #Project.for_initiative(params[:id])
   	puts "initial PROJECT list for initiative has this many projects: " + @projects.count.to_s
@@ -91,16 +96,35 @@ class InitiativesController < ApplicationController
 		view_context.current_period.to_s, @projects.pluck(:id)).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Chart Data'
 	puts @cdata
+	
+#Legacy separate array impl for G Charts
 	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
-# 	puts 'Labels:'
-# 	puts @clabels.to_s	
+	puts 'Gcharts Arrays:'
+	puts @clabels.to_s	
+	puts @cvalues.to_s
+
+	#High Charts Impl
+	puts "Highchart Data"
+	@cdataH = @cdata.map{|k,v| ["week" + view_context.week_from_period(k).to_s, v]}.to_h
+	@cdataH = @cdataH.sort_by {|key| key}.to_h
+	puts @cdataH
+
 	#Data for projects pie chart
 	@cdata = Assignment.where('set_period_id = ? AND project_id IN (?)', 
 		view_context.current_period, @projects.pluck(:id)).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i.round(2)]}
+	#Legacy G charts array impl
 	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name.truncate(20) else "TBD" end}
-	@svalues = @cdata.to_h.values	
+	@svalues = @cdata.to_h.values
+	puts 'Gcharts pie Arrays:'
+	puts @slabels.to_s	
+	puts @svalues.to_s
+	
+	#High Charts Impl
+	@prjdataH = @cdata.map{|k,v| [k.name,v]}.to_h
+	puts "Highchart pie data"
+	puts @prjdataH
 		
 	#End prep chart data
 	

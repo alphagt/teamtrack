@@ -313,13 +313,14 @@ module ApplicationHelper
 		else
 			min_y = cfy
 		end
-		puts "MIN FY IS:  "
-		puts min_y
+		#puts "MIN FY IS:  "
+		#puts min_y
 		@list << min_y
 		while min_y < cfy do
 			min_y += 1
 			@list << min_y
 		end
+		puts "FY List: "
 		puts @list
 		@list
 	end

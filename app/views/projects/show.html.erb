@@ -21,7 +21,7 @@
 <% content_for :main1 do %>
 <div class="row">
 	<div class="col-md-12 col-centered">
-	<div class="col-md-3">
+	<div class="col-md-2">
 		<p><b>Name: </b><%= @project.name %></p>
 		<p><b>ID #: </b><%= @project.upl_number %></p>
 		<p><b>Active:  </b><%= @project.active %></p>
@@ -37,17 +37,39 @@
 		<p><b>Resource Plan: </b><%= @project.fixed_resource_budget %></p>
 	</div>
 	<div class="col-md-6">
+<!-- 
 		<%= image_tag(Gchart.bar(:title => "Effort History", 
 		:labels => @clabels, :data => @cvalues, :chart_background => 'CCCCCC', :max_value => 25, 
 		:min_value => 0, :stacked => false, :size => '400x225', :axis_with_labels => [['x'], ['y']],
 		:bar_width_and_spacing => ['40','4'], :bar_colors => "3DB1FF,0061D7,FF148A,FF8A14", 
 		:axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
+ -->
+		<%= column_chart @ahistoryH , adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+				title: 'Effort History',
+			    library: { 
+						  } %>
 	</div>
-	<div class="col-md-3">
-		<%= image_tag(Gchart.pie(:title => "Per-" + display_name_for('sys_names', 'service') + " Effort", 
+	<div class="col-md-4">
+		<!-- 
+<%= image_tag(Gchart.pie(:title => "Per-" + display_name_for('sys_names', 'service') + " Effort", 
 		:data => @svalues, :chart_background => 'CCCCCC', :size => '300x300',
 		:legend => @slabels, :legend_position => 'bottom', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"), 
 		class: "img-responsive")%>
+ -->
+		<%= pie_chart @sysdataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+				title: 'YTD Effort',
+			    library: { plotOptions: {
+								pie: {
+								  dataLabels: {
+									enabled: false,
+									style: {
+										fontSize: 10},
+									format: '<b>{point.name}</b>:<br>{point.percentage:.1f}%',
+								   },
+								   showInLegend:true
+								}
+							  }
+						  } %>
 	</div>
 	</div>
 </div>	

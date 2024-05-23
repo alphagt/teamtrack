@@ -654,22 +654,35 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
 	#Prep Chart Data
-	@clabels = []
-	@cvalues = []
+
 	@cdata = Assignment.recent(view_context.current_period - 0.10).where('set_period_id <= ? AND project_id = ?',  
 		view_context.current_period, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
 # 	puts 'Chart Data'
 # 	puts @cdata
-	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
+	##### Legacy G Chart Impl
+	@clabels = []
+	@cvalues = []
+	@clabels = @cdata.to_h.keys.map{|e| "week " + format('%02d', view_context.week_from_period(e))}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
 # 	puts 'Labels:'
-# 	puts @clabels.to_s	
+# 	puts @clabels.to_s
+	
+	# Hightcharts Impl
+	@ahistoryH = @cdata.map {|k,v| ["week " + format('%02d', view_context.week_from_period(k)),v]}.to_h
+#	puts @ahistoryH	
+	
 	#Data for systems pie chart
 	@cdata = Assignment.where('set_period_id <= ? AND project_id = ? AND tech_sys_id > 0', 
 		view_context.current_period, params[:id]).group(:tech_system).sum(:effort).map{|a|[a[0],a[1].to_i]}
+	
+	# Legacy G Chart Impl
 	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
-	@svalues = @cdata.to_h.values	
+	@svalues = @cdata.to_h.values
+	
+	# Highcharts Impl
+	@sysdataH = @cdata.map {|k,v| [k.name,v]}
+#	puts @sysdataH	
 	
 	#scope the assignment history per params
      if params[:history_scope] == 'all'

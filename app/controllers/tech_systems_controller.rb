@@ -55,7 +55,7 @@ class TechSystemsController < ApplicationController
 		view_context.current_period.to_s, params[:id]).group(:set_period_id).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	puts 'Chart Data'
 	puts @cdata
-	@clabels = @cdata.to_h.keys.map{|e| "week " + view_context.week_from_period(e).to_s}
+	@clabels = @cdata.to_h.keys.map{|e| "week " + format('%02d', view_context.week_from_period(e)}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
 # 	puts 'Labels:'

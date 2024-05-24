@@ -98,7 +98,7 @@ class InitiativesController < ApplicationController
 	puts @cdata
 	
 #Legacy separate array impl for G Charts
-	@clabels = @cdata.to_h.keys.map{|e| "week " + format('%02d', view_context.week_from_period(e)}
+	@clabels = @cdata.to_h.keys.map{|e| "week " + format('%02d', view_context.week_from_period(e))}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
 	puts 'Gcharts Arrays:'

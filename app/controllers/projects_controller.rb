@@ -312,9 +312,14 @@ class ProjectsController < ApplicationController
 		alabs = []
 		combinedrtm.map do |k,v|
 			sKey = Setting.for_account(@aid).for_key("p_cust_2")[0].value
-			sVal = k
+			if k.empty?
+				sVal = "Undefined"
+			else
+				sVal = k
+			end
+			
 			puts sKey + ":" + sVal
-			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k.split(".")[0],@aid).truncate(11) #+ "-" + v.round(2).to_s #TODO - change to percent of total?
+			alabs << view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,sVal.split(".")[0],@aid).truncate(11) #+ "-" + v.round(2).to_s #TODO - change to percent of total?
 		end
 		@slabels = alabs
 		@sVals = combinedrtm.values	

@@ -298,7 +298,7 @@ class ProjectsController < ApplicationController
 		
 		rtmeffort = Assignment.includes(:project).where('set_period_id BETWEEN ? and ? AND projects.id IN (?)',
 			@fy.to_s, (@fy + 1).to_s, 
-			Project.for_account(@aid).for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
+			Project.for_account(@aid).for_users(uList).pluck(:id)).group('projects.rtm').references(:project).sum(:effort).map{|a|[a[0] ||= 'Undefined',a[1].to_i]}
 		puts "combined in hash"
 		puts rtmeffort.to_s
 
@@ -469,6 +469,7 @@ class ProjectsController < ApplicationController
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
 			end
 		end
+		Puts "RTM was determined to be: " + rtm
 		
 		if i[iFields['fin_type']] then
 			puts "Find setting value for fin_type: " + i[iFields['fin_type']]
@@ -591,6 +592,11 @@ class ProjectsController < ApplicationController
 		if tProj.nil? then
 			tProj = Project.for_account(@aid).find_by_name(pname)
 		end
+		
+		if rtm.empty? then
+			rtm = "NA"
+		end
+		
 		if tProj.nil? then
 			puts i.keys
 			p = Hash.new()
@@ -619,6 +625,7 @@ class ProjectsController < ApplicationController
 			if pname != 'undefined' then
 				u[:name] = pname
 			end
+			
 			u[:upl_number] = pid ||= tProj.upl_number
 			u[:owner_id] = oid ||= tProj.owner_id
 			u[:description] = desc ||= tProj.description

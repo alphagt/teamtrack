@@ -327,7 +327,7 @@ class ProjectsController < ApplicationController
 		puts @sVals
 		
 		# Highchart IMPL
-		@rtmdataH = combinedrtm.map {|k,v| [view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k.split(".")[0],@aid),v]}.to_h
+		@rtmdataH = combinedrtm.map {|k,v| [view_context.display_name_for(Setting.for_account(@aid).for_key("p_cust_2")[0].value,k.split(".")[0].presence || "Undefined",@aid),v]}.to_h
 		puts "Highchart hash for RTB pie chart"
 		puts @rtmdataH
 

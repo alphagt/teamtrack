@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
 			combined.map do |k,v|
 				if exludeKeys.where("value = ?", k).length == 0 then #if not a .exlude key
 					if allocateKeys.where("value = ?", k).length == 0 then #if not a .allocate key
-						puts 'ALLOCATE TO ' + k
+						puts 'ALLOCATE TO ' + k.presence || "Undefined"
 						v += allocateTotal.to_d/cCount #add equal proportion of allocate amount to this key
 						update.store(k,v)
 					else

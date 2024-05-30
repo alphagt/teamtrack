@@ -451,7 +451,7 @@ class ProjectsController < ApplicationController
 		end
 		#TODO - Handle possible pid collision from using jira issue key value
 		desc = ""
-		rtm = ""
+		rtm = "NA"
 		if i[iFields['description']] then
 			desc = i[iFields['description']].truncate(150, separator: ' ')
 		end
@@ -469,7 +469,7 @@ class ProjectsController < ApplicationController
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
 			end
 		end
-		puts "RTM was determined to be: " + rtm
+# 		puts "RTM was determined to be: " + rtm
 		
 		if i[iFields['fin_type']] then
 			puts "Find setting value for fin_type: " + i[iFields['fin_type']]
@@ -591,10 +591,6 @@ class ProjectsController < ApplicationController
 		#retry using name match incase of shift in JIRA ids
 		if tProj.nil? then
 			tProj = Project.for_account(@aid).find_by_name(pname)
-		end
-		
-		if rtm.empty? then
-			rtm = "NA"
 		end
 		
 		if tProj.nil? then

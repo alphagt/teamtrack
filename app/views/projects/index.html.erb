@@ -69,7 +69,7 @@
 	<div class="col-md-5">
 		<% if @cvals_ytd.length > 0 then %>
 			<%= pie_chart @ytddataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
-				title: 'YTD ' + get_cfield_name('p_cust_1') + ' Allocation',
+				title: 'YTD ' + get_cfield_name('p_cust_1'),
 			    library: { plotOptions: {
 								pie: {
 								  dataLabels: {
@@ -89,7 +89,7 @@
 	<% if @cfdata_qtd.to_h.length > 0 then %>
 		<div class="col-md-5">
 			<%= pie_chart @qtddataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
-				title: 'QTD ' + get_cfield_name('p_cust_1') + ' Allocation',
+				title: 'QTD ' + get_cfield_name('p_cust_1'),
 			    library: { plotOptions: {
 								pie: {
 								  dataLabels: {
@@ -109,8 +109,7 @@
 	<% if @statsView then %>
 		<div class="col-md-5">
 			<%= pie_chart @rtmdataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
-				title: 'YTD ' + get_cfield_name('p_cust_2') + ' Allocation',
-			    library: { plotOptions: {
+				title: 'YTD ' + get_cfield_name('p_cust_2'),
 								pie: {
 								  dataLabels: {
 									enabled: true,
@@ -127,7 +126,7 @@
 		</div>
 		<div class="col-md-5">
 			<%= pie_chart @pshdataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
-				title: 'YTD ' + get_cfield_name('p_cust_3') + ' Allocation',
+				title: 'YTD ' + get_cfield_name('p_cust_3'),
 			    library: { plotOptions: {
 								pie: {
 								  dataLabels: {

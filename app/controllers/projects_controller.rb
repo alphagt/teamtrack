@@ -469,7 +469,7 @@ class ProjectsController < ApplicationController
 				rtm = i[view_context.get_cfield_name("p_cust_2")].truncate(50)
 			end
 		end
-		Puts "RTM was determined to be: " + rtm
+		puts "RTM was determined to be: " + rtm
 		
 		if i[iFields['fin_type']] then
 			puts "Find setting value for fin_type: " + i[iFields['fin_type']]

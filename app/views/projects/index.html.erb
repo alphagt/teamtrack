@@ -110,6 +110,7 @@
 		<div class="col-md-5">
 			<%= pie_chart @rtmdataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
 				title: 'YTD ' + get_cfield_name('p_cust_2'),
+				library: { plotOptions: {
 								pie: {
 								  dataLabels: {
 									enabled: true,

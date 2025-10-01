@@ -14,10 +14,10 @@ module SettingsHelper
 	
 	def display_name_for(key, val, aid = -1)
 		out = 'Undefined'
-# 		puts "setting Helper Inputs:"
-# 		puts key
-# 		puts val
-# 		puts aid
+		puts "setting Helper Inputs:"
+		puts key
+		puts val
+		puts aid
 		
 		if aid == -1
 			aid = current_user.primary_account_id

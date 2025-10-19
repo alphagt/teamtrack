@@ -1,7 +1,7 @@
-module IAPI
+module Iapi
   module V1
-    class Assignments < IAPI::V1::Base
-      include IAPI::V1::Defaults
+    class Assignments < Iapi::V1::Base
+      include Iapi::V1::Defaults
       require 'json'
       require 'uri'
 	  require 'net/http'
@@ -11,7 +11,7 @@ module IAPI
 # 	  	requires :user_name, type: String
 # 	  	requires :command, type: String
 	  end
-	  
+	  #api.baseurl/assignments
       resource :assignments do
         desc "Return all self and subordinate assignments"
         get "", root: :assignments do

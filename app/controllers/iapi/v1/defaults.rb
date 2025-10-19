@@ -1,10 +1,10 @@
-module IAPI
+module Iapi
   module V1
     module Defaults
       extend ActiveSupport::Concern
 
       included do
-        prefix "iapi"
+        prefix "Iapi"
         version "v1", using: :path
         default_format :json
         format :json

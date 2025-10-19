@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby "2.7.6"
+ruby "3.4.7"
 
-gem 'rails', '~> 5.2.3'
+gem 'rails', '~> 7.2.2'
 
 
 
@@ -43,7 +43,7 @@ end
 
 gem 'jquery-rails'
 
-gem 'bigdecimal', '1.3.5'
+gem 'bigdecimal', '~> 3.1.8'
 
 gem 'devise'
 
@@ -84,9 +84,13 @@ gem 'chartkick'
 # To use debugger
 # gem 'debugger'
 
+gem 'benchmark', group: :development
 gem 'derailed_benchmarks', group: :development
 gem 'stackprof', group: :development
 
 
-#backward compat for attribute protection in Rails 4
-#gem 'protected_attributes'
+#backward compatin Rails 6
+
+gem 'puma', '~> 7.1'
+gem 'concurrent-ruby', '~> 1.1'
+

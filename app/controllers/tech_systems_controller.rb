@@ -58,6 +58,7 @@ class TechSystemsController < ApplicationController
 	@clabels = @cdata.to_h.keys.map{|e| "week " + format('%02d', view_context.week_from_period(e))}
 	@clabels.sort!
 	@cvalues = @cdata.to_h.values
+	@cdataH = calc_chart_data(@cdata)
 # 	puts 'Labels:'
 # 	puts @clabels.to_s	
 	#Data for projects pie chart
@@ -65,6 +66,7 @@ class TechSystemsController < ApplicationController
 		view_context.current_period, params[:id]).group(:project).sum(:effort).map{|a|[a[0],a[1].to_i]}
 	@slabels = @cdata.to_h.keys.map{|e| if !e.nil? then e.name else "TBD" end}
 	@svalues = @cdata.to_h.values	
+	@sdataH = calc_chart_data(@cdata)
 		
 	#End prep chart data
   	
@@ -80,7 +82,7 @@ class TechSystemsController < ApplicationController
     @system = TechSystem.find(params[:id])
 	puts "In TechSystem Update Controler Method - " + @system.name
     respond_to do |format|
-      if @system.update_attributes(techsystem_params)
+      if @system.update(techsystem_params)
         format.html { redirect_to @system, notice: 'System was successfully updated.' }
         format.json { render json: @system, status: :updated, location: @system }
       else

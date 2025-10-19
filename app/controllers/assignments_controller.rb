@@ -279,7 +279,7 @@ class AssignmentsController < ApplicationController
 # 	puts 'update assignment'
 # 	puts params.to_s
     respond_to do |format|
-      if @assignment.update_attributes(assignment_params)
+      if @assignment.update(assignment_params)
         format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }
         format.json { head :no_content }
       else

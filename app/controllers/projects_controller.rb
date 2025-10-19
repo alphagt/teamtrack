@@ -764,7 +764,7 @@ class ProjectsController < ApplicationController
 		#Assignment.for_initiative(@project.initiative_id).update_all(initiative_id: params[:initiative_id].to_i)
 	end
     respond_to do |format|
-      if @project.update_attributes(project_params)
+      if @project.update(project_params)
       	Assignment.for_initiative(@old_init).ytd(@maxp).update_all(initiative_id: @new_init)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }

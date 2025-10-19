@@ -1,4 +1,4 @@
-module IAPI
+module Iapi
 	module V1
 		module Helpers
 			extend self
@@ -125,7 +125,7 @@ module IAPI
 					ablock["text"] = btext
 					sblocks << ablock
 				end
-				out["blocks"] = sblocks
+				out["blocks"] = sblock s
 				out.to_json
 			end
 	

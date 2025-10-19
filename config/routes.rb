@@ -1,6 +1,6 @@
 TeamTrack::Application.routes.draw do
 
-  mount IAPI::Base, at: "/"
+  mount Iapi::Base, at: "/"
 
   resources :accounts do
   	get 'addInviteCode', :on => :member

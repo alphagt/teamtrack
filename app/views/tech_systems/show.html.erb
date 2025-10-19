@@ -25,11 +25,10 @@
 			<p><b>Owner: </b><%= @system.owner.name %></p>
 		</div>
 		<div class="col-md-7">
-			<%= image_tag(Gchart.bar(:title => "Effort History", 
-			:labels => @clabels, :data => @cvalues, :chart_background => 'CCCCCC', :max_value => 25, 
-			:min_value => 0, :stacked => false, :size => '550x225', :axis_with_labels => [['x'], ['y']],
-			:bar_width_and_spacing => ['40','4'], :bar_colors => "3DB1FF,0061D7,FF148A,FF8A14", 
-			:axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
+			<%= column_chart @cdataH , adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+				title: 'Effort History',
+			    library: { 
+						  } %>
 		</div>
 	</div>
 </div>
@@ -39,10 +38,20 @@
 		<div class="col-md-3">
 		</div>
 		<div class="col-md-7">
-			<%= image_tag(Gchart.pie(:title => "Current Project Effort", 
-			:data => @svalues, :chart_background => 'CCCCCC', :size => '600x300',
-			:legend => @slabels, :legend_position => 'bottom', :slice_colors => "3DB1FF,0061D7,FF148A,FF8A14"), 
-			class: "img-responsive")%>
+			<%= pie_chart @sdataH, adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
+				title: 'Current Project Effort',
+			    library: { plotOptions: {
+								pie: {
+								  dataLabels: {
+									enabled: false,
+									style: {
+										fontSize: 10},
+									format: '<b>{point.name}</b>:<br>{point.percentage:.1f}%',
+								   },
+								   showInLegend:true
+								}
+							  }
+						  } %>
 		</div>
 	</div>
 </div>	

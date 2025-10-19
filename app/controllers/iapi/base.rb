@@ -1,5 +1,5 @@
-module IAPI
+module Iapi
   class Base < Grape::API
-    mount IAPI::V1::Base
+    mount Iapi::V1::Base
   end
 end

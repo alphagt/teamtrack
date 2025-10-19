@@ -78,5 +78,7 @@ module TeamTrack
     
     # ==> Limit logging of passwords
   	config.filter_parameters += [:password, :password_confirmation]
+  	
+  	Warning[:deprecated] = true
   end
 end

@@ -1,7 +1,7 @@
-module IAPI
+module Iapi
   module V1
-    class Slackhandler < IAPI::V1::Base
-      include IAPI::V1::Defaults
+    class Slackhandler < Iapi::V1::Base
+      include Iapi::V1::Defaults
       require 'json'
       require 'uri'
 	  require 'net/http'

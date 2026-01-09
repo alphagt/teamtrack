@@ -528,7 +528,7 @@ class ProjectsController < ApplicationController
 		end
 		if eDate.nil?
 			puts "Empty End Date Import Detected"
-			eDate = 'undefinied'
+			eDate = "undefinied"
 		end
 		puts "eDate is " + eDate.to_s 
 		

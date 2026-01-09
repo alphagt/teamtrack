@@ -431,7 +431,7 @@ class ProjectsController < ApplicationController
 				f = i.select {|k,v| k.include? h.displayname.downcase}
 				if !f.nil?
 					iFields[h.value] = h.displayname.downcase
-					puts "added " + h.displayname.downcase + " for project field " + h.value
+					puts "added mapped field: " + h.displayname.downcase + " for project field " + h.value
 				else
 					#puts "Didn't find import column for " + h.value
 				end
@@ -488,6 +488,7 @@ class ProjectsController < ApplicationController
 		
 		if i[iFields['psh']] then
 			puts "Find setting value for psh: " + i[iFields['psh']]
+			div = 'NA'
 			#get known picklist value associated with imported value
 			s = Setting.for_account(@aid).find_by_displayname(i[iFields['psh']])
 			if !s.nil? && !s.value.nil?
@@ -525,6 +526,7 @@ class ProjectsController < ApplicationController
 				eDate = i[view_context.get_cfield_name("p_cust_7")]
 			end
 		end
+		#format the date 
 		puts "eDate is " + eDate.to_s 
 		
 		if i[iFields['category']] then
@@ -607,7 +609,7 @@ class ProjectsController < ApplicationController
 			p[:fixed_resource_budget] = 5
 			p[:rtm] = rtm
 			p[:fin_type] = finType
-			p[:end_date] = eDate
+			p[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p')
 			p[:psh] = div
 			p[:ctpriority] = okr
 			p[:initiative_id] = iId
@@ -628,7 +630,7 @@ class ProjectsController < ApplicationController
 			u[:category] = cat ||= tProj.category
 			u[:rtm] = rtm ||= tProj.rtm
 			u[:fin_type] = finType ||= tProj.fin_type
-			u[:end_date] = eDate ||= tProj.end_date
+			u[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p') ||= tProj.end_date
 			u[:psh] = div ||= tProj.psh
 			u[:ctpriority] = okr ||= tProj.ctpriority
 			u[:initiative_id] = iId ||= tProj.initiative_id

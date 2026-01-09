@@ -5,8 +5,8 @@ serialize :subprilist
   	
 scope :active, -> {where('active = true')}
 #scope :for_year, -> (y){where("(fiscal = ? or name IN('Overhead','Basics')", y)}
-scope :for_year, -> (fy){joins(:assignments).where("assignments.set_period_id between ? and ?", fy, (fy + 1)).distinct}
-scope :for_weeks, -> (s,f){joint(:assignments).where("assignments.set_period_id between ? and ?", s, f).distinct}
+scope :for_year, -> (fy){joins('LEFT OUTER JOIN assignments ON assignments.initiative_id = initiatives.id').where("assignments.set_period_id between ? and ? OR initiatives.fiscal = ?", fy, (fy + 1), fy).distinct}
+scope :for_weeks, -> (s,f){joins(:assignments).where("assignments.set_period_id between ? and ?", s, f).distinct}
 scope :for_account, -> (aid){where('account_id = ?', aid)}
 
 	def total_effort_weeks(cWeek, fy = self.cfiscal)

@@ -30,13 +30,6 @@
 			<p><b>QTD Effort (wk):  </b><%= @initiative.current_effort_weeks(current_period(),true).round %></p>
 		</div>
 		<div class="col-md-5">
-			<!-- 
-<%= image_tag(Gchart.bar(:title => "Effort History", 
-			:labels => @clabels, :data => @cvalues, :chart_background => 'CCCCCC', :max_value => 25, 
-			:min_value => 0, :stacked => false, :size => '500x250', :axis_with_labels => [['x'], ['y']],
-			:bar_width_and_spacing => ['40','4'], :bar_colors => "3DB1FF,0061D7,FF148A,FF8A14", 
-			:axis_range => [[nil], [25], [25], nil] ), class: "img-responsive")%>
- -->
 			<%= column_chart @cdataH , adapter: "highcharts", colors: ["#3DB1FF","#0061D7","#FF148A","#FF8A14"], 
 				title: 'Effort History',
 			    library: { 

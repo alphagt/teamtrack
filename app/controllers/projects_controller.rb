@@ -526,7 +526,10 @@ class ProjectsController < ApplicationController
 				eDate = i[view_context.get_cfield_name("p_cust_7")]
 			end
 		end
-		#format the date 
+		if eDate.nil?
+			puts "Empty End Date Import Detected"
+			eDate = 'undefinied'
+		end
 		puts "eDate is " + eDate.to_s 
 		
 		if i[iFields['category']] then
@@ -598,6 +601,9 @@ class ProjectsController < ApplicationController
 		if tProj.nil? then
 			puts i.keys
 			p = Hash.new()
+			if eDate != 'undefined' then
+				p[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p')
+			end
 			
 			p[:active] = true
 			p[:name] = pname
@@ -609,7 +615,6 @@ class ProjectsController < ApplicationController
 			p[:fixed_resource_budget] = 5
 			p[:rtm] = rtm
 			p[:fin_type] = finType
-			p[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p')
 			p[:psh] = div
 			p[:ctpriority] = okr
 			p[:initiative_id] = iId
@@ -624,13 +629,16 @@ class ProjectsController < ApplicationController
 				u[:name] = pname
 			end
 			
+			if eDate != 'undefined' then
+				u[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p')
+			end
+			
 			u[:upl_number] = pid ||= tProj.upl_number
 			u[:owner_id] = oid ||= tProj.owner_id
 			u[:description] = desc ||= tProj.description
 			u[:category] = cat ||= tProj.category
 			u[:rtm] = rtm ||= tProj.rtm
 			u[:fin_type] = finType ||= tProj.fin_type
-			u[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p') ||= tProj.end_date
 			u[:psh] = div ||= tProj.psh
 			u[:ctpriority] = okr ||= tProj.ctpriority
 			u[:initiative_id] = iId ||= tProj.initiative_id

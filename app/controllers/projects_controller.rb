@@ -519,16 +519,18 @@ class ProjectsController < ApplicationController
 		
 		if i[iFields['end_date']] then
 			puts "Found value for end_date: " + i[iFields['end_date']]
-			eDate = i[iFields['end_date']] #use found picklist val or insert the imported value as is
+			iDate = i[iFields['end_date']] #use found picklist val or insert the imported value as is
 			
 		else #case of no explicit mapping but import has field with same custom displayname
 			if i[view_context.get_cfield_name("p_cust_7")] then
-				eDate = i[view_context.get_cfield_name("p_cust_7")]
+				iDate = i[view_context.get_cfield_name("p_cust_7")]
 			end
 		end
-		if eDate.nil?
+		if iDate.nil?
 			puts "Empty End Date Import Detected"
 			eDate = "undefinied"
+		else
+			eDate = Date.strptime(iDate, '%d/%b/%y %I:%M %p')
 		end
 		puts "eDate is " + eDate.to_s 
 		
@@ -602,7 +604,7 @@ class ProjectsController < ApplicationController
 			puts i.keys
 			p = Hash.new()
 			if eDate != 'undefined' then
-				p[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p')
+				p[:end_date] = eDate
 			end
 			
 			p[:active] = true
@@ -630,7 +632,7 @@ class ProjectsController < ApplicationController
 			end
 			
 			if eDate != 'undefined' then
-				u[:end_date] = Date.strptime(eDate, '%d/%b/%y %I:%M %p')
+				u[:end_date] = eDate 
 			end
 			
 			u[:upl_number] = pid ||= tProj.upl_number

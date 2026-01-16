@@ -216,7 +216,7 @@
 				<td><%= a.split("_")[0] %></td>
 				<td><%= ytd_allocation(p) %></td>
 				<td><%= p.description %></td>
-				<td><%= if !project.psh.nil? then project.psh end %></td>
+				<td><%= if !p.psh.nil? then p.psh end %></td>
 				<td><%= p.initiative_id %></td>
 				<td><%= if p.active then "Active" else "Closed" end %></td>
 				<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>

@@ -161,10 +161,11 @@
 		<th>UPL-Id</th>
 		<th>Category</th>
 		<th>Delivery Lead</th>
-		<th>Description</th>
 		<th>Current Allocation</th>
 		<th><%= if @fy == current_fy then "YTD FTE Equivalent" else "FY FTE Equivalent" end %></th>
+		<th>Description</th>
 		<% if current_user.admin %>
+			<th><%= get_cfield_name("p_cust_3")%></th>
 			<th><%= display_name_for('sys_names', 'initiative')%></th>
 			<th>Status</th>
 			<th></th>
@@ -177,10 +178,11 @@
 		<td><%= project.upl_number %></td>
 		<td><%= display_name_for("category",project.category) %></td>
 		<td><%= if !project.owner.nil? then project.owner.name else 'Undefined' end %></td>
-		<td><%= project.description %></td>
 		<td><%= a.split("_")[0] %></td>
 		<td><%= (ytd_allocation(project, true, @fy).to_d/current_week()).round(1) %></td>
+		<td><%= project.description %></td>
 		<% if current_user.admin %>
+			<td><%= if !project.psh.nil? then project.psh end %></td>
 			<td><%= if !project.initiative.nil? then project.initiative.name end %></td>
 			<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
 			<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>

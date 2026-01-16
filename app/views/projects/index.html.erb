@@ -207,8 +207,7 @@
 		  </tr>  
 	<% end %>
 	<% if current_user.admin %>
-
-			<% @projects.select {|a,prj| !prj.active}.sort_by {|a,p| p.name}.each do |a,p| %>
+		<% @projects.select {|a,prj| !prj.active}.sort_by {|a,prj| prj.name}.each do |a,p| %>
 			<tr>
 				<td class="link"><u><%= link_to p.name, p %></u></td>
 				<td><%= p.upl_number %></td>

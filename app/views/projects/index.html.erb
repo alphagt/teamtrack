@@ -172,34 +172,52 @@
 		<% end %>
 	  </tr>
 
-	  <% @projects.select {|a,p| p.active}.each do |a,project| %>
-	  <tr>
-		<td class="link"><u><%= link_to project.name, project %></u></td>
-		<td><%= project.upl_number %></td>
-		<td><%= display_name_for("category",project.category) %></td>
-		<td><%= if !project.owner.nil? then project.owner.name else 'Undefined' end %></td>
-		<td><%= a.split("_")[0] %></td>
-		<td><%= (ytd_allocation(project, true, @fy).to_d/current_week()).round(1) %></td>
-		<td><%= project.description %></td>
-		<% if current_user.admin %>
-			<td><%= if !project.psh.nil? then project.psh end %></td>
-			<td><%= if !project.initiative.nil? then project.initiative.name end %></td>
-			<td><%= if current_user.admin then if project.active then "Active" else "Closed" end end %></td>
-			<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
-		<% end %>
-	  </tr>  
+	  <% @projects.select {|a,p| p.active && a.split("_")[0].to_f > 0}.each do |a,project| %>
+		  <tr>
+			<td class="link"><u><%= link_to project.name, project %></u></td>
+			<td><%= project.upl_number %></td>
+			<td><%= display_name_for("category",project.category) %></td>
+			<td><%= if !project.owner.nil? then project.owner.name else 'Undefined' end %></td>
+			<td><%= a.split("_")[0] %></td>
+			<td><%= (ytd_allocation(project, true, @fy).to_d/current_week()).round(1) %></td>
+			<td><%= project.description %></td>
+			<% if current_user.admin %>
+				<td><%= if !project.psh.nil? then project.psh end %></td>
+				<td><%= if !project.initiative.nil? then project.initiative.name end %></td>
+				<td><%= if project.active then "Active" else "Closed" end %></td>
+				<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
+			<% end %>
+		  </tr> 
+	  <% end %> 
+	  <% @projects.select {|a,p| p.active && a.split("_")[0].to_f == 0.0}.sort_by {|a,p| p.name}.each do |a,project| %>
+		  <tr>
+			<td class="link"><u><%= link_to project.name, project %></u></td>
+			<td><%= project.upl_number %></td>
+			<td><%= display_name_for("category",project.category) %></td>
+			<td><%= if !project.owner.nil? then project.owner.name else 'Undefined' end %></td>
+			<td><%= a.split("_")[0] %></td>
+			<td><%= (ytd_allocation(project, true, @fy).to_d/current_week()).round(1) %></td>
+			<td><%= project.description %></td>
+			<% if current_user.admin %>
+				<td><%= if !project.psh.nil? then project.psh end %></td>
+				<td><%= if !project.initiative.nil? then project.initiative.name end %></td>
+				<td><%= if project.active then "Active" else "Closed" end %></td>
+				<td class="danger"><%= link_to 'Edit', edit_project_path(project) %></td>
+			<% end %>
+		  </tr>  
 	<% end %>
 	<% if current_user.admin %>
 
-			<% @projects.select {|a,prj| !prj.active}.each do |a,p| %>
+			<% @projects.select {|a,prj| !prj.active}.sort_by {|a,p| p.name}.each do |a,p| %>
 			<tr>
 				<td class="link"><u><%= link_to p.name, p %></u></td>
 				<td><%= p.upl_number %></td>
 				<td><%= display_name_for("category",p.category) %></td>
 				<td><%= if !p.owner.nil? then p.owner.name else 'Undefined' end %></td>
-				<td><%= p.description %></td>
 				<td><%= a.split("_")[0] %></td>
 				<td><%= ytd_allocation(p) %></td>
+				<td><%= p.description %></td>
+				<td><%= if !project.psh.nil? then project.psh end %></td>
 				<td><%= p.initiative_id %></td>
 				<td><%= if p.active then "Active" else "Closed" end %></td>
 				<td class="danger"><%= if current_user.admin then link_to 'Edit', edit_project_path(p) end %></td>

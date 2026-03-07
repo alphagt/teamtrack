@@ -13,6 +13,10 @@
 	    <tr>
 	    <td class="danger"><%= link_to 'Show All', users_path(:scope => "all") %></td>
 		<b><h5><%= "Tennant: " + current_user.primary_account.name %></h5></b>
+		<% if current_user.admin %>
+			<b><h5><%= "Manager Seats: " + current_user.primary_account.userquota.to_s %></h5></b>
+			<b><h5><%= "Current Managers: " + User.for_account(current_user.primary_account_id).is_verified.count.to_s %></h5></b>
+		<% end %>
 		<b><h4>Filters</h4></b>
 		<% if current_user.isstatususer? || current_user.admin %>
 			<tr>
@@ -47,7 +51,6 @@
     <th>Reset Pwd</th>
     <% if current_user.admin %>
     	<th>Admin?</th>
-    	<th>Tennant</th>
     	<th>Works on behalf of</th>
     	<th>Status User?</th>
     	<th>Verified</th>
@@ -72,7 +75,11 @@
     	<td><%= u.admin.to_s %></td>   
     	<td><%= u.impersonates.name if u.impersonates %></td>
     	<td><%= u.isstatususer.to_s %></td>
-    	<td><%= if u.verified then 'OK' else link_to 'Verify Now', user_verify_path(u.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
+    	<% if Account.find(current_user.primary_account_id).userquota > User.for_account(current_user.primary_account_id).is_verified.count %>
+    		<td><%= if u.verified then 'OK' else link_to 'Verify Now', user_verify_path(u.id), {:style => "color:blue;text-decoration : underline;"}  end %></td>
+   		<% else %>
+   			<td><%= if u.verified then 'OK' else "No Seats Available" end %></td>
+   		<% end %>
     <% end %>
   </tr>
 <% end %>

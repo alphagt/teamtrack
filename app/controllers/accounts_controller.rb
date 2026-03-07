@@ -38,6 +38,8 @@ class AccountsController < ApplicationController
       if !pa.admin? 
       	pa.admin = true
       end
+      pa.verified = true
+      pa.ismanager = true
       pa.save
       if @account.secondary_admin_id.present?
       	sa = User.find_by_id(@account.secondary_admin_id)
@@ -91,7 +93,7 @@ class AccountsController < ApplicationController
 		set.save
 		puts 'added ' << set.key
 
-		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_4', :value => "ctpriority", :displayname => 'OKR',
+		set = Setting.create!  :account_id => @account.id, :stype => 0, :key => 'p_cust_4', :value => "priority", :displayname => 'OKR',
 			:description => 'Custom field for priority.  Admin can define visible name by setting displayname on this setting.  
 				picklist values can be added to settings with p_cust_4 as the key for those settings.'
 		set.save

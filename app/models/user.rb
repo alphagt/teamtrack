@@ -22,6 +22,8 @@ class User < ApplicationRecord
   
   scope :managers_only, -> {where('ismanager = true').order('users.name')}
   
+  scope :is_verified, -> {where('verified = true').order('users.name')}
+  
   scope :managers_and_admins, -> {where('ismanager = true OR admin = true').order('users.name')}
   
   scope :verified_only, -> {where('verified = true').order('users.name')}

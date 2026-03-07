@@ -375,7 +375,14 @@ module ApplicationHelper
 			if s.stype == 0 then
 				s.displayname
 			else
-				Setting.for_account(current_user.primary_account_id).core_only.find_by_value(key).displayname
+				puts "Non 0 setting type for " + key
+				cs = Setting.for_account(current_user.primary_account_id).core_only.find_by_value(key)
+				if cs != nil then
+					cs.displayname
+				else
+					puts "Failed to look up core setting for key: " + key
+					"Undefined"
+				end	
 			end
 		else
 			puts "Failed look up for setting key: " + key

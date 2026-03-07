@@ -419,6 +419,7 @@ class UsersController < ApplicationController
 		@user.admin = false
 		@user.ismanager = false
 		@user.orgowner = false
+		@user.verified = false
 		@user.org = @aid.to_s + '-System'
 		
 		if @user.save then

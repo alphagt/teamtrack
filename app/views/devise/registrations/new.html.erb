@@ -8,6 +8,11 @@
 	  <%= f.input :password, :required => true %>
 	  <%= f.input :password_confirmation, :required => true %>
 	  <%= f.hidden_field :primary_account_id, :value => @acct %>
+	  <%= f.hidden_field :manager_id, :value => Account.find(@acct).primary_admin_id %>
+	  <% if User.for_account(@aid).is_verified.count < Account.find(@act).userquota %>
+	  	<%= f.hidden_field :ismanager, :value => true %>
+	  	<%= f.hidden_field :verified, :value => true %>
+	  <% end %>
 	  </br>
 	  <%= "My Team: " + if @acct > -0 then Account.find(@acct).name else "NA" end %>
 	  </br>
